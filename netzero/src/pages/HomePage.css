@@ -1,0 +1,501 @@
+/* HomePage.css - Mobile-first environmental insights website styles */
+
+.homepage {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* ===== HERO SECTION ===== */
+.hero-section {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #ffffff 0%, #fff5f0 50%, #ffffff 100%);
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  position: relative;
+}
+
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.hero-text {
+  margin-bottom: 40px;
+  margin-left: 100px;
+  z-index: 2;
+  text-align: center;
+}
+
+.hero-title {
+  font-size: 3rem;
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.title-green {
+  color: #4CAF50;
+  display: block;
+}
+
+.title-black {
+  color: #333;
+  display: block;
+}
+
+.hero-description {
+  font-size: 1.2rem;
+  color: #666;
+  margin-bottom: 30px;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.cta-button {
+  background: #333;
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 25px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cta-button:hover {
+  background: #555;
+  transform: translateY(-2px);
+}
+
+.hero-visual {
+  width: 100%;
+  max-width: 400px;
+  height: 300px;
+  position: relative;
+}
+
+.earth-placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #87CEEB, #98FB98);
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+/* ===== WEATHER SECTION ===== */
+.weather-section {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  color: white;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.weather-header h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 40px;
+  color: white;
+  text-align: center;
+}
+
+.weather-forecast {
+  margin-bottom: 40px;
+}
+
+.forecast-cards {
+  display: flex;
+  gap: 15px;
+  overflow-x: auto;
+  padding: 20px 0;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.forecast-cards::-webkit-scrollbar {
+  display: none;
+}
+
+.forecast-card {
+  background: rgba(255,255,255,0.1);
+  border-radius: 15px;
+  padding: 20px 15px;
+  min-width: 80px;
+  text-align: center;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+.forecast-card .day {
+  display: block;
+  font-size: 0.9rem;
+  color: #ccc;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.forecast-card .temp {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.weather-icon {
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.weather-widgets {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 40px;
+  align-items: center;
+  width: 100%;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.widget {
+  background: rgba(255,255,255,0.1);
+  border-radius: 15px;
+  padding: 25px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.2);
+  width: 100%;
+  max-width: 400px;
+}
+
+.air-quality {
+  text-align: center;
+}
+
+.widget-label {
+  display: block;
+  font-size: 0.8rem;
+  color: #ff6b6b;
+  font-weight: 600;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.widget-value {
+  display: block;
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.widget p {
+  color: #61dafb;
+  font-size: 0.9rem;
+  margin: 0;
+  cursor: pointer;
+  text-align: center;
+}
+
+.sun-uv {
+  display: flex;
+  justify-content: space-between;
+}
+
+.sunrise, .uv-index {
+  text-align: center;
+  flex: 1;
+}
+
+.sunrise .icon, .uv-index .icon {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.sunrise .label, .uv-index .label {
+  display: block;
+  font-size: 0.8rem;
+  color: #ccc;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.sunrise .value, .uv-index .value {
+  display: block;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* ===== ENVIRONMENTAL INSIGHTS SECTION ===== */
+.environment-section {
+  background: white;
+  padding: 60px 20px;
+}
+
+.environment-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.environment-text {
+  flex: 1;
+  text-align: left;
+}
+
+.environment-text h2 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.environment-text p {
+  font-size: 1.2rem;
+  color: #666;
+  line-height: 1.6;
+  max-width: 600px;
+  text-align: left;
+}
+
+.environment-visual {
+  flex: 1;
+  position: relative;
+  height: 300px;
+}
+
+.environment-placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+/* ===== HAZARDS SECTION ===== */
+.hazards-section {
+  background: #f8f9fa;
+  padding: 60px 20px;
+}
+
+.hazards-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.hazards-text {
+  text-align: left;
+}
+
+.hazards-text h2 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.hazards-text p {
+  font-size: 1.2rem;
+  color: #666;
+  line-height: 1.6;
+  max-width: 600px;
+  text-align: left;
+}
+
+.hazards-images {
+  display: flex;
+  gap: 20px;
+  position: relative;
+}
+
+.image-placeholder {
+  flex: 1;
+  height: 200px;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+}
+
+.image-placeholder.disaster {
+  background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+}
+
+.image-placeholder.beautiful {
+  background: linear-gradient(135deg, #2ed573, #7bed9f);
+}
+
+/* ===== NET ZERO SECTION ===== */
+.netzero-section {
+  background: white;
+  padding: 60px 20px;
+}
+
+.netzero-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.netzero-image {
+  order: 1;
+}
+
+.sphere-placeholder {
+  width: 100%;
+  height: 300px;
+  background: linear-gradient(135deg, #74b9ff, #0984e3);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.netzero-text {
+  order: 2;
+  text-align: left;
+}
+
+.netzero-text h2 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.netzero-text p {
+  font-size: 1.2rem;
+  color: #666;
+  line-height: 1.6;
+  max-width: 600px;
+  text-align: left;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media (min-width: 768px) {
+  .hero-content {
+    flex-direction: row;
+    gap: 60px;
+  }
+  
+  .hero-text {
+    margin-bottom: 0;
+    flex: 1;
+    text-align: left;
+  }
+  
+  .hero-title {
+    text-align: left;
+  }
+  
+  .hero-description {
+    text-align: left;
+    margin-left: 0;
+    margin-right: 0;
+  }
+  
+  .hero-visual {
+    flex: 1;
+    max-width: 500px;
+  }
+  
+  .weather-widgets {
+    flex-direction: row;
+    gap: 30px;
+  }
+  
+  .environment-content {
+    flex-direction: row;
+    align-items: center;
+  }
+  
+  .hazards-content {
+    flex-direction: row;
+    align-items: center;
+  }
+  
+  .hazards-text {
+    flex: 1;
+  }
+  
+  .hazards-images {
+    flex: 1;
+  }
+  
+  .netzero-content {
+    flex-direction: row;
+    align-items: center;
+  }
+  
+  .netzero-image {
+    flex: 1;
+    order: 1;
+  }
+  
+  .netzero-text {
+    flex: 1;
+    order: 2;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-title {
+    font-size: 4rem;
+  }
+  
+  .forecast-cards {
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  .forecast-card {
+    min-width: 100px;
+  }
+} 
