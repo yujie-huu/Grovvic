@@ -1,6 +1,6 @@
-/* Dashboard.css - Dashboard page styles */
+/* Weather.css - Weather page styles */
 
-.dashboard-page {
+.weather-page {
   min-height: calc(100vh - 200px); /* Subtract navigation bar and footer height */
   background: #f8f9fa;
   display: flex;
@@ -8,12 +8,12 @@
   justify-content: center;
 }
 
-.dashboard-container {
+.weather-container {
   text-align: center;
   padding: 40px 20px;
 }
 
-.dashboard-title {
+.weather-title {
   font-size: 3rem;
   font-weight: 800;
   color: #333;
@@ -22,7 +22,7 @@
 
 /* Responsive design */
 @media (min-width: 768px) {
-  .dashboard-title {
+  .weather-title {
     font-size: 4rem;
   }
 } 

@@ -3,8 +3,9 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import Navigation from './components/Navigation';
 import HomePage from './pages/HomePage';
-import Dashboard from './pages/Dashboard';
-import AlertPage from './pages/AlertPage';
+import Weather from './pages/Weather';
+import GardenPlan from './pages/GardenPlan';
+import AboutPage from './pages/AboutPage';
 import Footer from './components/Footer';
 
 function App() {
@@ -14,8 +15,9 @@ function App() {
         <Navigation />
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/alert" element={<AlertPage />} />
+          <Route path="/weather" element={<Weather />} />
+          <Route path="/gardenplan" element={<GardenPlan />} />
+          <Route path="/about" element={<AboutPage />} />
         </Routes>
         <Footer />
       </div>

@@ -30,15 +30,15 @@ const Navigation = () => {
           <Link to="/" className={`nav-link ${isActive('/') ? 'active' : ''}`}>
             Home
           </Link>
-          <Link to="/dashboard" className={`nav-link ${isActive('/dashboard') ? 'active' : ''}`}>
-            Dashboard
+          <Link to="/weather" className={`nav-link ${isActive('/weather') ? 'active' : ''}`}>
+            Weather
           </Link>
-          <Link to="/alert" className={`nav-link ${isActive('/alert') ? 'active' : ''}`}>
-            Alert
+          <Link to="/gardenplan" className={`nav-link ${isActive('/gardenplan') ? 'active' : ''}`}>
+            Garden Plan
           </Link>
-          <a href="#" className="nav-link">Carbon</a>
-          <a href="#" className="nav-link">About</a>
-          <a href="#" className="nav-link">Support</a>
+          <Link to="/about" className={`nav-link ${isActive('/about') ? 'active' : ''}`}>
+            About
+          </Link>
         </div>
         
         <div className={`nav-toggle ${isMenuOpen ? 'active' : ''}`} onClick={toggleMenu}>
