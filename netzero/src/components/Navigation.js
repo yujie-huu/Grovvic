@@ -33,10 +33,11 @@ const Navigation = () => {
           <Link to="/dashboard" className={`nav-link ${isActive('/dashboard') ? 'active' : ''}`}>
             Dashboard
           </Link>
-          <a href="#" className="nav-link">Alerts</a>
+          <Link to="/alert" className={`nav-link ${isActive('/alert') ? 'active' : ''}`}>
+            Alert
+          </Link>
           <a href="#" className="nav-link">Carbon</a>
           <a href="#" className="nav-link">About</a>
-          <a href="#" className="nav-link">Contact</a>
           <a href="#" className="nav-link">Support</a>
         </div>
         

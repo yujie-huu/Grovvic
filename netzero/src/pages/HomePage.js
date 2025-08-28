@@ -1,7 +1,33 @@
 import React from 'react';
 import './HomePage.css';
+import HomePageCard from '../components/HomePageCard';
 
 const HomePage = () => {
+  // Navigation handlers for each section
+  // const handleEnvironmentClick = () => {
+  //   // Navigate to climate dashboard page
+  //   console.log('Navigating to Climate Dashboard');
+  //   // For now, using window.location for simple navigation
+  //   // In a real app, you'd use React Router: navigate('/climate-dashboard');
+  //   window.location.href = '/climate-dashboard';
+  // };
+
+  const handleWeatherClick = () => {
+    // Navigate to hazards page
+    console.log('Navigating to Hazards Page');
+    // window.location.href = '/hazards';
+    alert('Hazards page coming soon!');
+  };
+
+  const handlePlanClick = () => {
+    // Navigate to hazards page
+    console.log('Navigating to Net Zero Page');
+    // window.location.href = '/hazards';
+    alert('Net Zero page coming soon!');
+  };
+
+
+
   return (
     <div className="homepage">
       {/* Hero Section */}
@@ -9,141 +35,62 @@ const HomePage = () => {
         <div className="hero-content">
           <div className="hero-text">
             <h1 className="hero-title">
-              <span className="title-green">Environmental</span>
-              <span className="title-black">Insights</span>
+              <span className="title-green">Gardening</span>
+              <span className="title-black">Insights</span> 
             </h1>
             <p className="hero-description">
-              Your hub for weather, climate, and disaster preparedness in Victoria.
+              Your hub for daily weather, planting guides, and climate-smart gardening in Victoria.
             </p>
             <button className="cta-button">Learn More</button>
           </div>
           <div className="hero-visual">
             <div className="earth-placeholder">
-              <img src="/image/lightingEarth.png" alt="3D Earth Globe" />
+              <img src="/images/lightingEarth.png" alt="3D Earth Globe" />
             </div>
           </div>
         </div>
       </section>
 
-      {/* Weather Section */}
-      <section className="weather-section">
-        <div className="weather-header">
-          <h2>Stay Informed. Stay Safe. Live NetZero.</h2>
-        </div>
-        
-        <div className="weather-forecast">
-          <div className="forecast-cards">
-            <div className="forecast-card">
-              <span className="day">Mon</span>
-              <span className="temp">19°C</span>
-              <div className="weather-icon">☁️🌧️☀️</div>
-            </div>
-            <div className="forecast-card">
-              <span className="day">Tue</span>
-              <span className="temp">18°C</span>
-              <div className="weather-icon">☁️🌧️⚡</div>
-            </div>
-            <div className="forecast-card">
-              <span className="day">Wed</span>
-              <span className="temp">18°C</span>
-              <div className="weather-icon">☁️🌧️⚡</div>
-            </div>
-            <div className="forecast-card">
-              <span className="day">Thu</span>
-              <span className="temp">19°C</span>
-              <div className="weather-icon">☁️🌧️☀️</div>
-            </div>
-            <div className="forecast-card">
-              <span className="day">Fri</span>
-              <span className="temp">21°C</span>
-              <div className="weather-icon">☁️🌧️☀️</div>
-            </div>
-            <div className="forecast-card">
-              <span className="day">Sat</span>
-              <span className="temp">13°C</span>
-              <div className="weather-icon">☁️🌧️⚡</div>
-            </div>
-            <div className="forecast-card">
-              <span className="day">Sun</span>
-              <span className="temp">15°C</span>
-              <div className="weather-icon">☁️🌧️⚡</div>
-            </div>
-          </div>
-        </div>
-
-        <div className="weather-widgets">
-          <div className="widget air-quality">
-            <span className="widget-label">AIR QUALITY</span>
-            <span className="widget-value">3-Low Health Risk</span>
-            <p>See more</p>
-          </div>
-          <div className="widget sun-uv">
-            <div className="sunrise">
-              <span className="icon">☀️</span>
-              <span className="label">SUNRISE</span>
-              <span className="value">5:28 AM</span>
-            </div>
-            <div className="uv-index">
-              <span className="icon">☀️</span>
-              <span className="label">UV INDEX</span>
-              <span className="value">4 Moderate</span>
+      {/* Banner Section - Ribbon-like area */}
+      <section className="banner-section">
+        <div className="banner-background">
+          <div className="banner-overlay">
+            <div className="banner-content">
+              <h2 className="banner-title">
+                <span className="banner-line">Grow Smarter.</span>
+                <span className="banner-line">Garden Greener.</span>
+                <span className="banner-line">Live NetZero</span>
+              </h2>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Environmental Insights Section - Temporarily commented for team discussion */}
-      {/* 
-      <section className="environment-section">
-        <div className="environment-content">
-          <div className="environment-text">
-            <h2>Environmental Insights Dashboard</h2>
-            <p>Helping Victorians Stay Informed With Real-Time Weather, Air Quality, And Climate Insights For Smarter Daily Decisions.</p>
-          </div>
-          <div className="environment-visual">
-            <div className="environment-placeholder">
-              <p>Weather & Environment Images</p>
-              <p>Please upload related images</p>
-            </div>
-          </div>
-        </div>
-      </section>
-      */}
+      {/* Content Cards Section - Continuous white background */}
+      <div className="content-cards-section">
 
-      {/* Hazards Section */}
-      <section className="hazards-section">
-        <div className="hazards-content">
-          <div className="hazards-text">
-            <h2>Stay Ahead Of Hazards</h2>
-            <p>Track Bushfires, Floods, Storms, And Heatwaves In Real Time To Keep Your Community Safe.</p>
-          </div>
-          <div className="hazards-images">
-            {/* Two contrast images needed: disaster scene and beautiful home */}
-            <div className="image-placeholder disaster">
-              <p>Disaster Scene Image</p>
-            </div>
-            <div className="image-placeholder beautiful">
-              <p>Beautiful Home Image</p>
-            </div>
-          </div>
-        </div>
-      </section>
+        {/* Hazards Section */}
+        <HomePageCard
+          title="Gardening Weather & Climate Dashboard"
+          description="Stay informed with daily forecasts, gardening tips, and climate insights. from past trends to future projections."
+          imageSrc="/images/bushfire1.jpg"
+          imageAlt="Garden & Weather"
+          imagePosition="left"
+          onClick={handleWeatherClick}
+          className="weather-card"
+        />
 
-      {/* Net Zero Section */}
-      <section className="netzero-section">
-        <div className="netzero-content">
-          <div className="netzero-image">
-            {/* Glass sphere image needed here */}
-            <div className="sphere-placeholder">
-              <p>Glass Sphere with Green City</p>
-            </div>
-          </div>
-          <div className="netzero-text">
-            <h2>Towards Net Zero</h2>
-            <p>Understand Carbon Emissions, Track Climate Drivers, And Take Action For A Sustainable Future.</p>
-          </div>
-        </div>
-      </section>
+        {/* Net Zero Section */}
+        <HomePageCard
+          title="Plan Your Garden Smarter"
+          description="See what to plant each month, get simple care guides, and stay updated on local pests and diseases."
+          imageSrc="/images/GreenCity.png"
+          imageAlt="Green plants"
+          imagePosition="right"
+          onClick={handlePlanClick}
+          className="plan-card"
+        />
+      </div>
     </div>
   );
 };
