@@ -76,10 +76,7 @@ const AboutPage = () => {
           <div className="section-text left-aligned">
             <h2 className="section-title">Our Mission</h2>
             <p className="section-description">
-              We are committed to helping Victorian gardeners become stewards of the environment 
-              through sustainable practices, climate-smart gardening techniques, and a deep understanding 
-              of our local ecosystems. Together, we can create a greener, more resilient Victoria, 
-              one garden at a time.
+              Our mission is to help Victorian gardeners grow smarter, greener, and more resilient gardens in a changing climate. By bringing together seasonal planting guides, pest alerts, and biodiversity insights into one platform, NetZero Garden empowers people to make confident gardening choices that protect plants, support pollinators, and contribute to a sustainable future.
             </p>
           </div>
           <div className="section-image">
