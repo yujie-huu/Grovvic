@@ -1,28 +1,181 @@
-/* Weather.css - Weather page styles */
-
 .weather-page {
-  min-height: calc(100vh - 200px); /* Subtract navigation bar and footer height */
+  min-height: calc(100vh - 160px);
   background: #f8f9fa;
   display: flex;
-  align-items: center;
   justify-content: center;
-}
-
-.weather-container {
-  text-align: center;
+  align-items: flex-start;
   padding: 40px 20px;
+  font-family: 'Arial', sans-serif;
+  gap: 40px;
 }
 
-.weather-title {
-  font-size: 3rem;
-  font-weight: 800;
-  color: #333;
+/* 左侧主天气卡片（长方形） */
+.weather-main-card {
+  background-color: #1c1c1c;
+  color: #fff;
+  padding: 25px 40px;
+  border-radius: 25px;
+  width: 720px;
+  height: 280px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* 顶部标签栏 */
+.weather-main-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+.location-tag {
+  background-color: #2b2b2b;
+  padding: 6px 14px;
+  border-radius: 12px;
+  font-size: 1rem;
+  color: #e0e0e0;
+}
+
+.unit-toggle {
+  background-color: #2b2b2b;
+  padding: 6px 12px;
+  border-radius: 10px;
+  font-size: 1rem;
+  color: #e0e0e0;
+}
+
+/* 主体中部排布 */
+.weather-main-body {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-grow: 1;
+}
+
+/* 左边日期 */
+.weather-main-left .weekday {
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.weather-main-left .date {
+  font-size: 1rem;
+  color: #ccc;
+  margin-top: 5px;
+}
+
+/* 中间图标 */
+.weather-main-center .weather-icon img {
+  width: 100px;
+  height: 100px;
+}
+
+/* 右边温度和描述 */
+.weather-main-right {
+  text-align: right;
+}
+
+.weather-main-right .temp {
+  font-size: 2.4rem;
+  font-weight: bold;
+}
+
+.weather-main-right .minmax {
+  font-size: 1.2rem;
+  color: #ccc;
+}
+
+.weather-main-right .desc {
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+.weather-main-right .feels {
+  font-size: 0.95rem;
+  color: #aaa;
+  margin-top: 2px;
+}
+
+
+/* 右侧 Highlights 区域 */
+.weather-highlights-wrapper {
+  background-color: #1c1c1c;
+  color: #fff;
+  padding: 30px;
+  border-radius: 30px;
+  width: 900px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+.weather-highlights-wrapper h3 {
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.weather-highlights {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.highlight-box {
+  background-color: #111;
+  padding: 20px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: left;
+}
+
+.highlight-box p {
   margin: 0;
+  font-size: 1rem;
+  color: #bbb;
 }
 
-/* Responsive design */
-@media (min-width: 768px) {
-  .weather-title {
-    font-size: 4rem;
+.highlight-box strong {
+  font-size: 1.4rem;
+  margin-top: 5px;
+  color: #fff;
+}
+
+.highlight-box .subtext {
+  font-size: 0.9rem;
+  color: #888;
+  margin-top: 5px;
+}
+
+/* 响应式处理 */
+@media (max-width: 1200px) {
+  .weather-page {
+    flex-direction: column;
+    align-items: center;
   }
-} 
+
+  .weather-main-card,
+  .weather-highlights-wrapper {
+    width: 90%;
+  }
+
+  .weather-main-card {
+    height: auto;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .weather-main-right {
+    text-align: left;
+  }
+
+  .weather-highlights {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
