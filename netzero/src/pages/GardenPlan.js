@@ -12,7 +12,11 @@ const GardenPlan = () => {
   const [loading, setLoading] = useState(false);
   const [showVarieties, setShowVarieties] = useState(false);
   const [selectedSpecies, setSelectedSpecies] = useState("");
-  const [enteredViaCard, setEnteredViaCard] = useState(false); 
+  const [enteredViaCard, setEnteredViaCard] = useState(false);
+  
+  // track filter applied
+  const [appliedCategory, setAppliedCategory] = useState("");
+  const [appliedMonth, setAppliedMonth] = useState("");
   
   // plant name search related states
   const [allPlantNames, setAllPlantNames] = useState([]);
@@ -55,17 +59,18 @@ const GardenPlan = () => {
     const baseUrl = "http://3.24.201.81:8000/plants"; // base URL that returns all plants
     
     // if both are "all" or empty string, i.e., no condition is selected, return all plants
-    if ((selectedCategory === "all" || selectedCategory === "") && (selectedMonth === "all" || selectedMonth === "")) {
+    if ((selectedCategory === "Plants" || selectedCategory === "") && (selectedMonth === "all months" || selectedMonth === "")) {
       return baseUrl;
-    } else if ((selectedCategory !== "all" && selectedCategory !== "") && (selectedMonth === "all" || selectedMonth === "")) {
+    } else if ((selectedCategory !== "Plants" && selectedCategory !== "") && (selectedMonth === "all months" || selectedMonth === "")) {
       return `${baseUrl}/category/${selectedCategory}`; // filter by category
-    } else if ((selectedCategory === "all" || selectedCategory === "") && (selectedMonth !== "all" && selectedMonth !== "")) {
-      return `${baseUrl}/month/${selectedMonth}`; // filter by month
+    } else if ((selectedCategory === "Plants" || selectedCategory === "") && (selectedMonth !== "all months" && selectedMonth !== "")) {
+      return `${baseUrl}/month/${selectedMonth.slice(0,3)}`; // filter by month
     } else {
-      return `${baseUrl}/filter?month=${selectedMonth}&category=${selectedCategory}`; // filter by both month and category
+      return `${baseUrl}/filter?month=${selectedMonth.slice(0,3)}&category=${selectedCategory}`; // filter by both month and category
     }
   };
 
+  // const selectedConstraints = {selectedCategory}, {selectedMonth};
   // fetch plants data
   const fetchPlants = async () => {
     setLoading(true);
@@ -104,6 +109,11 @@ const GardenPlan = () => {
     // reset the value of the search input box as the two methods are not compatible
     setSelectedPlantName("");
     setShowDropdown(false);
+    // update the applied filter conditions
+    setAppliedCategory(selectedCategory);
+    setAppliedMonth(selectedMonth);
+    if (selectedCategory === "") {setAppliedCategory("Plants");}
+    if (selectedMonth === "") {setAppliedMonth("all months");}
     fetchPlants();
   };
 
@@ -160,7 +170,33 @@ const GardenPlan = () => {
     setSelectedSpecies("");
     setSelectedPlantName("");
     setShowDropdown(false);
-    setEnteredViaCard(false); 
+    setEnteredViaCard(false);
+    // reset the filter status
+    setAppliedCategory("");
+    setAppliedMonth("");
+  };
+
+  // handle show all click
+  const handleShowAll = async () => {
+    setSelectedCategory("Plants");
+    setSelectedMonth("all months");    
+    setSelectedPlantName("");
+    setShowDropdown(false);
+    setAppliedCategory("Plants");
+    setAppliedMonth("all months");
+    
+    // fetch plants by directly call the API
+    setLoading(true);
+    setShowVarieties(false);
+    try {
+      const response = await axios.get('http://3.24.201.81:8000/plants');
+      setPlants(response.data);
+    } catch (error) {
+      console.error("Error fetching plants:", error);
+      setPlants([]);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -181,7 +217,7 @@ const GardenPlan = () => {
 
       {/* Guide & Tips Section */}
       <section className="guidetips-section">
-
+        <p>monthly recommendation and warnings...</p>
       </section>
 
       {/* Plant Search Section */}
@@ -256,10 +292,10 @@ const GardenPlan = () => {
                   onChange={(e) => setSelectedCategory(e.target.value)}
                 > 
                   <option value="" disabled>Select category</option>
-                  <option value="vegetable">Vegetables</option>
-                  <option value="herb">Herbs</option>
-                  <option value="flower">Flowers</option>
-                  <option value="all">All Categories</option>
+                  <option value="Vegetable">Vegetables</option>
+                  <option value="Herb">Herbs</option>
+                  <option value="Flower">Flowers</option>
+                  <option value="Plants">All Categories</option>
                 </select>
                 
                 {/* select box (dropdown list) for month*/}
@@ -269,19 +305,19 @@ const GardenPlan = () => {
                   onChange={(e) => setSelectedMonth(e.target.value)}
                 >
                   <option value="" disabled>Select month</option>
-                  <option value="jan">January</option>
-                  <option value="feb">February</option>
-                  <option value="mar">March</option>
-                  <option value="apr">April</option>
-                  <option value="may">May</option>
-                  <option value="jun">June</option>
-                  <option value="jul">July</option>
-                  <option value="aug">August</option>
-                  <option value="sep">September</option>
-                  <option value="oct">October</option>
-                  <option value="nov">November</option>
-                  <option value="dec">December</option>
-                  <option value="all">All Months</option>
+                  <option value="January">January</option>
+                  <option value="Februuary">February</option>
+                  <option value="March">March</option>
+                  <option value="April">April</option>
+                  <option value="May">May</option>
+                  <option value="June">June</option>
+                  <option value="July">July</option>
+                  <option value="August">August</option>
+                  <option value="September">September</option>
+                  <option value="October">October</option>
+                  <option value="November">November</option>
+                  <option value="December">December</option>
+                  <option value="all months">All Months</option>
                 </select>
               </div>
               
@@ -291,10 +327,15 @@ const GardenPlan = () => {
             </div>
           </div>
 
-          {/* clear choice */}
-          <div className="clear-choice">
+          {/* action buttons */}
+          <div className="action-buttons">
+            {/* show all plants */}
+            <button className="show-all-button" onClick={handleShowAll}>
+              Show All
+            </button>
+            {/* clear all choices */}
             <button className="clear-button" onClick={handleClearChoice}>
-              Clear Choice
+              Clear All
             </button>
           </div>
 
@@ -304,7 +345,7 @@ const GardenPlan = () => {
               <div className="breadcrumb">
                 {enteredViaCard && (
                   <button className="back-button" onClick={handleBackToSpecies}>
-                    ← Back to {selectedSpecies}
+                    ← Back to list of species
                   </button>
                 )}
                 <h3 className="varieties-title">Varieties of {selectedSpecies}</h3>
@@ -313,12 +354,15 @@ const GardenPlan = () => {
 
             <div className="search-results">
               {!showVarieties && plants.length > 0 && (
-                <div className="plant-cards-container">
-                  {plants.map((plant, index) => (
-                    <div key={`${plant.plant_name}-${index}`} onClick={() => handleSpeciesClick(plant.plant_name)}>
-                      <PlantSpeciesCard plant={plant} />
-                    </div>
-                  ))}
+                <div>
+                  <h3 className="varieties-title">{appliedCategory} in {appliedMonth}</h3>
+                  <div className="plant-cards-container">
+                    {plants.map((plant, index) => (
+                      <div key={`${plant.plant_name}-${index}`} onClick={() => handleSpeciesClick(plant.plant_name)}>
+                        <PlantSpeciesCard plant={plant} />
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
 
