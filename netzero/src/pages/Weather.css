@@ -1,4 +1,5 @@
 .weather-page {
+  /* Main container of the weather page */
   min-height: calc(100vh - 160px);
   background: #f8f9fa;
   display: flex;
@@ -7,23 +8,24 @@
   padding: 40px 20px;
   font-family: 'Arial', sans-serif;
   gap: 40px;
+  flex-wrap: wrap; /* Enable wrapping for responsive layout */
 }
 
-/* 左侧主天气卡片（长方形） */
+/* Main weather card (left box) */
 .weather-main-card {
   background-color: #1c1c1c;
   color: #fff;
   padding: 25px 40px;
   border-radius: 25px;
-  width: 720px;
-  height: 280px;
+  width: 480px;
+  height: auto;
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 
-/* 顶部标签栏 */
+/* Top section with city and temperature unit */
 .weather-main-top {
   display: flex;
   justify-content: space-between;
@@ -48,7 +50,7 @@
   color: #e0e0e0;
 }
 
-/* 主体中部排布 */
+/* Main section (date, icon, temperature) */
 .weather-main-body {
   display: flex;
   justify-content: space-between;
@@ -56,103 +58,199 @@
   flex-grow: 1;
 }
 
-/* 左边日期 */
+/* Date section */
 .weather-main-left .weekday {
   font-size: 1.8rem;
   font-weight: bold;
 }
-
 .weather-main-left .date {
   font-size: 1rem;
   color: #ccc;
   margin-top: 5px;
 }
 
-/* 中间图标 */
+/* Weather icon in the center */
 .weather-main-center .weather-icon img {
   width: 100px;
   height: 100px;
 }
 
-/* 右边温度和描述 */
+/* Temperature and description section */
 .weather-main-right {
   text-align: right;
 }
-
 .weather-main-right .temp {
   font-size: 2.4rem;
   font-weight: bold;
 }
-
 .weather-main-right .minmax {
   font-size: 1.2rem;
   color: #ccc;
 }
-
 .weather-main-right .desc {
   font-size: 1.1rem;
   font-weight: 500;
   margin-top: 4px;
 }
-
 .weather-main-right .feels {
   font-size: 0.95rem;
   color: #aaa;
   margin-top: 2px;
 }
 
-
-/* 右侧 Highlights 区域 */
+/* Highlights card (right box) */
 .weather-highlights-wrapper {
   background-color: #1c1c1c;
   color: #fff;
-  padding: 30px;
-  border-radius: 30px;
-  width: 900px;
+  padding: 16px 24px;
+  border-radius: 25px;
+  width: 540px;
+  min-height: 290px; /* Just slightly taller than .weather-main-card */
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 .weather-highlights-wrapper h3 {
-  margin-bottom: 20px;
-  font-size: 1.8rem;
+  margin-bottom: 16px;
+  font-size: 1.4rem;
   font-weight: bold;
 }
 
+
+/* Grid layout for each highlight block */
 .weather-highlights {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  gap: 14px;
 }
 
+/* Each highlight box: compact spacing and font size */
 .highlight-box {
   background-color: #111;
-  padding: 20px;
-  border-radius: 20px;
+  padding: 12px;
+  border-radius: 16px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   text-align: left;
 }
 
+/* Text styles inside each box */
 .highlight-box p {
   margin: 0;
-  font-size: 1rem;
+  font-size: 0.85rem;
   color: #bbb;
 }
 
 .highlight-box strong {
-  font-size: 1.4rem;
-  margin-top: 5px;
+  font-size: 1.1rem;
+  margin-top: 4px;
   color: #fff;
 }
 
 .highlight-box .subtext {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   color: #888;
-  margin-top: 5px;
+  margin-top: 4px;
 }
 
-/* 响应式处理 */
+/* Hourly forecast cards */
+.hourly-forecast {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.hour-card {
+  width: 80px;
+  height: 120px;
+  border-radius: 20px;
+  background: linear-gradient(to bottom, #000, #777);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.hour-time {
+  font-size: 0.8rem;
+  margin-top: 8px;
+}
+
+.hour-icon {
+  width: 48px;
+  height: 48px;
+}
+
+.hour-temp {
+  font-size: 1rem;
+  margin-bottom: 8px;
+}
+
+.seven-day-forecast {
+  margin: 40px auto;
+  padding: 20px;
+  background: #1e1e1e;
+  border-radius: 24px;
+  max-width: 90%;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.seven-day-forecast h3 {
+  color: white;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+
+.day-cards {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+}
+
+.day-card {
+  flex: 0 0 90px;             /* 更长（更宽） */
+  height: 140px;             /* 更矮 */
+  background-color: #111;
+  color: white;
+  border-radius: 18px;
+  padding: 12px 6px;
+  text-align: center;
+  box-shadow: inset 0 -1px 0 #555;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;  /* 均匀分布内容 */
+  align-items: center;
+}
+
+
+.day-name {
+  font-weight: 500;
+  font-size: 0.95rem;
+  margin-bottom: 6px;
+  color: #ccc;
+}
+
+.day-icon {
+  width: 44px;
+  height: 44px;
+  margin-bottom: 4px;
+}
+
+.day-temp {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+
+/* Responsive adjustments */
 @media (max-width: 1200px) {
   .weather-page {
     flex-direction: column;
@@ -162,13 +260,6 @@
   .weather-main-card,
   .weather-highlights-wrapper {
     width: 90%;
-  }
-
-  .weather-main-card {
-    height: auto;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 20px;
   }
 
   .weather-main-right {
