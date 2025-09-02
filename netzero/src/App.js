@@ -6,6 +6,7 @@ import HomePage from './pages/HomePage';
 import Weather from './pages/Weather';
 import GardenPlan from './pages/GardenPlan';
 import AboutPage from './pages/AboutPage';
+import PlantDetailPage from './pages/PlantDetailPage';
 import Footer from './components/Footer';
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
           <Route path="/weather" element={<Weather />} />
           <Route path="/gardenplan" element={<GardenPlan />} />
           <Route path="/about" element={<AboutPage />} />
+          <Route path="/plant-detail/:plantName" element={<PlantDetailPage />} />
         </Routes>
         <Footer />
       </div>

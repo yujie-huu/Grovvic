@@ -1,7 +1,168 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import './GardenPlan.css';
+import PlantSpeciesCard from '../components/PlantSpeciesCard';
+import PlantCard from '../components/PlantCard';
 
 const GardenPlan = () => {
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedMonth, setSelectedMonth] = useState("");
+  const [plants, setPlants] = useState([]);
+  const [plantVarieties, setPlantVarieties] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [showVarieties, setShowVarieties] = useState(false);
+  const [selectedSpecies, setSelectedSpecies] = useState("");
+  const [enteredViaCard, setEnteredViaCard] = useState(false); 
+  
+  // plant name search related states
+  const [allPlantNames, setAllPlantNames] = useState([]);
+  const [selectedPlantName, setSelectedPlantName] = useState("");
+  const [filteredPlantNames, setFilteredPlantNames] = useState([]);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [visibleItems, setVisibleItems] = useState(10);
+
+  // fetch all plant names
+  useEffect(() => {
+    const fetchAllPlantNames = async () => {
+      try {
+        const response = await axios.get('http://3.24.201.81:8000/plants');
+        const plantNames = response.data.map(plant => plant.plant_name);
+        setAllPlantNames(plantNames);
+        setFilteredPlantNames(plantNames);
+      } catch (error) {
+        console.error('Error fetching plant names:', error);
+      }
+    };
+
+    fetchAllPlantNames();
+  }, []);
+
+  // filter plant names
+  useEffect(() => {
+    if (selectedPlantName === '') {
+      setFilteredPlantNames(allPlantNames);
+    } else {
+      const filtered = allPlantNames.filter(name =>
+        name.toLowerCase().includes(selectedPlantName.toLowerCase())
+      );
+      setFilteredPlantNames(filtered);
+    }
+    setVisibleItems(10);
+  }, [selectedPlantName, allPlantNames]);
+
+  // build API URL
+  const buildApiUrl = () => {
+    const baseUrl = "http://3.24.201.81:8000/plants"; // base URL that returns all plants
+    
+    // if both are "all" or empty string, i.e., no condition is selected, return all plants
+    if ((selectedCategory === "all" || selectedCategory === "") && (selectedMonth === "all" || selectedMonth === "")) {
+      return baseUrl;
+    } else if ((selectedCategory !== "all" && selectedCategory !== "") && (selectedMonth === "all" || selectedMonth === "")) {
+      return `${baseUrl}/category/${selectedCategory}`; // filter by category
+    } else if ((selectedCategory === "all" || selectedCategory === "") && (selectedMonth !== "all" && selectedMonth !== "")) {
+      return `${baseUrl}/month/${selectedMonth}`; // filter by month
+    } else {
+      return `${baseUrl}/filter?month=${selectedMonth}&category=${selectedCategory}`; // filter by both month and category
+    }
+  };
+
+  // fetch plants data
+  const fetchPlants = async () => {
+    setLoading(true);
+    setShowVarieties(false);
+    try {
+      const url = buildApiUrl();
+      const response = await axios.get(url);
+      setPlants(response.data);
+    } catch (error) {
+      console.error("Error fetching plants:", error);
+      setPlants([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // fetch plant varieties
+  const fetchPlantVarieties = async (speciesName) => {
+    setLoading(true);
+    try {
+      const url = `http://3.24.201.81:8000/plant/${speciesName}/varieties`;
+      const response = await axios.get(url);
+      setPlantVarieties(response.data);
+      setShowVarieties(true);
+      setSelectedSpecies(speciesName);
+    } catch (error) {
+      console.error("Error fetching plant varieties:", error);
+      setPlantVarieties([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // handle filter click
+  const handleFilterClick = () => {
+    // reset the value of the search input box as the two methods are not compatible
+    setSelectedPlantName("");
+    setShowDropdown(false);
+    fetchPlants();
+  };
+
+  // handle species card click
+  const handleSpeciesClick = (speciesName) => {
+    setEnteredViaCard(true); // mark as entered via card
+    fetchPlantVarieties(speciesName);
+  };
+
+  // handle plant name search
+  const handlePlantNameSearch = () => {
+    if (selectedPlantName && allPlantNames.includes(selectedPlantName)) {
+      // reset the values of the filters as the two methods are not compatible
+      setSelectedCategory("");
+      setSelectedMonth("");
+      // mark as entered via search
+      setEnteredViaCard(false); 
+      fetchPlantVarieties(selectedPlantName);
+    }
+  };
+
+  // handle plant name input change
+  const handlePlantNameChange = (e) => {
+    setSelectedPlantName(e.target.value);
+    setShowDropdown(true);
+  };
+
+  // handle plant name selection
+  const handlePlantNameSelect = (plantName) => {
+    setSelectedPlantName(plantName);
+    setShowDropdown(false);
+  };
+
+  // load more items
+  const handleLoadMore = () => {
+    setVisibleItems(prev => Math.min(prev + 10, filteredPlantNames.length));
+  };
+
+  // go back to species view
+  const handleBackToSpecies = () => {
+    setShowVarieties(false);
+    setPlantVarieties([]);
+    setSelectedSpecies("");
+    setEnteredViaCard(false);
+  };
+
+  // clear all choices and return to initial state
+  const handleClearChoice = () => {
+    setSelectedCategory("");
+    setSelectedMonth("");
+    setPlants([]);
+    setPlantVarieties([]);
+    setShowVarieties(false);
+    setSelectedSpecies("");
+    setSelectedPlantName("");
+    setShowDropdown(false);
+    setEnteredViaCard(false); 
+  };
+
   return (
     <div className="gardenplan-page">
       {/* Banner Section - Ribbon-like area */}
@@ -10,13 +171,168 @@ const GardenPlan = () => {
           <div className="banner-overlay">
             <div className="banner-content">
               <h2 className="banner-title">
-                <p className="banner-line">Victoria’s Gardening Guide</p>
+                <p className="banner-line">Victoria's Gardening Guide</p>
                 <p className="banner-line">What to Plant, Care Tips & Wildlife Support</p>
               </h2>
             </div>
           </div>
         </div>
       </section>
+
+      {/* Guide & Tips Section */}
+      <section className="guidetips-section">
+
+      </section>
+
+      {/* Plant Search Section */}
+      <section className="plantsearch-section">
+        <div className="plantsearch-textcontent">
+          <h4 className="plantsearch-title">Find Your Perfect Plant</h4>
+          <p className="plantsearch-description">
+            Search our database of climate-resilient plants suited for Victoria's changing conditions. Filter by type, care level, and wildlife benefits to find the best fit for your garden.
+          </p>
+        </div>
+
+        <div className="search-bar-container">
+          
+          {/* Plant Name Search Section */}
+          <div className="plant-name-search-container">
+            <h5 className="search-section-title">Search by plant name (by species):</h5>
+            <div className="plant-name-search-bar">
+              <div className="searchable-input-container">
+                <input
+                  type="text"
+                  value={selectedPlantName}
+                  onChange={handlePlantNameChange}
+                  onFocus={() => setShowDropdown(true)}
+                  placeholder="Type to search plant names..."
+                  className="searchable-input"
+                />
+                {showDropdown && (
+                  <div className="searchable-dropdown">
+                    {filteredPlantNames.length === 0 ? (
+                      <div className="no-options">No matching options found</div>
+                    ) : (
+                      <>
+                        {filteredPlantNames.slice(0, visibleItems).map((plantName, index) => (
+                          <div
+                            key={index}
+                            className="dropdown-option"
+                            onClick={() => handlePlantNameSelect(plantName)}
+                          >
+                            {plantName}
+                          </div>
+                        ))}
+                        
+                        {visibleItems < filteredPlantNames.length && (
+                          <div className="load-more" onClick={handleLoadMore}>
+                            Load more ({filteredPlantNames.length - visibleItems} remaining)
+                          </div>
+                        )}
+                      </>
+                    )}
+                  </div>
+                )}
+              </div>
+              <button 
+                className="search-button" 
+                onClick={handlePlantNameSearch}
+                disabled={!selectedPlantName || loading || !allPlantNames.includes(selectedPlantName)}
+              >
+                Search
+              </button>
+            </div>
+          </div>
+
+          {/* Search plants with filters (by month, type) */}
+          <div className="filter-dropdown-container">
+            <h5 className="search-section-title">Or search by category and month:</h5>
+            {/* select box (dropdown list) for plant type: vegetable, herb or flower*/}
+            <div className="filter-bar">
+              <div className="filter-items">
+                <select 
+                  className="filter-dropdown" 
+                  value={selectedCategory}
+                  onChange={(e) => setSelectedCategory(e.target.value)}
+                > 
+                  <option value="" disabled>Select category</option>
+                  <option value="vegetable">Vegetables</option>
+                  <option value="herb">Herbs</option>
+                  <option value="flower">Flowers</option>
+                  <option value="all">All Categories</option>
+                </select>
+                
+                {/* select box (dropdown list) for month*/}
+                <select 
+                  className="filter-dropdown" 
+                  value={selectedMonth}
+                  onChange={(e) => setSelectedMonth(e.target.value)}
+                >
+                  <option value="" disabled>Select month</option>
+                  <option value="jan">January</option>
+                  <option value="feb">February</option>
+                  <option value="mar">March</option>
+                  <option value="apr">April</option>
+                  <option value="may">May</option>
+                  <option value="jun">June</option>
+                  <option value="jul">July</option>
+                  <option value="aug">August</option>
+                  <option value="sep">September</option>
+                  <option value="oct">October</option>
+                  <option value="nov">November</option>
+                  <option value="dec">December</option>
+                  <option value="all">All Months</option>
+                </select>
+              </div>
+              
+              <button className="filter-button" onClick={handleFilterClick} disabled={loading}>
+                {loading ? "Loading..." : "Filter"}
+              </button>
+            </div>
+          </div>
+
+          {/* clear choice */}
+          <div className="clear-choice">
+            <button className="clear-button" onClick={handleClearChoice}>
+              Clear Choice
+            </button>
+          </div>
+
+          <div className="results-container">
+
+            {showVarieties && (
+              <div className="breadcrumb">
+                {enteredViaCard && (
+                  <button className="back-button" onClick={handleBackToSpecies}>
+                    ← Back to {selectedSpecies}
+                  </button>
+                )}
+                <h3 className="varieties-title">Varieties of {selectedSpecies}</h3>
+              </div>
+            )}
+
+            <div className="search-results">
+              {!showVarieties && plants.length > 0 && (
+                <div className="plant-cards-container">
+                  {plants.map((plant, index) => (
+                    <div key={`${plant.plant_name}-${index}`} onClick={() => handleSpeciesClick(plant.plant_name)}>
+                      <PlantSpeciesCard plant={plant} />
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {showVarieties && plantVarieties.length > 0 && (
+                <div className="plant-cards-container">
+                  {plantVarieties.map((plant, index) => (
+                    <PlantCard key={`${plant.variety}-${index}`} plant={plant} />
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </section> 
     </div>
   );
 };

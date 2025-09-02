@@ -35,11 +35,13 @@ const HomePage = () => {
         <div className="hero-content">
           <div className="hero-text">
             <h1 className="hero-title">
-              <span className="title-green">Gardening</span>
-              <span className="title-black">Insights</span> 
+              <span className="title-green">VIGROW</span>
             </h1>
             <p className="hero-description">
-              Your hub for daily weather, planting guides, and climate-smart gardening in Victoria.
+              Victoria Gardening: Resilient, Organic, Waste-wise
+            </p>
+            <p className="hero-description">
+              Your guide to climate-smart gardening in Victoria.
             </p>
             <button className="cta-button" onClick={handleLearnMoreClick}>Learn More</button>
           </div>
