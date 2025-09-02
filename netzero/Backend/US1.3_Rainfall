@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # Load the rainfall anomaly dataset
-df = pd.read_csv("C:/Users/24215/Downloads/rranom.vic.allmonths.27590.csv")
+df = pd.read_csv("US1.3_Rainfall_Data.csv")
 
 # Rename columns
 df.columns = ['Year', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
