@@ -9,6 +9,7 @@ const Weather = () => {
   const [dailyForecasts, setDailyForecasts] = useState([]) // 8-day forecast
   const [unit, setUnit] = useState('metric')
   const [selectedCity, setSelectedCity] = useState('Melbourne')
+  const [climateType, setClimateType] = useState('temperature')
 
   const apiKey = 'cc6ac231ffa5fcb7e2893394cea3d7d4'
   const country = 'AU'
@@ -73,7 +74,7 @@ const Weather = () => {
   const weekday = new Date().toLocaleDateString('en-US', { weekday: 'long' })
   const date = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
 
-  const formatTime = (unix) => new Date(unix * 1000).toLocaleTimeString([], { hour: 'numeric', hour12: true })
+  // const formatTime = (unix) => new Date(unix * 1000).toLocaleTimeString([], { hour: 'numeric', hour12: true })
   const formatSunTime = (unix) => new Date(unix * 1000).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true })
   const formatDay = (unix) => new Date(unix * 1000).toLocaleDateString('en-US', { weekday: 'short' })
 
@@ -81,6 +82,15 @@ const Weather = () => {
   const speedUnit = unit === 'metric' ? 'km/h' : 'mph'
   const windSpeed = unit === 'metric' ? (current.wind_speed * 3.6).toFixed(1) : current.wind_speed.toFixed(1)
   const todayMin = Math.round(dailyForecasts[0].temp.min)
+
+  // const handleClimateChange = (e) => {
+  //   setClimateType(e.target.value);
+  // };
+
+  const imageSrc = climateType === 'temperature'
+    ? '/images/temperature_average.jpg'
+    : '/images/rainfall_average.png';
+
 
   return (
     <div className="weather-page">
@@ -184,6 +194,28 @@ const Weather = () => {
         ))}
       </div>
 
+      {/* <div className="gardening-hero"> */}
+      <div className="gardening-hero"
+        style={{
+          backgroundImage: `url(${process.env.PUBLIC_URL || ''}/images/days.png)`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
+        }}
+      >
+
+        <div className="gardening-hero__content">
+          <h2>Daily Gardening Tips</h2>
+          <ul>
+            <li>Water in the early morning to reduce evaporation.</li>
+            <li>Ensure good ventilation to prevent fungal diseases.</li>
+            <li>Avoid watering at midday to protect roots from heat stress.</li>
+            <li>Use mulch to keep soil moisture and protect roots.</li>
+            <li>Provide light shade at noon to reduce leaf burn.</li>
+            <li>Collect rainwater for later use.</li>
+          </ul>
+        </div>
+      </div>
+
       <div className="seven-day-forecast">
         <h3>7 Day Forecast</h3>
         <div className="day-cards">
@@ -207,6 +239,34 @@ const Weather = () => {
           Tips will be added here...
         </p>
       </div>
+
+      <div className="climate-section">
+        <div className="climate-dropdown">
+          <select onChange={(e) => setClimateType(e.target.value)} value={climateType}>
+            <option value="temperature">Temperature</option>
+            <option value="rainfall">Rainfall</option>
+          </select>
+        </div>
+        <img src={imageSrc} alt="Climate" className="climate-image" />
+      </div>
+
+
+      <div className="green-box climate-box">
+        <h2>📊 Historical Climate Insights</h2>
+        <p>
+          {/* You can replace this with dynamic text later */}
+          Sample data insight here. More data can appear here. And everything will wrap properly based on content width.
+        </p>
+      </div>
+
+      <div className="green-box climate-box">
+        <h2>📊 Future Climate Insights</h2>
+        <p>
+          {/* You can replace this with dynamic text later */}
+          Sample data insight here. More data can appear here. And everything will wrap properly based on content width.
+        </p>
+      </div>
+
 
     </div>
   )
