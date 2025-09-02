@@ -1,29 +1,29 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import './HomePage.css';
 import HomePageCard from '../components/HomePageCard';
 
 const HomePage = () => {
-  // Navigation handlers for each section
-  // const handleEnvironmentClick = () => {
-  //   // Navigate to climate dashboard page
-  //   console.log('Navigating to Climate Dashboard');
-  //   // For now, using window.location for simple navigation
-  //   // In a real app, you'd use React Router: navigate('/climate-dashboard');
-  //   window.location.href = '/climate-dashboard';
-  // };
+  const navigate = useNavigate();
 
+  // Navigation handlers for each section
+
+  // Navigate to weather page
   const handleWeatherClick = () => {
-    // Navigate to hazards page
-    console.log('Navigating to Hazards Page');
-    // window.location.href = '/hazards';
-    alert('Hazards page coming soon!');
+    console.log('Navigating to Weather Page');
+    navigate('/weather');
   };
 
+  // Navigate to garden plan page
   const handlePlanClick = () => {
-    // Navigate to hazards page
-    console.log('Navigating to Net Zero Page');
-    // window.location.href = '/hazards';
-    alert('Net Zero page coming soon!');
+    console.log('Navigating to Garden Plan Page');
+    navigate('/gardenplan');
+  };
+
+  // Navigate to about page
+  const handleLearnMoreClick = () => {
+    console.log('Navigating to About Page');
+    navigate('/about');
   };
 
 
@@ -41,7 +41,7 @@ const HomePage = () => {
             <p className="hero-description">
               Your hub for daily weather, planting guides, and climate-smart gardening in Victoria.
             </p>
-            <button className="cta-button">Learn More</button>
+            <button className="cta-button" onClick={handleLearnMoreClick}>Learn More</button>
           </div>
           <div className="hero-visual">
             <div className="earth-placeholder">
@@ -57,9 +57,10 @@ const HomePage = () => {
           <div className="banner-overlay">
             <div className="banner-content">
               <h2 className="banner-title">
-                <span className="banner-line">Grow Smarter.</span>
-                <span className="banner-line">Garden Greener.</span>
+                <span className="banner-line">Grow Smarter</span>
+                <span className="banner-line">Garden Greener</span>
                 <span className="banner-line">Live NetZero</span>
+                {/* <img src="/images/banner_TreeRoot.png" alt="home page banner - tree root" /> */}
               </h2>
             </div>
           </div>
@@ -69,22 +70,22 @@ const HomePage = () => {
       {/* Content Cards Section - Continuous white background */}
       <div className="content-cards-section">
 
-        {/* Hazards Section */}
+        {/* Weather Section */}
         <HomePageCard
           title="Gardening Weather & Climate Dashboard"
           description="Stay informed with daily forecasts, gardening tips, and climate insights. from past trends to future projections."
-          imageSrc="/images/bushfire1.jpg"
+          imageSrc="/images/homepage_weather1.png"
           imageAlt="Garden & Weather"
           imagePosition="left"
           onClick={handleWeatherClick}
           className="weather-card"
         />
 
-        {/* Net Zero Section */}
+        {/* Garden Plan Section */}
         <HomePageCard
           title="Plan Your Garden Smarter"
           description="See what to plant each month, get simple care guides, and stay updated on local pests and diseases."
-          imageSrc="/images/GreenCity.png"
+          imageSrc="/images/homepage_plan1.png"
           imageAlt="Green plants"
           imagePosition="right"
           onClick={handlePlanClick}

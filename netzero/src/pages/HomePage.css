@@ -99,7 +99,7 @@
 /* ===== BANNER SECTION ===== */
 .banner-section {
   width: 100%;
-  height: 300px;
+  height: 450px;
   position: relative;
   overflow: hidden;
 }
@@ -107,10 +107,10 @@
 .banner-background {
   width: 100%;
   height: 100%;
+  background-image: url('../../public/images/banner_TreeRoot.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  filter: blur(2px) brightness(0.8);
 }
 
 .banner-overlay {

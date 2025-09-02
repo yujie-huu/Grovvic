@@ -119,7 +119,7 @@
   top: -100px; /* Position image to overlap with previous section */
   right: 0;
   width: 500px;
-  height: 300px;
+  height: 450px;
   z-index: 10;
 }
 
@@ -135,10 +135,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.1);
+  /* background: rgba(255, 255, 255, 0.1); */
   border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  /* box-shadow: 0 10px 30px rgba(0,0,0,0.2); */
 }
 
 .plant-illustration img {
@@ -213,10 +213,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.1);
   border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 }
 
 .landscape-illustration img {
@@ -249,10 +247,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f8f9fa;
   border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
 }
 
 .mission-illustration img {
