@@ -157,44 +157,96 @@
 }
 
 /* Hourly forecast cards */
-.hourly-forecast {
+/* .hourly-forecast {
   display: flex;
-  gap: 1rem;
-  margin-top: 2rem;
-  justify-content: center;
-  flex-wrap: wrap;
-}
+  flex-wrap: nowrap;            
+  overflow-x: auto;             
+  gap: 1rem;                    
+  padding: 1rem 0;
+  scroll-snap-type: x mandatory; 
+} */
+
 
 .hour-card {
-  width: 80px;
-  height: 120px;
-  border-radius: 20px;
-  background: linear-gradient(to bottom, #000, #777);
+  flex: 0 0 calc(100% / 8 - 1rem); /* 每行显示 7 个卡片，减去间距 */
+  max-width: 100px;               /* 防止卡片过宽 */
+  height: 100px;
+  background: linear-gradient(to bottom, #111, #333);
   color: white;
+  border-radius: 1rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  font-size: 0.75rem;
   display: flex;
   flex-direction: column;
+  justify-content: space-evenly;
   align-items: center;
-  justify-content: space-around;
-  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
+  box-sizing: border-box;
+  scroll-snap-align: start;
+}
+
+
+.hourly-forecast {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: 1rem;
+  padding: 1rem 0;
+  scroll-snap-type: x mandatory;
+
+  /* 加滚动条提示视觉 */
+  scrollbar-width: thin;              /* Firefox */
+  scrollbar-color: #888 transparent;
+
+  /* Chrome/Edge 滚动条样式 */
+}
+.hourly-forecast::-webkit-scrollbar {
+  height: 6px;
+}
+.hourly-forecast::-webkit-scrollbar-track {
+  background: transparent;
+}
+.hourly-forecast::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 3px;
+}.hourly-forecast {
+  display: flex;
+  overflow-x: auto;
+  gap: 1rem;
+  padding: 1rem 0;
+  scroll-snap-type: x mandatory;
+
+  scrollbar-width: thin;
+  scrollbar-color: #888 transparent;
+}
+.hourly-forecast::-webkit-scrollbar {
+  height: 6px;
+}
+.hourly-forecast::-webkit-scrollbar-track {
+  background: transparent;
+}
+.hourly-forecast::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 3px;
 }
 
 .hour-time {
-  font-size: 0.8rem;
-  margin-top: 8px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  line-height: 1.2;
 }
 
 .hour-icon {
-  width: 48px;
-  height: 48px;
+  width: 36px;
+  height: 36px;
 }
 
 .hour-temp {
-  font-size: 1rem;
-  margin-bottom: 8px;
+  font-size: 0.8rem;
 }
 
 .seven-day-forecast {
-  margin: 40px auto;
+  margin: 20px auto;
   padding: 20px;
   background: #1e1e1e;
   border-radius: 24px;
@@ -205,7 +257,7 @@
 .seven-day-forecast h3 {
   color: white;
   font-size: 1.5rem;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .day-cards {
@@ -249,6 +301,33 @@
   font-weight: bold;
 }
 
+.gardening-tips-full {
+  margin-top: 0.2rem;
+  margin-bottom: 2rem;
+       /* 缩小上下间距，之前是 2rem */
+  padding: 2rem;
+  background-color: #d7f5d0;
+  border-left: 10px solid #7dbd5a;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 1200px;
+  text-align: center;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.gardening-tips-full h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  color: #386e2f;
+}
+
+.gardening-tips-full .tip-content {
+  font-size: 1.1rem;
+  color: #2c4b27;
+  line-height: 1.6; /* 增加行距，长段文字更易读 */
+}
 
 /* Responsive adjustments */
 @media (max-width: 1200px) {
