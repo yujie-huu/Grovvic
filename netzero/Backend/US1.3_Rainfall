@@ -1,0 +1,48 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load the rainfall anomaly dataset
+df = pd.read_csv("C:/Users/24215/Downloads/rranom.vic.allmonths.27590.csv")
+
+# Rename columns
+df.columns = ['Year', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+              'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+
+# Compute annual total rainfall
+df['Annual_Total'] = df.loc[:, 'Jan':'Dec'].sum(axis=1)
+
+# Filter years 1910–2024
+df = df[(df['Year'] >= 1910) & (df['Year'] <= 2024)]
+
+# Baseline: average annual rainfall from 1961–1990
+baseline = df[(df['Year'] >= 1961) & (df['Year'] <= 1990)]['Annual_Total'].mean()
+
+# Compute rainfall anomaly
+df['Anomaly'] = df['Annual_Total'] - baseline
+
+# Compute 11-year running average
+df['Running_Avg_11yr'] = df['Anomaly'].rolling(window=11, center=True).mean()
+
+# Plotting
+plt.figure(figsize=(15, 6))
+
+# Color: blue for positive anomaly, yellow for negative
+colors = df['Anomaly'].apply(lambda x: '#0072BC' if x > 0 else '#FFD200')
+
+# Bar chart for anomalies
+plt.bar(df['Year'], df['Anomaly'], color=colors)
+
+# 11-year running average line
+plt.plot(df['Year'], df['Running_Avg_11yr'], color='black', linewidth=2, label='11-year running average')
+
+# Zero baseline line
+plt.axhline(0, color='black', linewidth=0.8)
+
+# Labels and title
+plt.title("Annual Rainfall Anomaly (Victoria, 1910 to 2024)", fontsize=14)
+plt.xlabel("Year")
+plt.ylabel("Mean Rainfall Anomaly (mm)")
+plt.grid(axis='y', linestyle='--', alpha=0.5)
+plt.legend()
+plt.tight_layout()
+plt.show()
