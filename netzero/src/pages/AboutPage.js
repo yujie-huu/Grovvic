@@ -30,7 +30,7 @@ const AboutPage = () => {
           </div>
           <div className="section-image spanning-image">
             <div className="plant-illustration">
-              <img src="/images/bushfire1.jpg" alt="Plant in hands with visible roots" />
+              <img src="/images/aboutpage_1.png" alt="Plant in hands with visible roots" />
             </div>
           </div>
         </div>
@@ -41,7 +41,7 @@ const AboutPage = () => {
         <div className="section-content with-image">
           <div className="section-image">
             <div className="landscape-illustration">
-              <img src="/images/GreenCity.png" alt="Layered green landscape with city buildings and trees" />
+              <img src="/images/aboutpage_2.png" alt="Layered green landscape with city buildings and trees" />
             </div>
           </div>
           <div className="section-text left-aligned">
@@ -81,7 +81,7 @@ const AboutPage = () => {
           </div>
           <div className="section-image">
             <div className="mission-illustration">
-              <img src="/images/lightingEarth.png" alt="Concentric green rings with Earth and sustainability icons" />
+              <img src="/images/aboutpage_3.png" alt="Concentric green rings with Earth and sustainability icons" />
             </div>
           </div>
         </div>

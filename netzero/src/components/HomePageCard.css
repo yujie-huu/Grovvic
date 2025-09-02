@@ -45,7 +45,7 @@
 }
 
 .card-description {
-  font-size: 1.2rem;
+  font-size: 1.6rem;
   color: #666;
   line-height: 1.6;
   max-width: 600px;
@@ -97,17 +97,17 @@
   }
   
   .card-text {
-    text-align: left;
+    text-align: center;
     flex: 1;
   }
   
   .card-title {
-    text-align: left;
+    text-align: center;
   }
   
   .card-description {
-    text-align: left;
-    margin: 0;
+    text-align: center;
+    /* margin: 0; */
   }
   
   .card-image {
