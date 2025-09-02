@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # Load the data
-df = pd.read_csv("C:/Users/24215/Downloads/tmean.vic.allmonths.26507.csv")
+df = pd.read_csv("US1.3_Tem_Data.csv")
 
 # Replace month abbreviations with standard column names
 df.columns = ['Year', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
