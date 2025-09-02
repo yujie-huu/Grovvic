@@ -1,0 +1,46 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load the data
+df = pd.read_csv("US1.3_Tem_Data.csv")
+
+# Replace month abbreviations with standard column names
+df.columns = ['Year', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+              'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+
+# Calculate the annual mean temperature
+df['Annual_Mean'] = df.loc[:, 'Jan':'Dec'].mean(axis=1)
+
+# Filter valid years
+df = df[(df['Year'] >= 1910) & (df['Year'] <= 2024)]
+
+# Calculate the baseline average temperature (1961–1990)
+baseline = df[(df['Year'] >= 1961) & (df['Year'] <= 1990)]['Annual_Mean'].mean()
+
+# Compute the temperature anomaly for each year
+df['Anomaly'] = df['Annual_Mean'] - baseline
+
+# Calculate 11-year running average (to smooth the trend line)
+df['Running_Avg_11yr'] = df['Anomaly'].rolling(window=11, center=True).mean()
+
+# Plotting
+plt.figure(figsize=(15, 6))
+colors = df['Anomaly'].apply(lambda x: 'orange' if x > 0 else 'blue')
+
+# Bar plot for annual temperature anomalies
+plt.bar(df['Year'], df['Anomaly'], color=colors)
+
+# Add 11-year running average line
+plt.plot(df['Year'], df['Running_Avg_11yr'], color='black', linewidth=2, label='11-year running average')
+
+# Add horizontal line at 0
+plt.axhline(0, color='black', linewidth=0.8)
+
+# Titles and labels
+plt.title("Annual Mean Temperature Anomaly (Victoria, 1910 to 2024)", fontsize=14)
+plt.xlabel("Year")
+plt.ylabel("Mean Temperature Anomaly (\u00B0C)")
+plt.grid(axis='y', linestyle='--', alpha=0.5)
+plt.legend()
+plt.tight_layout()
+plt.show()
