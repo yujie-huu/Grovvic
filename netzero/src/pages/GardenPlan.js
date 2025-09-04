@@ -34,7 +34,7 @@ const GardenPlan = () => {
 
   // fetch monthly flowers for recommendation
   const fetchMonthlyPlants = async () => {
-    const currentMonthUrl = `http://3.24.201.81:8000/plants/month/${currentMonth}`;
+    const currentMonthUrl = `https://netzero-vigrow-api.duckdns.org/plants/month/${currentMonth}`;
     setMonthlyPlantsLoading(true);
     try {
       const monthlyTipResponse = await axios.get(currentMonthUrl);
@@ -55,7 +55,7 @@ const GardenPlan = () => {
   useEffect(() => {
     const fetchAllPlantNames = async () => {
       try {
-        const response = await axios.get('http://3.24.201.81:8000/plants');
+        const response = await axios.get('https://netzero-vigrow-api.duckdns.org/plants');
         const plantNames = response.data.map(plant => plant.plant_name);
         setAllPlantNames(plantNames);
         setFilteredPlantNames(plantNames);
@@ -87,7 +87,7 @@ const GardenPlan = () => {
 
   // build API URL
   const buildApiUrl = () => {
-    const baseUrl = "http://3.24.201.81:8000/plants"; // base URL that returns all plants
+    const baseUrl = "https://netzero-vigrow-api.duckdns.org/plants"; // base URL that returns all plants
     
     // if both are "all" or empty string, i.e., no condition is selected, return all plants
     if ((selectedCategory === "Plants" || selectedCategory === "") && (selectedMonth === "all months" || selectedMonth === "")) {
@@ -122,7 +122,7 @@ const GardenPlan = () => {
   const fetchPlantVarieties = async (speciesName) => {
     setLoading(true);
     try {
-      const url = `http://3.24.201.81:8000/plant/${speciesName}/varieties`;
+      const url = `https://netzero-vigrow-api.duckdns.org/plant/${speciesName}/varieties`;
       const response = await axios.get(url);
       setPlantVarieties(response.data);
       setShowVarieties(true);
@@ -220,7 +220,7 @@ const GardenPlan = () => {
     setLoading(true);
     setShowVarieties(false);
     try {
-      const response = await axios.get('http://3.24.201.81:8000/plants');
+      const response = await axios.get('https://netzero-vigrow-api.duckdns.org/plants');
       setPlants(response.data);
     } catch (error) {
       console.error("Error fetching plants:", error);
