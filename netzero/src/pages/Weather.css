@@ -157,16 +157,6 @@
 }
 
 /* Hourly forecast cards */
-/* .hourly-forecast {
-  display: flex;
-  flex-wrap: nowrap;            
-  overflow-x: auto;             
-  gap: 1rem;                    
-  padding: 1rem 0;
-  scroll-snap-type: x mandatory; 
-} */
-
-
 .hour-card {
   flex: 0 0 calc(100% / 8 - 1rem); /* display seven cards each line，minus  */
   max-width: 100px;               
@@ -190,45 +180,16 @@
   display: flex;
   flex-wrap: nowrap;
   overflow-x: auto;
-  gap: 5rem;
-  padding: 1rem 0;
-  scroll-snap-type: x mandatory;
-
-  /* Add scroll bar for visual indication */
-  scrollbar-width: thin;              /* Firefox */
-  scrollbar-color: #888 transparent;
-
-  /* Chrome/Edge Scroll bar style */
-}
-.hourly-forecast::-webkit-scrollbar {
-  height: 6px;
-}
-.hourly-forecast::-webkit-scrollbar-track {
-  background: transparent;
-}
-.hourly-forecast::-webkit-scrollbar-thumb {
-  background-color: #888;
-  border-radius: 3px;
-}.hourly-forecast {
-  display: flex;
-  overflow-x: auto;
   gap: 1rem;
   padding: 1rem 0;
   scroll-snap-type: x mandatory;
-
   scrollbar-width: thin;
   scrollbar-color: #888 transparent;
 }
-.hourly-forecast::-webkit-scrollbar {
-  height: 6px;
-}
-.hourly-forecast::-webkit-scrollbar-track {
-  background: transparent;
-}
-.hourly-forecast::-webkit-scrollbar-thumb {
-  background-color: #888;
-  border-radius: 3px;
-}
+.hourly-forecast::-webkit-scrollbar { height: 6px; }
+.hourly-forecast::-webkit-scrollbar-track { background: transparent; }
+.hourly-forecast::-webkit-scrollbar-thumb { background-color: #888; border-radius: 3px; }
+
 
 .hour-time {
   font-size: 0.75rem;
@@ -307,7 +268,6 @@
 .seven-day-forecast {
   margin-top: 12px;               
 }
-
 
 .seven-day-forecast {
   margin: 20px auto;
@@ -415,29 +375,6 @@
   border: 1px solid #ccc;
 }
 
-.climate-section {
-  position: relative;
-  display: inline-block;
-  width: 100%;
-  max-width: 1000px; 
-  margin: 0 auto;
-}
-
-.climate-dropdown {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  bottom: 10px;
-  z-index: 1;
-}
-
-.climate-dropdown select {
-  padding: 5px 10px;
-  font-size: 16px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-}
-
 .climate-image {
   width: 100%;
   height: auto;
@@ -486,13 +423,121 @@
 
 
 /* Optional: Specific class for climate box if needed */
-.climate-box {
-  /* No additional styles needed unless you want different margins or icons */
+.climate-title {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #064e3b;
+}
+
+.climate-row {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 18px;
+}
+
+.climate-label {
+  width: 200px; /* 固定宽度，确保左边对齐 */
+  font-weight: bold;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.climate-text {
+  flex: 1;
+  font-size: 1rem;
+  line-height: 1.6;
 }
 
 
+/* Parent container layout: left–right split. */
+.gardening-hero__content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  padding: 24px 28px;
+  gap: 1.5rem;
+}
+
+/* left tips font brightness */
+.gardening-hero__left {
+  flex: 1;
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
+  max-width: 65%;
+}
+
+.gardening-hero__left h2 {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.gardening-hero__left ul {
+  padding-left: 1.2rem;
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+.gardening-hero__left li {
+  margin-bottom: 6px;
+}
+
+/* right cards zone */
+.gardening-hero__right {
+  flex: 0 0 auto;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); 
+  gap: 12px 16px;
+  justify-content: end;      
+  align-content: center;     
+  height: 100%;  
+  margin-right: -200px;             
+}
+
+/* each card */
+.tip-card {
+  background-color: #ffffff;
+  color: #111;
+  border-radius: 10px;
+  padding: 8px 14px;
+  width: 180px;         
+  height: 60px;         
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: flex;        
+  flex-direction: column;
+  justify-content: center;
+}
+
+.tip-card__time {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #444;
+}
+
+.tip-card__text {
+  font-size: 0.9rem; 
+  font-weight: bold;
+  margin-top: 4px;
+}
+
+
+.future-climate-banner {
+  width: 100%;
+  max-width: 800px;
+  display: block;
+  margin: 40px auto 20px auto; /* 上下间距 + 居中 */
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+
+
 /* Responsive adjustments */
-@media (max-width: 1200px) {
+@media (max-width: 1024px) {
   .weather-page {
     flex-direction: column;
     align-items: center;
@@ -525,3 +570,4 @@
     font-size: 0.95rem;
   }
 }
+
