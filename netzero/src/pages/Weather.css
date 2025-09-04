@@ -208,17 +208,19 @@
 .gardening-hero {
   width: 90%;
   max-width: 1200px;
-  height: 280px;                     
-  margin: 1rem auto 1.25rem;         
+
+  /* ✅ according to the amount of tip
+     公式：base height 180px + each tip 32px，可按需微调 */
+  min-height: calc(120px + (var(--tip-count, 0) * 32px));
+
+  margin: 1rem auto 1.25rem;
   position: relative;
   border-radius: 14px;
   overflow: hidden;
-  /* background-image: url('/images/daily_tips.png');  */
-  background-size: cover;             
-  background-position: center;        
+  background-size: cover;
+  background-position: center;
   box-shadow: 0 6px 18px rgba(0,0,0,0.22);
 }
-
 
 /* Dark color mask, enhances text readability */
 .gardening-hero::before {

@@ -75,132 +75,77 @@ const Weather = () => {
   const date = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
 
   const formatSunTime = (unix) =>
-  new Date(unix * 1000)
-    .toLocaleTimeString('en-US', {
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true
-    })
-    .replace('AM', 'am')
-    .replace('PM', 'pm');
-  
-  // const formatSunTime = (unix) => new Date(unix * 1000).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true })
-  const formatDay = (unix) => new Date(unix * 1000).toLocaleDateString('en-US', { weekday: 'short' })
-  const formatHour = (unix) =>
-  new Date(unix * 1000)
-    .toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })
-    .replace('AM', 'am')
-    .replace('PM', 'pm');
+    new Date(unix * 1000)
+      .toLocaleTimeString('en-US', {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+      })
+      .replace('AM', 'am')
+      .replace('PM', 'pm');
 
+  // Keep for 7-day forecast labels
+  const formatDay = (unix) =>
+    new Date(unix * 1000).toLocaleDateString('en-US', { weekday: 'short' })
 
   const tempUnit = unit === 'metric' ? '°C' : '°F'
   const speedUnit = unit === 'metric' ? 'km/h' : 'mph'
-  const windSpeed = unit === 'metric' ? (current.wind_speed * 3.6).toFixed(1) : current.wind_speed.toFixed(1)
+  const windSpeed = unit === 'metric'
+    ? (current.wind_speed * 3.6).toFixed(1)
+    : current.wind_speed.toFixed(1)
   const todayMin = Math.round(dailyForecasts?.[0]?.temp?.min ?? current.temp);
 
-
-  // ====== Action dictionary (short label + full sentence) ======
-  const ACTIONS = {
-    SHADE:          { label: 'Add shade',       long: 'Use shade cloth or move pots out of direct sunlight.' },
-    COVER_FRAGILE:  { label: 'Cover & move',    long: 'Cover fragile plants with sheets overnight and bring pots indoors.' },
-    COVER_SEEDLINGS:{ label: 'Cover seedlings', long: 'Cover seedlings or bring them indoors.' },
-    UV_SHADE:       { label: 'UV shade',        long: 'Shade seedlings and sensitive plants.' },
-    SECURE_TRELLIS: { label: 'Secure trellis',  long: 'Shelter fragile pots and secure trellises.' },
-    FUNGAL_WATCH:   { label: 'Fungal watch',    long: 'Watch for fungal infection.' },
-    MULCH:          { label: 'Mulch beds',      long: 'Mulch the garden to keep the soil moist.' },
-    HARVEST_STAKE:  { label: 'Harvest & stake', long: 'Harvest ripe produce; raise pots and stake tall plants.' },
-    ROUTINE:        { label: 'Routine care',    long: 'Keep up your regular gardening routine.' }
-  };
-
-  // Order to sort actions by importance in daily summary
-  const PRIORITY = [
-    'SHADE', 'COVER_FRAGILE', 'COVER_SEEDLINGS',
-    'UV_SHADE', 'SECURE_TRELLIS', 'FUNGAL_WATCH',
-    'HARVEST_STAKE', 'MULCH', 'ROUTINE'
-  ];
-
   // Unit conversions
-  const toKmh = (speed) => unit === 'imperial' ? (speed || 0) * 1.60934 : (speed || 0) * 3.6; // mph/m/s -> km/h
-  const toCelsius = (t)   => unit === 'imperial' ? (t - 32) * 5 / 9 : t;
+  const toKmh = (speed) =>
+    unit === 'imperial' ? (speed || 0) * 1.60934 : (speed || 0) * 3.6; // mph/m/s -> km/h
+  const toCelsius = (t) =>
+    unit === 'imperial' ? (t - 32) * 5 / 9 : t;
 
-  // Decide the action key for an hourly record, using daily accumulated rain as context
-  const pickActionKeys = (h, dailyRainMm) => {
-    const keys = [];
+  // ---- Day-level tips (based on today's daily forecast) ----
+  const todayDaily = dailyForecasts?.[0] || {};
+  const dayTempC   = toCelsius(todayDaily?.temp?.day ?? current?.temp ?? 0);
+  const dayRainMm  = todayDaily?.rain ?? 0; // OpenWeather daily rain in mm
+  const dayWindKmh = toKmh(todayDaily?.wind_speed ?? current?.wind_speed ?? 0);
+  const dayHumidity = todayDaily?.humidity ?? current?.humidity ?? 0;
+  const dayUvi      = todayDaily?.uvi ?? current?.uvi ?? 0;
 
-    const tempC = toCelsius(h.temp ?? 0);
-    const windKmh = toKmh(h.wind_speed ?? 0);
-    const humidity = h.humidity ?? 0;
-    const uvi = h.uvi ?? 0;
+  const dayTips = [];
 
-    if (tempC > 30) keys.push('SHADE');
-    if (tempC < 1) keys.push('COVER_FRAGILE');
-    if (tempC >= 1 && tempC <= 10) keys.push('COVER_SEEDLINGS');
-
-    if (uvi > 8) keys.push('UV_SHADE');
-    if (windKmh > 25) keys.push('SECURE_TRELLIS');
-    if (humidity > 70) keys.push('FUNGAL_WATCH');
-
-    if ((dailyRainMm ?? 0) < 1) keys.push('MULCH');
-    if ((dailyRainMm ?? 0) > 20) keys.push('HARVEST_STAKE');
-
-    if (keys.length === 0) keys.push('ROUTINE');
-
-    return keys;
-  };
-
-
-
-  // Today's total rain (mm) from daily forecast
-  const todayRainMm = dailyForecasts?.[0]?.rain ?? 0;
-
-  
-  //Build actionable hourly cards: scan forward, skip ROUTINE, fill up to 6
-const hourlyActionCards = (() => {
-  const hours = forecastList || [];
-  const primary = [];
-  const fallback = [];
-
-  for (let i = 0; i < hours.length; i++) {
-    const h = hours[i];
-    const allKeys = pickActionKeys(h, todayRainMm);
-    const nonRoutine = allKeys.filter(k => k !== 'ROUTINE');
-    const chosenKeys = (nonRoutine.length ? nonRoutine : ['ROUTINE']).slice(0, 3);
-
-    const labels = chosenKeys.map(k => ACTIONS[k]?.label).filter(Boolean);
-
-    const card = { dt: h.dt, time: formatHour(h.dt), keys: chosenKeys, labels };
-
-    if (nonRoutine.length) primary.push(card);
-    else fallback.push(card);
-
-    if (primary.length >= 6) break;
+  // Temperature related (mutually exclusive by design)
+  if (dayTempC > 30) {
+    dayTips.push("It's a hot day. Use shade cloth or move pots out of direct sunlight!");
+  } else if (dayTempC >= 1 && dayTempC <= 10) {
+    dayTips.push("It's a cold day. Cover seedlings or bring them indoors!");
+  } else if (dayTempC < 1) {
+    dayTips.push("It's a frosty day. Cover fragile plants with sheets overnight and bring pots indoors!");
   }
-  const need = Math.max(0, 6 - primary.length);
-  return primary.concat(fallback.slice(0, need));
-})();
 
+  // Rainfall related
+  if (dayRainMm < 1) {
+    dayTips.push("It's a dry day. Make sure you've mulched your garden to keep the soil moist!");
+  } else if (dayRainMm > 20) {
+    dayTips.push("It's a stormy day. Harvest ripe produce to avoid damage! Raise pots and stake tall plants if you need to!");
+  }
 
+  // Wind related
+  if (dayWindKmh > 25) {
+    dayTips.push("It's a windy day. Shelter fragile pots and secure trellises!");
+  }
 
-  // 3) Build left-side summary: unique actions, sorted by priority
-  //    If none remain, fall back to a single “Routine care”
-// Sum up the keys in all the cards
-  const dayActionKeys = Array.from(
-    new Set(hourlyActionCards.flatMap(c => c.keys || []))
-  );
+  // Humidity related
+  if (dayHumidity > 70) {
+    dayTips.push("It's a humid day. Watch for fungal infection!");
+  }
 
-  // If non-routines exist, routines are excluded
-  const hasNonRoutine = dayActionKeys.some(k => k !== 'ROUTINE');
+  // Sunlight/UV related
+  if (dayUvi > 8) {
+    dayTips.push("It's a bright day. Shade seedlings and sensitive plants!");
+  }
 
-  const orderedKeys = PRIORITY.filter(
-    k => dayActionKeys.includes(k) && (hasNonRoutine ? k !== 'ROUTINE' : true)
-  );
-
-  // A long sentence description is shown on the left
-  const dayActionsLong = orderedKeys.map(k => ACTIONS[k].long);
-
-  // Bottom of pocket
-  if (dayActionsLong.length === 0) dayActionsLong.push(ACTIONS.ROUTINE.long);
-
+  // Fallback
+  if (dayTips.length === 0) {
+    dayTips.push("The weather is calm today. Keep up your regular gardening care routine.");
+  }
 
   // ---- Weekly tips: compute weekly stats and derive tips ----
 
@@ -261,8 +206,6 @@ const hourlyActionCards = (() => {
     ];
   }
 
-
-
   // 1.3
   const imageSrc = climateType === 'temperature'
     ? '/images/temperature_average.jpg'
@@ -292,7 +235,8 @@ const hourlyActionCards = (() => {
         <li><strong>Grow drought-tolerant plants:</strong> Select native or low-water species (e.g., succulents, lavender, kangaroo paw).</li>
       </ul>
     </>
-  )  
+  )
+
 
 
   const weatherTips = [
@@ -474,56 +418,42 @@ const hourlyActionCards = (() => {
       <div
         className="gardening-hero"
         style={{
+          ['--tip-count']: dayTips.length,   // ✅ 把当日 tip 的条数传给 CSS
           backgroundImage: `url(${process.env.PUBLIC_URL || ''}/images/days.png)`,
           backgroundSize: 'cover',
           backgroundPosition: 'center'
         }}
       >
-        
         <div className="gardening-hero__content">
-          {/* Left: specific tasks to be carried out today */}
           <div className="gardening-hero__left">
             <h2>Daily Gardening Tips</h2>
             <ul>
-              {dayActionsLong.map((txt, i) => (
+              {dayTips.map((txt, i) => (
                 <li key={i}>{txt}</li>
               ))}
             </ul>
           </div>
+        </div>
+      </div>
 
-          {/* Right: minimalist hourly cards */}
-          <div className="gardening-hero__right">
-            {hourlyActionCards.map((it) => (
-              <div className="tip-card" key={it.dt}>
-                <div className="tip-card__time">{it.time}</div>
-                <div className="tip-card__text">
-                  {it.labels.map((txt, idx) => (
-                    <div className="tip-line" key={idx}>{txt}</div>
-                  ))}
-                </div>
+
+
+            <div className="seven-day-forecast">
+              <h3>7 Day Forecast</h3>
+              <div className="day-cards">
+                {dailyForecasts.map((item, index) => (
+                  <div className="day-card" key={index}>
+                    <p className="day-name">{index === 0 ? 'Today' : formatDay(item.dt)}</p>
+                    <img
+                      src={`https://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`}
+                      alt={item.weather[0].description}
+                      className="day-icon"
+                    />
+                    <p className="day-temp">{Math.round(item.temp.day)}{tempUnit}</p>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-
-      <div className="seven-day-forecast">
-        <h3>7 Day Forecast</h3>
-        <div className="day-cards">
-          {dailyForecasts.map((item, index) => (
-            <div className="day-card" key={index}>
-              <p className="day-name">{index === 0 ? 'Today' : formatDay(item.dt)}</p>
-              <img
-                src={`https://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`}
-                alt={item.weather[0].description}
-                className="day-icon"
-              />
-              <p className="day-temp">{Math.round(item.temp.day)}{tempUnit}</p>
             </div>
-          ))}
-        </div>
-      </div>
 
       <div className="gardening-tips-full">
         <h2>🌱 Gardening Tips for the Week</h2>
