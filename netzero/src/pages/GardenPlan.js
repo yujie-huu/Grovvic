@@ -379,7 +379,7 @@ const GardenPlan = () => {
                 >
                   <option value="" disabled>Select month</option>
                   <option value="January">January</option>
-                  <option value="Februuary">February</option>
+                  <option value="February">February</option>
                   <option value="March">March</option>
                   <option value="April">April</option>
                   <option value="May">May</option>
