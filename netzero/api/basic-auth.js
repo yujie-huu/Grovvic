@@ -23,9 +23,7 @@ export default function handler(req, res) {
     ) {
       // Cookie that says "already passed the gate"
       res.setHeader('Set-Cookie', [
-        // NOTE: set your apex if you mix www/non-www:
-        // 'auth=1; Path=/; Domain=.netzero-vigrow.duckdns.org; HttpOnly; Secure; SameSite=Lax; Max-Age=3600'
-        'auth=1; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=3600'
+        'auth=1; Path=/; HttpsOnly; Secure; SameSite=Lax; Max-Age=3600'
       ]);
       const target = `/${String(path).replace(/^\/+/, '')}`;
       return res.redirect(302, target || '/');
