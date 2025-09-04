@@ -32,6 +32,7 @@ test.describe('Garden Plan Page Tests', () => {
     // check the loading status
     const loadingMessage = page.locator('.loading-message');
     if (await loadingMessage.isVisible()) {
+      // eslint-disable-next-line jest/no-conditional-expect
       await expect(loadingMessage).toContainText('loading recommendations');
     }
   });
