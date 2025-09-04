@@ -1,13 +1,8 @@
 {
-  "headers": [
+  "rewrites": [
     {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "WWW-Authenticate",
-          "value": "Basic realm=\"Secure Area\""
-        }
-      ]
+      "source": "/((?!api/).*)",
+      "destination": "/api/basic-auth.js"
     }
   ]
 }
