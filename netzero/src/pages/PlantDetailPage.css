@@ -23,7 +23,6 @@
   border-radius: 12px;
   background: white;
   position: relative;
-  top: -80px;
   z-index: 2;
 }
 
@@ -299,10 +298,6 @@
 
 /* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 1024px) {
-  .plant-detail-container {
-    top: -70px;
-  }
-
   .quick-info-grid {
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   }
@@ -322,10 +317,6 @@
 }
 
 @media (max-width: 767px) {
-  .plant-detail-container {
-    top: -50px;
-  }
-
   .notes-pollinator-container {
     flex-direction: column;
     gap: 20px;

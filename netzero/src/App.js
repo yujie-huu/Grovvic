@@ -8,10 +8,12 @@ import GardenPlan from './pages/GardenPlan';
 import AboutPage from './pages/AboutPage';
 import PlantDetailPage from './pages/PlantDetailPage';
 import Footer from './components/Footer';
+import ScrollFromTop from "./components/ScrollFromTop";
 
 function App() {
   return (
     <Router>
+      <ScrollFromTop />
       <div className="App">
         <Navigation />
         <Routes>

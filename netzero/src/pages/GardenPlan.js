@@ -27,7 +27,11 @@ const GardenPlan = () => {
   const [visibleItems, setVisibleItems] = useState(10);
 
   // flower recommendation related states
-  const currentMonth = new Date().toLocaleString('default', { month: 'long' }).slice(0,3); // get current month in short form, e.g., "Jan"
+  const monthMap = [
+    "Jan","Feb","Mar","Apr","May","Jun",
+    "Jul","Aug","Sep","Oct","Nov","Dec"
+  ];
+  const currentMonth = monthMap[new Date().getMonth()]; // get current month in short form, e.g., "Jan"
   const [monthlyPlants, setMonthlyPlants] = useState([]); 
   const [monthlyPlantsLoading, setMonthlyPlantsLoading] = useState(false);
   
