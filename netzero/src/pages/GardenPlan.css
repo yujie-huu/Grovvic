@@ -58,7 +58,132 @@
 /* ===== GUIDETIPS SECTION ===== */
 .guidetips-section {
   padding: 60px 20px;
-  background: #f8f9fa;
+  background: #909c95;
+}
+
+/* ===== TIPS FLEX CONTAINER ===== */
+.tips-flex-container {
+  display: flex;
+  gap: 40px;
+  padding: 15px;
+  max-width: 100%;
+  margin: 0 auto;
+  align-items: flex-start;
+}
+
+/* ===== MONTHLY PLANTS RECOMMENDATION SECTION ===== */
+.monthly-tips-container {
+  flex: 1;
+  width: 95%;
+  padding: 30px;
+  padding-bottom: 40px;
+  height: 100%;
+  text-align: center;
+  border-radius: 10px;
+  background: #D9D9D9;
+}
+
+.monthly-tips-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #2c5530;
+  margin-bottom: 40px;
+}
+
+.monthly-tips-plantcards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 30px;
+  padding: 10px 0;
+}
+
+.monthly-tips-description {
+  font-size: 1.5rem;
+  color: #555;
+  padding: 10px;
+  margin-top: 10px;
+  text-align: left;
+}
+
+.loading-message {
+  font-size: 1.2rem;
+  color: #666;
+  text-align: center;
+  padding: 40px;
+}
+
+.no-monthly-tips-message {
+  font-size: 1.2rem;
+  color: #666;
+  text-align: center;
+  padding: 40px;
+}
+
+
+/* ===== PEST INFO SECTION ===== */
+.pest-tips-container {
+  flex: 1;
+  width: 95%;
+  padding-top: 30px;
+  padding-bottom: 40px;
+  text-align: center;
+  border-radius: 10px;
+  background: #D9D9D9;
+  height: 100%;
+}
+
+.pest-tips-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #2c5530;
+  margin-bottom: 30px;
+}
+
+.pest-tips-content {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.pest-card {
+  background: #3c5f49;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 280px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.pest-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.pest-card-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #D9D9D9;
+  margin-bottom: 15px;
+}
+
+.pest-card-image {
+  margin-bottom: 15px;
+}
+
+.pest-card-image img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.pest-card-description {
+  font-size: 0.95rem;
+  color: #D9D9D9;
+  line-height: 1.5;
+  margin: 0;
 }
 
 /* ===== PLANT SEARCH SECTION ===== */
@@ -393,7 +518,7 @@
 .action-buttons {
   display: flex;
   gap: 15px;
-  justify-content: right;
+  justify-content: center;
   margin-bottom: 30px;
 }
 
@@ -439,6 +564,10 @@
     grid-template-columns: repeat(4, 1fr);
   }
   
+  .monthly-tips-plantcards {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
   .filter-bar {
     flex-wrap: nowrap;
   }
@@ -448,12 +577,44 @@
   .plant-cards-container {
     grid-template-columns: repeat(5, 1fr);
   }
+  
+  .monthly-tips-plantcards {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 @media (max-width: 767px) {
+  .tips-flex-container {
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .pest-tips-content {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .pest-card {
+    max-width: 100%;
+    width: 100%;
+  }
+  
   .plant-cards-container {
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
+  }
+  
+  .monthly-tips-plantcards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  
+  .monthly-tips-title {
+    font-size: 2rem;
+  }
+  
+  .pest-tips-title {
+    font-size: 2rem;
   }
   
   .filter-bar {

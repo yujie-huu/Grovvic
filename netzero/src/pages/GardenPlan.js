@@ -8,6 +8,7 @@ const GardenPlan = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedMonth, setSelectedMonth] = useState("");
   const [plants, setPlants] = useState([]);
+
   const [plantVarieties, setPlantVarieties] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showVarieties, setShowVarieties] = useState(false);
@@ -25,6 +26,31 @@ const GardenPlan = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [visibleItems, setVisibleItems] = useState(10);
 
+  // flower recommendation related states
+  const currentMonth = new Date().toLocaleString('default', { month: 'long' }).slice(0,3); // get current month in short form, e.g., "Jan"
+  const [monthlyPlants, setMonthlyPlants] = useState([]); 
+  const [monthlyPlantsLoading, setMonthlyPlantsLoading] = useState(false);
+  
+
+  // fetch monthly flowers for recommendation
+  const fetchMonthlyPlants = async () => {
+    const currentMonthUrl = `http://3.24.201.81:8000/plants/month/${currentMonth}`;
+    setMonthlyPlantsLoading(true);
+    try {
+      const monthlyTipResponse = await axios.get(currentMonthUrl);
+      // randomly select 3 flowers from the response
+      const allPlants = monthlyTipResponse.data;
+      const shuffled = allPlants.sort(() => 0.5 - Math.random());
+      const randomPlants = shuffled.slice(0, 3);
+      setMonthlyPlants(randomPlants);
+    } catch (error) {
+      console.error("Error fetching monthly plants:", error);
+      setMonthlyPlants([]);
+    } finally {
+      setMonthlyPlantsLoading(false);
+    }
+  };
+  
   // fetch all plant names
   useEffect(() => {
     const fetchAllPlantNames = async () => {
@@ -39,6 +65,11 @@ const GardenPlan = () => {
     };
 
     fetchAllPlantNames();
+  }, []);
+
+  // fetch monthly plants on component mount
+  useEffect(() => {
+    fetchMonthlyPlants();
   }, []);
 
   // filter plant names
@@ -217,8 +248,50 @@ const GardenPlan = () => {
 
       {/* Guide & Tips Section */}
       <section className="guidetips-section">
-        <p>monthly recommendation and warnings...</p>
+        <div className="tips-flex-container">
+          <div className="monthly-tips-container">
+            <h3 className="monthly-tips-title">What To Plant This Month</h3>
+            <div className="monthly-tips-plantcards">
+            {monthlyPlantsLoading ? (
+                <div className="loading-message">loading recommendations...</div>
+              ) : monthlyPlants.length > 0 ? (
+                monthlyPlants.map((plant, index) => (
+                  <PlantSpeciesCard key={`plant-${plant.plant_name}-${index}`} plant={plant} />
+                ))
+              ) : (
+                <div className="no-monthly-tips-message">No plants recommendations for this month</div>
+              )}
+            </div>
+            <p className="monthly-tips-description">You can check the plant detail or search for more plants for this month in the search seaction below.</p>
+          </div>
+
+          <div className="pest-tips-container">
+            <h3 className="pest-tips-title">Common Pests in Victoria</h3>
+            <div className="pest-tips-content">
+              <div className="pest-card">
+                <h4 className="pest-card-title">Two-spotted mite</h4>
+                <div className="pest-card-image">
+                  <img src="/images/two-spotted mite.jpg" alt="Two-spotted mite" />
+                </div>
+                <p className="pest-card-description">
+                  A common pest on flowers and vegetables. It sucks sap, causing yellowing leaves. Use gentle sprays to manage.
+                </p>
+              </div>
+              
+              <div className="pest-card">
+                <h4 className="pest-card-title">Tomato potato psyllid</h4>
+                <div className="pest-card-image">
+                  <img src="/images/tomato_potato_psyllid.jpg" alt="Tomato potato psyllid" />
+                </div>
+                <p className="pest-card-description">
+                  Damages tomatoes and potatoes by sucking sap and spreading disease. Remove affected leaves promptly.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
+
 
       {/* Plant Search Section */}
       <section className="plantsearch-section">
