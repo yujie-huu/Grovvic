@@ -536,6 +536,72 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
+/* ===== Watering Guide (Irrigation Table) ===== */
+.watering-guide {
+  width: 90%;
+  max-width: 1200px;
+  margin: 16px auto 20px;
+  background: #f5f7f5;
+  border-left: 10px solid #65a30d;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  padding: 18px 20px;
+}
+
+.watering-guide h2 {
+  margin: 0 0 8px;
+  text-align: center;
+  color: #14532d;
+}
+
+.watering-guide .water-when {
+  text-align: center;
+  font-size: 1.05rem;
+  color: #14532d;
+  margin-bottom: 10px;
+}
+
+.watering-table-wrap {
+  overflow-x: auto;
+}
+
+.watering-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #ffffff;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.watering-table th,
+.watering-table td {
+  border: 1px solid #e5e7eb;
+  padding: 12px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.watering-table thead th {
+  background: #eaf7e7;
+  color: #14532d;
+  font-weight: 700;
+}
+
+.watering-table tbody td {
+  color: #1f2937;
+  font-weight: 500;
+  line-height: 1.35;
+  white-space: pre-line; /* allow line breaks like 'seconds\nper metre²' */
+}
+
+.watering-notes {
+  margin: 12px 0 0;
+  padding-left: 1.2rem;
+  color: #14532d;
+  line-height: 1.6;
+}
+.watering-notes li { margin: 4px 0; }
+
 
 /* Responsive adjustments */
 @media (max-width: 900px) {

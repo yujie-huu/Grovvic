@@ -2,10 +2,115 @@
 import React, { useEffect, useState } from 'react'
 import './Weather.css'
 import axios from 'axios'
-import {
-  buildDailyIrrigationRecommendation,
-  buildWeeklyIrrigationRecommendation,
-} from '../utils/watering.js';
+import { buildWateringTable } from '../utils/watering.js';
+
+// const Weather = () => {
+//   const [current, setCurrent] = useState(null)
+//   const [forecastList, setForecastList] = useState([]) // hourly
+//   const [dailyForecasts, setDailyForecasts] = useState([]) // 8-day forecast
+//   const [unit, setUnit] = useState('metric')
+//   const [selectedCity, setSelectedCity] = useState('Melbourne')
+//   const [climateType, setClimateType] = useState('temperature')
+
+//   const apiKey = 'cc6ac231ffa5fcb7e2893394cea3d7d4'
+//   const country = 'AU'
+
+//   const victoriaCities = [
+//     'Melbourne', 'Geelong', 'Ballarat', 'Bendigo', 'Mildura',
+//     'Shepparton', 'Warrnambool', 'Wangaratta', 'Traralgon', 'Sale',
+//     'Bairnsdale', 'Echuca', 'Colac', 'Morwell', 'Portland'
+//   ]
+
+//   const fetchWeather = async (cityName, unitType) => {
+//     try {
+//       // Step 1: Get latitude and longitude by city name
+//       const geoRes = await axios.get('https://api.openweathermap.org/geo/1.0/direct', {
+//         params: {
+//           q: `${cityName},${country}`,
+//           limit: 1,
+//           appid: apiKey
+//         }
+//       })
+
+//       if (!geoRes.data || geoRes.data.length === 0) {
+//         throw new Error('Geocoding failed')
+//       }
+
+//       const { lat, lon } = geoRes.data[0]
+
+//       // Step 2: Fetch weather using One Call API 3.0
+//       const weatherRes = await axios.get('https://api.openweathermap.org/data/3.0/onecall', {
+//         params: {
+//           lat,
+//           lon,
+//           units: unitType,
+//           exclude: 'minutely,alerts',
+//           appid: apiKey
+//         }
+//       })
+
+//       const data = weatherRes.data
+
+//       // Step 3: Store weather data
+//       setCurrent(data.current)
+//       setForecastList(data.hourly.slice(0, 24))      // 24-hour forecast
+//       setDailyForecasts(data.daily.slice(0, 8))       // 8-day forecast
+
+//     } catch (err) {
+//       console.error('One Call API error:', err)
+//       alert('❌ Failed to fetch weather data. Please check your API key and subscription.')
+//     }
+//   }
+
+//   useEffect(() => {
+//     fetchWeather(selectedCity, unit)
+//   }, [unit, selectedCity])
+
+//   const toggleUnit = () => {
+//     setUnit(prev => (prev === 'metric' ? 'imperial' : 'metric'))
+//   }
+
+//   if (!current) return <p>Loading weather...</p>
+
+//   const weekday = new Date().toLocaleDateString('en-US', { weekday: 'long' })
+//   const date = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+
+//   const formatSunTime = (unix) =>
+//     new Date(unix * 1000)
+//       .toLocaleTimeString('en-US', {
+//         hour: 'numeric',
+//         minute: '2-digit',
+//         hour12: true
+//       })
+//       .replace('AM', 'am')
+//       .replace('PM', 'pm');
+
+//   // Keep for 7-day forecast labels
+//   const formatDay = (unix) =>
+//     new Date(unix * 1000).toLocaleDateString('en-US', { weekday: 'short' })
+
+//   const tempUnit = unit === 'metric' ? '°C' : '°F'
+//   const speedUnit = unit === 'metric' ? 'km/h' : 'mph'
+//   const windSpeed = unit === 'metric'
+//     ? (current.wind_speed * 3.6).toFixed(1)
+//     : current.wind_speed.toFixed(1)
+//   const todayMin = Math.round(dailyForecasts?.[0]?.temp?.min ?? current.temp);
+
+//   // Unit conversions
+//   const toKmh = (speed) =>
+//     unit === 'imperial' ? (speed || 0) * 1.60934 : (speed || 0) * 3.6; // mph/m/s -> km/h
+//   const toCelsius = (t) =>
+//     unit === 'imperial' ? (t - 32) * 5 / 9 : t;
+
+//   const unique = (arr) => Array.from(new Set((arr || []).filter(Boolean)));
+
+//   // ---- Day-level tips (based on today's daily forecast) ----
+//   const todayDaily = dailyForecasts?.[0] || {};
+//   const dayTempC   = toCelsius(todayDaily?.temp?.day ?? current?.temp ?? 0);
+//   const dayRainMm  = todayDaily?.rain ?? 0; // OpenWeather daily rain in mm
+//   const dayWindKmh = toKmh(todayDaily?.wind_speed ?? current?.wind_speed ?? 0);
+//   const dayHumidity = todayDaily?.humidity ?? current?.humidity ?? 0;
+//   const dayUvi      = todayDaily?.uvi ?? current?.uvi ?? 0;
 
 const Weather = () => {
   const [current, setCurrent] = useState(null)
@@ -19,59 +124,35 @@ const Weather = () => {
   const country = 'AU'
 
   const victoriaCities = [
-    'Melbourne', 'Geelong', 'Ballarat', 'Bendigo', 'Mildura',
-    'Shepparton', 'Warrnambool', 'Wangaratta', 'Traralgon', 'Sale',
-    'Bairnsdale', 'Echuca', 'Colac', 'Morwell', 'Portland'
+    'Melbourne','Geelong','Ballarat','Bendigo','Mildura',
+    'Shepparton','Warrnambool','Wangaratta','Traralgon','Sale',
+    'Bairnsdale','Echuca','Colac','Morwell','Portland'
   ]
 
   const fetchWeather = async (cityName, unitType) => {
     try {
-      // Step 1: Get latitude and longitude by city name
       const geoRes = await axios.get('https://api.openweathermap.org/geo/1.0/direct', {
-        params: {
-          q: `${cityName},${country}`,
-          limit: 1,
-          appid: apiKey
-        }
+        params: { q: `${cityName},${country}`, limit: 1, appid: apiKey }
       })
-
-      if (!geoRes.data || geoRes.data.length === 0) {
-        throw new Error('Geocoding failed')
-      }
-
+      if (!geoRes.data || geoRes.data.length === 0) throw new Error('Geocoding failed')
       const { lat, lon } = geoRes.data[0]
 
-      // Step 2: Fetch weather using One Call API 3.0
       const weatherRes = await axios.get('https://api.openweathermap.org/data/3.0/onecall', {
-        params: {
-          lat,
-          lon,
-          units: unitType,
-          exclude: 'minutely,alerts',
-          appid: apiKey
-        }
+        params: { lat, lon, units: unitType, exclude: 'minutely,alerts', appid: apiKey }
       })
-
       const data = weatherRes.data
-
-      // Step 3: Store weather data
       setCurrent(data.current)
-      setForecastList(data.hourly.slice(0, 24))      // 24-hour forecast
-      setDailyForecasts(data.daily.slice(0, 8))       // 8-day forecast
-
+      setForecastList(data.hourly.slice(0, 24))
+      setDailyForecasts(data.daily.slice(0, 8))
     } catch (err) {
       console.error('One Call API error:', err)
       alert('❌ Failed to fetch weather data. Please check your API key and subscription.')
     }
   }
 
-  useEffect(() => {
-    fetchWeather(selectedCity, unit)
-  }, [unit, selectedCity])
+  useEffect(() => { fetchWeather(selectedCity, unit) }, [unit, selectedCity])
 
-  const toggleUnit = () => {
-    setUnit(prev => (prev === 'metric' ? 'imperial' : 'metric'))
-  }
+  const toggleUnit = () => setUnit(prev => (prev === 'metric' ? 'imperial' : 'metric'))
 
   if (!current) return <p>Loading weather...</p>
 
@@ -79,16 +160,10 @@ const Weather = () => {
   const date = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
 
   const formatSunTime = (unix) =>
-    new Date(unix * 1000)
-      .toLocaleTimeString('en-US', {
-        hour: 'numeric',
-        minute: '2-digit',
-        hour12: true
-      })
-      .replace('AM', 'am')
-      .replace('PM', 'pm');
+    new Date(unix * 1000).toLocaleTimeString('en-US', {
+      hour: 'numeric', minute: '2-digit', hour12: true
+    }).replace('AM','am').replace('PM','pm')
 
-  // Keep for 7-day forecast labels
   const formatDay = (unix) =>
     new Date(unix * 1000).toLocaleDateString('en-US', { weekday: 'short' })
 
@@ -97,154 +172,47 @@ const Weather = () => {
   const windSpeed = unit === 'metric'
     ? (current.wind_speed * 3.6).toFixed(1)
     : current.wind_speed.toFixed(1)
-  const todayMin = Math.round(dailyForecasts?.[0]?.temp?.min ?? current.temp);
+  const todayMin = Math.round(dailyForecasts?.[0]?.temp?.min ?? current.temp)
 
-  // Unit conversions
-  const toKmh = (speed) =>
-    unit === 'imperial' ? (speed || 0) * 1.60934 : (speed || 0) * 3.6; // mph/m/s -> km/h
-  const toCelsius = (t) =>
-    unit === 'imperial' ? (t - 32) * 5 / 9 : t;
+  const toKmh = (speed) => unit === 'imperial' ? (speed || 0) * 1.60934 : (speed || 0) * 3.6
+  const toCelsius = (t)   => unit === 'imperial' ? (t - 32) * 5 / 9 : t
+  const mean = (arr) => (arr.length ? arr.reduce((a, b) => a + b, 0) / arr.length : 0)
 
-  const unique = (arr) => Array.from(new Set((arr || []).filter(Boolean)));
+  // ---- Today (daily) numbers for tips ----
+  const todayDaily = dailyForecasts?.[0] || {}
+  const dayTempC   = toCelsius(todayDaily?.temp?.day ?? current?.temp ?? 0)
+  const dayRainMm  = todayDaily?.rain ?? 0
+  const dayWindKmh = toKmh(todayDaily?.wind_speed ?? current?.wind_speed ?? 0)
+  const dayHumidity= todayDaily?.humidity ?? current?.humidity ?? 0
+  const dayUvi     = todayDaily?.uvi ?? current?.uvi ?? 0
 
-  // ---- Day-level tips (based on today's daily forecast) ----
-  const todayDaily = dailyForecasts?.[0] || {};
-  const dayTempC   = toCelsius(todayDaily?.temp?.day ?? current?.temp ?? 0);
-  const dayRainMm  = todayDaily?.rain ?? 0; // OpenWeather daily rain in mm
-  const dayWindKmh = toKmh(todayDaily?.wind_speed ?? current?.wind_speed ?? 0);
-  const dayHumidity = todayDaily?.humidity ?? current?.humidity ?? 0;
-  const dayUvi      = todayDaily?.uvi ?? current?.uvi ?? 0;
+  // ✅ Daily Gardening Tips 只保留天气类（不再拼接 watering 文案）
+  const dayTips = []
+  if (dayTempC > 30) dayTips.push("It's a hot day. Use shade cloth or move pots out of direct sunlight!")
+  else if (dayTempC >= 1 && dayTempC <= 10) dayTips.push("It's a cold day. Cover seedlings or bring them indoors!")
+  else if (dayTempC < 1) dayTips.push("It's a frosty day. Cover fragile plants with sheets overnight and bring pots indoors!")
+  if (dayRainMm < 1) dayTips.push("It's a dry day. Make sure you've mulched your garden to keep the soil moist!")
+  else if (dayRainMm > 20) dayTips.push("It's a stormy day. Harvest ripe produce to avoid damage! Raise pots and stake tall plants if you need to!")
+  if (dayWindKmh > 25) dayTips.push("It's a windy day. Shelter fragile pots and secure trellises!")
+  if (dayHumidity > 70) dayTips.push("It's a humid day. Watch for fungal infection!")
+  if (dayUvi > 8) dayTips.push("It's a bright day. Shade seedlings and sensitive plants!")
+  if (dayTips.length === 0) dayTips.push("The weather is calm today. Keep up your regular gardening care routine.")
 
-  const dayTips = [];
-
-  // Temperature related (mutually exclusive by design)
-  if (dayTempC > 30) {
-    dayTips.push("It's a hot day. Use shade cloth or move pots out of direct sunlight!");
-  } else if (dayTempC >= 1 && dayTempC <= 10) {
-    dayTips.push("It's a cold day. Cover seedlings or bring them indoors!");
-  } else if (dayTempC < 1) {
-    dayTips.push("It's a frosty day. Cover fragile plants with sheets overnight and bring pots indoors!");
-  }
-
-  // Rainfall related
-  if (dayRainMm < 1) {
-    dayTips.push("It's a dry day. Make sure you've mulched your garden to keep the soil moist!");
-  } else if (dayRainMm > 20) {
-    dayTips.push("It's a stormy day. Harvest ripe produce to avoid damage! Raise pots and stake tall plants if you need to!");
-  }
-
-  // Wind related
-  if (dayWindKmh > 25) {
-    dayTips.push("It's a windy day. Shelter fragile pots and secure trellises!");
-  }
-
-  // Humidity related
-  if (dayHumidity > 70) {
-    dayTips.push("It's a humid day. Watch for fungal infection!");
-  }
-
-  // Sunlight/UV related
-  if (dayUvi > 8) {
-    dayTips.push("It's a bright day. Shade seedlings and sensitive plants!");
-  }
-
-  // Fallback
-  if (dayTips.length === 0) {
-    dayTips.push("The weather is calm today. Keep up your regular gardening care routine.");
-  }
-
-  // 1：集成【当日浇灌】提示 —— 调用 watering.js
-  const dailyWatering = buildDailyIrrigationRecommendation({
-    meanTempC: dayTempC,
-    relHumidityPct: dayHumidity,
-    rainMm: dayRainMm,
-    soil: 'loam',            // 维州多为壤/黏土，可按需改为 state
-    hoseLpm: 12,             // 手持浇水默认 12 L/min，可做设置项
-    plantType: 'vegetables_pots', // 可做设置：'vegetables_pots' | 'perennial' | 'low_water_use'
-  });
-
-  // 合并并去重（dailyWatering.lines 已包含完整句式）
-  const day_Tips = unique([
-    ...dayTips,
-    ...(dailyWatering?.lines || []),
-  ]);
-
-
-  // ---- Weekly tips: compute weekly stats and derive tips ----
-
-  // Take next 7 days safely
-  const next7 = (dailyForecasts || []).slice(0, 7);
-
-  // helper: arithmetic mean
-  const mean = (arr) => (arr.length ? arr.reduce((a, b) => a + b, 0) / arr.length : 0);
-
-  // derive metrics (convert to °C / km/h for threshold checks)
-  const meanTempC = mean(next7.map(d => toCelsius(d?.temp?.day ?? 0)));
-  const meanRainMm = mean(next7.map(d => d?.rain ?? 0));
-  const maxTempC   = next7.length ? Math.max(...next7.map(d => toCelsius(d?.temp?.max ?? -Infinity))) : -Infinity;
-  const minTempC   = next7.length ? Math.min(...next7.map(d => toCelsius(d?.temp?.min ??  Infinity))) :  Infinity;
-  const maxWindKmh = next7.length ? Math.max(...next7.map(d => toKmh(d?.wind_speed ?? 0))) : 0;
-  const maxUvi     = next7.length ? Math.max(...next7.map(d => d?.uvi ?? 0)) : 0;
-  const maxDailyRain = next7.length ? Math.max(...next7.map(d => d?.rain ?? 0)) : 0;
+  // ---- Weekly tips (weather only) ----
+  const next7 = (dailyForecasts || []).slice(0, 7)
+  const meanTempC = mean(next7.map(d => toCelsius(d?.temp?.day ?? 0)))
+  const meanRainMm = mean(next7.map(d => d?.rain ?? 0))
+  const maxTempC   = next7.length ? Math.max(...next7.map(d => toCelsius(d?.temp?.max ?? -Infinity))) : -Infinity
+  const minTempC   = next7.length ? Math.min(...next7.map(d => toCelsius(d?.temp?.min ??  Infinity))) :  Infinity
+  const maxWindKmh = next7.length ? Math.max(...next7.map(d => toKmh(d?.wind_speed ?? 0))) : 0
+  const maxUvi     = next7.length ? Math.max(...next7.map(d => d?.uvi ?? 0)) : 0
+  const maxDailyRain = next7.length ? Math.max(...next7.map(d => d?.rain ?? 0)) : 0
 
   // define "extreme" heuristics
-  const hasExtreme =
-    maxTempC >= 35 ||     // heat
-    minTempC <= 1  ||     // cold snap
-    maxWindKmh >= 50 ||   // strong wind
-    maxUvi >= 8     ||    // very high UV
-    maxDailyRain >= 30;   // very heavy rain
-
-  // rules -> tips (check all; show all that match)
-  const weeklyRules = [
-    {
-      // If mean temperature >30°C AND mean rainfall < 1 mm
-      check: () => meanTempC > 30 && meanRainMm < 1,
-      tip: "This week will be hot and dry. Refresh mulch to reduce evaporation and set up shade cloth to reduce sun damage!"
-    },
-    {
-      // If mean temperature 10–25°C
-      check: () => meanTempC >= 10 && meanTempC <= 25,
-      tip: "This week will be nice and cool. Now is the perfect time to plant and sow seeds!"
-    },
-    {
-      // If mean rainfall > 7 mm
-      check: () => meanRainMm > 7,
-      tip: "This will be a rainy week. Make sure to check drainage, raise pots, refresh mulch, and stake plants to prevent damage! Avoid stepping on the wet soil to prevent compaction!"
-    },
-    {
-      // If there is extreme weather coming this week
-      check: () => hasExtreme,
-      tip: "Extreme weather is expected this week. Use extreme weather tips: provide shade, cover fragile plants, secure trellises, check drainage, and harvest & stake if needed."
-    },
-  ];
-
-  // collect all matched tips
-  let weeklyTips = weeklyRules.filter(r => r.check()).map(r => r.tip);
-
-  // fallback
-  if (weeklyTips.length === 0) {
-    weeklyTips = [
-      "This week's weather looks mild and steady. Please stick to your regular watering and care routine."
-    ];
-  }
-
-
-  // ✅ 改动 2：集成【周浇灌】提示 —— 调用 watering.js
-  const weeklyWatering = buildWeeklyIrrigationRecommendation(next7, {
-    soil: 'loam',
-    hoseLpm: 12,
-  });
-
-  // 合并并去重
-  weeklyTips = unique([
-    ...weeklyTips,
-    ...(weeklyWatering?.lines || []),
-  ]);
-
+  const hasExtreme = (maxTempC >= 35) || (minTempC <= 1) || (maxWindKmh >= 50) || (maxUvi >= 8) || (maxDailyRain >= 30)
 
   // 1.3
-  const imageSrc = climateType === 'temperature'
+  const imageSrc = climateType === 'temperature' 
     ? '/images/temperature_average.jpg'
     : '/images/rainfall_average.png';
 
@@ -273,6 +241,28 @@ const Weather = () => {
       </ul>
     </>
   )
+
+
+  const weeklyRules = [
+    { check: () => meanTempC > 30 && meanRainMm < 1,
+      tip: "This week will be hot and dry. Refresh mulch to reduce evaporation and set up shade cloth to reduce sun damage!" },
+    { check: () => meanTempC >= 10 && meanTempC <= 25,
+      tip: "This week will be nice and cool. Now is the perfect time to plant and sow seeds!" },
+    { check: () => meanRainMm > 7,
+      tip: "This will be a rainy week. Make sure to check drainage, raise pots, refresh mulch, and stake plants to prevent damage! Avoid stepping on the wet soil to prevent compaction!" },
+    { check: () => hasExtreme,
+      tip: "Extreme weather is expected this week. Use extreme weather tips: provide shade, cover fragile plants, secure trellises, check drainage, and harvest & stake if needed." },
+  ]
+  let weeklyTips = weeklyRules.filter(r => r.check()).map(r => r.tip)
+  if (weeklyTips.length === 0) weeklyTips = [
+    "This week's weather looks mild and steady. Please stick to your regular watering and care routine."
+  ]
+
+
+  const wateringTable = buildWateringTable(todayDaily, next7, {
+    soil: 'loam',   // 可按需连接到设置
+    hoseLpm: 12,
+  })
 
 
 
@@ -474,30 +464,68 @@ const Weather = () => {
       </div>
 
 
+      {/* ✅ 新增：浇灌指导表格 —— 放在 7 Day Forecast 之上 */}
+      <div className="watering-guide">
+        <h2>💧 Watering Guide</h2>
+        <div className="water-when">
+          When to water today: <strong>{wateringTable.whenToWaterToday}</strong>
+        </div>
 
-            <div className="seven-day-forecast">
-              <h3>7 Day Forecast</h3>
-              <div className="day-cards">
-                {dailyForecasts.map((item, index) => (
-                  <div className="day-card" key={index}>
-                    <p className="day-name">{index === 0 ? 'Today' : formatDay(item.dt)}</p>
-                    <img
-                      src={`https://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`}
-                      alt={item.weather[0].description}
-                      className="day-icon"
-                    />
-                    <p className="day-temp">{Math.round(item.temp.day)}{tempUnit}</p>
-                  </div>
-                ))}
-              </div>
+        <div className="watering-table-wrap">
+          <table className="watering-table">
+            <thead>
+              <tr>
+                <th>Plant</th>
+                <th>How Often?</th>
+                <th>Garden Hose /<br/>Watering Can</th>
+                <th>Drip / Rotary<br/>Irrigation</th>
+                <th>Spray /<br/>Sprinkler</th>
+              </tr>
+            </thead>
+            <tbody>
+              {wateringTable.rows.map((r, idx) => (
+                <tr key={idx}>
+                  <td>{r.plant}</td>
+                  <td>{r.howOften}</td>
+                  <td>{r.hose}</td>
+                  <td>{r.drip}</td>
+                  <td>{r.spray}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {wateringTable.notes?.length > 0 && (
+          <ul className="watering-notes">
+            {wateringTable.notes.map((t, i) => <li key={i}>{t}</li>)}
+          </ul>
+        )}
+      </div>
+
+
+      <div className="seven-day-forecast">
+        <h3>7 Day Forecast</h3>
+        <div className="day-cards">
+          {dailyForecasts.map((item, index) => (
+            <div className="day-card" key={index}>
+              <p className="day-name">{index === 0 ? 'Today' : formatDay(item.dt)}</p>
+              <img
+                src={`https://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`}
+                alt={item.weather[0].description}
+                className="day-icon"
+              />
+              <p className="day-temp">{Math.round(item.temp.day)}{tempUnit}</p>
             </div>
+          ))}
+        </div>
+      </div>
 
+      {/* Weekly tips（不再拼接 watering） */}
       <div className="gardening-tips-full">
         <h2>🌱 Gardening Tips for the Week</h2>
         <ul className="tip-content">
-          {weeklyTips.map((t, i) => (
-            <li key={i}>{t}</li>
-          ))}
+          {weeklyTips.map((t, i) => <li key={i}>{t}</li>)}
         </ul>
       </div>
 
