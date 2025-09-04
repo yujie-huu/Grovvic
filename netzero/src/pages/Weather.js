@@ -202,7 +202,68 @@ const hourlyActionCards = (() => {
   if (dayActionsLong.length === 0) dayActionsLong.push(ACTIONS.ROUTINE.long);
 
 
-  // 
+  // ---- Weekly tips: compute weekly stats and derive tips ----
+
+  // Take next 7 days safely
+  const next7 = (dailyForecasts || []).slice(0, 7);
+
+  // helper: arithmetic mean
+  const mean = (arr) => (arr.length ? arr.reduce((a, b) => a + b, 0) / arr.length : 0);
+
+  // derive metrics (convert to °C / km/h for threshold checks)
+  const meanTempC = mean(next7.map(d => toCelsius(d?.temp?.day ?? 0)));
+  const meanRainMm = mean(next7.map(d => d?.rain ?? 0));
+  const maxTempC   = next7.length ? Math.max(...next7.map(d => toCelsius(d?.temp?.max ?? -Infinity))) : -Infinity;
+  const minTempC   = next7.length ? Math.min(...next7.map(d => toCelsius(d?.temp?.min ??  Infinity))) :  Infinity;
+  const maxWindKmh = next7.length ? Math.max(...next7.map(d => toKmh(d?.wind_speed ?? 0))) : 0;
+  const maxUvi     = next7.length ? Math.max(...next7.map(d => d?.uvi ?? 0)) : 0;
+  const maxDailyRain = next7.length ? Math.max(...next7.map(d => d?.rain ?? 0)) : 0;
+
+  // define "extreme" heuristics
+  const hasExtreme =
+    maxTempC >= 35 ||     // heat
+    minTempC <= 1  ||     // cold snap
+    maxWindKmh >= 50 ||   // strong wind
+    maxUvi >= 8     ||    // very high UV
+    maxDailyRain >= 30;   // very heavy rain
+
+  // rules -> tips (check all; show all that match)
+  const weeklyRules = [
+    {
+      // If mean temperature >30°C AND mean rainfall < 1 mm
+      check: () => meanTempC > 30 && meanRainMm < 1,
+      tip: "This week will be hot and dry. Refresh mulch to reduce evaporation and set up shade cloth to reduce sun damage!"
+    },
+    {
+      // If mean temperature 10–25°C
+      check: () => meanTempC >= 10 && meanTempC <= 25,
+      tip: "This week will be nice and cool. Now is the perfect time to plant and sow seeds!"
+    },
+    {
+      // If mean rainfall > 7 mm
+      check: () => meanRainMm > 7,
+      tip: "This will be a rainy week. Make sure to check drainage, raise pots, refresh mulch, and stake plants to prevent damage! Avoid stepping on the wet soil to prevent compaction!"
+    },
+    {
+      // If there is extreme weather coming this week
+      check: () => hasExtreme,
+      tip: "Extreme weather is expected this week. Use extreme weather tips: provide shade, cover fragile plants, secure trellises, check drainage, and harvest & stake if needed."
+    },
+  ];
+
+  // collect all matched tips
+  let weeklyTips = weeklyRules.filter(r => r.check()).map(r => r.tip);
+
+  // fallback
+  if (weeklyTips.length === 0) {
+    weeklyTips = [
+      "This week's weather looks mild and steady. Please stick to your regular watering and care routine."
+    ];
+  }
+
+
+
+  // 1.3
   const imageSrc = climateType === 'temperature'
     ? '/images/temperature_average.jpg'
     : '/images/rainfall_average.png';
@@ -466,10 +527,13 @@ const hourlyActionCards = (() => {
 
       <div className="gardening-tips-full">
         <h2>🌱 Gardening Tips for the Week</h2>
-        <p className="tip-content">
-          Tips will be added here...
-        </p>
+        <ul className="tip-content">
+          {weeklyTips.map((t, i) => (
+            <li key={i}>{t}</li>
+          ))}
+        </ul>
       </div>
+
 
       <div className="climate-section">
         <div className="climate-dropdown">

@@ -118,7 +118,6 @@
   font-weight: bold;
 }
 
-
 /* Grid layout for each highlight block */
 .weather-highlights {
   display: grid;
@@ -174,7 +173,6 @@
   box-sizing: border-box;
   scroll-snap-align: start;
 }
-
 
 .hourly-forecast {
   display: flex;
@@ -306,7 +304,6 @@
   align-items: center;
 }
 
-
 .day-name {
   font-weight: 500;
   font-size: 0.95rem;
@@ -349,8 +346,11 @@
 .gardening-tips-full .tip-content {
   font-size: 1.1rem;
   color: #2c4b27;
-  line-height: 1.6; 
+  line-height: 1.6;
+  list-style: none;   /* remove bullets */
+  padding-left: 0;    /* remove default indent */
 }
+
 
 /* --- Historical Climate Image --- */
 .climate-section {
@@ -400,7 +400,6 @@
   overflow-wrap: break-word;
   word-break: break-word;
 }
-
 
 /* Title style */
 .green-box h2 {
@@ -533,7 +532,6 @@
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
-
 
 
 /* Responsive adjustments */
