@@ -333,7 +333,6 @@
   border-radius: 12px;
   width: 90%;
   max-width: 1200px;
-  text-align: center;
   box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
   word-wrap: break-word;
   overflow-wrap: break-word;
@@ -343,14 +342,16 @@
   font-size: 1.8rem;
   margin-bottom: 1rem;
   color: #386e2f;
+  text-align: center; 
 }
 
 .gardening-tips-full .tip-content {
   font-size: 1.1rem;
   color: #2c4b27;
   line-height: 1.6;
-  list-style: none;   /* remove bullets */
+  list-style: none;   
   padding-left: 0;    /* remove default indent */
+  text-align: left;
 }
 
 
