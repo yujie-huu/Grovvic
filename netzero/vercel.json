@@ -10,16 +10,7 @@
 
     {
       "src": "/(.*)",
-      "has": [{ "type": "header", "key": "authorization", "value": ".+" }],
       "dest": "/api/basic-auth?path=$1"
-    },
-
-    {
-      "src": "/(.*)",
-      "status": 401,
-      "headers": [
-        { "key": "WWW-Authenticate", "value": "Basic realm=\"Secure Area\"" }
-      ]
     }
   ]
 }
