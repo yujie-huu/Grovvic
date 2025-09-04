@@ -1,13 +1,13 @@
 {
-  "functions": {
-    "api/auth.js": {
-      "runtime": "nodejs18.x"
-    }
-  },
-  "rewrites": [
+  "headers": [
     {
       "source": "/(.*)",
-      "destination": "/api/auth.js"
+      "headers": [
+        {
+          "key": "WWW-Authenticate",
+          "value": "Basic realm=\"Secure Area\""
+        }
+      ]
     }
   ]
 }
