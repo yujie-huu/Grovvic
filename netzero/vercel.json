@@ -1,13 +1,13 @@
 {
-  "functions": {
-    "api/auth.js": {
-      "runtime": "@vercel/node@18"
-    }
-  },
-  "rewrites": [
+  "headers": [
     {
       "source": "/(.*)",
-      "destination": "/api/auth.js"
+      "headers": [
+        {
+          "key": "WWW-Authenticate",
+          "value": "Basic realm=\"Secure Area\""
+        }
+      ]
     }
   ]
 }
