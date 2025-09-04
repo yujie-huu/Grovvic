@@ -63,7 +63,7 @@ const PlantDetailPage = () => {
         
         // Encode the plant name for URL (replace spaces with %20)
         const encodedPlantName = encodeURIComponent(plantName);
-        const url = `http://3.24.201.81:8000/variety/${encodedPlantName}`;
+        const url = `https://netzero-vigrow-api.duckdns.org/variety/${encodedPlantName}`;
         
         const response = await axios.get(url);
         setPlantData(response.data);
