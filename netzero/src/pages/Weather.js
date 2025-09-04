@@ -86,11 +86,18 @@ const Weather = () => {
   
   // const formatSunTime = (unix) => new Date(unix * 1000).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true })
   const formatDay = (unix) => new Date(unix * 1000).toLocaleDateString('en-US', { weekday: 'short' })
+  const formatHour = (unix) =>
+  new Date(unix * 1000)
+    .toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })
+    .replace('AM', 'am')
+    .replace('PM', 'pm');
+
 
   const tempUnit = unit === 'metric' ? '°C' : '°F'
   const speedUnit = unit === 'metric' ? 'km/h' : 'mph'
   const windSpeed = unit === 'metric' ? (current.wind_speed * 3.6).toFixed(1) : current.wind_speed.toFixed(1)
-  const todayMin = Math.round(dailyForecasts[0].temp.min)
+  const todayMin = Math.round(dailyForecasts?.[0]?.temp?.min ?? current.temp);
+
 
   // ====== Action dictionary (short label + full sentence) ======
   const ACTIONS = {
@@ -117,78 +124,83 @@ const Weather = () => {
   const toCelsius = (t)   => unit === 'imperial' ? (t - 32) * 5 / 9 : t;
 
   // Decide the action key for an hourly record, using daily accumulated rain as context
-  const pickActionKey = (h, dailyRainMm) => {
-    const tempC    = toCelsius(h.temp ?? 0);
-    const windKmh  = toKmh(h.wind_speed ?? 0);
+  const pickActionKeys = (h, dailyRainMm) => {
+    const keys = [];
+
+    const tempC = toCelsius(h.temp ?? 0);
+    const windKmh = toKmh(h.wind_speed ?? 0);
     const humidity = h.humidity ?? 0;
-    const uvi      = h.uvi ?? 0;
+    const uvi = h.uvi ?? 0;
 
-    if (tempC > 30) return 'SHADE';
-    if (tempC < 1)  return 'COVER_FRAGILE';
-    if (tempC >= 1 && tempC <= 10) return 'COVER_SEEDLINGS';
+    if (tempC > 30) keys.push('SHADE');
+    if (tempC < 1) keys.push('COVER_FRAGILE');
+    if (tempC >= 1 && tempC <= 10) keys.push('COVER_SEEDLINGS');
 
-    if (uvi > 8)         return 'UV_SHADE';
-    if (windKmh > 25)    return 'SECURE_TRELLIS';
-    if (humidity > 70)   return 'FUNGAL_WATCH';
+    if (uvi > 8) keys.push('UV_SHADE');
+    if (windKmh > 25) keys.push('SECURE_TRELLIS');
+    if (humidity > 70) keys.push('FUNGAL_WATCH');
 
-    if ((dailyRainMm ?? 0) < 1)  return 'MULCH';
-    if ((dailyRainMm ?? 0) > 20) return 'HARVEST_STAKE';
+    if ((dailyRainMm ?? 0) < 1) keys.push('MULCH');
+    if ((dailyRainMm ?? 0) > 20) keys.push('HARVEST_STAKE');
 
-    return 'ROUTINE';
+    if (keys.length === 0) keys.push('ROUTINE');
+
+    return keys;
   };
+
+
 
   // Today's total rain (mm) from daily forecast
   const todayRainMm = dailyForecasts?.[0]?.rain ?? 0;
 
-  // 1) Build 24-hour action list
-  const rawHourly = forecastList.slice(0, 24).map(h => {
-    const key = pickActionKey(h, todayRainMm);
-    return {
-      dt: h.dt,
-      time: new Date(h.dt * 1000).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true }),
-      key,
-      label: ACTIONS[key].label
-    };
-  });
-
   
   //Build actionable hourly cards: scan forward, skip ROUTINE, fill up to 6
-  const hourlyActionCards = (() => {
-    const cards = [];
-    const hours = forecastList || []; // up to 48 hours
-    for (let i = 0; i < hours.length && cards.length < 6; i++) {
-      const h = hours[i];
-      const key = pickActionKey(h, todayRainMm);
-      if (key && key !== 'ROUTINE') {
-        cards.push({
-          dt: h.dt,
-          time: new Date(h.dt * 1000)
-            .toLocaleTimeString('en-US', {
-              hour: 'numeric',
-              minute: '2-digit',
-              hour12: true
-            })
-            .replace('AM', 'am')
-            .replace('PM', 'pm'),
-          label: ACTIONS[key]?.label || 'Task',
-          key
-        });
-      }
-    }
-    return cards;
-  })();
+const hourlyActionCards = (() => {
+  const hours = forecastList || [];
+  const primary = [];
+  const fallback = [];
+
+  for (let i = 0; i < hours.length; i++) {
+    const h = hours[i];
+    const allKeys = pickActionKeys(h, todayRainMm);
+    const nonRoutine = allKeys.filter(k => k !== 'ROUTINE');
+    const chosenKeys = (nonRoutine.length ? nonRoutine : ['ROUTINE']).slice(0, 3);
+
+    const labels = chosenKeys.map(k => ACTIONS[k]?.label).filter(Boolean);
+
+    const card = { dt: h.dt, time: formatHour(h.dt), keys: chosenKeys, labels };
+
+    if (nonRoutine.length) primary.push(card);
+    else fallback.push(card);
+
+    if (primary.length >= 6) break;
+  }
+  const need = Math.max(0, 6 - primary.length);
+  return primary.concat(fallback.slice(0, need));
+})();
+
 
 
   // 3) Build left-side summary: unique actions, sorted by priority
   //    If none remain, fall back to a single “Routine care”
-  const dayActionKeys = Array.from(new Set(hourlyActionCards.map(x => x.key)));
-  const dayActionsLong = PRIORITY
-    .filter(k => dayActionKeys.includes(k))
-    .map(k => ACTIONS[k].long);
+// Sum up the keys in all the cards
+  const dayActionKeys = Array.from(
+    new Set(hourlyActionCards.flatMap(c => c.keys || []))
+  );
 
-  if (dayActionsLong.length === 0) {
-    dayActionsLong.push(ACTIONS.ROUTINE.long);
-  }
+  // If non-routines exist, routines are excluded
+  const hasNonRoutine = dayActionKeys.some(k => k !== 'ROUTINE');
+
+  const orderedKeys = PRIORITY.filter(
+    k => dayActionKeys.includes(k) && (hasNonRoutine ? k !== 'ROUTINE' : true)
+  );
+
+  // A long sentence description is shown on the left
+  const dayActionsLong = orderedKeys.map(k => ACTIONS[k].long);
+
+  // Bottom of pocket
+  if (dayActionsLong.length === 0) dayActionsLong.push(ACTIONS.ROUTINE.long);
+
 
   // 
   const imageSrc = climateType === 'temperature'
@@ -420,10 +432,14 @@ const Weather = () => {
 
           {/* Right: minimalist hourly cards */}
           <div className="gardening-hero__right">
-            {hourlyActionCards.slice(0, 6).map((it) => (
+            {hourlyActionCards.map((it) => (
               <div className="tip-card" key={it.dt}>
                 <div className="tip-card__time">{it.time}</div>
-                <div className="tip-card__text">{it.label}</div>
+                <div className="tip-card__text">
+                  {it.labels.map((txt, idx) => (
+                    <div className="tip-line" key={idx}>{txt}</div>
+                  ))}
+                </div>
               </div>
             ))}
           </div>
