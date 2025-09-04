@@ -222,11 +222,20 @@ const PlantDetailPage = () => {
           </div>
 
           <div className="notes-pollinator-container">
-            {plantData.notes && (
+            {plantData.notes !== "no information now" && (
               <div className="notes-section">
                 <div className="notes-content">
                   <h2 className="notes-section-title">📝 Notes</h2>
                   <p className="notes-text">{plantData.notes}</p>
+                </div>
+              </div>
+            )}
+
+            {plantData.notes === "no information now"&& (
+              <div className="notes-section">
+                <div className="notes-content">
+                  <h2 className="notes-section-title">📝 Notes</h2>
+                  <p className="notes-text">No additional notes</p>
                 </div>
               </div>
             )}
@@ -236,7 +245,7 @@ const PlantDetailPage = () => {
                 <div className="notes-content">
                   <h2 className="notes-section-title">🐝 Pollinators</h2>
                   <p className="pollinators-text">
-                    {plantData.pollinators && plantData.pollinators.trim() ? plantData.pollinators : "We have no pollinator information relevant to this plant available"}
+                    {plantData.pollinators && plantData.pollinators.trim() ? plantData.pollinators : "No pollinator information available."}
                   </p>
                 </div>
               </div>
