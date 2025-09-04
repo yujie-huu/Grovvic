@@ -2,6 +2,10 @@
 import React, { useEffect, useState } from 'react'
 import './Weather.css'
 import axios from 'axios'
+import {
+  buildDailyIrrigationRecommendation,
+  buildWeeklyIrrigationRecommendation,
+} from '../utils/watering.js';
 
 const Weather = () => {
   const [current, setCurrent] = useState(null)
@@ -101,6 +105,8 @@ const Weather = () => {
   const toCelsius = (t) =>
     unit === 'imperial' ? (t - 32) * 5 / 9 : t;
 
+  const unique = (arr) => Array.from(new Set((arr || []).filter(Boolean)));
+
   // ---- Day-level tips (based on today's daily forecast) ----
   const todayDaily = dailyForecasts?.[0] || {};
   const dayTempC   = toCelsius(todayDaily?.temp?.day ?? current?.temp ?? 0);
@@ -146,6 +152,23 @@ const Weather = () => {
   if (dayTips.length === 0) {
     dayTips.push("The weather is calm today. Keep up your regular gardening care routine.");
   }
+
+  // 1：集成【当日浇灌】提示 —— 调用 watering.js
+  const dailyWatering = buildDailyIrrigationRecommendation({
+    meanTempC: dayTempC,
+    relHumidityPct: dayHumidity,
+    rainMm: dayRainMm,
+    soil: 'loam',            // 维州多为壤/黏土，可按需改为 state
+    hoseLpm: 12,             // 手持浇水默认 12 L/min，可做设置项
+    plantType: 'vegetables_pots', // 可做设置：'vegetables_pots' | 'perennial' | 'low_water_use'
+  });
+
+  // 合并并去重（dailyWatering.lines 已包含完整句式）
+  const day_Tips = unique([
+    ...dayTips,
+    ...(dailyWatering?.lines || []),
+  ]);
+
 
   // ---- Weekly tips: compute weekly stats and derive tips ----
 
@@ -205,6 +228,20 @@ const Weather = () => {
       "This week's weather looks mild and steady. Please stick to your regular watering and care routine."
     ];
   }
+
+
+  // ✅ 改动 2：集成【周浇灌】提示 —— 调用 watering.js
+  const weeklyWatering = buildWeeklyIrrigationRecommendation(next7, {
+    soil: 'loam',
+    hoseLpm: 12,
+  });
+
+  // 合并并去重
+  weeklyTips = unique([
+    ...weeklyTips,
+    ...(weeklyWatering?.lines || []),
+  ]);
+
 
   // 1.3
   const imageSrc = climateType === 'temperature'
