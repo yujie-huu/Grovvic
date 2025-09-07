@@ -21,8 +21,9 @@
 .plant-detail-container {
   width: 100%;
   border-radius: 12px;
-  background: white;
+  background: rgb(47, 82, 55);
   position: relative;
+  top: -50px;
   z-index: 2;
 }
 
@@ -135,9 +136,9 @@
   flex-direction: column;
   justify-content: flex-start;
   border-radius: 12px;
-  border-left: 5px solid #4CAF50;
+  border-left: 5px solid #858985;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  background: #eefcf3be;
+  background: #eefcf1be;
 }
 
 .plant-basic-info {
@@ -180,8 +181,8 @@
 }
 
 .info-card {
-  background: #e7f6fabe;
-  border: 2px solid #e8f5e8;
+  background: #a2d2b1;
+  border: 2px solid #49574d;
   border-radius: 12px;
   padding: 15px;
   text-align: center;
@@ -218,8 +219,8 @@
 .notes-section {
   flex: 1;
   padding: 20px;
-  background: #fffbec;
-  border: 1px solid #ffeeba;
+  background: #304532;
+  border: 1px solid #454f46;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   display: flex;
@@ -229,8 +230,8 @@
 .pollinator-section {
   flex: 1;
   padding: 20px;
-  background: rgb(240, 247, 232);
-  border: 1px solid #e0e0e0;
+  background: #304532;
+  border: 1px solid #454f46;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   display: flex;
@@ -244,13 +245,13 @@
 .notes-section-title {
   font-size: 1.4rem;
   font-weight: 700;
-  color: #2b2c2b;
+  color: #d9d9d9;
   margin-bottom: 15px;
 }
 
 .notes-text {
   font-size: 1.2rem;
-  color: #856404;
+  color: #d9d9d9;
   line-height: 1.4;
   padding-bottom: 10px;
   padding-left: 5px;
@@ -258,7 +259,7 @@
 
 .pollinators-text {
   font-size: 1.3rem;
-  color: #2c5530;
+  color: #d9d9d9;
   line-height: 1.4;
   padding-bottom: 10px;
   padding-left: 5px;
@@ -272,13 +273,16 @@
 }
 
 .instruction-card {
+  background: #475d48;
   padding: 20px;
+  border-radius: 12px;
+  border: #5f685f solid 1px;
 }
 
 .instruction-card-title {
   font-size: 1.8rem;
   font-weight: 700;
-  color: #2c382d;
+  color: #d9d9d9;
   margin-bottom: 15px;
 }
 
@@ -288,7 +292,7 @@
 
 .paragraph {
   font-size: 1.3rem;
-  color: #555;
+  color: #d9d9d9;
   margin-bottom: 5px;
 }
 

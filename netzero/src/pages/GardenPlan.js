@@ -266,7 +266,7 @@ const GardenPlan = () => {
                 <div className="no-monthly-tips-message">No plants recommendations for this month</div>
               )}
             </div>
-            <p className="monthly-tips-description">You can check the plant detail or search for more plants for this month in the search seaction below.</p>
+            <p className="monthly-tips-description">You can check the plant detail or search for more plants for this month in the search section below.</p>
           </div>
 
           <div className="pest-tips-container">

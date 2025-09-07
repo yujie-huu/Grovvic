@@ -33,6 +33,7 @@
   font-size: 5rem;
   font-weight: 750;
   line-height: 1.3;
+  font: Rubik, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
   margin-bottom: 20px;
   text-align: center;
 }
@@ -50,6 +51,16 @@
 .hero-description {
   font-size: 1.8rem;
   color: #666;
+  margin-bottom: 30px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.hero-description-highlight {
+  font-size: 1.8rem;
+  color: #4CAF50;
   margin-bottom: 30px;
   width: 100%;
   margin-left: auto;

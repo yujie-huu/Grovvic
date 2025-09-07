@@ -37,9 +37,16 @@ const HomePage = () => {
             <h1 className="hero-title">
               <span className="title-green">VIGROW</span>
             </h1>
-            <p className="hero-description">
-              Victoria Gardening: Resilient, Organic, Waste-wise
-            </p>
+            <span className="hero-description-highlight">Vi</span>
+            <span className="hero-description">ctoria </span>
+            <span className="hero-description-highlight">G</span>
+            <span className="hero-description">ardening: </span>
+            <span className="hero-description-highlight">R</span>
+            <span className="hero-description">esilient, </span>
+            <span className="hero-description-highlight">O</span>
+            <span className="hero-description">rganic, </span>
+            <span className="hero-description-highlight">W</span>
+            <span className="hero-description">aste-wise</span>
             <p className="hero-description">
               Your guide to climate-smart gardening in Victoria.
             </p>

@@ -22,7 +22,7 @@ const Navigation = () => {
             <div className="logo">
               <div className="logo-icon">♻️</div>
             </div>
-            <span className="nav-brand-name">NetZero</span>
+            <span className="nav-brand-name">VIGROW</span>
           </Link>
         </div>
         
