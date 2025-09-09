@@ -1,13 +1,23 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "./PlantCard.css";
 
 const PlantCard = ({ plant }) => {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Extract current version from path
+  const getCurrentVersion = () => {
+    const path = location.pathname;
+    if (path.startsWith('/iteration2')) return 'iteration2';
+    if (path.startsWith('/iteration1')) return 'iteration1';
+    return 'iteration1'; // default to iteration1
+  };
 
   const handleClick = () => {
+    const currentVersion = getCurrentVersion();
     // navigate to plant detail page, using variety(plant name) as identifier
-    navigate(`/plant-detail/${encodeURIComponent(plant.variety)}`);
+    navigate(`/${currentVersion}/plant-detail/${encodeURIComponent(plant.variety)}`);
   };
 
   return (

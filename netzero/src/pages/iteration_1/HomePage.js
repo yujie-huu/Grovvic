@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './HomePage.css';
-import HomePageCard from '../components/HomePageCard';
+import HomePageCard from '../../components/HomePageCard';
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -11,19 +11,19 @@ const HomePage = () => {
   // Navigate to weather page
   const handleWeatherClick = () => {
     console.log('Navigating to Weather Page');
-    navigate('/weather');
+    navigate('/iteration1/weather');
   };
 
   // Navigate to garden plan page
   const handlePlanClick = () => {
     console.log('Navigating to Garden Plan Page');
-    navigate('/gardenplan');
+    navigate('/iteration1/gardenplan');
   };
 
   // Navigate to about page
   const handleLearnMoreClick = () => {
     console.log('Navigating to About Page');
-    navigate('/about');
+    navigate('/iteration1/about');
   };
 
 
@@ -48,7 +48,7 @@ const HomePage = () => {
             <span className="hero-description-highlight">W</span>
             <span className="hero-description">aste-wise</span>
             <p className="hero-description">
-              Your guide to climate-smart gardening in Victoria.
+              Your guide to climate-smart gardening in Victoria. Iteration 1.
             </p>
             <button className="cta-button" onClick={handleLearnMoreClick}>Learn More</button>
           </div>

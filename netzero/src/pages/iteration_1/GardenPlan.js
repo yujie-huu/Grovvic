@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './GardenPlan.css';
-import PlantSpeciesCard from '../components/PlantSpeciesCard';
-import PlantCard from '../components/PlantCard';
+import PlantSpeciesCard from '../../components/PlantSpeciesCard';
+import PlantCard from '../../components/PlantCard';
 
 const GardenPlan = () => {
   const [selectedCategory, setSelectedCategory] = useState("");

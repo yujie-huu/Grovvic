@@ -10,15 +10,26 @@ const Navigation = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  // Extract current version from path
+  const getCurrentVersion = () => {
+    const path = location.pathname;
+    if (path.startsWith('/iteration2')) return 'iteration2';
+    if (path.startsWith('/iteration1')) return 'iteration1';
+    return 'iteration1'; // default to iteration1
+  };
+
+  const currentVersion = getCurrentVersion();
+
   const isActive = (path) => {
-    return location.pathname === path;
+    const versionedPath = path === '/' ? `/${currentVersion}` : `/${currentVersion}${path}`;
+    return location.pathname === versionedPath;
   };
 
   return (
     <nav className="navigation">
       <div className="nav-container">
         <div className="nav-brand">
-          <Link to="/" className="brand-link">
+          <Link to={`/${currentVersion}`} className="brand-link">
             <div className="logo">
               <div className="logo-icon">♻️</div>
             </div>
@@ -27,16 +38,16 @@ const Navigation = () => {
         </div>
         
         <div className={`nav-menu ${isMenuOpen ? 'active' : ''}`}>
-          <Link to="/" className={`nav-link ${isActive('/') ? 'active' : ''}`}>
+          <Link to={`/${currentVersion}`} className={`nav-link ${isActive('/') ? 'active' : ''}`}>
             Home
           </Link>
-          <Link to="/weather" className={`nav-link ${isActive('/weather') ? 'active' : ''}`}>
+          <Link to={`/${currentVersion}/weather`} className={`nav-link ${isActive('/weather') ? 'active' : ''}`}>
             Weather
           </Link>
-          <Link to="/gardenplan" className={`nav-link ${isActive('/gardenplan') ? 'active' : ''}`}>
+          <Link to={`/${currentVersion}/gardenplan`} className={`nav-link ${isActive('/gardenplan') ? 'active' : ''}`}>
             Garden Plan
           </Link>
-          <Link to="/about" className={`nav-link ${isActive('/about') ? 'active' : ''}`}>
+          <Link to={`/${currentVersion}/about`} className={`nav-link ${isActive('/about') ? 'active' : ''}`}>
             About
           </Link>
         </div>

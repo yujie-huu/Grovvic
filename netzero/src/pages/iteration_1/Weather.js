@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import './Weather.css'
 import axios from 'axios'
-import { buildWateringTable } from '../utils/watering.js';
+import { buildWateringTable } from '../../utils/watering.js';
 
 // const Weather = () => {
 //   const [current, setCurrent] = useState(null)

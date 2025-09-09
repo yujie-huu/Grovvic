@@ -9,7 +9,7 @@
   max-height: 600px;
   min-height: 350px;
   height: 450px;
-  background-image: url('../../public/images/detail_page_banner.jpg');
+  background-image: url('../../../public/images/detail_page_banner.jpg');
   background-size: cover;
   background-position: center;
   background-position-y: 65%;
