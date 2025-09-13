@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import './GardenPlan.css';
 import PlantSpeciesCard from '../../components/PlantSpeciesCard';
@@ -25,6 +25,9 @@ const GardenPlan = () => {
   const [filteredPlantNames, setFilteredPlantNames] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
   const [visibleItems, setVisibleItems] = useState(10);
+
+  // Add ref for dropdown container
+  const dropdownRef = useRef(null);
 
   // flower recommendation related states
   const monthMap = [
@@ -89,6 +92,26 @@ const GardenPlan = () => {
     setVisibleItems(10);
   }, [selectedPlantName, allPlantNames]);
 
+  // handle click outside of dropdown
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setShowDropdown(false);
+      }
+    };
+    const handleEsc = (e) => {
+      if (e.key === 'Escape') setShowDropdown(false);
+    };
+  
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleEsc);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleEsc);
+    };
+  }, []);
+  
+  
   // build API URL
   const buildApiUrl = () => {
     const baseUrl = "https://netzero-vigrow-api.duckdns.org/plants"; // base URL that returns all plants
@@ -173,7 +196,18 @@ const GardenPlan = () => {
   // handle plant name input change
   const handlePlantNameChange = (e) => {
     setSelectedPlantName(e.target.value);
-    setShowDropdown(true);
+    // Only show dropdown if there's text
+    if (e.target.value.trim() !== '') {
+      setShowDropdown(true);
+    }
+  };
+
+  // handle input blur (when user clicks outside)
+  const handleInputBlur = (e) => {
+    // Use setTimeout to allow click events on dropdown options to complete first
+    setTimeout(() => {
+      setShowDropdown(false);
+    }, 150);
   };
 
   // handle plant name selection
@@ -312,12 +346,13 @@ const GardenPlan = () => {
           <div className="plant-name-search-container">
             <h5 className="search-section-title">Search by plant name (by species):</h5>
             <div className="plant-name-search-bar">
-              <div className="searchable-input-container">
+              <div className="searchable-input-container" ref={dropdownRef}>
                 <input
                   type="text"
                   value={selectedPlantName}
                   onChange={handlePlantNameChange}
                   onFocus={() => setShowDropdown(true)}
+                  onBlur={handleInputBlur}
                   placeholder="Type to search plant names..."
                   className="searchable-input"
                 />
@@ -331,11 +366,13 @@ const GardenPlan = () => {
                           <div
                             key={index}
                             className="dropdown-option"
+                            onMouseDown={(e) => e.preventDefault()}
                             onClick={() => handlePlantNameSelect(plantName)}
                           >
                             {plantName}
                           </div>
                         ))}
+                        
                         
                         {visibleItems < filteredPlantNames.length && (
                           <div className="load-more" onClick={handleLoadMore}>

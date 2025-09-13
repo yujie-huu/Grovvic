@@ -50,6 +50,9 @@ const Navigation = () => {
           <Link to={`/${currentVersion}/about`} className={`nav-link ${isActive('/about') ? 'active' : ''}`}>
             About
           </Link>
+          <Link to={`/${currentVersion}/sustain`} className={`nav-link ${isActive('/sustain') ? 'active' : ''}`}>
+            Sustainability
+          </Link>
         </div>
         
         <div className={`nav-toggle ${isMenuOpen ? 'active' : ''}`} onClick={toggleMenu}>
