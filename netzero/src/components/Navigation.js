@@ -15,7 +15,7 @@ const Navigation = () => {
     const path = location.pathname;
     if (path.startsWith('/iteration2')) return 'iteration2';
     if (path.startsWith('/iteration1')) return 'iteration1';
-    return 'iteration1'; // default to iteration1
+    return 'iteration2'; // default to iteration2
   };
 
   const currentVersion = getCurrentVersion();
