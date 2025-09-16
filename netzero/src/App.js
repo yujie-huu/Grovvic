@@ -19,8 +19,9 @@ import GardenPlan2 from './pages/iteration_2/GardenPlan';
 import AboutPage2 from './pages/iteration_2/AboutPage';
 import PlantDetailPage2 from './pages/iteration_2/PlantDetailPage';
 import Sustain from './pages/iteration_2/Sustain';
-import Companion from './pages/iteration_2/CompanionPage';
 import Composting from './pages/iteration_2/CompostingQuizPage';
+import Biodiversity from './pages/iteration_2/Biodiversity';
+import Companion from './pages/iteration_2/CompanionPage';
 
 function App() {
   return (
@@ -52,6 +53,7 @@ function App() {
           <Route path="/iteration2/sustain" element={<Sustain />} />
           <Route path="/iteration2/companion" element={<Companion />} />
           <Route path="/iteration2/composting" element={<Composting />} />
+          <Route path="/iteration2/biodiversity" element={<Biodiversity />} />
         </Routes>
         <Footer />
       </div>
