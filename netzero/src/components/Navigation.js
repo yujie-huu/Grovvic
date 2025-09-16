@@ -41,6 +41,9 @@ const Navigation = () => {
           <Link to={`/${currentVersion}`} className={`nav-link ${isActive('/') ? 'active' : ''}`}>
             Home
           </Link>
+          <Link to={`/${currentVersion}/about`} className={`nav-link ${isActive('/about') ? 'active' : ''}`}>
+            About
+          </Link>
           <Link to={`/${currentVersion}/weather`} className={`nav-link ${isActive('/weather') ? 'active' : ''}`}>
             Weather
           </Link>

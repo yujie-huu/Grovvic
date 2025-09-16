@@ -8,6 +8,7 @@ const PLAYLIST_ID = "PLYdRxE9m5LdlZsSbe2I48uR1tWED30X_t";
 const API_KEY = "AIzaSyDL11eWRj8MmtqUqrF5R-Rzu8ycD6cSdv8";
 
 const Sustain = () => {
+  const navigate = useNavigate();
   const [flippedCards, setFlippedCards] = useState({});
 
   const toggleCard = (cardId) => {
@@ -83,6 +84,18 @@ const Sustain = () => {
     fetchPlaylist();
   }, []);
 
+    // Navigate to companion planting page
+  const handleCompanionClick = () => {
+    console.log('Navigating to Companion Planting Page');
+    navigate('/iteration2/companion');
+  };
+
+  // Navigate to composting quiz page
+  const handleCompostingQuizClick = () => {
+    console.log('Navigating to Composting Quiz Page');
+    navigate('/iteration2/composting');
+  };
+
   return (
     <div className="sustain-page">
       <section className="sustain-header">
@@ -118,8 +131,11 @@ const Sustain = () => {
       </section>
       
       <section className="habitat-videos">
-        <h1 className="sustain-title">Habitat Gardening</h1>
-        <h2 className="sustain-subtitle">Turn your garden into a thriving ecosystem! Create a space that welcomes pollinators, birds, and various other animals!</h2>
+        <h1 className="habitat-title">Habitat Gardening</h1>
+        <h2 className="habitat-subtitle">
+          Turn your garden into a thriving ecosystem! Create a space that welcomes pollinators, birds, and various other animals!
+        </h2>
+        <h3 className="habitat-scorll-instruction">← Scroll sideways to explore videos →</h3>
         <div className="habitat-videos-container">
           <div className="video-scroll-panel">
             {videos.map((video) => (
@@ -145,6 +161,30 @@ const Sustain = () => {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className="sustain-companion-section">
+        <h1 className="sustain-companion-title">Companion Planting</h1>
+        <h2 className="sustain-companion-subtitle">Discover the best companions for your crops.</h2>
+        <div className="sustain-companion-content">
+          <button className="companion-button" onClick={handleCompanionClick}>Learn More</button>
+        </div>
+      </section>
+
+      <section className="sustain-soil-section">
+        <div className="sustain-composting-content">
+          <h1 className="sustain-composting-title">Composting Quiz</h1>
+          <h2 className="sustain-composting-subtitle">
+            Do you know how to compost? Test your knowledge and take our quick quiz to discover 
+            how much you really know and pick up a few tips about composting!
+          </h2>
+          <button className="composting-button" onClick={handleCompostingQuizClick}>TAKE THE QUIZ</button>
+        </div>
+        
+
+        <div className="sustain-mulch-content">
+          <h1 className="sustain-mulch-title">Mulch! Mulch! Mulch!</h1>
         </div>
       </section>
     </div>
