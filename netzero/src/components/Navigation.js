@@ -41,14 +41,14 @@ const Navigation = () => {
           <Link to={`/${currentVersion}`} className={`nav-link ${isActive('/') ? 'active' : ''}`}>
             Home
           </Link>
+          <Link to={`/${currentVersion}/about`} className={`nav-link ${isActive('/about') ? 'active' : ''}`}>
+            About
+          </Link>
           <Link to={`/${currentVersion}/weather`} className={`nav-link ${isActive('/weather') ? 'active' : ''}`}>
             Weather
           </Link>
           <Link to={`/${currentVersion}/gardenplan`} className={`nav-link ${isActive('/gardenplan') ? 'active' : ''}`}>
             Garden Plan
-          </Link>
-          <Link to={`/${currentVersion}/about`} className={`nav-link ${isActive('/about') ? 'active' : ''}`}>
-            About
           </Link>
           <Link to={`/${currentVersion}/sustain`} className={`nav-link ${isActive('/sustain') ? 'active' : ''}`}>
             Sustainability

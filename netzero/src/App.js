@@ -19,6 +19,8 @@ import GardenPlan2 from './pages/iteration_2/GardenPlan';
 import AboutPage2 from './pages/iteration_2/AboutPage';
 import PlantDetailPage2 from './pages/iteration_2/PlantDetailPage';
 import Sustain from './pages/iteration_2/Sustain';
+import Companion from './pages/iteration_2/CompanionPage';
+import Composting from './pages/iteration_2/CompostingQuizPage';
 
 function App() {
   return (
@@ -48,6 +50,8 @@ function App() {
           <Route path="/iteration2/about" element={<AboutPage2 />} />
           <Route path="/iteration2/plant-detail/:plantName" element={<PlantDetailPage2 />} />
           <Route path="/iteration2/sustain" element={<Sustain />} />
+          <Route path="/iteration2/companion" element={<Companion />} />
+          <Route path="/iteration2/composting" element={<Composting />} />
         </Routes>
         <Footer />
       </div>
