@@ -1,0 +1,45 @@
+.biodiversity-page {
+  font-family: Arial, sans-serif;
+  padding: 2rem;
+  background-color: #f9fafb;
+  color: #1f2937;
+  line-height: 1.6;
+}
+
+.biodiversity-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.biodiversity-header h1 {
+  font-size: 2.5rem;
+  color: #166534;
+  margin-bottom: 0.5rem;
+}
+
+.biodiversity-header p {
+  font-size: 1.2rem;
+  color: #4b5563;
+}
+
+.biodiversity-section {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+
+.biodiversity-section h2 {
+  color: #2563eb;
+  margin-bottom: 1rem;
+}
+
+.biodiversity-section ul {
+  padding-left: 1.5rem;
+  list-style-type: disc;
+}
+
+.biodiversity-section ul li {
+  margin-bottom: 0.5rem;
+}
