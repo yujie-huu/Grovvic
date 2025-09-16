@@ -20,6 +20,8 @@ import AboutPage2 from './pages/iteration_2/AboutPage';
 import PlantDetailPage2 from './pages/iteration_2/PlantDetailPage';
 import Sustain from './pages/iteration_2/Sustain';
 import Biodiversity from './pages/iteration_2/Biodiversity';
+import Support from './pages/iteration_2/Support';
+import Contact from './pages/iteration_2/Contact';
 
 function App() {
   return (
@@ -34,6 +36,7 @@ function App() {
           <Route path="/gardenplan" element={<GardenPlan2 />} />
           <Route path="/about" element={<AboutPage2 />} />
           <Route path="/plant-detail/:plantName" element={<PlantDetailPage2 />} />
+          
           
           {/* Iteration 1 routes */}
           <Route path="/iteration1" element={<HomePage1 />} />
@@ -50,6 +53,8 @@ function App() {
           <Route path="/iteration2/plant-detail/:plantName" element={<PlantDetailPage2 />} />
           <Route path="/iteration2/sustain" element={<Sustain />} />
           <Route path="/iteration2/biodiversity" element={<Biodiversity />} />
+          <Route path="/iteration2/support" element={<Support />} />
+          <Route path="/iteration2/Contact" element={<Contact />} />
         </Routes>
         <Footer />
       </div>
