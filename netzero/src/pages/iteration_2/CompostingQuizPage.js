@@ -34,12 +34,57 @@ const CompostingQuizPage = () => {
         "Leaves, worms, soil, and food",
         "Leftovers, eggshells, heat, and air"
       ],
-      correctAnswer: 2,
+      correctAnswer: 1,
       image: "https://live.staticflickr.com/5225/5660705731_8d03e59385_b.jpg",
       explanation: "Carbon is needed for energy. Its oxidation produces the heat required for composting. These tend to be brown and dry!" + 
         "\n\nNitrogen is needed to reproduce organisms and oxidize the carbon. These tend to be green and wet!" + 
         "\n\nOxygen is needed for the bacteria to perform decomposition." +
         "\n\nWater is needed to keep things moist, just enough to maintain activity without causing anaerobic conditions!",
+      learnMore: "https://www.epicgardening.com/composting-for-beginners/"
+    },
+    {
+      id: 3,
+      question: "What is composting?",
+      options: [
+        "Autumn leaves - Carbon",
+        "Meat - Keep out",
+        "Pea straw - Carbon",
+        "Lawn clippings - Nitrogen",
+        "Hay - Carbon",
+        "Cat and dog droppings - Keep out",
+        "Garden prunings - Nitrogen",
+        "Green leaves - Nitrogen",
+        "Moistened cardboard - Carbon",
+        "Onion - Keep out",
+        "Kitchen scraps - Nitrogen",
+        "Egg shells - Nitrogen",
+        "Shredded newspaper - Carbon",
+        "Glossy paper - Keep out",
+        "Tea bags - Nitrogen",
+        "Dairy products - Keep out",
+        "Coffee grounds - Nitrogen",
+        "Sick plants - Keep out"
+      ],
+      correctAnswer: 2,
+      image: "/images/quiz_q3.png",
+      explanation: "Build thin 3-10 cm layers. Alternate between nitrogen and carbon ingredients," + 
+      " with a ratio of 1 nitrogen and 3 carbon. Large material should be cut up as small as possible. " + 
+      "Add water in between the layers, enough to keep things moist but not soaking.",
+      learnMore: "https://www.abc.net.au/gardening/how-to/compost/9433472 "
+    },
+    {
+      id: 4,
+      question: "How can you add oxygen into your compost?",
+      options: [
+        "By putting the compost in plastic bags",
+        "By keeping the compost pile underwater",
+        "By adding more nitrogen-rich materials",
+        "By regularly turning the compost"
+      ],
+      correctAnswer: 3,
+      image: "https://images.stockcake.com/public/5/8/6/5862358d-25b8-4809-83db-e3765856ab19/gardening-with-worms-stockcake.jpg",
+      explanation: "Turn the compost twice a week to allow oxygen to enter the pile. Aerobic microbes" + 
+      " need oxygen to break things down quicker.",
       learnMore: "https://www.epicgardening.com/composting-for-beginners/"
     }
     

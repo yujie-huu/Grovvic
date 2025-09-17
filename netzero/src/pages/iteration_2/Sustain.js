@@ -10,6 +10,7 @@ const API_KEY = "AIzaSyDL11eWRj8MmtqUqrF5R-Rzu8ycD6cSdv8";
 const Sustain = () => {
   const navigate = useNavigate();
   const [flippedCards, setFlippedCards] = useState({});
+  const [activeTab, setActiveTab] = useState('why');
 
   const toggleCard = (cardId) => {
     setFlippedCards(prev => ({
@@ -94,6 +95,60 @@ const Sustain = () => {
   const handleCompostingQuizClick = () => {
     console.log('Navigating to Composting Quiz Page');
     navigate('/iteration2/composting');
+  };
+
+  const mulchContent = {
+    why: {
+      subtitle: "It protects the soil around plants and trees from exposure to the elements!",
+      benefits: [
+        "Retains water in the soil by reducing evaporation",
+        "Adds nutrients to the soil",
+        "Suppresses weeds",
+        "Protects roots from extreme heat or cold",
+        "Insulates against ultraviolet radiation and strong wind",
+        "Encourages microorganisms and biodiversity"
+      ],
+      description: "And it makes the garden look pretty!",
+      images: [
+        "https://wadescapes.com/wp-content/uploads/2023/06/iStock-1215726927.jpg",
+        "https://c.pxhere.com/photos/bf/c8/strawberry_beete_garden_food_plant_spring_strawberry_patch_strawberry_plant-634611.jpg!d",
+        "https://upload.wikimedia.org/wikipedia/commons/c/cf/Strohballengarten%2C_Strohballenkultur%2C_Straw_bale_b.jpg"
+      ]
+    },
+    which: {
+      types: [
+        {
+          title: "Inorganic Mulches",
+          subtitle: "Crushed rocks, pebbles, recycled glass",
+          description: "They do not provide nutrients, but still reduce evaporation and suppress weeds. They can be preferable for plants that prosper in dry soil, such as cacti and succulents.",
+          image: "https://cdn.prod.website-files.com/6520ca581f993b38bba9de71/6523e1c6ea4ee30f9c2f0ba0_rock-delivery-and-install.jpg"
+        },
+        {
+          title: "Organic Mulches",
+          subtitle: "Wood chips, straw, bark, sugarcane, compost",
+          description: "For vegetables and annual crops, quick biodegrading mulch can provide plenty of nutrients, and for big trees and native plants, longer-lasting mulch is preferable.",
+          image: "https://c.pxhere.com/photos/ab/db/bed_decoration_late_summer_windfall_chaff_terracotta_ball_red-697075.jpg!d"
+        },
+        {
+          title: "Living Mulches",
+          subtitle: "Dense, low-growing plants",
+          description: "They insulate soil and suppress weed growth, while also helping prevent erosion.",
+          image: "https://gardeninggirls.com.au/wp-content/uploads/2023/10/veggie-garden.jpg"
+        }
+      ]
+    },
+    how: {
+      subtitle: "Follow these steps for effective mulching:",
+      steps: [
+        "Remove weeds",
+        "Moist the soil thoroughly",
+        "Lay organic mulch thickly, at least 5 cm, ideally 7-10 cm deep.",
+        "Do not mulch right up to the stems of plants, to avoid fungal disease.",
+        "Single trees and specimen shrubs are best mulched to the radius of the canopy",
+        "Top up biodegradable mulches every 6-12 months."
+      ],
+      image: "https://horhuttreeexperts.com/wp-content/uploads/2024/11/Root-Collar-Excavation-1024x683.jpg"
+    }
   };
 
   return (
@@ -182,9 +237,93 @@ const Sustain = () => {
           <button className="composting-button" onClick={handleCompostingQuizClick}>TAKE THE QUIZ</button>
         </div>
         
-
         <div className="sustain-mulch-content">
           <h1 className="sustain-mulch-title">Mulch! Mulch! Mulch!</h1>
+          
+          <div className="mulch-tabs">
+            <button 
+              className={`mulch-tab ${activeTab === 'why' ? 'active' : ''}`}
+              onClick={() => setActiveTab('why')}
+            >
+              Why
+            </button>
+            <button 
+              className={`mulch-tab ${activeTab === 'which' ? 'active' : ''}`}
+              onClick={() => setActiveTab('which')}
+            >
+              Which
+            </button>
+            <button 
+              className={`mulch-tab ${activeTab === 'how' ? 'active' : ''}`}
+              onClick={() => setActiveTab('how')}
+            >
+              How
+            </button>
+          </div>
+
+          <div className="mulch-content-area">
+            {activeTab === 'why' && (
+              <div className="mulch-why-content">
+                <h2 className="mulch-content-subtitle">{mulchContent.why.subtitle}</h2>
+                <div className="mulch-benefits">
+                  {mulchContent.why.benefits.map((benefit, index) => (
+                    <div key={index} className="benefit-item">
+                      <div className="benefit-item-container">
+                        <p className="benefit-bullet">•</p>
+                        <p className="benefit-text">{benefit}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <p className="mulch-content-description">{mulchContent.why.description}</p>
+                <div className="mulch-images-grid">
+                  {mulchContent.why.images.map((image, index) => (
+                    <img key={index} src={image} alt={`Mulch example ${index + 1}`} className="mulch-example-image" />
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'which' && (
+              <div className="mulch-which-content">
+                <div className="mulch-types-grid">
+                  {mulchContent.which.types.map((type, index) => (
+                    <div key={index} className="mulch-type-card">
+                      <div className="mulch-type-header">
+                        <h3 className="mulch-type-title">{type.title}</h3>
+                        <p className="mulch-type-subtitle">{type.subtitle}</p>
+                      </div>
+                      <p className="mulch-type-description">{type.description}</p>
+                      <div className="mulch-type-image">
+                        <img src={type.image} alt={type.title} className="mulch-type-img" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'how' && (
+              <div className="mulch-how-content">
+                <div className="mulch-how-header">
+                  <p className="mulch-content-subtitle">{mulchContent.how.subtitle}</p>
+                </div>
+                <div className="mulch-how-body">
+                  <div className="mulch-steps">
+                    {mulchContent.how.steps.map((step, index) => (
+                      <div key={index} className="mulch-step">
+                        <span className="step-number">{index + 1}</span>
+                        <span className="step-text">{step}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="mulch-how-image">
+                    <img src={mulchContent.how.image} alt="How to mulch" className="mulch-how-img" />
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </section>
     </div>

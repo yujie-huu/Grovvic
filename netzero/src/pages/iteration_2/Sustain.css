@@ -465,19 +465,249 @@
 
 /* ========== Mulch ========== */
 .sustain-mulch-content {
-  max-width: 900px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 12px 0 6px;
+  padding: 2rem;
+}
+
+.sustain-mulch-title {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #2c5530;
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.mulch-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 0;
+  margin: 2rem auto 3rem;
+  background: #e9ecef;
+  border-radius: 12px;
+  padding: 0.5rem;
+  width: 100%;
+}
+
+.mulch-tab {
+  padding: 1rem 1.5rem;
+  border: none;
+  width: 120px;
+  background: transparent;
+  color: #6c757d;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.mulch-tab:hover {
+  background: rgba(44, 85, 48, 0.1);
+  color: #2c5530;
+}
+
+.mulch-tab.active {
+  background: #2c5530;
+  color: white;
+  box-shadow: 0 2px 8px rgba(44, 85, 48, 0.3);
+}
+
+.tab-icon {
+  font-size: 1.2rem;
+}
+
+.mulch-content-area {
+  padding: 0 2rem;
+}
+
+.mulch-content-subtitle {
+  font-size: 1.5rem;
+  color: #555;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.mulch-content-description {
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: #555;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+/* Which Tab - Three vertical cards */
+.mulch-which-content {
   text-align: center;
 }
-.sustain-mulch-title {
-  font-size: clamp(22px, 3.4vw, 28px);
-  font-weight: 800;
-  color: #111;
-  margin: 0;
+
+.mulch-types-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin-top: 2rem;
+  align-items: stretch;
 }
 
+.mulch-type-card {
+  text-align: left;
+  border-top: 3px solid #539407;
+  padding-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
 
+.mulch-type-header {
+  margin-bottom: 0.5rem;
+  flex-shrink: 0;
+}
+
+.mulch-type-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 0.8rem;
+}
+
+.mulch-type-subtitle {
+  font-size: 1.1rem;
+  color: #666;
+  font-weight: 500;
+  /* margin-bottom: 0.4rem; */
+}
+
+.mulch-type-description {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #555;
+  margin-bottom: 1.5rem;
+  flex-grow: 1;
+}
+
+.mulch-type-image {
+  width: 100%;
+  height: 250px;
+  border-radius: 12px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.mulch-type-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Why Tab - Image grid and benefits list */
+.mulch-why-content {
+  text-align: center;
+}
+
+.mulch-benefits {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.benefit-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #c9d7cc;
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+}
+
+.benefit-item-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.benefit-bullet {
+  color: white;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.benefit-text {
+  color: #434343;
+  line-height: 1.3;
+  font-weight: 500;
+}
+
+.mulch-images-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.mulch-example-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+/* How Tab - Steps and image */
+.mulch-how-content {
+  text-align: center;
+}
+.mulch-how-body {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.mulch-steps {
+  flex: 1;
+  text-align: left;
+}
+
+.mulch-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  background: #c9d7cc;
+  border-radius: 8px;
+}
+
+.step-number {
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.step-text {
+  color: #555;
+  font-weight: 500;
+  justify-content: center;
+  align-items: center;
+}
+
+.mulch-how-image {
+  flex: 1;
+  max-width: 400px;
+}
+
+.mulch-how-img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 12px;
+}
 
 /* Responsive adjustments */
 @media (max-width: 1024px) {
@@ -538,6 +768,56 @@
     min-height: 360px;
     background-position: 70% center;
   }
+
+  .sustain-mulch-title {
+    font-size: 2rem;
+  }
+  
+  .mulch-tabs {
+    max-width: 300px;
+  }
+  
+  .mulch-tab {
+    padding: 0.8rem 1rem;
+    font-size: 0.9rem;
+  }
+  
+  .mulch-content-area {
+    padding: 2rem;
+  }
+  
+  .mulch-content-title {
+    font-size: 2rem;
+  }
+  
+  .mulch-type-title {
+    font-size: 1.5rem;
+  }
+  
+  .mulch-types-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .mulch-type-card {
+    height: auto; /* 移动端不需要固定高度 */
+  }
+  
+  .mulch-benefits {
+    grid-template-columns: 1fr;
+  }
+  
+  .mulch-images-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .mulch-how-body {
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  .mulch-how-image {
+    max-width: 100%;
+  }
 }
 
 @media (max-width: 480px) {
@@ -561,5 +841,30 @@
 
   .video-thumbnail img {
     height: 130px;
+  }
+
+  .sustain-mulch-content {
+    padding: 1rem;
+  }
+  
+  .mulch-tabs {
+    max-width: 250px;
+  }
+  
+  .mulch-tab {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.8rem;
+  }
+  
+  .mulch-content-area {
+    padding: 1.5rem;
+  }
+  
+  .mulch-content-title {
+    font-size: 1.5rem;
+  }
+  
+  .mulch-type-title {
+    font-size: 1.3rem;
   }
 }
