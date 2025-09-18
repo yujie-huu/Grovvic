@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MdFlipToFront, MdOpenInNew } from 'react-icons/md';
 import './Sustain.css';
@@ -54,7 +54,7 @@ const Sustain = () => {
       image: '/images/why_sustain_4.jpg',
       title: 'Keep Soil & Air Clean',
       description: 'Composting improves soil health and microbial diversity, while reducing chemical residues from fertilizers. ' +
-        '\n\nNot using fertilizers reduces nutrient leaching into waterways by 70%. ' + 
+        '\n\nNot using fertilizers reduces nutrient leaching into waterways by 70%. ' +
         '\n\nNative plants filter stormwater before it reaches streams, trapping sediments and pollutants. ' +
         '\n\nAvoiding fertilizers lowers nitrous oxide emissions, a greenhouse gas 298 times more potent than CO₂.'
     }
@@ -151,6 +151,61 @@ const Sustain = () => {
     }
   };
 
+  // Add scroll functionality
+  const scrollContainerRef = useRef(null);
+  const scrollbarTrackRef = useRef(null);
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const [maxScroll, setMaxScroll] = useState(0);
+
+  // Handle scroll events
+  const handleScroll = () => {
+    if (scrollContainerRef.current) {
+      const container = scrollContainerRef.current;
+      const scrollLeft = container.scrollLeft;
+      const maxScrollLeft = container.scrollWidth - container.clientWidth;
+      
+      setScrollPosition(scrollLeft);
+      setMaxScroll(maxScrollLeft);
+    }
+  };
+
+  // Handle custom scrollbar click
+  const handleScrollbarClick = (e) => {
+    if (scrollContainerRef.current && scrollbarTrackRef.current && maxScroll > 0) {
+      const scrollbarRect = scrollbarTrackRef.current.getBoundingClientRect();
+      const clickX = e.clientX - scrollbarRect.left;
+      const scrollbarWidth = scrollbarRect.width;
+      const scrollRatio = clickX / scrollbarWidth;
+      const newScrollPosition = scrollRatio * maxScroll;
+      
+      scrollContainerRef.current.scrollLeft = newScrollPosition;
+    }
+  };
+
+  // Handle custom scrollbar drag
+  const handleScrollbarDrag = (e, scrollbarRect) => {
+    if (scrollContainerRef.current && maxScroll > 0 && scrollbarRect) {
+      const clickX = e.clientX - scrollbarRect.left;
+      const scrollbarWidth = scrollbarRect.width;
+      const scrollRatio = clickX / scrollbarWidth;
+      const newScrollPosition = scrollRatio * maxScroll;
+      
+      scrollContainerRef.current.scrollLeft = newScrollPosition;
+    }
+  };
+
+  // Update scroll position when component mounts
+  useEffect(() => {
+    if (scrollContainerRef.current) {
+      const container = scrollContainerRef.current;
+      const maxScrollLeft = container.scrollWidth - container.clientWidth;
+      setMaxScroll(maxScrollLeft);
+      
+      container.addEventListener('scroll', handleScroll);
+      return () => container.removeEventListener('scroll', handleScroll);
+    }
+  }, [videos]); // Recalculate when videos change
+
   return (
     <div className="sustain-page">
       <section className="sustain-header">
@@ -191,7 +246,42 @@ const Sustain = () => {
           Turn your garden into a thriving ecosystem! Create a space that welcomes pollinators, birds, and various other animals!
         </h2>
         <h3 className="habitat-scorll-instruction">← Scroll sideways to explore videos →</h3>
-        <div className="habitat-videos-container">
+        
+        {/* Custom Scrollbar */}
+        <div className="custom-scrollbar-container">
+          <div 
+            className="custom-scrollbar-track"
+            ref={scrollbarTrackRef}
+            onClick={handleScrollbarClick}
+          >
+            <div 
+              className="custom-scrollbar-thumb"
+              style={{
+                width: maxScroll > 0 ? `${(scrollContainerRef.current?.clientWidth / scrollContainerRef.current?.scrollWidth) * 100}%` : '100%',
+                left: maxScroll > 0 ? `${(scrollPosition / maxScroll) * (100 - (scrollContainerRef.current?.clientWidth / scrollContainerRef.current?.scrollWidth) * 100)}%` : '0%'
+              }}
+              onMouseDown={(e) => {
+                e.preventDefault();
+                const scrollbarRect = scrollbarTrackRef.current?.getBoundingClientRect();
+                
+                const handleMouseMove = (e) => handleScrollbarDrag(e, scrollbarRect);
+                const handleMouseUp = () => {
+                  document.removeEventListener('mousemove', handleMouseMove);
+                  document.removeEventListener('mouseup', handleMouseUp);
+                };
+                
+                document.addEventListener('mousemove', handleMouseMove);
+                document.addEventListener('mouseup', handleMouseUp);
+              }}
+            />
+          </div>
+        </div>
+
+        <div 
+          className="habitat-videos-container"
+          ref={scrollContainerRef}
+          onScroll={handleScroll}
+        >
           <div className="video-scroll-panel">
             {videos.map((video) => (
               <div className="video-card" key={video.id}>

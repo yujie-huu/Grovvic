@@ -197,7 +197,7 @@ const CompanionPage = () => {
                   <div key={index} className="companion-card">
                     <div className="companion-image">
                       <img 
-                        src={companion.image_url} 
+                        src={companion.neighbour_image_url} 
                         alt={companion.neighbour}
                         onError={(e) => {
                           e.target.src = '/images/no_image_available.jpg';
@@ -225,7 +225,7 @@ const CompanionPage = () => {
                   <div key={index} className="companion-card">
                     <div className="companion-image">
                       <img 
-                        src={companion.image_url} 
+                        src={companion.neighbour_image_url} 
                         alt={companion.neighbour}
                         onError={(e) => {
                           e.target.src = '/images/no_image_available.jpg';
