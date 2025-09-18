@@ -29,12 +29,12 @@ const HomePageCard = ({
         }
       }}
     >
-      <div className="card-content">
-        <div className="card-text">
-          <h2 className="card-title">{title}</h2>
-          <p className="card-description">{description}</p>
+      <div className="homepage-card-content">
+        <div className="homepage-card-text">
+          <h2 className="homepage-card-title">{title}</h2>
+          <p className="homepage-card-description">{description}</p>
         </div>
-        <div className="card-image">
+        <div className="homepage-card-image">
           <img src={imageSrc} alt={imageAlt} />
         </div>
       </div>

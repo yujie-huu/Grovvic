@@ -3,12 +3,8 @@ import { Link, useLocation } from 'react-router-dom';
 import './Navigation.css';
 
 const Navigation = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const location = useLocation();
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
 
   // Extract current version from path
   const getCurrentVersion = () => {
@@ -20,10 +16,25 @@ const Navigation = () => {
 
   const currentVersion = getCurrentVersion();
 
-  const isActive = (path) => {
-    const versionedPath = path === '/' ? `/${currentVersion}` : `/${currentVersion}${path}`;
-    return location.pathname === versionedPath;
-  };
+  const toPath = (p) => (p === '/' ? `/${currentVersion}` : `/${currentVersion}${p}`);
+  const isActive = (p) => location.pathname === toPath(p);
+
+  // 5 main destionations in nav bar
+  const NAV_MAIN = [
+    { label: 'Home', path: '/' },
+    { label: 'Weather', path: '/weather' },
+    { label: 'Garden', path: '/gardenplan' },
+    { label: 'Sustain', path: '/sustain' },
+    { label: 'Biodiversity', path: '/biodiversity' },
+  ];
+
+  // 8 total destionations in nav drawer
+  const NAV_ALL = [
+    ...NAV_MAIN,
+    { label: 'About', path: '/about' },
+    { label: 'Support', path: '/support' },
+    { label: 'Contact', path: '/contact' },
+  ];
 
   return (
     <nav className="navigation">
@@ -37,40 +48,53 @@ const Navigation = () => {
           </Link>
         </div>
         
-        <div className={`nav-menu ${isMenuOpen ? 'active' : ''}`}>
-          <Link to={`/${currentVersion}`} className={`nav-link ${isActive('/') ? 'active' : ''}`}>
-            Home
-          </Link>
-          <Link to={`/${currentVersion}/about`} className={`nav-link ${isActive('/about') ? 'active' : ''}`}>
-            About
-          </Link>
-          <Link to={`/${currentVersion}/weather`} className={`nav-link ${isActive('/weather') ? 'active' : ''}`}>
-            Weather
-          </Link>
-          <Link to={`/${currentVersion}/gardenplan`} className={`nav-link ${isActive('/gardenplan') ? 'active' : ''}`}>
-            Garden
-          </Link>
-
-          <Link to={`/${currentVersion}/sustain`} className={`nav-link ${isActive('/sustain') ? 'active' : ''}`}>
-            Sustain
-          </Link>
-          <Link to={`/${currentVersion}/biodiversity`} className={`nav-link ${isActive('/biodiversity') ? 'active' : ''}`}>
-            Biodiversity
-          </Link>       
-          <Link to={`/${currentVersion}/support`} className={`nav-link ${isActive('/support') ? 'active' : ''}`}>
-            Support
-          </Link>
-          <Link to={`/${currentVersion}/contact`} className={`nav-link ${isActive('/contact') ? 'active' : ''}`}>
-            Contact
-          </Link>           
+        {/* Navigation Bar (Desktop Only) */}
+        <div className="nav-menu">
+          {NAV_MAIN.map(item => (
+            <Link
+              key={item.path}
+              to={toPath(item.path)}
+              className={`nav-link ${isActive(item.path) ? 'active' : ''}`}
+            >
+              {item.label}
+            </Link>
+          ))}
         </div>
         
-        <div className={`nav-toggle ${isMenuOpen ? 'active' : ''}`} onClick={toggleMenu}>
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
+        {/* Hamberger Icon, opens drawer（Appear in all endpoint） */}
+        <button
+          className={`nav-drawer-btn ${drawerOpen ? 'active' : ''}`}
+          onClick={() => setDrawerOpen(v => !v)}
+          aria-label="Open navigation menu"
+        >
+          <span></span><span></span><span></span>
+        </button>
       </div>
+
+      {/* Navigation Drawer (all destinations) */}
+      {drawerOpen && (
+        <>
+          <div className="drawer-backdrop" onClick={() => setDrawerOpen(false)} />
+          <aside className="drawer-panel" role="dialog" aria-modal="true">
+            <div className="drawer-header">
+              <span className="drawer-title">Menu</span>
+              <button className="drawer-close" onClick={() => setDrawerOpen(false)} aria-label="Close">✕</button>
+            </div>
+            <div className="drawer-links">
+              {NAV_ALL.map(item => (
+                <Link
+                  key={item.path}
+                  to={toPath(item.path)}
+                  className={`drawer-link ${isActive(item.path) ? 'active' : ''}`}
+                  onClick={() => setDrawerOpen(false)}
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </div>
+          </aside>
+        </>
+      )}
     </nav>
   );
 };

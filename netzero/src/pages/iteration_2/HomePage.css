@@ -39,7 +39,7 @@
 }
 
 .title-green {
-  color: #4CAF50;
+  color: #167719;
   display: block;
 }
 
@@ -50,6 +50,7 @@
 
 .hero-description {
   font-size: 1.8rem;
+  font-weight: 400;
   color: #666;
   margin-bottom: 30px;
   width: 100%;
@@ -60,7 +61,8 @@
 
 .hero-description-highlight {
   font-size: 1.8rem;
-  color: #4CAF50;
+  font-weight: 500;
+  color: #167719;
   margin-bottom: 30px;
   width: 100%;
   margin-left: auto;
