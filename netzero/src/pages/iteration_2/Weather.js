@@ -421,169 +421,173 @@ const Weather = () => {
         </div>
       </div>
 
-      <div className="hourly-forecast">
-        {forecastList.slice(0, 12).map((item, index) => (
-          <div className="hour-card" key={index}>
-            <p className="hour-time">
-              {new Date(item.dt * 1000).toLocaleTimeString('en-US', {
-                hour: 'numeric',
-                minute: '2-digit',
-                hour12: true
-              })}
-            </p>
-            <img
-              src={`https://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`}
-              alt={item.weather[0].description}
-              className="hour-icon"
-            />
-            <p className="hour-temp">{Math.round(item.temp)}{tempUnit}</p>
-          </div>
-        ))}
-      </div>
 
 
-      <div
-        className="gardening-hero"
-        style={{
-          ['--tip-count']: dayTips.length,   // ✅ 把当日 tip 的条数传给 CSS
-          backgroundImage: `url(${process.env.PUBLIC_URL || ''}/images/days.png)`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center'
-        }}
-      >
-        <div className="gardening-hero__content">
-          <div className="gardening-hero__left">
-            <h2>Daily Gardening Tips</h2>
-            <ul>
-              {dayTips.map((txt, i) => (
-                <li key={i}>{txt}</li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </div>
-
-
-      {/* ✅ 新增：浇灌指导表格 —— 放在 7 Day Forecast 之上 */}
-      <div className="watering-guide">
-        <h2>💧 Watering Guide</h2>
-        <div className="water-when">
-          When to water today: <strong>{wateringTable.whenToWaterToday}</strong>
-        </div>
-
-        <div className="watering-table-wrap">
-          <table className="watering-table">
-            <thead>
-              <tr>
-                <th>Plant</th>
-                <th>How Often?</th>
-                <th>Garden Hose /<br/>Watering Can</th>
-                <th>Drip / Rotary<br/>Irrigation</th>
-                <th>Spray /<br/>Sprinkler</th>
-              </tr>
-            </thead>
-            <tbody>
-              {wateringTable.rows.map((r, idx) => (
-                <tr key={idx}>
-                  <td>{r.plant}</td>
-                  <td>{r.howOften}</td>
-                  <td>{r.hose}</td>
-                  <td>{r.drip}</td>
-                  <td>{r.spray}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        {wateringTable.notes?.length > 0 && (
-          <ul className="watering-notes">
-            {wateringTable.notes.map((t, i) => <li key={i}>{t}</li>)}
-          </ul>
-        )}
-      </div>
-
-
-      <div className="seven-day-forecast">
-        <h3>7 Day Forecast</h3>
-        <div className="day-cards">
-          {dailyForecasts.map((item, index) => (
-            <div className="day-card" key={index}>
-              <p className="day-name">{index === 0 ? 'Today' : formatDay(item.dt)}</p>
+      <div class="weather-sections">
+        <div className="hourly-forecast">
+          {forecastList.slice(0, 12).map((item, index) => (
+            <div className="hour-card" key={index}>
+              <p className="hour-time">
+                {new Date(item.dt * 1000).toLocaleTimeString('en-US', {
+                  hour: 'numeric',
+                  minute: '2-digit',
+                  hour12: true
+                })}
+              </p>
               <img
                 src={`https://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`}
                 alt={item.weather[0].description}
-                className="day-icon"
+                className="hour-icon"
               />
-              <p className="day-temp">{Math.round(item.temp.day)}{tempUnit}</p>
+              <p className="hour-temp">{Math.round(item.temp)}{tempUnit}</p>
             </div>
           ))}
         </div>
-      </div>
-
-      {/* Weekly tips（不再拼接 watering） */}
-      <div className="gardening-tips-full">
-        <h2>🌱 Gardening Tips for the Week</h2>
-        <ul className="tip-content">
-          {weeklyTips.map((t, i) => <li key={i}>{t}</li>)}
-        </ul>
-      </div>
 
 
-      <div className="climate-section">
-        <div className="climate-dropdown">
-          <select onChange={(e) => setClimateType(e.target.value)} value={climateType}>
-            <option value="temperature">Temperature</option>
-            <option value="rainfall">Rainfall</option>
-          </select>
-        </div>
-        <img src={imageSrc} alt="Climate" className="climate-image" />
-      </div>
-
-
-      <div className="green-box climate-box">
-        <h2>📊 Historical Climate Insights</h2>
-        {climateType === 'temperature' ? climateInsightsTemp : climateInsightsRain}
-      </div>
-
-      <div className="climate-section">
-        <img
-          src="/images/future.png"
-          alt="Future Climate"
-          className="climate-image"
-        />
-      </div>
-
-      <div className="green-box climate-box">
-        <h2>📊 Future Climate Insights</h2>
-        <div className="insight-item">
-          <span className="insight-icon">☀️</span>
-          <div className="insight-text">
-            <strong>Hotter Summers:</strong> Choose heat-tolerant vegetables such as tomatoes, chillies, okra, or sweet potatoes. Apply mulch (like straw or wood chips) to conserve soil moisture and protect roots. Water early in the morning or evening to reduce evaporation, and use shade cloths for heat-sensitive crops like lettuce or strawberries.
+        <div
+          className="gardening-hero"
+          style={{
+            ['--tip-count']: dayTips.length,   // ✅ 把当日 tip 的条数传给 CSS
+            backgroundImage: `url(${process.env.PUBLIC_URL || ''}/images/days.png)`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center'
+          }}
+        >
+          <div className="gardening-hero__content">
+            <div className="gardening-hero__left">
+              <h2>Daily Gardening Tips</h2>
+              <ul>
+                {dayTips.map((txt, i) => (
+                  <li key={i}>{txt}</li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
-        <div className="insight-item">
-          <span className="insight-icon">🍂</span>
-          <div className="insight-text">
-            <strong>Longer Autumns:</strong> Take advantage of warmer soil by planting cool-season crops (e.g. spinach, carrots, brassicas) earlier. Extended warmth also allows summer crops like beans or tomatoes to produce longer. Use staggered planting to adapt to unexpected hot or dry periods.
+
+
+        {/* ✅ 新增：浇灌指导表格 —— 放在 7 Day Forecast 之上 */}
+        <div className="watering-guide">
+          <h2>💧 Watering Guide</h2>
+          <div className="water-when">
+            When to water today: <strong>{wateringTable.whenToWaterToday}</strong>
+          </div>
+
+          <div className="watering-table-wrap">
+            <table className="watering-table">
+              <thead>
+                <tr>
+                  <th>Plant</th>
+                  <th>How Often?</th>
+                  <th>Garden Hose /<br/>Watering Can</th>
+                  <th>Drip / Rotary<br/>Irrigation</th>
+                  <th>Spray /<br/>Sprinkler</th>
+                </tr>
+              </thead>
+              <tbody>
+                {wateringTable.rows.map((r, idx) => (
+                  <tr key={idx}>
+                    <td>{r.plant}</td>
+                    <td>{r.howOften}</td>
+                    <td>{r.hose}</td>
+                    <td>{r.drip}</td>
+                    <td>{r.spray}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {wateringTable.notes?.length > 0 && (
+            <ul className="watering-notes">
+              {wateringTable.notes.map((t, i) => <li key={i}>{t}</li>)}
+            </ul>
+          )}
+        </div>
+
+
+        <div className="seven-day-forecast">
+          <h3>7 Day Forecast</h3>
+          <div className="day-cards">
+            {dailyForecasts.map((item, index) => (
+              <div className="day-card" key={index}>
+                <p className="day-name">{index === 0 ? 'Today' : formatDay(item.dt)}</p>
+                <img
+                  src={`https://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`}
+                  alt={item.weather[0].description}
+                  className="day-icon"
+                />
+                <p className="day-temp">{Math.round(item.temp.day)}{tempUnit}</p>
+              </div>
+            ))}
           </div>
         </div>
-        <div className="insight-item">
-          <span className="insight-icon">❄️</span>
-          <div className="insight-text">
-            <strong>Milder Winters:</strong> Try growing borderline crops such as ginger, broccoli, or certain tropical herbs that previously struggled in colder zones. Milder temperatures reduce the need for frost protection, and allow citrus and avocado trees to thrive in more areas—but still watch for surprise cold snaps.
-          </div>
+
+        {/* Weekly tips（不再拼接 watering） */}
+        <div className="gardening-tips-full">
+          <h2>🌱 Gardening Tips for the Week</h2>
+          <ul className="tip-content">
+            {weeklyTips.map((t, i) => <li key={i}>{t}</li>)}
+          </ul>
         </div>
-        <div className="insight-item">
-          <span className="insight-icon">🌸</span>
-          <div className="insight-text">
-            <strong>Earlier Springs:</strong> Start warm-season crops (like corn, zucchini, melons) earlier than usual. Monitor gardens for early outbreaks of pests such as aphids, caterpillars, or whiteflies. Support your soil with compost, organic matter, and crop rotation to boost pest and disease resistance.
+
+
+        <div className="climate-section">
+          <div className="climate-dropdown">
+            <select onChange={(e) => setClimateType(e.target.value)} value={climateType}>
+              <option value="temperature">Temperature</option>
+              <option value="rainfall">Rainfall</option>
+            </select>
           </div>
+          <img src={imageSrc} alt="Climate" className="climate-image" />
         </div>
-        <div className="insight-item">
-          <span className="insight-icon">🔁</span>
-          <div className="insight-text">
-            <strong>Year-Round Strategies:</strong> Use native or drought-resilient plants that are adapted to local conditions. Install smart irrigation systems (e.g. timers, soil moisture sensors) to optimize water use. Collect rainwater in tanks or barrels during wet months to prepare for dry seasons. Increase garden diversity with mixed planting to buffer against losses.
+
+
+        <div className="green-box climate-box">
+          <h2>📊 Historical Climate Insights</h2>
+          {climateType === 'temperature' ? climateInsightsTemp : climateInsightsRain}
+        </div>
+
+        <div className="climate-section">
+          <img
+            src="/images/future.png"
+            alt="Future Climate"
+            className="climate-image"
+          />
+        </div>
+
+        <div className="green-box climate-box">
+          <h2>📊 Future Climate Insights</h2>
+          <div className="insight-item">
+            <span className="insight-icon">☀️</span>
+            <div className="insight-text">
+              <strong>Hotter Summers:</strong> Choose heat-tolerant vegetables such as tomatoes, chillies, okra, or sweet potatoes. Apply mulch (like straw or wood chips) to conserve soil moisture and protect roots. Water early in the morning or evening to reduce evaporation, and use shade cloths for heat-sensitive crops like lettuce or strawberries.
+            </div>
+          </div>
+          <div className="insight-item">
+            <span className="insight-icon">🍂</span>
+            <div className="insight-text">
+              <strong>Longer Autumns:</strong> Take advantage of warmer soil by planting cool-season crops (e.g. spinach, carrots, brassicas) earlier. Extended warmth also allows summer crops like beans or tomatoes to produce longer. Use staggered planting to adapt to unexpected hot or dry periods.
+            </div>
+          </div>
+          <div className="insight-item">
+            <span className="insight-icon">❄️</span>
+            <div className="insight-text">
+              <strong>Milder Winters:</strong> Try growing borderline crops such as ginger, broccoli, or certain tropical herbs that previously struggled in colder zones. Milder temperatures reduce the need for frost protection, and allow citrus and avocado trees to thrive in more areas—but still watch for surprise cold snaps.
+            </div>
+          </div>
+          <div className="insight-item">
+            <span className="insight-icon">🌸</span>
+            <div className="insight-text">
+              <strong>Earlier Springs:</strong> Start warm-season crops (like corn, zucchini, melons) earlier than usual. Monitor gardens for early outbreaks of pests such as aphids, caterpillars, or whiteflies. Support your soil with compost, organic matter, and crop rotation to boost pest and disease resistance.
+            </div>
+          </div>
+          <div className="insight-item">
+            <span className="insight-icon">🔁</span>
+            <div className="insight-text">
+              <strong>Year-Round Strategies:</strong> Use native or drought-resilient plants that are adapted to local conditions. Install smart irrigation systems (e.g. timers, soil moisture sensors) to optimize water use. Collect rainwater in tanks or barrels during wet months to prepare for dry seasons. Increase garden diversity with mixed planting to buffer against losses.
+            </div>
           </div>
         </div>
       </div>
