@@ -467,43 +467,46 @@ const Weather = () => {
         </div>
 
 
-        {/* ✅ 新增：浇灌指导表格 —— 放在 7 Day Forecast 之上 */}
         <div className="watering-guide">
           <h2>💧 Watering Guide</h2>
           <div className="water-when">
             When to water today: <strong>{wateringTable.whenToWaterToday}</strong>
           </div>
 
-          <div className="watering-table-wrap">
-            <table className="watering-table">
-              <thead>
-                <tr>
-                  <th>Plant</th>
-                  <th>How Often?</th>
-                  <th>Garden Hose /<br/>Watering Can</th>
-                  <th>Drip / Rotary<br/>Irrigation</th>
-                  <th>Spray /<br/>Sprinkler</th>
-                </tr>
-              </thead>
-              <tbody>
-                {wateringTable.rows.map((r, idx) => (
-                  <tr key={idx}>
-                    <td>{r.plant}</td>
-                    <td>{r.howOften}</td>
-                    <td>{r.hose}</td>
-                    <td>{r.drip}</td>
-                    <td>{r.spray}</td>
+          <div className="watering-content">
+            {/* 表格部分 */}
+            <div className="watering-table-wrap">
+              <table className="watering-table">
+                <thead>
+                  <tr>
+                    <th>Plant</th>
+                    <th>How Often?</th>
+                    <th>Garden Hose /<br/>Watering Can</th>
+                    <th>Drip / Rotary<br/>Irrigation</th>
+                    <th>Spray /<br/>Sprinkler</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {wateringTable.rows.map((r, idx) => (
+                    <tr key={idx}>
+                      <td>{r.plant}</td>
+                      <td>{r.howOften}</td>
+                      <td>{r.hose}</td>
+                      <td>{r.drip}</td>
+                      <td>{r.spray}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
 
-          {wateringTable.notes?.length > 0 && (
-            <ul className="watering-notes">
-              {wateringTable.notes.map((t, i) => <li key={i}>{t}</li>)}
-            </ul>
-          )}
+            {/* notes part */}
+            {wateringTable.notes?.length > 0 && (
+              <ul className="watering-notes">
+                {wateringTable.notes.map((t, i) => <li key={i}>{t}</li>)}
+              </ul>
+            )}
+          </div>
         </div>
 
 
@@ -524,13 +527,21 @@ const Weather = () => {
           </div>
         </div>
 
-        {/* Weekly tips（不再拼接 watering） */}
-        <div className="gardening-tips-full">
-          <h2>🌱 Gardening Tips for the Week</h2>
-          <ul className="tip-content">
-            {weeklyTips.map((t, i) => <li key={i}>{t}</li>)}
-          </ul>
+        <div className="gardening-tips-banner">
+          <h2>Gardening Tips for the Week</h2>
+          <p className="tip-text">{weeklyTips[0]}</p>
         </div>
+
+        <div
+          className="weekly-image-banner"
+          style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/images/weather_2.jpg)` }}
+        >
+          <div className="weekly-image-overlay">
+            <h2>Beyond Weather: From History To Future Resilient</h2>
+          </div>
+        </div>
+
+
 
 
         <div className="climate-section">
