@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './PlantDetailPage.css';
+import { MdArrowBack } from 'react-icons/md';
 
 const PlantDetailPage = () => {
   const { plantName } = useParams();
@@ -87,8 +88,8 @@ const PlantDetailPage = () => {
         <div className="banner-background-detail"></div>
 
         <div className="plant-detail-content">
-          <button className="back-button" onClick={handleGoBack}>
-            Back
+          <button className="exit-button" onClick={handleGoBack}>
+            <MdArrowBack />
           </button>
           <div className="loading-container">
             <div className="loading-spinner"></div>
@@ -103,8 +104,8 @@ const PlantDetailPage = () => {
     return (
       <div className="plant-detail-page">
         <div className="plant-detail-content">
-          <button className="back-button" onClick={handleGoBack}>
-            Back
+          <button className="exit-button" onClick={handleGoBack}>
+            <MdArrowBack />
           </button>
           <div className="error-container">
             <h2>Error</h2>
@@ -121,8 +122,8 @@ const PlantDetailPage = () => {
         {/* Banner Section*/}
         <div className="banner-background-detail"></div>
         <div className="plant-detail-content">
-          <button className="back-button" onClick={handleGoBack}>
-            Back
+          <button className="exit-button" onClick={handleGoBack}>
+            <MdArrowBack />
           </button>
           <div className="error-container">
             <h2>Plant Not Found</h2>
@@ -139,8 +140,8 @@ const PlantDetailPage = () => {
       <div className="banner-background-detail"></div>
       <div className='plant-detail-container'>
         <div className="plant-detail-content">
-          <button className="back-button" onClick={handleGoBack}>
-            Back
+          <button className="exit-button" onClick={handleGoBack}>
+            <MdArrowBack />
           </button>
 
           <div className="plant-overview">

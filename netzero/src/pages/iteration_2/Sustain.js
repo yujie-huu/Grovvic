@@ -223,11 +223,20 @@ const Sustain = () => {
         <h1 className="sustain-companion-title">Companion Planting</h1>
         <h2 className="sustain-companion-subtitle">Discover the best companions for your crops.</h2>
         <div className="sustain-companion-content">
-          <button className="companion-button" onClick={handleCompanionClick}>Learn More</button>
+          <button className="companion-button" onClick={handleCompanionClick}>LEARN MORE</button>
         </div>
       </section>
 
       <section className="sustain-soil-section">
+        <div className="sustain-soil-header">
+          <h1 className="sustain-soil-title">Sustainable Soil Care</h1>
+          <h2 className="sustain-soil-subtitle">
+           Healthy soil is the foundation of every resilient garden! <br />
+           Learn how to nourish the earth beneath your feet, <br />
+           so your plants, and the planet, can thrive.
+          </h2>
+        </div>
+
         <div className="sustain-composting-content">
           <h1 className="sustain-composting-title">Composting Quiz</h1>
           <h2 className="sustain-composting-subtitle">
@@ -269,7 +278,6 @@ const Sustain = () => {
                   {mulchContent.why.benefits.map((benefit, index) => (
                     <div key={index} className="benefit-item">
                       <div className="benefit-item-container">
-                        <p className="benefit-bullet">•</p>
                         <p className="benefit-text">{benefit}</p>
                       </div>
                     </div>
@@ -306,7 +314,7 @@ const Sustain = () => {
             {activeTab === 'how' && (
               <div className="mulch-how-content">
                 <div className="mulch-how-header">
-                  <p className="mulch-content-subtitle">{mulchContent.how.subtitle}</p>
+                  <h2 className="mulch-content-subtitle">{mulchContent.how.subtitle}</h2>
                 </div>
                 <div className="mulch-how-body">
                   <div className="mulch-steps">

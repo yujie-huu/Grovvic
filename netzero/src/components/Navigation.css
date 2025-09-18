@@ -65,6 +65,7 @@
 }
 
 .nav-menu {
+  margin-left: 30px;
   display: none;
   position: absolute;
   top: 100%;
@@ -84,7 +85,7 @@
 .nav-link {
   color: #333;
   text-decoration: none;
-  padding: 12px 0;
+  padding: 4px 0;
   font-weight: 500;
   transition: color 0.3s ease;
   border-bottom: 1px solid #f0f0f0;

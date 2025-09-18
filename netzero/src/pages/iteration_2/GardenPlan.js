@@ -3,6 +3,7 @@ import axios from 'axios';
 import './GardenPlan.css';
 import PlantSpeciesCard from '../../components/PlantSpeciesCard';
 import PlantCard from '../../components/PlantCard';
+import { MdArrowBack } from 'react-icons/md';
 
 const GardenPlan = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -458,8 +459,8 @@ const GardenPlan = () => {
             {showVarieties && (
               <div className="breadcrumb">
                 {enteredViaCard && (
-                  <button className="back-button" onClick={handleBackToSpecies}>
-                    ← Back to list of species
+                  <button className="exit-button" onClick={handleBackToSpecies}>
+                    <MdArrowBack/>
                   </button>
                 )}
                 <h3 className="varieties-title">Varieties of {selectedSpecies}</h3>

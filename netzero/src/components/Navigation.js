@@ -48,18 +48,15 @@ const Navigation = () => {
             Weather
           </Link>
           <Link to={`/${currentVersion}/gardenplan`} className={`nav-link ${isActive('/gardenplan') ? 'active' : ''}`}>
-            Garden Plan
+            Garden
           </Link>
 
           <Link to={`/${currentVersion}/sustain`} className={`nav-link ${isActive('/sustain') ? 'active' : ''}`}>
-            Sustainability
+            Sustain
           </Link>
           <Link to={`/${currentVersion}/biodiversity`} className={`nav-link ${isActive('/biodiversity') ? 'active' : ''}`}>
             Biodiversity
           </Link>       
-          <Link to={`/${currentVersion}/about`} className={`nav-link ${isActive('/about') ? 'active' : ''}`}>
-            About
-          </Link>  
           <Link to={`/${currentVersion}/support`} className={`nav-link ${isActive('/support') ? 'active' : ''}`}>
             Support
           </Link>
