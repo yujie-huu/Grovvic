@@ -138,6 +138,9 @@
     box-shadow: none;
     padding: 0;
     gap: 30px;
+
+    flex-wrap: nowrap;   
+    white-space: nowrap; 
   }
   
   .nav-link {
