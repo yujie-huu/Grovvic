@@ -1,38 +1,41 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { MapContainer, TileLayer, CircleMarker, Tooltip } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
 import "./Biodiversity.css";
 import "./BiodiversityExplore.css";
 
 const Biodiversity = () => {
   const [selectedCategory, setSelectedCategory] = useState("Endangered Animals");
   const [mapType, setMapType] = useState("Minimal");
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState("Acridotheres tristis");
+  const [occurrences, setOccurrences] = useState([]);
 
-  const mockResults = [
-    {
-      id: 1,
-      name: "Spiny-cheeked Honeyeater",
-      latin: "Acanthagenys rufogularis",
-      related: "Related to 4 plants",
-      views: "39,284",
-      image: "/images/bird1.jpg",
-    },
-    {
-      id: 2,
-      name: "Yellow-rumped Thornbill",
-      latin: "Acanthiza chrysorrhoa",
-      related: "Related to 3 plants",
-      views: "96,066",
-      image: "/images/bird2.jpg",
-    },
-    {
-      id: 3,
-      name: "Red-rumped Tit",
-      latin: "Acanthiza apicalis",
-      related: "Related to 3 plants",
-      views: "6,883",
-      image: "/images/bird3.jpg",
-    },
-  ];
+  // 请求后端 API 获取物种分布数据
+  useEffect(() => {
+    if (!search) return;
+    const url = `https://netzero-vigrow-api.duckdns.org/iter2/occurrences/by-animal?animal=${encodeURIComponent(
+      search
+    )}`;
+    fetch(url)
+      .then((res) => res.json())
+      .then((data) => {
+        setOccurrences(data);
+      })
+      .catch((err) => console.error("Error fetching data:", err));
+  }, [search]);
+
+  const getTileLayer = () => {
+    switch (mapType) {
+      case "Road":
+        return "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+      case "Terrain":
+        return "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png";
+      case "Satellite":
+        return "https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}";
+      default:
+        return "https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png";
+    }
+  };
 
   return (
     <div className="biodiversity-page">
@@ -46,7 +49,11 @@ const Biodiversity = () => {
         <div className="filter-panel">
           <h3>Which local organisms do you want to see?</h3>
           <div className="category-buttons">
-            {["Endangered Animals", "Pollinators", "Pests and Weeds"].map((cat) => (
+            {[
+              "Endangered Animals",
+              "Pollinators",
+              "Pests and Weeds",
+            ].map((cat) => (
               <button
                 key={cat}
                 className={`category-btn ${selectedCategory === cat ? "active" : ""}`}
@@ -72,9 +79,22 @@ const Biodiversity = () => {
           <div className="map-header">
             <span>28 Dec 2000 – 10 Jan 2025 ▼</span>
           </div>
-          <div className="map-placeholder">
-            <p>[ Map Placeholder – {mapType} View ]</p>
-          </div>
+          <MapContainer center={[-37.8, 145]} zoom={7} style={{ height: "400px", width: "100%" }}>
+            <TileLayer url={getTileLayer()} />
+            {occurrences.map((item, idx) => (
+              <CircleMarker
+                key={idx}
+                center={[item.decimalLatitude, item.decimalLongitude]}
+                radius={5}
+                color="red"
+                fillOpacity={0.7}
+              >
+                <Tooltip direction="top" offset={[0, -5]} opacity={1} permanent={false}>
+                  {new Date(item.eventDate).toLocaleDateString()}
+                </Tooltip>
+              </CircleMarker>
+            ))}
+          </MapContainer>
 
           {/* 地图类型切换 */}
           <div className="map-type-selector">
@@ -90,47 +110,6 @@ const Biodiversity = () => {
               </label>
             ))}
           </div>
-        </div>
-      </div>
-
-      {/* ✅ 只保留绿色背景 Explore 部分 */}
-      <div className="explore-wrapper">
-        <div className="explore-section">
-          <h2 className="explore-title">Explore more</h2>
-          <p className="explore-subtitle">
-            Use the search and filter below to discover plants, pollinators, pests,
-            and endangered species.
-          </p>
-
-          <div className="explore-search-box">
-            <button className="filter-btn">Type</button>
-            <input
-              type="text"
-              className="search-input"
-              placeholder="Search"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-            <button className="search-btn">Search</button>
-          </div>
-
-          <div className="tag-box">Endangered Birds ✕</div>
-
-          <div className="explore-results">
-            {mockResults.map((item) => (
-              <div className="explore-card" key={item.id}>
-                <img src={item.image} alt={item.name} className="explore-img" />
-                <div className="explore-info">
-                  <h3 className="explore-name">{item.name}</h3>
-                  <p className="explore-latin">{item.latin}</p>
-                  <p className="explore-related">{item.related}</p>
-                  <p className="explore-views">👁 {item.views}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <p className="explore-count">{mockResults.length} results</p>
         </div>
       </div>
     </div>
