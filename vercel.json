@@ -1,0 +1,16 @@
+{
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/api/$1" },
+
+    {
+      "src": "/(.*)",
+      "has": [{ "type": "cookie", "key": "auth", "value": "1" }],
+      "dest": "/$1"
+    },
+
+    {
+      "src": "/(.*)",
+      "dest": "/api/basic-auth?path=$1"
+    }
+  ]
+}

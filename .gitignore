@@ -39,7 +39,8 @@ pnpm-debug.log*
 .DS_Store
 Thumbs.db
 
-# --- Optional: lock files (保留 package-lock.json，不要取消注释) ---
+# --- Optional: lock files (uncomment if not needed) ---
+# package-lock.json
 # yarn.lock
 # pnpm-lock.yaml
 
@@ -51,4 +52,5 @@ Thumbs.db
 .devcontainer/
 .docker/
 
+dist/
 debug.config.json

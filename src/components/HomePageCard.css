@@ -1,0 +1,161 @@
+/* ===== HOMEPAGE CARD COMPONENT ===== */
+.homepage-card {
+  background: white;
+  padding: 80px 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 0;
+  border: none;
+  box-shadow: none;
+}
+
+.homepage-card:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.homepage-card:focus {
+  outline: 2px solid #4ecdc4;
+  outline-offset: 2px;
+}
+
+.homepage-card-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  align-items: center;
+}
+
+/* ===== CARD TEXT STYLING ===== */
+.homepage-card-text {
+  flex: 1;
+  text-align: center;
+}
+
+.homepage-card-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #333;
+  background: white;
+  margin-bottom: 20px;
+  text-align: center;
+  justify-content: center;
+  line-height: 1.2;
+  transition: color 0.3s ease;
+}
+
+.homepage-card-description {
+  font-size: 1.6rem;
+  color: #666;
+  line-height: 1.6;
+  max-width: 600px;
+  text-align: center;
+  margin: 0 auto;
+}
+
+/* ===== CARD IMAGE STYLING ===== */
+.homepage-card-image {
+  flex: 1;
+  position: relative;
+  height: 300px;
+  width: 100%;
+  max-width: 500px;
+}
+
+.homepage-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+
+/* ===== IMAGE POSITION VARIANTS ===== */
+.homepage-card.image-left .homepage-card-content {
+  flex-direction: column-reverse;
+}
+
+.homepage-card.image-right .homepage-card-content {
+  flex-direction: column;
+}
+
+/* ===== CONTINUOUS BACKGROUND ===== */
+.homepage-card:nth-child(odd) {
+  background: white;
+}
+
+.homepage-card:nth-child(even) {
+  background: white;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media (min-width: 768px) {
+  .homepage-card-content {
+    flex-direction: row;
+    align-items: center;
+    gap: 60px;
+  }
+  
+  .homepage-card-text {
+    text-align: center;
+    flex: 1;
+  }
+  
+  .homepage-card-title {
+    text-align: center;
+  }
+  
+  .homepage-card-description {
+    text-align: center;
+    /* margin: 0; */
+  }
+  
+  .homepage-card-image {
+    flex: 1;
+    max-width: 500px;
+  }
+  
+  /* Image position variants for desktop - RESPECT THE PROPS */
+  .homepage-card.image-left .homepage-card-content {
+    flex-direction: row;
+  }
+  
+  .homepage-card.image-right .homepage-card-content {
+    flex-direction: row;
+  }
+  
+  /* Ensure proper order for left/right positioning */
+  .homepage-card.image-left .homepage-card-text {
+    order: 2;
+  }
+  
+  .homepage-card.image-left .homepage-card-image {
+    order: 1;
+  }
+  
+  .homepage-card.image-right .homepage-card-text {
+    order: 1;
+  }
+  
+  .homepage-card.image-right .homepage-card-image {
+    order: 2;
+  }
+}
+
+/* ===== ACCESSIBILITY ===== */
+.homepage-card[role="button"]:focus {
+  outline: 2px solid #4ecdc4;
+  outline-offset: 2px;
+}
+
+/* ===== SUBTLE HOVER EFFECTS ===== */
+.homepage-card:hover .homepage-card-title {
+  color: #4ecdc4;
+}
+
+.homepage-card:hover .homepage-card-image img {
+  transform: none;
+  transition: none;
+} 
