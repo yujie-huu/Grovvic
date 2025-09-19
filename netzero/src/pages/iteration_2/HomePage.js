@@ -26,6 +26,18 @@ const HomePage = () => {
     navigate('/iteration2/about');
   };
 
+  // Navigate to sustainability page
+  const handleSustainClick = () => {
+    console.log('Navigating to Sustainability Page');
+    navigate('/iteration2/sustain');
+  };
+
+  // Navigate to biodiversity page
+  const handleBioClick = () => {
+    console.log('Navigating to Biodiversity Page');
+    navigate('/iteration2/biodiversity');
+  }
+
 
 
   return (
@@ -87,7 +99,6 @@ const HomePage = () => {
           imageAlt="Garden & Weather"
           imagePosition="left"
           onClick={handleWeatherClick}
-          className="weather-card"
         />
 
         {/* Garden Plan Section */}
@@ -98,7 +109,26 @@ const HomePage = () => {
           imageAlt="Green plants"
           imagePosition="right"
           onClick={handlePlanClick}
-          className="plan-card"
+        />
+
+        {/* Sustainability Section */}
+        <HomePageCard
+          title="Grow Your Garden Sustainably"
+          description="Make eco-friendly choices, design smarter spaces, care for your soil and water, and support biodiversity while keeping your garden thriving."
+          imageSrc="/images/homepage_sustain1.jpg"
+          imageAlt="Sustainability"
+          imagePosition="left"
+          onClick={handleSustainClick}
+        />
+
+        {/* Biodiversity Section */}
+        <HomePageCard
+          title="Discover Local Biodiversity"
+          description="Explore pollinators, native species, pests, and weeds in your area to make gardening choices that protect ecosystems and support conservation."
+          imageSrc="/images/homepage_bio1.jpg"
+          imageAlt="Biodiversity"
+          imagePosition="right"
+          onClick={handleBioClick}
         />
       </div>
     </div>
