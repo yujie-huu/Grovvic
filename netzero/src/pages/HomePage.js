@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './HomePage.css';
-import HomePageCard from '../../components/HomePageCard';
+import HomePageCard from '../components/HomePageCard';
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -11,19 +11,19 @@ const HomePage = () => {
   // Navigate to weather page
   const handleWeatherClick = () => {
     console.log('Navigating to Weather Page');
-    navigate('/iteration1/weather');
+    navigate('/weather');
   };
 
   // Navigate to garden plan page
   const handlePlanClick = () => {
     console.log('Navigating to Garden Plan Page');
-    navigate('/iteration1/gardenplan');
+    navigate('/gardenplan');
   };
 
   // Navigate to about page
   const handleLearnMoreClick = () => {
     console.log('Navigating to About Page');
-    navigate('/iteration1/about');
+    navigate('/about');
   };
 
 
