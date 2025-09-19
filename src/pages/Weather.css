@@ -1,0 +1,744 @@
+.weather-page {
+  /* Main container of the weather page */
+  min-height: calc(100vh - 160px);
+  background: #f8f9fa;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 40px 20px;
+  font-family: 'Arial', sans-serif;
+  gap: 40px;
+  flex-wrap: wrap; /* Enable wrapping for responsive layout */
+}
+
+/* Main weather card (left box) */
+.weather-main-card {
+  background-color: #1c1c1c;
+  color: #fff;
+  padding: 25px 40px;
+  border-radius: 25px;
+  width: 480px;
+  height: auto;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Top section with city and temperature unit */
+.weather-main-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+.location-tag {
+  background-color: #2b2b2b;
+  padding: 6px 14px;
+  border-radius: 12px;
+  font-size: 1rem;
+  color: #e0e0e0;
+}
+
+.unit-toggle {
+  background-color: #2b2b2b;
+  padding: 6px 12px;
+  border-radius: 10px;
+  font-size: 1rem;
+  color: #e0e0e0;
+}
+
+/* Main section (date, icon, temperature) */
+.weather-main-body {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-grow: 1;
+}
+
+/* Date section */
+.weather-main-left .weekday {
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+.weather-main-left .date {
+  font-size: 1rem;
+  color: #ccc;
+  margin-top: 5px;
+}
+
+/* Weather icon in the center */
+.weather-main-center .weather-icon img {
+  width: 100px;
+  height: 100px;
+}
+
+/* Temperature and description section */
+.weather-main-right {
+  text-align: right;
+}
+.weather-main-right .temp {
+  font-size: 2.4rem;
+  font-weight: bold;
+}
+.weather-main-right .minmax {
+  font-size: 1.2rem;
+  color: #ccc;
+}
+.weather-main-right .desc {
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-top: 4px;
+}
+.weather-main-right .feels {
+  font-size: 0.95rem;
+  color: #aaa;
+  margin-top: 2px;
+}
+
+/* Highlights card (right box) */
+.weather-highlights-wrapper {
+  background-color: #1c1c1c;
+  color: #fff;
+  padding: 16px 24px;
+  border-radius: 25px;
+  width: 540px;
+  min-height: 290px; /* Just slightly taller than .weather-main-card */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.weather-highlights-wrapper h3 {
+  margin-bottom: 16px;
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+/* Grid layout for each highlight block */
+.weather-highlights {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+/* Each highlight box: compact spacing and font size */
+.highlight-box {
+  background-color: #111;
+  padding: 12px;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: left;
+}
+
+/* Text styles inside each box */
+.highlight-box p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #bbb;
+}
+
+.highlight-box strong {
+  font-size: 1.1rem;
+  margin-top: 4px;
+  color: #fff;
+}
+
+.highlight-box .subtext {
+  font-size: 0.8rem;
+  color: #888;
+  margin-top: 4px;
+}
+
+/* Hourly forecast cards */
+.hour-card {
+  flex: 0 0 calc(100% / 8 - 1rem); /* display seven cards each line，minus  */
+  max-width: 100px;               
+  height: 100px;
+  background: linear-gradient(to bottom, #111, #333);
+  color: white;
+  border-radius: 1rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  font-size: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  box-sizing: border-box;
+  scroll-snap-align: start;
+}
+
+.hourly-forecast {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: 1rem;
+  padding: 1rem 0;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+  scrollbar-color: #888 transparent;
+}
+.hourly-forecast::-webkit-scrollbar { height: 6px; }
+.hourly-forecast::-webkit-scrollbar-track { background: transparent; }
+.hourly-forecast::-webkit-scrollbar-thumb { background-color: #888; border-radius: 3px; }
+
+
+.hour-time {
+  font-size: 0.75rem;
+  white-space: nowrap;
+  line-height: 1.2;
+}
+
+.hour-icon {
+  width: 36px;
+  height: 36px;
+}
+
+.hour-temp {
+  font-size: 0.8rem;
+}
+
+/* --- Daily Gardening Tips hero --- */
+.gardening-hero {
+  width: 90%;
+  max-width: 1200px;
+
+  /* ✅ according to the amount of tip
+     公式：base height 180px + each tip 32px，可按需微调 */
+  min-height: calc(120px + (var(--tip-count, 0) * 32px));
+
+  margin: 1rem auto 1.25rem;
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.22);
+}
+
+/* Dark color mask, enhances text readability */
+.gardening-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+}
+
+/* Text container: 
+   Prevent text from overflowing and allow line breaks*/
+.gardening-hero__content {
+  position: relative;                 /* Covered on top of the mask */
+  z-index: 1;
+  height: 100%;
+  padding: 24px 28px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;            /* Vertically centered */
+  gap: 12px;
+  box-sizing: border-box;
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+}
+
+/* headline style，left(middle alternative） */
+.gardening-hero__content h2 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.4);
+}
+
+/* List style */
+.gardening-hero__content ul {
+  margin: 0;
+  padding-left: 1.1rem;               /* Keep the dot indentation */
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+/* Place the 7-day section close to this area,
+ leaving only one row of space between them. */
+.seven-day-forecast {
+  margin-top: 12px;               
+}
+
+.seven-day-forecast {
+  display: block;                         /* override inline-block */
+  width: 100%;
+  max-width: calc(1200px * 7 / 9);        /* match tips width */
+  margin: 20px auto;                      /* centered */
+  background: #1e1e1e;
+  border-radius: 24px;
+  padding: 20px 30px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.seven-day-forecast h3 {
+  color: white;
+  font-size: 1.5rem;
+  margin-bottom: 14px;
+  text-align: center;
+}
+
+.day-cards {
+  display: flex;
+  justify-content: center;   
+  gap: 14px;
+}
+
+.day-card {
+  flex: 0 0 auto;             
+  width: 90px;
+  height: 140px;
+  background-color: #111;
+  color: white;
+  border-radius: 18px;
+  padding: 12px 6px;
+  text-align: center;
+  box-shadow: inset 0 -1px 0 #555;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.day-name {
+  font-weight: 500;
+  font-size: 0.95rem;
+  margin-bottom: 6px;
+  color: #ccc;
+}
+
+.day-icon {
+  width: 44px;
+  height: 44px;
+  margin-bottom: 4px;
+}
+
+.day-temp {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.gardening-tips-banner {
+  margin: 1.5rem auto 2rem;
+  padding: 1.5rem 2rem;
+  background-color: #ffffff;   /* 白色背景 */
+  border-radius: 0;            /* 保持直角 */
+  width: 100%;
+  max-width: calc(1200px * 7 / 9);  /* 固定缩短 */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  text-align: center;
+  display: block;
+}
+
+
+.gardening-tips-banner h2 {
+  font-size: 1.6rem;
+  margin-bottom: 0.8rem;
+  color:  #65a30d;
+}
+
+.gardening-tips-banner .tip-text {
+  font-size: 1.1rem;
+  color:  #2d2d2d;
+  line-height: 1.6;
+}
+
+
+/* weekly-image */
+.weekly-image-banner {
+  position: relative;
+  width: 100%;
+  max-width: calc(1200px * 7 / 9);
+  margin: 0 auto 2.5rem;
+  height: 520px;                          /* ✅ 加高横幅：420 → 520 */
+  background-size: cover;
+  background-position: center;
+  border-radius: 0;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.25);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.weekly-image-banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+}
+
+.weekly-image-overlay {
+  position: relative;
+  z-index: 1;
+  color: #fff;
+  padding: 2.5rem 4rem;                    /* ✅ 适当增加内边距 */
+}
+
+.weekly-image-overlay h2 {
+  font-size: 3.4rem;                       /* ✅ 更大主标题 */
+  margin-bottom: 1.2rem;
+  font-weight: bold;
+  text-shadow: 0 5px 14px rgba(0, 0, 0, 0.6);
+}
+
+.weekly-image-overlay p {
+  font-size: 2rem;                         /* ✅ 更大正文 */
+  line-height: 2.2;
+  text-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+
+
+
+
+
+/* --- Historical Climate Image --- */
+.climate-section {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  max-width: 1000px; 
+  margin: 0 auto;
+}
+
+.climate-dropdown {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1;
+}
+
+.climate-dropdown select {
+  padding: 5px 10px;
+  font-size: 16px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.climate-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 10px;
+  margin-top: 60px; 
+}
+
+.green-box {
+  background-color: #dcfce7;
+  border-left: 16px solid #65a30d;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem 2rem;
+  margin: 2rem auto;
+  width: 100%;
+  max-width: 1100px;  
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* Title style */
+.green-box h2 {
+  margin: 0;
+  font-size: 2rem;
+  color: #14532d; /* Deep green text */
+  text-align: center;
+}
+
+/* Paragraph style */
+.green-box p {
+  font-size: 1.25rem;
+  color: #14532d;
+  text-align: center;
+  line-height: 1.6;
+  margin-top: 0.75rem;
+  padding: 0 1rem;
+  max-width: 100%;
+}
+
+
+/* Optional: Specific class for climate box if needed */
+.climate-title {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #064e3b;
+}
+
+.climate-row {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 18px;
+}
+
+.climate-label {
+  width: 200px; /* 固定宽度，确保左边对齐 */
+  font-weight: bold;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.climate-text {
+  flex: 1;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+
+/* Parent container layout: left–right split. */
+.gardening-hero__content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  padding: 24px 28px;
+  gap: 1.5rem;
+}
+
+/* left tips font brightness */
+.gardening-hero__left {
+  flex: 1;
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
+  max-width: 65%;
+}
+
+.gardening-hero__left h2 {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.gardening-hero__left ul {
+  padding-left: 1.2rem;
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+.gardening-hero__left li {
+  margin-bottom: 6px;
+}
+
+/* right cards zone */
+.gardening-hero__right {
+  flex: 0 0 auto;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); 
+  gap: 12px 16px;
+  justify-content: end;      
+  align-content: center;     
+  height: 100%;  
+  margin-right: -200px;             
+}
+
+/* each card */
+.tip-card {
+  background-color: #ffffff;
+  color: #111;
+  border-radius: 10px;
+  padding: 8px 14px;
+  width: 180px;         
+  height: 60px;         
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: flex;        
+  flex-direction: column;
+  justify-content: center;
+}
+
+.tip-card__time {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #444;
+}
+
+.tip-card__text {
+  font-size: 0.9rem; 
+  font-weight: bold;
+  margin-top: 4px;
+}
+
+
+.future-climate-banner {
+  width: 100%;
+  max-width: 800px;
+  display: block;
+  margin: 40px auto 20px auto; /* 上下间距 + 居中 */
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* ===== Watering Guide (Irrigation Table) ===== */
+.watering-guide {
+  width: 90%;
+  max-width: 1200px;
+  margin: 24px auto 32px;
+  background: #14532d;        /* deep green background */
+  border-radius: 0;           /* rectangle */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  padding: 24px 28px;
+  color: #ffffff;
+  
+  border: none;               
+}
+
+
+.watering-guide h2 {
+  margin: 0 0 12px;
+  text-align: center;
+  color: #ffffff;               /* white title */
+  font-size: 1.6rem;
+}
+
+.watering-guide .water-when {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #f1fdf1;               /* 浅白绿色对比度 */
+  margin-bottom: 20px;
+}
+
+/* === 上下排布容器 === */
+.watering-content {
+  display: flex;
+  flex-direction: column;  
+  gap: 20px;
+}
+
+/* 表格部分 */
+.watering-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.watering-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #ffffff;          /* 表格仍然是白色 */
+  border-radius: 0;             /* 直角 */
+  overflow: hidden;
+}
+
+.watering-table th,
+.watering-table td {
+  border: 1px solid #e5e7eb;
+  padding: 12px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.watering-table thead th {
+  background: #eaf7e7;
+  color: #14532d;
+  font-weight: 700;
+}
+
+.watering-table tbody td {
+  color: #1f2937;
+  font-weight: 500;
+  line-height: 1.35;
+  white-space: pre-line;
+}
+
+/* notes part */
+.watering-notes {
+  margin: 0;
+  padding-left: 1.2rem;
+  color: #ffffff;
+  line-height: 1.6;
+  text-align: center;
+}
+
+
+.watering-notes li { 
+  margin: 6px 0; 
+  list-style-position: inside;
+}
+
+
+
+
+/* ✅ 响应式：小屏幕下垂直排列 */
+@media (max-width: 900px) {
+  .watering-content {
+    flex-direction: column;
+  }
+
+  .watering-notes {
+    margin-top: 16px;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .weather-page {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .weather-main-card,
+  .weather-highlights-wrapper {
+    width: 90%;
+  }
+
+  .weather-main-right {
+    text-align: left;
+  }
+
+  .weather-highlights {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Responsive: Narrow screens reduce height and font size */
+@media (max-width: 768px) {
+  .gardening-hero {
+    width: 94%;
+    height: 220px;
+  }
+  .gardening-hero__content h2 {
+    font-size: 1.5rem;
+  }
+  .gardening-hero__content ul {
+    font-size: 0.95rem;
+  }
+}
+
+/* --- Section Container: From hourly forecast downward --- */
+.weather-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;          /* 模块之间的统一间距 */
+  width: 100%;
+  align-items: center;
+  margin-top: 20px;
+}
+
+/* Make all child modules (hourly, 7-day, gardening, watering, climate) centered and stacked */
+.weather-sections > :not(.gardening-tips-banner):not(.seven-day-forecast){
+  width: 100%;
+  max-width: 1200px;  /* 控制最大宽度，避免大屏过宽 */
+}
+
+/* Responsive: on smaller devices keep stacking naturally */
+@media (max-width: 900px) {
+  .weather-sections {
+    gap: 18px;
+  }
+}
