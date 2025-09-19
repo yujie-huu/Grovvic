@@ -44,7 +44,7 @@ const Navigation = () => {
             <div className="logo">
               <div className="logo-icon">♻️</div>
             </div>
-            <span className="nav-brand-name">VIGROW</span>
+            <span className="nav-brand-name">GROVVIC</span>
           </Link>
         </div>
         
