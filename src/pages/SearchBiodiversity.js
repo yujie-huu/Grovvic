@@ -1,24 +1,30 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";  // ✅ 新增
+import { useNavigate } from "react-router-dom";
 import "./SearchBiodiversity.css";
 
 const SearchBiodiversity = ({ onSelect = () => {} }) => {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
-  const navigate = useNavigate(); // ✅ 新增
+  const navigate = useNavigate();
 
   const handleSearch = () => {
     if (!query) {
-      setResults([]); // 没有输入就清空
+      setResults([]);
       return;
     }
     fetch("https://netzero-vigrow-api.duckdns.org/iter2/species/animals")
       .then((res) => res.json())
       .then((data) => {
         const q = query.toLowerCase();
-        const filtered = data.filter((item) =>
-          (item.animal_taxon_name || "").toLowerCase().includes(q)
-        );
+        const filtered = data.filter((item) => {
+          const sci = (item.animal_taxon_name || "").toLowerCase();
+          const com = (item.vernacular_name || "").toLowerCase();
+
+          if (q.length === 1) {
+            return sci.startsWith(q) || com.startsWith(q);
+          }
+          return sci.includes(q) || com.includes(q);
+        });
         setResults(filtered);
       })
       .catch((err) => console.error("Error fetching animals:", err));
@@ -37,9 +43,9 @@ const SearchBiodiversity = ({ onSelect = () => {} }) => {
       </p>
 
       <div className="explore-section">
-        {/* ✅ 搜索框 */}
+        {/* 搜索框 */}
         <div className="explore-search-box">
-          <button className="filter-btn">Type</button>
+          {/* 🔹 已移除左侧 Type 按钮 */}
           <div className="search-input-wrapper">
             <span className="search-icon">🔍</span>
             <input
@@ -51,24 +57,42 @@ const SearchBiodiversity = ({ onSelect = () => {} }) => {
               className="search-input"
             />
           </div>
-          <button className="search-btn" onClick={handleSearch}>Search</button>
+          <button className="search-btn" onClick={handleSearch}>
+            Search
+          </button>
         </div>
 
-        {/* ✅ 搜索结果展示（点击卡片 -> 跳转详情页） */}
+        {/* 搜索结果展示 */}
         <div className="explore-results">
           {results.map((item, idx) => (
             <div
               className="explore-card"
               key={idx}
-              onClick={() => navigate(`/animal/${item.animal_taxon_name}`)} // ✅ 新增功能
-              style={{ cursor: "pointer" }}
-              title={`Show details of "${item.animal_taxon_name}"`}
+              style={{ cursor: "default" }}
             >
-              <img src={item.image_url} alt={item.animal_taxon_name} className="explore-img" />
+              <img
+                src={item.image_url}
+                alt={item.animal_taxon_name}
+                className="explore-img"
+              />
               <div className="explore-info">
-                <h3 className="explore-name">{item.vernacular_name || item.animal_taxon_name}</h3>
-                <p className="explore-latin"><i>{item.animal_taxon_name}</i></p>
+                <h3 className="explore-name">
+                  {item.vernacular_name || item.animal_taxon_name}
+                </h3>
+                <p className="explore-latin">
+                  <i>{item.animal_taxon_name}</i>
+                </p>
                 <p className="explore-views">👁 {item.number_of_records}</p>
+                {/* Explore more 链接 */}
+                <p
+                  className="explore-more-link"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/animal/${encodeURIComponent(item.animal_taxon_name)}`);
+                  }}
+                >
+                  Explore more →
+                </p>
               </div>
             </div>
           ))}

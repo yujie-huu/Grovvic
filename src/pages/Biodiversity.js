@@ -7,8 +7,10 @@ import SearchBiodiversity from "./SearchBiodiversity";
 
 const Biodiversity = () => {
   const [selectedCategory, setSelectedCategory] = useState("Endangered Animals");
-  const [search, setSearch] = useState("Acridotheres tristis");
-  const [groupedOccurrences, setGroupedOccurrences] = useState([]);
+  const [search, setSearch] = useState("");
+
+  // ✅ 改为直接保存原始发生记录，不做分组与时间范围计算
+  const [occurrences, setOccurrences] = useState([]);
 
   // API call to fetch and group occurrences by lat/lng
   useEffect(() => {
@@ -19,33 +21,7 @@ const Biodiversity = () => {
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
-        const groups = {};
-        data.forEach((item) => {
-          const key = `${item.decimalLatitude},${item.decimalLongitude}`;
-          if (!groups[key]) groups[key] = [];
-          groups[key].push(new Date(item.eventDate));
-        });
-
-        const results = Object.entries(groups).map(([key, dates]) => {
-          const [lat, lng] = key.split(",").map(Number);
-          const minDate = new Date(Math.min(...dates));
-          const maxDate = new Date(Math.max(...dates));
-
-          const formatDate = (d) =>
-            d.toLocaleDateString("en-GB", {
-              day: "2-digit",
-              month: "short",
-              year: "numeric",
-            });
-
-          return {
-            lat,
-            lng,
-            dateRange: `${formatDate(minDate)} – ${formatDate(maxDate)}`,
-          };
-        });
-
-        setGroupedOccurrences(results);
+        setOccurrences(Array.isArray(data) ? data : []);
       })
       .catch((err) => console.error("Error fetching data:", err));
   }, [search]);
@@ -98,16 +74,17 @@ const Biodiversity = () => {
             style={{ height: "400px", width: "100%" }}
           >
             <TileLayer url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png" />
-            {groupedOccurrences.map((item, idx) => (
+            {occurrences.map((item, idx) => (
               <CircleMarker
-                key={idx}
-                center={[item.lat, item.lng]}
+                key={`${idx}-${item.decimalLatitude}-${item.decimalLongitude}-${item.eventDate}`}
+                center={[item.decimalLatitude, item.decimalLongitude]}
                 radius={5}
                 color="red"
                 fillOpacity={0.7}
               >
+                {/* ✅ 只显示原始时间，不再做任何处理 */}
                 <Tooltip direction="top" offset={[0, -5]} opacity={1} permanent={false}>
-                  {item.dateRange}
+                  {item.eventDate}
                 </Tooltip>
               </CircleMarker>
             ))}
@@ -115,7 +92,7 @@ const Biodiversity = () => {
         </div>
       </div>
 
-      {/* 🔹修改：在地图下方加入搜索 Explore 部分 */}
+      {/* 地图下方的搜索区，点击小卡片仍然会更新上方地图物种 */}
       <SearchBiodiversity onSelect={(animalName) => setSearch(animalName)} />
     </div>
   );
