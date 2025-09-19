@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { MdArrowBack, MdImportContacts, MdLabelImportant, MdSearch, MdWarning } from 'react-icons/md';
+import { MdArrowBack, MdSearch, MdWarning } from 'react-icons/md';
 import './CompanionPage.css';
 
 const CompanionPage = () => {
@@ -190,7 +190,7 @@ const CompanionPage = () => {
           {goodCompanions.length > 0 && (
             <div className="companion-section good-section">
               <div className="section-header good-header">
-                <span>Good</span>
+                <span>Good for {selectedPlant}</span>
               </div>
               <div className="companion-grid">
                 {goodCompanions.map((companion, index) => (
@@ -218,7 +218,7 @@ const CompanionPage = () => {
           {badCompanions.length > 0 && (
             <div className="companion-section bad-section">
               <div className="section-header bad-header">
-                <span>Bad</span>
+                <span>Bad for {selectedPlant}</span>
               </div>
               <div className="companion-grid">
                 {badCompanions.map((companion, index) => (

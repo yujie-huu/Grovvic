@@ -50,13 +50,13 @@ const HomePage = () => {
               <span className="title-green">GROVVIC</span>
             </h1>
             <span className="hero-description-highlight">G</span>
-            <span className="hero-description">argen </span>
+            <span className="hero-description">reen, </span>
             <span className="hero-description-highlight">R</span>
-            <span className="hero-description">esiliently, </span>
+            <span className="hero-description">esilient, </span>
             <span className="hero-description-highlight">O</span>
-            <span className="hero-description">rganicly, </span>
+            <span className="hero-description">rganic, </span>
             <span className="hero-description-highlight">W</span>
-            <span className="hero-description">aste-wisely for </span>
+            <span className="hero-description">aste-wise for </span>
             <span className="hero-description-highlight">Vic</span>
             <span className="hero-description">toria</span>
             <p className="hero-description">
