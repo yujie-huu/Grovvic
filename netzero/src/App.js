@@ -25,6 +25,8 @@ import Companion from './pages/iteration_2/CompanionPage';
 import Support from './pages/iteration_2/Support';
 import Contact from './pages/iteration_2/Contact';
 
+import AnimalDetail from "./pages/iteration_2/AnimalDetail";
+
 function App() {
   return (
     <Router>
@@ -59,6 +61,7 @@ function App() {
           <Route path="/iteration2/biodiversity" element={<Biodiversity />} />
           <Route path="/iteration2/support" element={<Support />} />
           <Route path="/iteration2/Contact" element={<Contact />} />
+          <Route path="/animal/:name" element={<AnimalDetail />} />
         </Routes>
         <Footer />
       </div>

@@ -1,13 +1,15 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";  // ✅ 新增
 import "./SearchBiodiversity.css";
 
 const SearchBiodiversity = ({ onSelect = () => {} }) => {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
+  const navigate = useNavigate(); // ✅ 新增
 
   const handleSearch = () => {
     if (!query) {
-      setResults([]);
+      setResults([]); // 没有输入就清空
       return;
     }
     fetch("https://netzero-vigrow-api.duckdns.org/iter2/species/animals")
@@ -35,7 +37,7 @@ const SearchBiodiversity = ({ onSelect = () => {} }) => {
       </p>
 
       <div className="explore-section">
-        {/* 搜索框 */}
+        {/* ✅ 搜索框 */}
         <div className="explore-search-box">
           <button className="filter-btn">Type</button>
           <div className="search-input-wrapper">
@@ -52,28 +54,20 @@ const SearchBiodiversity = ({ onSelect = () => {} }) => {
           <button className="search-btn" onClick={handleSearch}>Search</button>
         </div>
 
-        {/* 搜索结果：点击卡片 -> 通知父组件更新地图物种 */}
+        {/* ✅ 搜索结果展示（点击卡片 -> 跳转详情页） */}
         <div className="explore-results">
           {results.map((item, idx) => (
             <div
               className="explore-card"
               key={idx}
-              onClick={() => onSelect(item.animal_taxon_name)}
+              onClick={() => navigate(`/animal/${item.animal_taxon_name}`)} // ✅ 新增功能
               style={{ cursor: "pointer" }}
-              title={`Show "${item.animal_taxon_name}" on map`}
+              title={`Show details of "${item.animal_taxon_name}"`}
             >
-              <img
-                src={item.image_url}
-                alt={item.animal_taxon_name}
-                className="explore-img"
-              />
+              <img src={item.image_url} alt={item.animal_taxon_name} className="explore-img" />
               <div className="explore-info">
-                <h3 className="explore-name">
-                  {item.vernacular_name || item.animal_taxon_name}
-                </h3>
-                <p className="explore-latin">
-                  <i>{item.animal_taxon_name}</i>
-                </p>
+                <h3 className="explore-name">{item.vernacular_name || item.animal_taxon_name}</h3>
+                <p className="explore-latin"><i>{item.animal_taxon_name}</i></p>
                 <p className="explore-views">👁 {item.number_of_records}</p>
               </div>
             </div>
