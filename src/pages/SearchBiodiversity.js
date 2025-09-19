@@ -1,15 +1,15 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";  // ✅ 新增
+import { useNavigate } from "react-router-dom";
 import "./SearchBiodiversity.css";
 
 const SearchBiodiversity = ({ onSelect = () => {} }) => {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
-  const navigate = useNavigate(); // ✅ 新增
+  const navigate = useNavigate();
 
   const handleSearch = () => {
     if (!query) {
-      setResults([]); // 没有输入就清空
+      setResults([]);
       return;
     }
     fetch("https://netzero-vigrow-api.duckdns.org/iter2/species/animals")
@@ -37,7 +37,7 @@ const SearchBiodiversity = ({ onSelect = () => {} }) => {
       </p>
 
       <div className="explore-section">
-        {/* ✅ 搜索框 */}
+        {/* 搜索框 */}
         <div className="explore-search-box">
           <button className="filter-btn">Type</button>
           <div className="search-input-wrapper">
@@ -54,21 +54,31 @@ const SearchBiodiversity = ({ onSelect = () => {} }) => {
           <button className="search-btn" onClick={handleSearch}>Search</button>
         </div>
 
-        {/* ✅ 搜索结果展示（点击卡片 -> 跳转详情页） */}
+        {/* 搜索结果展示 */}
         <div className="explore-results">
           {results.map((item, idx) => (
             <div
               className="explore-card"
               key={idx}
-              onClick={() => navigate(`/animal/${item.animal_taxon_name}`)} // ✅ 新增功能
+              onClick={() => onSelect(item.animal_taxon_name)} // ✅ 保留原功能：更新地图
               style={{ cursor: "pointer" }}
-              title={`Show details of "${item.animal_taxon_name}"`}
+              title={`Show "${item.animal_taxon_name}" on map`}
             >
               <img src={item.image_url} alt={item.animal_taxon_name} className="explore-img" />
               <div className="explore-info">
                 <h3 className="explore-name">{item.vernacular_name || item.animal_taxon_name}</h3>
                 <p className="explore-latin"><i>{item.animal_taxon_name}</i></p>
                 <p className="explore-views">👁 {item.number_of_records}</p>
+                {/* ✅ 新增 Explore more 链接 */}
+                <p
+                  className="explore-more-link"
+                  onClick={(e) => {
+                    e.stopPropagation(); // 阻止触发卡片的 onClick
+                    navigate(`/animal/${encodeURIComponent(item.animal_taxon_name)}`);
+                  }}
+                >
+                  Explore more →
+                </p>
               </div>
             </div>
           ))}

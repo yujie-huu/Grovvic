@@ -24,7 +24,6 @@
   margin-bottom: 20px;
 }
 
-
 /* 内部白色卡片容器 */
 .explore-section {
   background-color: #fff;
@@ -35,9 +34,6 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   text-align: left;
 }
-
-
-
 
 /* 搜索框 */
 .explore-search-box {
@@ -144,4 +140,27 @@
   margin-top: 14px;
   font-size: 0.9rem;
   color: #4a5568;
+}
+
+/* 让卡片能放右下角按钮 */
+.explore-card {
+  position: relative; /* 新增：用于定位右下角链接 */
+}
+
+/* 右下角的小文字按钮 */
+.explore-more {
+  position: absolute;
+  right: 14px;
+  bottom: 10px;
+  font-size: 0.9rem;
+  background: transparent;
+  border: none;
+  color: #3182ce;         /* 清爽蓝色 */
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+.explore-more:hover {
+  text-decoration: underline;
 }
