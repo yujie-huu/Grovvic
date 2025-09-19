@@ -8,17 +8,29 @@ const SearchBiodiversity = ({ onSelect = () => {} }) => {
   const navigate = useNavigate();
 
   const handleSearch = () => {
-    if (!query) {
+    const raw = (query || "").trim();
+    if (!raw) {
       setResults([]);
       return;
     }
+
     fetch("https://netzero-vigrow-api.duckdns.org/iter2/species/animals")
       .then((res) => res.json())
       .then((data) => {
-        const q = query.toLowerCase();
-        const filtered = data.filter((item) =>
-          (item.animal_taxon_name || "").toLowerCase().includes(q)
-        );
+        const q = raw.toLowerCase();
+
+        const filtered = data.filter((item) => {
+          const sci = (item.animal_taxon_name || "").toLowerCase();
+          const com = (item.vernacular_name || "").toLowerCase();
+
+          if (q.length === 1) {
+            // 只有 1 个字母：匹配首字母
+            return sci.startsWith(q) || com.startsWith(q);
+          }
+          // 2 个及以上字符：包含匹配
+          return sci.includes(q) || com.includes(q);
+        });
+
         setResults(filtered);
       })
       .catch((err) => console.error("Error fetching animals:", err));
@@ -60,7 +72,7 @@ const SearchBiodiversity = ({ onSelect = () => {} }) => {
             <div
               className="explore-card"
               key={idx}
-              onClick={() => onSelect(item.animal_taxon_name)} // ✅ 保留原功能：更新地图
+              onClick={() => onSelect(item.animal_taxon_name)} // 保留原功能：更新上方地图
               style={{ cursor: "pointer" }}
               title={`Show "${item.animal_taxon_name}" on map`}
             >
@@ -69,11 +81,11 @@ const SearchBiodiversity = ({ onSelect = () => {} }) => {
                 <h3 className="explore-name">{item.vernacular_name || item.animal_taxon_name}</h3>
                 <p className="explore-latin"><i>{item.animal_taxon_name}</i></p>
                 <p className="explore-views">👁 {item.number_of_records}</p>
-                {/* ✅ 新增 Explore more 链接 */}
+                {/* 详情入口：右下角 Explore more */}
                 <p
                   className="explore-more-link"
                   onClick={(e) => {
-                    e.stopPropagation(); // 阻止触发卡片的 onClick
+                    e.stopPropagation(); // 防止触发卡片的 onClick
                     navigate(`/animal/${encodeURIComponent(item.animal_taxon_name)}`);
                   }}
                 >
