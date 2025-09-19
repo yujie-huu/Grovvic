@@ -1,0 +1,56 @@
+# --- Dependencies ---
+node_modules/
+.pnp
+.pnp.js
+
+# --- Build output ---
+build/
+dist/
+.cache/
+.next/
+out/
+.vite/
+
+# --- Testing ---
+coverage/
+*.lcov
+
+# --- Environment variables ---
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# --- Logs ---
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# --- IDE / Editor files ---
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# --- System files ---
+.DS_Store
+Thumbs.db
+
+# --- Optional: lock files (uncomment if not needed) ---
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+# --- Misc ---
+*.tmp
+*.bak
+
+# --- Devcontainers / Docker ---
+.devcontainer/
+.docker/
+
+dist/
+debug.config.json
