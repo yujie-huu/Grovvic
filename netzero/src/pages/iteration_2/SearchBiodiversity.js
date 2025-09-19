@@ -1,24 +1,29 @@
 import React, { useState } from "react";
 import "./SearchBiodiversity.css";
 
-const SearchBiodiversity = () => {
+const SearchBiodiversity = ({ onSelect = () => {} }) => {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
 
   const handleSearch = () => {
     if (!query) {
-      setResults([]); // 没有输入就清空
+      setResults([]);
       return;
     }
     fetch("https://netzero-vigrow-api.duckdns.org/iter2/species/animals")
       .then((res) => res.json())
       .then((data) => {
+        const q = query.toLowerCase();
         const filtered = data.filter((item) =>
-          item.animal_taxon_name.toLowerCase().includes(query.toLowerCase())
+          (item.animal_taxon_name || "").toLowerCase().includes(q)
         );
         setResults(filtered);
       })
       .catch((err) => console.error("Error fetching animals:", err));
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") handleSearch();
   };
 
   return (
@@ -30,7 +35,7 @@ const SearchBiodiversity = () => {
       </p>
 
       <div className="explore-section">
-        {/* ✅ 搜索框 */}
+        {/* 搜索框 */}
         <div className="explore-search-box">
           <button className="filter-btn">Type</button>
           <div className="search-input-wrapper">
@@ -40,23 +45,23 @@ const SearchBiodiversity = () => {
               placeholder="Search"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  handleSearch(); // ✅ 按下 Enter 就执行搜索
-                }
-              }}
+              onKeyDown={handleKeyDown}
               className="search-input"
             />
           </div>
-          <button className="search-btn" onClick={handleSearch}>
-            Search
-          </button>
+          <button className="search-btn" onClick={handleSearch}>Search</button>
         </div>
 
-        {/* ✅ 搜索结果展示（保持原来的卡片风格） */}
+        {/* 搜索结果：点击卡片 -> 通知父组件更新地图物种 */}
         <div className="explore-results">
           {results.map((item, idx) => (
-            <div className="explore-card" key={idx}>
+            <div
+              className="explore-card"
+              key={idx}
+              onClick={() => onSelect(item.animal_taxon_name)}
+              style={{ cursor: "pointer" }}
+              title={`Show "${item.animal_taxon_name}" on map`}
+            >
               <img
                 src={item.image_url}
                 alt={item.animal_taxon_name}
