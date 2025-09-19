@@ -68,9 +68,7 @@ const SearchBiodiversity = ({ onSelect = () => {} }) => {
             <div
               className="explore-card"
               key={idx}
-              onClick={() => onSelect(item.animal_taxon_name)} // 保留原功能：更新地图
-              style={{ cursor: "pointer" }}
-              title={`Show "${item.animal_taxon_name}" on map`}
+              style={{ cursor: "default" }}
             >
               <img
                 src={item.image_url}
