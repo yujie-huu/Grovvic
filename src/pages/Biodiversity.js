@@ -10,7 +10,7 @@ const Biodiversity = () => {
   const [search, setSearch] = useState("Acridotheres tristis");
   const [groupedOccurrences, setGroupedOccurrences] = useState([]);
 
-  // 请求 API 数据并分组
+  // API call to fetch and group occurrences by lat/lng
   useEffect(() => {
     if (!search) return;
     const url = `https://netzero-vigrow-api.duckdns.org/iter2/occurrences/by-animal?animal=${encodeURIComponent(
