@@ -8,29 +8,23 @@ const SearchBiodiversity = ({ onSelect = () => {} }) => {
   const navigate = useNavigate();
 
   const handleSearch = () => {
-    const raw = (query || "").trim();
-    if (!raw) {
+    if (!query) {
       setResults([]);
       return;
     }
-
     fetch("https://netzero-vigrow-api.duckdns.org/iter2/species/animals")
       .then((res) => res.json())
       .then((data) => {
-        const q = raw.toLowerCase();
-
+        const q = query.toLowerCase();
         const filtered = data.filter((item) => {
           const sci = (item.animal_taxon_name || "").toLowerCase();
           const com = (item.vernacular_name || "").toLowerCase();
 
           if (q.length === 1) {
-            // 只有 1 个字母：匹配首字母
             return sci.startsWith(q) || com.startsWith(q);
           }
-          // 2 个及以上字符：包含匹配
           return sci.includes(q) || com.includes(q);
         });
-
         setResults(filtered);
       })
       .catch((err) => console.error("Error fetching animals:", err));
@@ -51,7 +45,7 @@ const SearchBiodiversity = ({ onSelect = () => {} }) => {
       <div className="explore-section">
         {/* 搜索框 */}
         <div className="explore-search-box">
-          <button className="filter-btn">Type</button>
+          {/* 🔹 已移除左侧 Type 按钮 */}
           <div className="search-input-wrapper">
             <span className="search-icon">🔍</span>
             <input
@@ -63,7 +57,9 @@ const SearchBiodiversity = ({ onSelect = () => {} }) => {
               className="search-input"
             />
           </div>
-          <button className="search-btn" onClick={handleSearch}>Search</button>
+          <button className="search-btn" onClick={handleSearch}>
+            Search
+          </button>
         </div>
 
         {/* 搜索结果展示 */}
@@ -72,20 +68,28 @@ const SearchBiodiversity = ({ onSelect = () => {} }) => {
             <div
               className="explore-card"
               key={idx}
-              onClick={() => onSelect(item.animal_taxon_name)} // 保留原功能：更新上方地图
+              onClick={() => onSelect(item.animal_taxon_name)} // 保留原功能：更新地图
               style={{ cursor: "pointer" }}
               title={`Show "${item.animal_taxon_name}" on map`}
             >
-              <img src={item.image_url} alt={item.animal_taxon_name} className="explore-img" />
+              <img
+                src={item.image_url}
+                alt={item.animal_taxon_name}
+                className="explore-img"
+              />
               <div className="explore-info">
-                <h3 className="explore-name">{item.vernacular_name || item.animal_taxon_name}</h3>
-                <p className="explore-latin"><i>{item.animal_taxon_name}</i></p>
+                <h3 className="explore-name">
+                  {item.vernacular_name || item.animal_taxon_name}
+                </h3>
+                <p className="explore-latin">
+                  <i>{item.animal_taxon_name}</i>
+                </p>
                 <p className="explore-views">👁 {item.number_of_records}</p>
-                {/* 详情入口：右下角 Explore more */}
+                {/* Explore more 链接 */}
                 <p
                   className="explore-more-link"
                   onClick={(e) => {
-                    e.stopPropagation(); // 防止触发卡片的 onClick
+                    e.stopPropagation();
                     navigate(`/animal/${encodeURIComponent(item.animal_taxon_name)}`);
                   }}
                 >
