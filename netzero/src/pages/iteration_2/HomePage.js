@@ -60,7 +60,7 @@ const HomePage = () => {
             <span className="hero-description-highlight">W</span>
             <span className="hero-description">aste-wise</span>
             <p className="hero-description">
-              Your guide to climate-smart gardening in Victoria. Iteration 2.
+              Your guide to climate-smart gardening in Victoria.
             </p>
             <button className="cta-button" onClick={handleLearnMoreClick}>Learn More</button>
           </div>
