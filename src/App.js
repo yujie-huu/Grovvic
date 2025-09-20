@@ -19,6 +19,7 @@ import Support from './pages/Support';
 import Contact from './pages/Contact';
 
 import AnimalDetail from "./pages/AnimalDetail";
+import GardeningType from "./pages/GardenType";
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
           <Route path="/support" element={<Support />} />
           <Route path="/Contact" element={<Contact />} />
           <Route path="/animal/:name" element={<AnimalDetail />} />
+          <Route path="/gardening/:type" element={<GardeningType />} />
         </Routes>
         <Footer />
       </div>

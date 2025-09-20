@@ -1,0 +1,199 @@
+/* Gardening Type Page Styles */
+.gardening-type-page {
+  height: 100%;
+  padding: 2rem 2.5rem;
+  background: white;
+}
+
+/* Main Content */
+.gardening-content {
+  justify-content: center;
+  padding: 3.5rem 3rem;
+}
+
+/* Introduction Section */
+.intro-section {
+  display: grid;
+  grid-template-columns: 10fr 11fr;
+  gap: 3rem;
+  margin-bottom: 4rem;
+  align-items: center;
+}
+
+.intro-image {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 20px;
+}
+
+.intro-text {
+  align-self: flex-start;
+  padding: 1.5rem 0;
+}
+
+/* Title */
+.gardening-title {
+  font-size: 2.8rem;
+  font-weight: bold;
+  color: #447c39;
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Introduction */
+.gardening-intro {
+  font-size: 1.4rem;
+  line-height: 1.6;
+  color: #444;
+  margin: 0;
+}
+
+/* Considerations Section */
+.considerations-title {
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: #539407;
+  text-align: left;
+  margin-bottom: 1rem;
+}
+
+/* Considerations Rows */
+.considerations-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.consideration-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+.consideration-row.image-left {
+  grid-template-columns: 4fr 7fr;
+  grid-template-areas: "image items";
+}
+
+.consideration-row.image-right {
+  grid-template-columns: 7fr 4fr;
+  grid-template-areas: "items image";
+}
+
+.consideration-image {
+  grid-area: image;
+  width: 100%;
+  height: 65vh;
+  object-fit: cover;
+  border-radius: 15px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+.consideration-items {
+  grid-area: items;
+  display: flex;
+  align-items: flex-start;
+  padding: 1rem 0;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.consideration-title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #539407;
+  margin-bottom: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.consideration-content {
+  font-size: 1.3rem;
+  line-height: 1.6;
+  color: #555;
+  margin: 0;
+}
+
+/* Error Message */
+.error-message {
+  text-align: center;
+  padding: 100px 20px;
+}
+
+.error-message h1 {
+  font-size: 3rem;
+  color: #e74c3c;
+  margin-bottom: 1rem;
+}
+
+.error-message p {
+  font-size: 1.2rem;
+  color: #666;
+  margin-bottom: 2rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .gardening-content {
+    padding: 100px 20px 40px;
+  }
+  
+  .intro-section {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .intro-image {
+    height: 300px;
+  }
+  
+  .gardening-title {
+    font-size: 2.5rem;
+  }
+  
+  .gardening-intro {
+    font-size: 1.1rem;
+  }
+  
+  .considerations-title {
+    font-size: 2rem;
+  }
+  
+  .consideration-row {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .consideration-item {
+    padding: 1.2rem;
+  }
+  
+  .consideration-title {
+    font-size: 1.1rem;
+  }
+  
+  .consideration-image {
+    height: 250px;
+  }
+}
+
+@media (max-width: 480px) {
+  .gardening-title {
+    font-size: 2rem;
+  }
+  
+  .considerations-title {
+    font-size: 1.5rem;
+  }
+  
+  .consideration-item {
+    padding: 1rem;
+  }
+  
+  .consideration-image {
+    height: 200px;
+  }
+}

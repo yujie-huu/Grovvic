@@ -22,13 +22,14 @@
   color: #6b8e23;
 }
 
-.exit-button {
-  width: 40px;
-  height: 40px;
+.back-button {
+  width: 3.5rem;
+  height: 3.5rem;
   border: none;
+  font-size: 1.7rem;
   border-radius: 50%;
-  background: #999;
-  color: white;
+  background: #d9d9d9;
+  color: black;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -36,7 +37,7 @@
   transition: background 0.3s;
 }
 
-.exit-button:hover {
+.back-button:hover {
   background: #555;
 }
 

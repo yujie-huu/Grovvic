@@ -300,7 +300,7 @@ const CompostingQuizPage = () => {
     return (
       <div className="quiz-page">
         <div className="quiz-header">
-          <div className="exit-button" onClick={handleExit}>
+          <div className="back-button" onClick={handleExit}>
             <MdArrowBack />
           </div>
           <div className="quiz-title">Quiz</div>
@@ -346,7 +346,7 @@ const CompostingQuizPage = () => {
     <div className="quiz-page">
       {/* Header */}
       <div className="quiz-header">
-        <div className="exit-button" onClick={handleExit}>
+        <div className="back-button" onClick={handleExit}>
           <MdArrowBack />
         </div>
         <div className="quiz-title">Quiz</div>

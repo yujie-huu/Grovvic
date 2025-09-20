@@ -111,7 +111,7 @@ const CompanionPage = () => {
     <div className="companion-page">
       {/* Header Section */}
       <div className="companion-header">
-        <div className="exit-button" onClick={() => navigate(-1)}>
+        <div className="back-button" onClick={() => navigate(-1)}>
           <MdArrowBack />
         </div>
         

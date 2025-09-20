@@ -88,7 +88,7 @@ const PlantDetailPage = () => {
         <div className="banner-background-detail"></div>
 
         <div className="plant-detail-content">
-          <button className="exit-button" onClick={handleGoBack}>
+          <button className="back-button" onClick={handleGoBack}>
             <MdArrowBack />
           </button>
           <div className="loading-container">
@@ -104,7 +104,7 @@ const PlantDetailPage = () => {
     return (
       <div className="plant-detail-page">
         <div className="plant-detail-content">
-          <button className="exit-button" onClick={handleGoBack}>
+          <button className="back-button" onClick={handleGoBack}>
             <MdArrowBack />
           </button>
           <div className="error-container">
@@ -122,7 +122,7 @@ const PlantDetailPage = () => {
         {/* Banner Section*/}
         <div className="banner-background-detail"></div>
         <div className="plant-detail-content">
-          <button className="exit-button" onClick={handleGoBack}>
+          <button className="back-button" onClick={handleGoBack}>
             <MdArrowBack />
           </button>
           <div className="error-container">
@@ -140,7 +140,7 @@ const PlantDetailPage = () => {
       <div className="banner-background-detail"></div>
       <div className='plant-detail-container'>
         <div className="plant-detail-content">
-          <button className="exit-button" onClick={handleGoBack}>
+          <button className="back-button" onClick={handleGoBack}>
             <MdArrowBack />
           </button>
 

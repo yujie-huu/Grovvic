@@ -459,7 +459,7 @@ const GardenPlan = () => {
             {showVarieties && (
               <div className="breadcrumb">
                 {enteredViaCard && (
-                  <button className="exit-button" onClick={handleBackToSpecies}>
+                  <button className="back-button" onClick={handleBackToSpecies}>
                     <MdArrowBack/>
                   </button>
                 )}
