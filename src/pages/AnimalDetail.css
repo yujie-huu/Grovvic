@@ -21,7 +21,7 @@
 
 /* 学名 + 属名（字体和上面一样大，但不加粗） */
 .animal-scientific {
-  font-size: 2rem;   /* 和 vernacular 一样大 */
+  font-size: 2rem;   
   font-weight: 400;  
   margin-bottom: 20px;
   color: #4a5568;
@@ -59,7 +59,7 @@
 
 /* Description 标题（独立 + 横线） */
 .animal-desc-title {
-  font-size: 1rem;
+  font-size: 2rem;
   font-weight: 700;
   color: #006400;
   margin-bottom: 6px;
@@ -69,10 +69,10 @@
   padding-bottom: 4px;
 }
 
-/* Description 正文 */
+/* Description text */
 .animal-desc-text {
   font-family: "Georgia", "Times New Roman", serif;
-  font-size: 1.1rem;
+  font-size: 1.5rem;
   line-height: 1.7;
   color: #222;
   text-align: justify;
@@ -83,8 +83,45 @@
 .animal-map {
   margin-top: 30px;
 }
+
 .leaflet-container {
   height: 300px !important;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
+
+/* 两个地图的网格布局容器 */
+.animal-maps-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr; 
+  gap: 20px;                      
+  margin-top: 30px;
+}
+
+/* 单个地图容器 */
+.animal-map {
+  background: #fff;
+  padding: 10px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  color: #333333; 
+}
+
+/* 地图标题 */
+.animal-map-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #2d3748;
+  text-align: left;
+  color: green;
+}
+
+/* Leaflet 容器缩小 */
+.animal-map .leaflet-container {
+  height: 250px !important; 
+  width: 100%;
+  border-radius: 8px;
+}
+
+.leaflet-control-attribution { display: none !important; }
