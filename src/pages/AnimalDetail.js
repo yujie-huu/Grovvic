@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { MapContainer, TileLayer, CircleMarker, Tooltip, Polygon } from "react-leaflet";
-import * as turf from "@turf/turf";   // ✅ 引入 turf.js
+import * as turf from "@turf/turf";   // 
 import "leaflet/dist/leaflet.css";
 import "./AnimalDetail.css";
 
@@ -80,48 +80,58 @@ const AnimalDetail = () => {
         </div>
       </div>
 
-      {/* 🔴 点分布地图 */}
-      <div className="animal-map">
-        <h3>Distribution Map</h3>
-        <MapContainer center={[-25, 133]} zoom={4} style={{ height: "400px", width: "100%" }}>
-          <TileLayer url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png" />
-          {occurrences.map((item, idx) => (
-            <CircleMarker
-              key={idx}
-              center={[item.decimalLatitude, item.decimalLongitude]}
-              radius={5}
-              color="red"
-              fillOpacity={0.7}
-            >
-              <Tooltip>{item.eventDate}</Tooltip>
-            </CircleMarker>
-          ))}
-        </MapContainer>
-      </div>
+      {/* ✅ 两个地图并排显示 */}
+      <div className="animal-maps-container">
 
-      {/* 🔵 覆盖范围凸包地图 */}
-      {polygonBounds && (
-        <div className="animal-map">
-          <h3 className="animal-map-title">Compiled Distribution Map</h3>
+        {/* 🔵 覆盖范围凸包地图 */}
+        {polygonBounds && (
+          <div className="animal-map">
+            <h3 className="animal-map-title">Compiled Distribution Map</h3>
             <MapContainer
               center={[-25, 133]}   // ✅ 固定澳大利亚中心
               zoom={3}              // ✅ 固定缩放级别
               style={{ height: "300px", width: "100%" }}
-              zoomControl={false}   // ⬅️ 避免用户手动缩放（可选）
-              scrollWheelZoom={false} // ⬅️ 禁止滚轮缩放（可选）
+              zoomControl={false}   // ⬅️ 可选：禁止缩放按钮
+              scrollWheelZoom={false} // ⬅️ 可选：禁止滚轮缩放
             >
               <TileLayer url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png" />
 
-              {/* 直接画凸包多边形，不调用 fitBounds */}
+              {/* 直接画凸包多边形 */}
               <Polygon
                 positions={polygonBounds}
                 pathOptions={{ color: "red", fillColor: "red", fillOpacity: 0.5 }}
               />
             </MapContainer>
+          </div>
+        )}
 
+        {/* 🔴 点分布地图 */}
+        <div className="animal-map">
+          <h3>Occurrence Records Map</h3>
+          <MapContainer
+            center={[-25, 133]}
+            zoom={3}
+            style={{ height: "300px", width: "100%" }}
+          >
+            <TileLayer
+              url="https://cartodb-basemaps-a.global.ssl.fastly.net/light_all/{z}/{x}/{y}{r}.png"
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> contributors &copy; <a href="https://carto.com/">CARTO</a>'
+            />
+            {occurrences.map((item, idx) => (
+              <CircleMarker
+                key={idx}
+                center={[item.decimalLatitude, item.decimalLongitude]}
+                radius={5}
+                color="blue"
+                // fillColor="#800080"
+                fillOpacity={0.7}
+              >
+                <Tooltip>{item.eventDate}</Tooltip>
+              </CircleMarker>
+            ))}
+          </MapContainer>
         </div>
-      )}
-
+      </div>
     </div>
   );
 };

@@ -59,7 +59,7 @@
 
 /* Description 标题（独立 + 横线） */
 .animal-desc-title {
-  font-size: 1rem;
+  font-size: 2rem;
   font-weight: 700;
   color: #006400;
   margin-bottom: 6px;
@@ -88,3 +88,37 @@
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
+
+/* 两个地图的网格布局容器 */
+.animal-maps-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* ✅ 两列等宽 */
+  gap: 20px;                      /* ✅ 地图之间的间距 */
+  margin-top: 30px;
+}
+
+/* 单个地图容器 */
+.animal-map {
+  background: #fff;
+  padding: 10px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* 地图标题 */
+.animal-map-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #2d3748;
+  text-align: left;
+}
+
+/* Leaflet 容器缩小 */
+.animal-map .leaflet-container {
+  height: 250px !important; /* ✅ 缩小地图高度 */
+  width: 100%;
+  border-radius: 8px;
+}
+
+.leaflet-control-attribution { display: none !important; }
