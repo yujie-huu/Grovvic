@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useMemo, useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MdFlipToFront, MdOpenInNew } from 'react-icons/md';
 import './Sustain.css';
@@ -97,12 +97,6 @@ const Sustain = () => {
     navigate('/composting');
   };
 
-  // Navigate to gardening type pages
-  const handleGardeningTypeClick = (type) => {
-    console.log(`Navigating to ${type} gardening page`);
-    navigate(`/gardening/${type}`);
-  };
-
   const mulchContent = {
     why: {
       subtitle: "It protects the soil around plants and trees from exposure to the elements!",
@@ -157,13 +151,13 @@ const Sustain = () => {
     }
   };
 
-  // Add scroll functionality
+  // Add scroll functionality for habitat videos
   const scrollContainerRef = useRef(null);
   const scrollbarTrackRef = useRef(null);
   const [scrollPosition, setScrollPosition] = useState(0);
   const [maxScroll, setMaxScroll] = useState(0);
 
-  // Handle scroll events
+  // Handle scroll events for habitat videos
   const handleScroll = () => {
     if (scrollContainerRef.current) {
       const container = scrollContainerRef.current;
@@ -175,7 +169,7 @@ const Sustain = () => {
     }
   };
 
-  // Handle custom scrollbar click
+  // Handle custom scrollbar click for habitat videos
   const handleScrollbarClick = (e) => {
     if (scrollContainerRef.current && scrollbarTrackRef.current && maxScroll > 0) {
       const scrollbarRect = scrollbarTrackRef.current.getBoundingClientRect();
@@ -188,7 +182,7 @@ const Sustain = () => {
     }
   };
 
-  // Handle custom scrollbar drag
+  // Handle custom scrollbar drag for habitat videos
   const handleScrollbarDrag = (e, scrollbarRect) => {
     if (scrollContainerRef.current && maxScroll > 0 && scrollbarRect) {
       const clickX = e.clientX - scrollbarRect.left;
@@ -200,7 +194,7 @@ const Sustain = () => {
     }
   };
 
-  // Update scroll position when component mounts
+  // Update scroll position when component mounts for habitat videos
   useEffect(() => {
     if (scrollContainerRef.current) {
       const container = scrollContainerRef.current;
@@ -211,6 +205,102 @@ const Sustain = () => {
       return () => container.removeEventListener('scroll', handleScroll);
     }
   }, [videos]); // Recalculate when videos change
+
+    // —— Water-wise: Card Content——
+  const waterItems = [
+    {
+      id: 1,
+      title: "Water Smart Garden Design",
+      intro: "Plan your garden to save water — group plants wisely, create shade, and let every drop soak in.",
+      img: "/images/water-water-smart-garden-design.jpg",
+      details: [
+        "Set a water-saving goal for your garden.",
+        "Group plants by their water and light needs (hydro-zoning).",
+        "Observe your garden’s conditions across different seasons.",
+        "Use hedges, shade, climbers, and tall plants to create microclimates.",
+        "Use porous materials like gravel to reduce runoff and help water soak in."
+      ]
+    },
+    {
+      id: 2,
+      title: "Living Soil",
+      intro: "Keep soil alive with compost, worms, and mulch — healthy soil saves water and feeds your garden.",
+      img: "/images/water-living-soil.jpg",
+      details: [
+        "Healthy soil holds more water and needs less irrigation.",
+        "Add compost, worm castings, manure, or leaf litter regularly.",
+        "Encourage earthworms and microbes to keep soil alive.",
+        "Keep soil covered with organic mulch to prevent evaporation."
+      ]
+    },
+    {
+      id: 3,
+      title: "Plant Choice",
+      intro: "Grow with nature — choose drought-tolerant natives and plants that suit your seasons.",
+      img: "/images/water-plant-choice.jpg",
+      details: [
+        "Choose drought-tolerant or native plants suited to your local climate.",
+        "Look for silver, grey, or narrow leaves that lose less moisture.",
+        "Pick plants that grow in cooler months and rest in hot months.",
+        "Reduce lawn space or use low-water grasses; water deeply, mow less often."
+      ]
+    },
+    {
+      id: 4,
+      title: "Meaningful Mulch",
+      intro: "Mulch is nature’s shield — lock in moisture, block weeds, and protect your soil.",
+      img: "/images/water-meaningful-mulch.jpg",
+      details: [
+        "Mulch retains moisture, reduces weeds, and regulates soil temperature.",
+        "Use bark, straw, or living groundcovers like Native Violet.",
+        "Apply mulch after spring rain, before summer heat.",
+        "Spread mulch 2.5–10 cm thick, but keep it away from plant stems.",
+        "Use newspaper or cardboard underneath if weeds are a problem."
+      ]
+    },
+    {
+      id: 5,
+      title: "Water Sources & Storage",
+      intro: "Harvest and reuse every drop — collect rain, store it safely, and recycle wisely to keep your garden thriving.",
+      img: "/images/water-water-sources-storage.jpg",
+      details: [
+        "Collect rainwater from roofs (1mm rain per 1m² = 1L water).",
+        "Use greywater only on non-edible plants (fruit trees are OK).",
+        "Install tanks with overflow and filters; use drip lines to distribute.",
+        "Choose low-phosphorus, low-salt detergents if reusing laundry water.",
+        "Alternate greywater with clean water to dilute chemicals."
+      ]
+    },
+    {
+      id: 6,
+      title: "Water Use",
+      intro: "Water with purpose — time it right, use the best methods, and make every drop count.",
+      img: "/images/water-water-use.jpg",
+      details: [
+        "Water early in the morning to minimize evaporation.",
+        "Garden beds: water deeply but less often to encourage deep roots",
+        "Pots: water sparingly but more frequently; place saucers to catch excess.",
+        "Best irrigation methods: drip systems and soaker hoses.",
+        "Avoid sprinklers—most water is lost to evaporation."
+      ]
+    },
+    {
+      id: 7,
+      title: "Preparing for Heatwaves",
+      intro: "Beat the heat — strengthen plants, give them shade, and help them recover after stress.",
+      img: "/images/water-preparing-for-heatwaves.jpg",
+      details: [
+        "Water deeply in the morning, targeting the root zone.",
+        "Add seaweed solution to strengthen plants against heat.",
+        "Shade delicate plants with cloth; move pots into shade.",
+        "Place potted plants in trays of water.",
+        "After heat stress: soak pots, rehydrate with seaweed solution, prune once weather cools."
+      ]
+    }
+  ];
+
+  // —— Water-wise: Current Item on Right + Scroll bar —— 
+  const [activeWaterId, setActiveWaterId] = useState(1); // first item by default
 
   return (
     <div className="sustain-page">
@@ -245,32 +335,7 @@ const Sustain = () => {
           ))}
         </div>
       </section>
-
-      <section className="sustain-gardening-section">
-        <div className="sustain-gardening-container">
-          <div className="sustain-gardening-content">
-            <h1 className="sustain-gardening-title">
-              Sustain your Garden. <br />
-              Sustain the Earth. <br />
-            </h1>
-            <h2 className="sustain-gardening-subtitle">
-              Recommendations that are healthy and match your aesthetic
-            </h2>
-            <div className="sustain-gardening-button-container">
-              <button className="sustain-gardening-button" onClick={() => handleGardeningTypeClick('balcony')}> Balcony gardening</button>
-              <button className="sustain-gardening-button" onClick={() => handleGardeningTypeClick('indoor')}> Indoor gardening</button>
-              <button className="sustain-gardening-button" onClick={() => handleGardeningTypeClick('rooftop')}> Rooftop gardening</button>
-              <button className="sustain-gardening-button" onClick={() => handleGardeningTypeClick('backyard')}> Backyard gardening</button>
-            </div>
-          </div>
-          <div className="sustain-gardening-images-container">
-            <img src="/images/sustain-gardening-balcony.jpg" alt="Balcony garden" />
-            <img src="/images/sustain-gardening-indoor.jpeg" alt="Indoor garden" />
-            <img src="/images/sustain-gardening-rooftop.jpg" alt="Rooftop garden" />
-            <img src="/images/sustain-gardening-backyard.jpg" alt="Backyard garden" />
-          </div>
-        </div>
-      </section>
+      
       
       <section className="habitat-videos">
         <h1 className="habitat-title">Habitat Gardening</h1>
@@ -453,6 +518,55 @@ const Sustain = () => {
                 </div>
               </div>
             )}
+          </div>
+        </div>
+      </section>
+
+      <section className='water-section'>
+        <div className='water-header'>
+          <h1 className='water-title'>Water-wise Gardening</h1>
+        </div>
+
+        <div className="waterwise-content">
+          {/* Left: card list (container fixed height, internal scrolling, only 4 cards exposed, remaining scrolling to view) */}
+          <div className="ww-left">
+            <div className="ww-cardlist" role="list">
+              {waterItems.map(item => (
+                <button
+                  key={item.id}
+                  className={`ww-card ${activeWaterId === item.id ? 'is-active' : ''}`}
+                  onClick={() => setActiveWaterId(item.id)}
+                >
+                  <div className="ww-card-thumb">
+                    <img src={item.img} alt="" onError={(e)=>{e.target.style.visibility='hidden'}} />
+                  </div>
+                  <div className="ww-card-body">
+                    <div className="ww-card-title">{item.title}</div>
+                    <div className="ww-card-intro">{item.intro}</div>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Right: display panel (switch with left click) */}
+          <div className="ww-right">
+            {(() => {
+              const active = waterItems.find(i => i.id === activeWaterId) || waterItems[0];
+              return (
+                <div className="ww-detail-card">
+                  <div className="ww-detail-hero">
+                    <img src={active.img} alt="" onError={(e)=>{e.target.style.visibility='hidden'}} />
+                  </div>
+                  <div className="ww-detail-content">
+                    <h3 className="ww-detail-title">{active.title}</h3>
+                    <ol className="ww-detail-list">
+                      {active.details.map((d, i) => <li key={i}>{d}</li>)}
+                    </ol>
+                  </div>
+                </div>
+              );
+            })()}
           </div>
         </div>
       </section>

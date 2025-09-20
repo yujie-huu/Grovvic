@@ -871,6 +871,175 @@
   height: 100%;
 }
 
+/* === Water-wise === */
+.water-section{
+  min-height: 100vh;
+  height: auto;
+  background:
+    linear-gradient(to bottom, transparent 0 50%, #fff 50% 100%),
+    url('../../public/images/water-section-background.jpg') bottom / cover no-repeat;
+  padding: 3.2rem 7rem;
+}
+
+.water-title{
+  text-align:center;
+  color:#fff;
+  font-size: clamp(26px,4vw,44px);
+  font-weight: 600;
+  text-shadow: 0 4px 18px rgba(0,0,0,.35);
+  margin-bottom: 1rem;
+}
+
+/* Content Area*/
+.waterwise-content{
+  padding-top: 2rem;
+  display: flex;
+  align-items: stretch;
+  /* Main Controller: Number of visible cards, card height, and gap between cards */
+  --ww-visible-cards: 3;   /* Only show 3 cards */
+  --ww-card-h: 26vh;      /* Card height */
+  --ww-gap: 4vh;          /* Gap between cards */
+
+  /* Total height of the panel: = 3*card height + 2.5*gap */
+  --ww-panel-h: calc(var(--ww-card-h) * var(--ww-visible-cards)
+                   + var(--ww-gap) * (var(--ww-visible-cards) - 0.7));
+}
+
+/* Water-wise Left: Event Card */
+.ww-left{ 
+  width: 55%; 
+  padding-right: 20px; 
+  min-width: 300px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  height: var(--ww-panel-h);
+}
+
+.ww-cardlist{
+  height: var(--ww-panel-h);
+  overflow-y:auto; /* Scrollable if overflow */
+  display: grid;
+  padding: 0 15px;
+  gap: var(--ww-gap);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0,0,0,0.4) rgba(230, 230, 230, 0.7); /* thumb track */
+}
+
+/* Card */
+.ww-card{
+  display:grid; 
+  grid-template-columns: 140px 1fr; 
+  gap:12px;
+  height: var(--ww-card-h);
+  background:white; 
+  border-radius:10px; 
+  border:2px solid transparent;
+  text-align:left; 
+  cursor:pointer; 
+  padding:12px;
+  box-shadow:0 5px 10px rgba(0, 0, 0, 0.15); 
+  transition: transform .15s ease, border-color .2s ease;
+}
+.ww-card:hover{ 
+  transform: translateY(-2px); 
+  box-shadow:0 10px 15px rgba(0,0,0,.2); 
+}
+
+.ww-card.is-active{ 
+  border:#539407 3px solid; 
+}
+
+.ww-card-thumb{ 
+  width: 140px; /* same as the grid column*/
+  height: 100%; 
+  border-radius:10px; 
+  overflow:hidden; 
+}
+
+.ww-card-thumb img{ 
+  width:100%;
+  height:100%; 
+  object-fit:cover; 
+  display:block; 
+}
+
+.ww-card-body {
+  align-content: center;
+  padding: 0.5rem 0.8rem 1rem;
+}
+
+.ww-card-title{ 
+  font-size: 1.4rem;
+  font-weight:600; 
+  color:black; 
+  margin-bottom:0.8rem; 
+}
+
+.ww-card-intro{ 
+  font-size: 1.05rem; 
+  font-weight: 500;
+  color:#777; 
+  line-height: 1.4;
+}
+
+/* Water-wise Right: Detail */
+.ww-right{ 
+  display: flex;
+  flex-direction: column;
+  width: 45%; 
+  min-width: 280px;
+  padding-inline: 30px 10px;
+  padding-bottom: 1vh;
+  height: var(--ww-panel-h);
+}
+
+.ww-detail-card{ 
+  height: 100%;
+  display:grid; 
+  grid-template-rows:38% 1fr;  
+  background: white;
+  border-radius:12px;
+  box-shadow:0 10px 22px rgba(0,0,0,.15);
+}
+
+.ww-detail-hero{   
+  overflow:hidden; 
+  border-radius: 10px 10px 0 0; /* corner radius for the top */
+}
+
+.ww-detail-hero img{ 
+  width:100%; 
+  height:100%; 
+  object-fit:cover; 
+  display:block; 
+}
+
+.ww-detail-content{ 
+  padding: 1.1rem 3.5rem;
+  justify-items: center;
+  overflow: auto;
+  border-radius: 0 0 10px 10px; /* corner radius for the bottom */
+}
+
+.ww-detail-title{ 
+  font-size: 1.6rem; 
+  font-weight:700;  
+  color:#222; 
+  margin-bottom: 0.8rem;
+}
+
+.ww-detail-list{  
+  color:#777;
+  font-weight: 500;
+  line-height:1.2; 
+  font-size: 1rem;
+}
+
+.ww-detail-list li+li{ 
+  margin-top:0.8rem;
+}
+
 /* Responsive adjustments */
 @media (max-width: 1024px) {
   .why-sustain-cards {
@@ -961,7 +1130,7 @@
   }
   
   .mulch-type-card {
-    height: auto; /* 移动端不需要固定高度 */
+    height: auto; /* Mobile doesn't need fixed height */
   }
   
   .mulch-benefits {
@@ -979,6 +1148,18 @@
   
   .mulch-how-image {
     max-width: 100%;
+  }
+
+  .waterwise-content{ 
+    flex-direction: column; 
+  }
+
+  .ww-left, .ww-right{ 
+    width:100% !important; 
+  }
+  
+  .ww-splitter{ 
+    display:none; 
   }
 }
 
