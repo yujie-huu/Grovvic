@@ -31,6 +31,7 @@ const Navigation = () => {
     <nav className="navigation">
       <div className="nav-container">
         <div className="nav-brand">
+          {/* Logo, link to home page */}
           <Link to={`/`} className="brand-link">
             <div className="logo">
               <img className="logo-icon" src="/images/team_logo_v4.png" alt="GROVVIC Logo" />
