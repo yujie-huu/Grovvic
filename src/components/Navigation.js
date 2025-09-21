@@ -33,7 +33,7 @@ const Navigation = () => {
         <div className="nav-brand">
           <Link to={`/`} className="brand-link">
             <div className="logo">
-              <div className="logo-icon">♻️</div>
+              <img className="logo-icon" src="/images/Team Logo v4.png" alt="GROVVIC Logo" />
             </div>
             <span className="nav-brand-name">GROVVIC</span>
           </Link>

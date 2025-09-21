@@ -7,12 +7,12 @@ const Footer = () => {
       <div className="footer-content">
 
         <div className="copyright">
-          <p>Copyright © 2025 NetZero - All Rights Reserved.</p>
+          <p>Copyright © 2025 NetVivo - All Rights Reserved.</p>
         </div>
         
         <div className="brand">
           <span className="brand-line"></span>
-          <span className="brand-name">NETZERO</span>
+          <span className="brand-name">NETVIVO</span>
           <span className="brand-line"></span>
         </div>
       </div>
