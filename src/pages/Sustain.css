@@ -1016,14 +1016,14 @@
 }
 
 .ww-detail-content{ 
-  padding: 1.1rem 3.5rem;
+  padding: 1.1rem 3.2rem;
   justify-items: center;
   overflow: auto;
   border-radius: 0 0 10px 10px; /* corner radius for the bottom */
 }
 
 .ww-detail-title{ 
-  font-size: 1.6rem; 
+  font-size: 1.55rem; 
   font-weight:700;  
   color:#222; 
   margin-bottom: 0.8rem;
