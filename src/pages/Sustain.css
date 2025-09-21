@@ -253,7 +253,7 @@
 }
 
 .sustain-gardening-title {
-  font-size: 3rem;
+  font-size: 2.7rem;
   font-weight: bold;
   font-style: italic;
   color: #000;
@@ -262,9 +262,9 @@
 }
 
 .sustain-gardening-subtitle {
-  font-size: 1.9rem;
+  font-size: 1.6rem;
   font-weight: 600;
-  color: #0c5c1e;
+  color: #0f4229;
   text-align: left;
   margin-bottom: 2.5rem;
 }
@@ -272,18 +272,19 @@
 .sustain-gardening-button-container {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
+  gap: 15px;
   width: 100%;
   padding-right: 3rem;
 }
 
 .sustain-gardening-button {
   padding: 1rem 1rem;
+  margin-top: 0.3rem;
   border-radius: 2rem;
   background: white;
-  color: #044c15;
+  color: #0f4229;
   border: 1px solid #999;
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: 500;
   letter-spacing: .4px;
   cursor: pointer;

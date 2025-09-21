@@ -60,6 +60,12 @@ const Sustain = () => {
     }
   ];
 
+  // Navigate to gardening type pages
+  const handleGardeningTypeClick = (type) => {
+    console.log(`Navigating to ${type} gardening page`);
+    navigate(`/gardening/${type}`);
+  };
+
   const [videos, setVideos] = useState([]);
 
   useEffect(() => {
@@ -335,7 +341,32 @@ const Sustain = () => {
           ))}
         </div>
       </section>
-      
+
+      <section className="sustain-gardening-section">
+        <div className="sustain-gardening-container">
+          <div className="sustain-gardening-content">
+            <h1 className="sustain-gardening-title">
+              Sustain your Garden. <br />
+              Sustain the Earth. <br />
+            </h1>
+            <h2 className="sustain-gardening-subtitle">
+              Recommendations that are healthy and match your aesthetic
+            </h2>
+            <div className="sustain-gardening-button-container">
+              <button className="sustain-gardening-button" onClick={() => handleGardeningTypeClick('balcony')}> Balcony gardening</button>
+              <button className="sustain-gardening-button" onClick={() => handleGardeningTypeClick('indoor')}> Indoor gardening</button>
+              <button className="sustain-gardening-button" onClick={() => handleGardeningTypeClick('rooftop')}> Rooftop gardening</button>
+              <button className="sustain-gardening-button" onClick={() => handleGardeningTypeClick('backyard')}> Backyard gardening</button>
+            </div>
+          </div>
+          <div className="sustain-gardening-images-container">
+            <img src="/images/sustain-gardening-balcony.jpg" alt="Balcony garden" />
+            <img src="/images/sustain-gardening-indoor.jpeg" alt="Indoor garden" />
+            <img src="/images/sustain-gardening-rooftop.jpg" alt="Rooftop garden" />
+            <img src="/images/sustain-gardening-backyard.jpg" alt="Backyard garden" />
+          </div>
+        </div>
+      </section>      
       
       <section className="habitat-videos">
         <h1 className="habitat-title">Habitat Gardening</h1>
