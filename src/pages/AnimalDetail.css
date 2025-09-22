@@ -17,16 +17,17 @@
   margin-bottom: 8px;
   color: #2d3748;
   text-align: left;
+  color: #006400; 
 }
 
 /* 学名 + 属名 */
 .animal-scientific {
-  font-size: 2rem;   
+  font-size: 1.9rem;   
   font-weight: 400;  
   margin-bottom: 20px;
-  color: #4a5568;
   text-align: left;
   font-style: italic;
+  color: #006400;
 }
 
 /* 图片 + 描述整体布局 */
