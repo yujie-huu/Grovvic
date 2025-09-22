@@ -12,10 +12,10 @@ const AnimalDetail = () => {
   const [occurrences, setOccurrences] = useState([]);
   const [polygonBounds, setPolygonBounds] = useState(null);
 
-  // ✅ 新增：保存 related plants 数据
+  // ✅ Related plants（已做“按 plant_scientific_name 合并”）
   const [relations, setRelations] = useState([]);
 
-  // ✅ 获取动物信息 & 分布信息
+  // 获取动物信息 & 分布信息
   useEffect(() => {
     if (!name) return;
 
@@ -28,8 +28,6 @@ const AnimalDetail = () => {
       .then((data) => setAnimal(data))
       .catch((err) => console.error("Error fetching animal detail:", err));
 
-  
-
     // 获取分布信息
     const occUrl = `https://netzero-vigrow-api.duckdns.org/iter2/occurrences/by-animal?animal=${encodeURIComponent(
       name
@@ -40,7 +38,7 @@ const AnimalDetail = () => {
         setOccurrences(data);
 
         if (data.length === 1) {
-          // ✅ 只有 1 个点：画一个缓冲圆 (10 km 半径)
+          // 1 点：10km 缓冲圆
           const point = turf.point([data[0].decimalLongitude, data[0].decimalLatitude]);
           const buffer = turf.buffer(point, 10, { units: "kilometers" });
           if (buffer) {
@@ -48,15 +46,15 @@ const AnimalDetail = () => {
             setPolygonBounds(coords);
           }
         } else if (data.length === 2) {
-          // ✅ 只有 2 个点：画一个矩形包围盒
-          const line = turf.lineString(data.map(d => [d.decimalLongitude, d.decimalLatitude]));
+          // 2 点：包围盒
+          const line = turf.lineString(data.map((d) => [d.decimalLongitude, d.decimalLatitude]));
           const bboxPoly = turf.bboxPolygon(turf.bbox(line));
           if (bboxPoly) {
             const coords = bboxPoly.geometry.coordinates[0].map(([lng, lat]) => [lat, lng]);
             setPolygonBounds(coords);
           }
         } else if (data.length > 2) {
-          // ✅ 3 个点及以上：画凸包
+          // ≥3 点：凸包
           const points = turf.featureCollection(
             data.map((d) => turf.point([d.decimalLongitude, d.decimalLatitude]))
           );
@@ -68,10 +66,9 @@ const AnimalDetail = () => {
         }
       })
       .catch((err) => console.error("Error fetching occurrences:", err));
- 
   }, [name]);
 
-  // ✅ 获取相关植物信息（仅此处替换）
+  // ✅ 获取相关植物信息；按 plant_scientific_name 合并，图片用 plant_image_url，关系逐行展示
   useEffect(() => {
     if (!name) return;
 
@@ -79,86 +76,49 @@ const AnimalDetail = () => {
       name
     )}`;
 
-    // 规范化品种名：去掉首尾空格、把多空格压成一个空格
-    const normalizeName = (raw) =>
-      (raw || "")
-        .replace(/\u2013|\u2014/g, "-") // 替换长短横线为普通连字符
-        .replace(/\s+/g, " ")
-        .trim();
-
-    // 根据 plant_scientific_name 生成 variety URL（统一用 encodeURIComponent）
-    const buildVarietyUrl = (plantName) => {
-      const normalized = normalizeName(plantName);
-      return `https://netzero-vigrow-api.duckdns.org/variety/${encodeURIComponent(
-        normalized
-      )}`;
-    };
-
     fetch(relUrl)
       .then((res) => res.json())
-      .then(async (data) => {
-        const enriched = await Promise.all(
-          data.map(async (rel) => {
-            const candidateUrl = buildVarietyUrl(rel.plant_scientific_name);
+      .then((data) => {
+        const list = Array.isArray(data) ? data : [];
 
-            try {
-              // 第一次：用规范化+encode 的品种名请求 /variety
-              const vRes = await fetch(candidateUrl);
-              if (vRes.ok) {
-                const vData = await vRes.json();
-                
-                console.log("DEBUG final image url for", rel.plant_scientific_name,JSON.stringify(vData.image_url));
+        // 按 plant_scientific_name 合并
+        const map = new Map();
+        list.forEach((rel) => {
+          const key = (rel.plant_scientific_name || "").trim();
+          if (!key) return;
 
-                return {
-                  ...rel,
-                  // ✅ 关键：使用 /variety 返回的 image_url
-                  image_url: vData.image_url || "",
-                  // 名称优先用 overview["Botanical name"]，否则回退到 plant_scientific_name
-                  vernacular_name:
-                    vData.overview?.["Botanical name"] || "No Name",
-                };
-              }
+          if (!map.has(key)) {
+            map.set(key, {
+              plant_scientific_name: key,
+              vernacular_name: rel.vernacular_name || rel.plant_scientific_name || "",
+              plant_image_url: rel.plant_image_url || "", // 首个有图的条目会保留下来
+              interactions: [],
+            });
+          }
 
-              // 如果第一次不成功，再尝试一个更“激进”的回退：去掉品种名里的额外符号后再请求一次
-              const fallbackName = normalizeName(
-                rel.plant_scientific_name?.replace(/\s*-\s*/g, "-")
-              );
-              if (fallbackName && fallbackName !== rel.plant_scientific_name) {
-                const vRes2 = await fetch(
-                  `https://netzero-vigrow-api.duckdns.org/variety/${encodeURIComponent(
-                    fallbackName
-                  )}`
-                );
-                if (vRes2.ok) {
-                  const vData2 = await vRes2.json();
-                  return {
-                    ...rel,
-                    image_url: vData2.image_url || "",
-                    vernacular_name:
-                      vData2.overview?.["Botanical name"] || rel.plant_scientific_name,
-                  };
-                }
-              }
-            } catch (e) {
-              console.error("Error fetching variety info:", e);
-            }
+          const entry = map.get(key);
 
-            // 全部失败时保底：图片留空，名称退回原始学名
-            return {
-              ...rel,
-              image_url: "",
-              vernacular_name: rel.plant_scientific_name,
-            };
-          })
-        );
+          // 记录更友好的名字（如果还没有）
+          if (!entry.vernacular_name && (rel.vernacular_name || rel.plant_scientific_name)) {
+            entry.vernacular_name = rel.vernacular_name || rel.plant_scientific_name;
+          }
 
-        setRelations(enriched);
+          // 记录首个有效图片
+          if (!entry.plant_image_url && rel.plant_image_url) {
+            entry.plant_image_url = rel.plant_image_url;
+          }
+
+          // 依序收集 interaction_type_raw（去空、按出现顺序去重）
+          const it = (rel.interaction_type_raw || "").trim();
+          if (it && !entry.interactions.includes(it)) {
+            entry.interactions.push(it);
+          }
+        });
+
+        setRelations(Array.from(map.values()));
       })
       .catch((err) => console.error("Error fetching relations:", err));
   }, [name]);
-
-
-
 
   if (!animal) return <p>No animals.</p>;
 
@@ -186,9 +146,9 @@ const AnimalDetail = () => {
         </div>
       </div>
 
-      {/* ✅ 两个地图并排显示 */}
+      {/* 两个地图并排显示 */}
       <div className="animal-maps-container">
-        {/* 覆盖范围凸包地图 */}
+        {/* 覆盖范围凸包/缓冲/包围盒 */}
         {polygonBounds && (
           <div className="animal-map">
             <h3 className="compiled-map-title">Compiled Distribution Map</h3>
@@ -211,11 +171,7 @@ const AnimalDetail = () => {
         {/* 点分布地图 */}
         <div className="animal-map">
           <h3 className="occurrence-map-title">Occurrence Records Map</h3>
-          <MapContainer
-            center={[-25, 133]}
-            zoom={3}
-            style={{ height: "300px", width: "100%" }}
-          >
+          <MapContainer center={[-25, 133]} zoom={3} style={{ height: "300px", width: "100%" }}>
             <TileLayer
               url="https://cartodb-basemaps-a.global.ssl.fastly.net/light_all/{z}/{x}/{y}{r}.png"
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> contributors &copy; <a href="https://carto.com/">CARTO</a>'
@@ -235,10 +191,9 @@ const AnimalDetail = () => {
         </div>
       </div>
 
-      {/* ✅ Related Plants 部分（只有有数据时才显示） */}
+      {/* ✅ Related Plants：同一植物一张卡，底部逐行显示所有 interaction_type_raw */}
       {Array.isArray(relations) && relations.length > 0 && (
         <section className="related-plants-section">
-          {/* 绿色横幅 + 白色标题 */}
           <div className="related-plants-hero">
             <h2 className="related-plants-title">Related Plants</h2>
           </div>
@@ -246,37 +201,39 @@ const AnimalDetail = () => {
           <div className="related-plants-grid">
             {relations.map((rel, idx) => (
               <article className="related-plant-card" key={idx}>
-                {/* 顶部名称 */}
+                {/* 名称 */}
                 <h3 className="related-plant-name">
-                  {rel.vernacular_name || rel.plant_scientific_name || "No Image"}
+                  {rel.vernacular_name || rel.plant_scientific_name || "No Name"}
                 </h3>
 
-                {/* 中间：如果有图片就显示图片，否则显示文字 */}
-                {rel.image_url ? (
+                {/* 图片（relations 的 plant_image_url） */}
+                {rel.plant_image_url ? (
                   <img
-                    src={rel.image_url}
-                    alt={rel.vernacular_name || rel.plant_scientific_name || "No Data"}
+                    src={rel.plant_image_url}
+                    alt={rel.vernacular_name || rel.plant_scientific_name || "No Image"}
                     className="related-plant-img"
                   />
                 ) : (
                   <div className="related-plant-noimg">No Data</div>
                 )}
 
-                {/* 底部关系描述 */}
-                <p className="related-plant-relation">
-                  {rel.interaction_type_raw || "No Relation Data"}
-                </p>
+                {/* 所有 interaction_type_raw：一条一行，按顺序 */}
+                <div className="related-plant-relation-list">
+                  {rel.interactions && rel.interactions.length > 0 ? (
+                    rel.interactions.map((t, i) => (
+                      <p className="related-plant-relation" key={i}>
+                        {t}
+                      </p>
+                    ))
+                  ) : (
+                    <p className="related-plant-relation">No Relation Data</p>
+                  )}
+                </div>
               </article>
             ))}
           </div>
-
-
-
-
-
         </section>
       )}
-
     </div>
   );
 };
