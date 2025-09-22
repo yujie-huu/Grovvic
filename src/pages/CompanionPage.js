@@ -133,7 +133,7 @@ const CompanionPage = () => {
             </div>
             
             <div className="input-container">
-              <icon className="search-icon"> <MdSearch /> </icon>
+              <div className="search-icon"> <MdSearch /> </div>
               <input
                 ref={inputRef}
                 type="text"
