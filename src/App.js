@@ -28,7 +28,7 @@ function App() {
       <div className="App">
         <Navigation />
         <Routes>          
-          {/* Iteration 2 routes */}
+          {/* routes */}
           <Route path="/" element={<HomePage />} />
           <Route path="/weather" element={<Weather />} />
           <Route path="/gardenplan" element={<GardenPlan />} />

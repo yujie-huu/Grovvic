@@ -6,7 +6,7 @@ const SearchBiodiversity = ({ onSelect = () => {} }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // 从 URL 取初始 q
+  // get q from url
   const params = new URLSearchParams(location.search);
   const initialQuery = params.get("q") || "";
 
