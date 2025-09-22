@@ -370,6 +370,8 @@
   align-items: center;
   justify-content: center;
   text-align: center;
+     /* 你要的高度 */
+  overflow: hidden;
 }
 
 .weekly-image-banner::before {
@@ -377,6 +379,14 @@
   position: absolute;
   inset: 0;
   background: rgba(0,0,0,0.35);
+}
+
+.weekly-image-banner::after {
+  content: "";
+  position: absolute;
+  inset: 0;  /* 占满整个容器 */
+  background: rgba(255, 255, 255, 0.2); /* 白色半透明覆盖，提亮效果 */
+  pointer-events: none; /* 不影响点击 */
 }
 
 .weekly-image-overlay {
@@ -399,8 +409,12 @@
   text-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
 }
 
-
-
+.weekly-image-img {
+  width: 100%;
+  height: 70%;
+  object-fit: cover;       /* 裁剪 */
+  object-position: top;    /* 只对齐上方 */
+}
 
 
 
@@ -427,50 +441,91 @@
   border: 1px solid #ccc;
 }
 
+/* ✅ 统一气候图大小 */
 .climate-image {
   width: 100%;
+  max-width: 1000px;   /* 最大宽度和 climate-section 一致 */
+  max-height: 500px;   /* 限制高度避免太大 */
   height: auto;
+  object-fit: contain; /* 保持比例，不拉伸 */
   display: block;
   border-radius: 10px;
-  margin-top: 60px; 
+  margin: 40px auto 0; /* 居中，顶部留白 */
 }
 
-.green-box {
-  background-color: #dcfce7;
-  border-left: 16px solid #65a30d;
-  border-radius: 1rem;
+/* --- Historical Climate Insights--- */
+/* 长卡片样式 */
+.climate-intro-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 2rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  padding: 1.5rem 2rem;
-  margin: 2rem auto;
-  width: 100%;
-  max-width: 1100px;  
-  min-height: 200px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  overflow-wrap: break-word;
-  word-break: break-word;
+  text-align: center;
+  margin-bottom: 6rem;
+  margin: 0 auto 2rem auto;  /* 自动居中 */
+  max-width: 980px;
 }
 
-/* Title style */
-.green-box h2 {
-  margin: 0;
-  font-size: 2rem;
-  color: #14532d; /* Deep green text */
-  text-align: center;
+.climate-intro-card h2 {
+  font-size: 1.5rem;
+  color: #65a30d;  /* 绿色标题 */
+  margin-bottom: 0.75rem;
 }
 
-/* Paragraph style */
-.green-box p {
-  font-size: 1.25rem;
-  color: #14532d;
-  text-align: center;
+.climate-intro-card p {
+  font-size: 1rem;
+  color: #374151;
   line-height: 1.6;
-  margin-top: 0.75rem;
-  padding: 0 1rem;
-  max-width: 100%;
+  margin: 0;
 }
+
+
+/* 卡片容器 */
+.climate-card-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 200px); /* 每个卡片宽度 180px */
+  gap: 2rem;
+  margin-top: 2rem;
+  justify-content: center; /* 整体居中 */
+  min-height: 250px;
+}
+
+
+/* 单个卡片 */
+.climate-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: left;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  max-width: 220px;
+  height: 500;
+}
+
+.climate-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* 卡片标题 */
+.climate-card h3 {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #65a30d; 
+  margin-bottom: 0.75rem;
+}
+
+/* 卡片正文 */
+.climate-card p {
+  font-size: 1rem;
+  color: #374151;
+  line-height: 1.5;
+  margin: 0;
+}
+
+
+
 
 
 /* Optional: Specific class for climate box if needed */
@@ -656,6 +711,33 @@
   white-space: pre-line;
 }
 
+/* ✅ 统一居中用 span 包裹 */
+.water-badge {
+  display: inline-block;      /* 保证在表格里表现稳定 */
+  text-align: center;         /* 水平居中 */
+  vertical-align: middle;     /* 垂直居中 */
+  padding: 4px 8px;           /* 内边距控制大小 */
+  border-radius: 6px;         /* 圆角 */
+  font-weight: 600;
+  font-size: 0.95rem;
+  line-height: 1.5;           /* ✅ 行高和文字高度一致 */
+  white-space: nowrap;        /* 避免换行 */
+}
+
+/* 绿色背景 */
+.water-green {
+  background-color: #d4f5dd;
+  color: #006400;
+}
+
+/* 蓝色背景 */
+.water-blue {
+  background-color: #e0ebff;
+  color: #1a4dab;
+}
+
+
+
 /* notes part */
 .watering-notes {
   margin: 0;
@@ -663,6 +745,7 @@
   color: #ffffff;
   line-height: 1.6;
   text-align: center;
+  list-style-type: none;
 }
 
 

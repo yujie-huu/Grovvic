@@ -4,113 +4,6 @@ import './Weather.css'
 import axios from 'axios'
 import { buildWateringTable } from '../utils/watering.js';
 
-// const Weather = () => {
-//   const [current, setCurrent] = useState(null)
-//   const [forecastList, setForecastList] = useState([]) // hourly
-//   const [dailyForecasts, setDailyForecasts] = useState([]) // 8-day forecast
-//   const [unit, setUnit] = useState('metric')
-//   const [selectedCity, setSelectedCity] = useState('Melbourne')
-//   const [climateType, setClimateType] = useState('temperature')
-
-//   const apiKey = 'cc6ac231ffa5fcb7e2893394cea3d7d4'
-//   const country = 'AU'
-
-//   const victoriaCities = [
-//     'Melbourne', 'Geelong', 'Ballarat', 'Bendigo', 'Mildura',
-//     'Shepparton', 'Warrnambool', 'Wangaratta', 'Traralgon', 'Sale',
-//     'Bairnsdale', 'Echuca', 'Colac', 'Morwell', 'Portland'
-//   ]
-
-//   const fetchWeather = async (cityName, unitType) => {
-//     try {
-//       // Step 1: Get latitude and longitude by city name
-//       const geoRes = await axios.get('https://api.openweathermap.org/geo/1.0/direct', {
-//         params: {
-//           q: `${cityName},${country}`,
-//           limit: 1,
-//           appid: apiKey
-//         }
-//       })
-
-//       if (!geoRes.data || geoRes.data.length === 0) {
-//         throw new Error('Geocoding failed')
-//       }
-
-//       const { lat, lon } = geoRes.data[0]
-
-//       // Step 2: Fetch weather using One Call API 3.0
-//       const weatherRes = await axios.get('https://api.openweathermap.org/data/3.0/onecall', {
-//         params: {
-//           lat,
-//           lon,
-//           units: unitType,
-//           exclude: 'minutely,alerts',
-//           appid: apiKey
-//         }
-//       })
-
-//       const data = weatherRes.data
-
-//       // Step 3: Store weather data
-//       setCurrent(data.current)
-//       setForecastList(data.hourly.slice(0, 24))      // 24-hour forecast
-//       setDailyForecasts(data.daily.slice(0, 8))       // 8-day forecast
-
-//     } catch (err) {
-//       console.error('One Call API error:', err)
-//       alert('❌ Failed to fetch weather data. Please check your API key and subscription.')
-//     }
-//   }
-
-//   useEffect(() => {
-//     fetchWeather(selectedCity, unit)
-//   }, [unit, selectedCity])
-
-//   const toggleUnit = () => {
-//     setUnit(prev => (prev === 'metric' ? 'imperial' : 'metric'))
-//   }
-
-//   if (!current) return <p>Loading weather...</p>
-
-//   const weekday = new Date().toLocaleDateString('en-US', { weekday: 'long' })
-//   const date = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
-
-//   const formatSunTime = (unix) =>
-//     new Date(unix * 1000)
-//       .toLocaleTimeString('en-US', {
-//         hour: 'numeric',
-//         minute: '2-digit',
-//         hour12: true
-//       })
-//       .replace('AM', 'am')
-//       .replace('PM', 'pm');
-
-//   // Keep for 7-day forecast labels
-//   const formatDay = (unix) =>
-//     new Date(unix * 1000).toLocaleDateString('en-US', { weekday: 'short' })
-
-//   const tempUnit = unit === 'metric' ? '°C' : '°F'
-//   const speedUnit = unit === 'metric' ? 'km/h' : 'mph'
-//   const windSpeed = unit === 'metric'
-//     ? (current.wind_speed * 3.6).toFixed(1)
-//     : current.wind_speed.toFixed(1)
-//   const todayMin = Math.round(dailyForecasts?.[0]?.temp?.min ?? current.temp);
-
-//   // Unit conversions
-//   const toKmh = (speed) =>
-//     unit === 'imperial' ? (speed || 0) * 1.60934 : (speed || 0) * 3.6; // mph/m/s -> km/h
-//   const toCelsius = (t) =>
-//     unit === 'imperial' ? (t - 32) * 5 / 9 : t;
-
-//   const unique = (arr) => Array.from(new Set((arr || []).filter(Boolean)));
-
-//   // ---- Day-level tips (based on today's daily forecast) ----
-//   const todayDaily = dailyForecasts?.[0] || {};
-//   const dayTempC   = toCelsius(todayDaily?.temp?.day ?? current?.temp ?? 0);
-//   const dayRainMm  = todayDaily?.rain ?? 0; // OpenWeather daily rain in mm
-//   const dayWindKmh = toKmh(todayDaily?.wind_speed ?? current?.wind_speed ?? 0);
-//   const dayHumidity = todayDaily?.humidity ?? current?.humidity ?? 0;
-//   const dayUvi      = todayDaily?.uvi ?? current?.uvi ?? 0;
 
 const Weather = () => {
   const [current, setCurrent] = useState(null)
@@ -218,29 +111,72 @@ const Weather = () => {
 
   const climateInsightsTemp = (
     <>
-      <p>Average temperatures in Victoria have risen by ~0.8°C since the 1950s, with more frequent and intense heatwaves.</p>
-      <ul>
-        <li><strong>Plant heat-tolerant crops:</strong> Choose summer-resilient vegetables like tomatoes, chillies, eggplants.</li>
-        <li><strong>Avoid cool-season crops:</strong> Skip lettuce or coriander during hot periods (they may bolt early or wilt).</li>
-        <li><strong>Adjust planting schedules:</strong> Use longer warm seasons by planting earlier in spring or extending into autumn.</li>
-        <li><strong>Protect plants from heatwaves:</strong> Use shade cloths, mulch, or plant covers to reduce heat stress.</li>
-        <li><strong>Water timing:</strong> Water early morning or late evening to minimize evaporation.</li>
-      </ul>
+      {/* 单独的长卡片 */}
+      <div className="climate-intro-card">
+        <h2>Historical Climate Insights</h2>
+        <p>
+          Average temperatures in Victoria have risen by ~0.8°C since the 1950s,
+          with more frequent and intense heatwaves.
+        </p>
+      </div>
+
+      <div className="climate-card-grid">
+        <div className="climate-card">
+          <h3>PLANT HEAT-TOLERANT CROPS</h3>
+          <p>Choose summer-resilient vegetables like tomatoes, chillies, eggplants.</p>
+        </div>
+        <div className="climate-card">
+          <h3>AVOID COOL-SEASON CROPS</h3>
+          <p>Skip lettuce or coriander during hot periods (they may bolt early or wilt).</p>
+        </div>
+        <div className="climate-card">
+          <h3>ADJUST PLANTING SCHEDULES</h3>
+          <p>Use longer warm seasons by planting earlier in spring or extending into autumn.</p>
+        </div>
+        <div className="climate-card">
+          <h3>PROTECT PLANTS FROM HEAT WAVES</h3>
+          <p>Use shade cloths, mulch, or plant covers to reduce heat stress.</p>
+        </div>
+        <div className="climate-card">
+          <h3>WATER TIMING</h3>
+          <p>Water early morning or late evening to minimize evaporation.</p>
+        </div>
+      </div>
     </>
   )
 
+
   const climateInsightsRain = (
     <>
-      <p>There’s been a significant decline in autumn rainfall, slight drops in winter and spring, and a small increase in summer rainfall. Fewer very wet years have occurred.</p>
-      <ul>
-        <li><strong>Irrigate more during autumn:</strong> Compensate for reduced natural soil moisture during fall planting periods.</li>
-        <li><strong>Use water-saving techniques:</strong> Install drip irrigation or deep watering systems to minimize water waste.</li>
-        <li><strong>Collect and reuse rainwater:</strong> Install rain barrels to capture water during wetter months for dry season use.</li>
-        <li><strong>Improve soil moisture retention:</strong> Add compost or organic matter to enhance water-holding capacity.</li>
-        <li><strong>Grow drought-tolerant plants:</strong> Select native or low-water species (e.g., succulents, lavender, kangaroo paw).</li>
-      </ul>
+      <p className="climate-intro">
+        There’s been a significant decline in autumn rainfall, slight drops in winter and spring,
+        and a small increase in summer rainfall. Fewer very wet years have occurred.
+      </p>
+      <div className="climate-card-grid">
+        <div className="climate-card">
+          <h3>IRRIGATE MORE DURING AUTUMN</h3>
+          <p>Compensate for reduced natural soil moisture during fall planting periods.</p>
+        </div>
+        <div className="climate-card">
+          <h3>USE WATER-SAVING TECHNIQUES</h3>
+          <p>Install drip irrigation or deep watering systems to minimize water waste.</p>
+        </div>
+        <div className="climate-card">
+          <h3>COLLECT AND REUSE RAINWATER</h3>
+          <p>Install rain barrels to capture water during wetter months for dry season use.</p>
+        </div>
+        <div className="climate-card">
+          <h3>IMPROVE SOIL MOISTURE RETENTION</h3>
+          <p>Add compost or organic matter to enhance water-holding capacity.</p>
+        </div>
+        <div className="climate-card">
+          <h3>GROW DROUGHT-TOLERANT PLANTS</h3>
+          <p>Select native or low-water species (e.g., succulents, lavender, kangaroo paw).</p>
+        </div>
+      </div>
     </>
   )
+
 
 
   const weeklyRules = [
@@ -263,7 +199,6 @@ const Weather = () => {
     soil: 'loam',   // 可按需连接到设置
     hoseLpm: 12,
   })
-
 
 
   const weatherTips = [
@@ -335,8 +270,6 @@ const Weather = () => {
     }
     return null
   }
-
-  // const currentHourTip = forecastList.length > 0 ? getWeatherTip(forecastList[0]) : null
 
 
   return (
@@ -491,7 +424,15 @@ const Weather = () => {
                     <tr key={idx}>
                       <td>{r.plant}</td>
                       <td>{r.howOften}</td>
-                      <td>{r.hose}</td>
+                      <td>
+                        <span
+                          className={`water-badge ${
+                            parseFloat(r.hose) < 60 ? "water-green" : "water-blue"
+                          }`}
+                        >
+                          {r.hose}
+                        </span>
+                      </td>
                       <td>{r.drip}</td>
                       <td>{r.spray}</td>
                     </tr>
@@ -532,16 +473,21 @@ const Weather = () => {
           <p className="tip-text">{weeklyTips[0]}</p>
         </div>
 
+ 
         <div
           className="weekly-image-banner"
-          style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/images/weather_2.jpg)` }}
+          style={{
+            backgroundImage: `url(${process.env.PUBLIC_URL}/images/iter2-weather-history.png)`,
+            backgroundSize: "contain",     // 完整展示原图
+            backgroundRepeat: "no-repeat", // 不重复
+            backgroundPosition: "center",  // 居中
+            height: "500px"                // 高度可按需求调整
+          }}
         >
           <div className="weekly-image-overlay">
             <h2>Beyond Weather: From History To Future Resilient</h2>
           </div>
         </div>
-
-
 
 
         <div className="climate-section">
@@ -556,7 +502,7 @@ const Weather = () => {
 
 
         <div className="green-box climate-box">
-          <h2>📊 Historical Climate Insights</h2>
+          {/* <h2>Historical Climate Insights</h2> */}
           {climateType === 'temperature' ? climateInsightsTemp : climateInsightsRain}
         </div>
 
@@ -569,38 +515,30 @@ const Weather = () => {
         </div>
 
         <div className="green-box climate-box">
-          <h2>📊 Future Climate Insights</h2>
-          <div className="insight-item">
-            <span className="insight-icon">☀️</span>
-            <div className="insight-text">
-              <strong>Hotter Summers:</strong> Choose heat-tolerant vegetables such as tomatoes, chillies, okra, or sweet potatoes. Apply mulch (like straw or wood chips) to conserve soil moisture and protect roots. Water early in the morning or evening to reduce evaporation, and use shade cloths for heat-sensitive crops like lettuce or strawberries.
+          <div className="climate-card-grid">
+            <div className="climate-card">
+              <h3>HOTTER SUMMERS</h3>
+              <p>Grow heat-tolerant veggies (tomatoes, chillies, okra, sweet potatoes). Mulch to keep soil moist, water early/late, and use shade cloth for tender crops.</p>
             </div>
-          </div>
-          <div className="insight-item">
-            <span className="insight-icon">🍂</span>
-            <div className="insight-text">
-              <strong>Longer Autumns:</strong> Take advantage of warmer soil by planting cool-season crops (e.g. spinach, carrots, brassicas) earlier. Extended warmth also allows summer crops like beans or tomatoes to produce longer. Use staggered planting to adapt to unexpected hot or dry periods.
+            <div className="climate-card">
+              <h3>LONGER AUTUMNS</h3>
+              <p>Plant cool-season crops earlier and enjoy extended yields of summer crops. Stagger planting to handle unexpected heat/dry spells.</p>
             </div>
-          </div>
-          <div className="insight-item">
-            <span className="insight-icon">❄️</span>
-            <div className="insight-text">
-              <strong>Milder Winters:</strong> Try growing borderline crops such as ginger, broccoli, or certain tropical herbs that previously struggled in colder zones. Milder temperatures reduce the need for frost protection, and allow citrus and avocado trees to thrive in more areas—but still watch for surprise cold snaps.
+            <div className="climate-card">
+              <h3>MILDER WINTERS</h3>
+              <p>Try borderline crops (ginger, broccoli, tropical herbs). Less frost risk helps citrus and avocado thrive, but watch for cold snaps.</p>
             </div>
-          </div>
-          <div className="insight-item">
-            <span className="insight-icon">🌸</span>
-            <div className="insight-text">
-              <strong>Earlier Springs:</strong> Start warm-season crops (like corn, zucchini, melons) earlier than usual. Monitor gardens for early outbreaks of pests such as aphids, caterpillars, or whiteflies. Support your soil with compost, organic matter, and crop rotation to boost pest and disease resistance.
+            <div className="climate-card">
+              <h3>EARLIER SPRINGS</h3>
+              <p>Start warm-season crops sooner. Watch for early pests and strengthen soil with compost, organics, and rotation.</p>
             </div>
-          </div>
-          <div className="insight-item">
-            <span className="insight-icon">🔁</span>
-            <div className="insight-text">
-              <strong>Year-Round Strategies:</strong> Use native or drought-resilient plants that are adapted to local conditions. Install smart irrigation systems (e.g. timers, soil moisture sensors) to optimize water use. Collect rainwater in tanks or barrels during wet months to prepare for dry seasons. Increase garden diversity with mixed planting to buffer against losses.
+            <div className="climate-card">
+              <h3>YEAR-ROUND</h3>
+              <p>Choose native/drought-resilient plants, install smart irrigation, collect rainwater, and diversify plantings for resilience.</p>
             </div>
           </div>
         </div>
+
       </div>
     </div>
   )
