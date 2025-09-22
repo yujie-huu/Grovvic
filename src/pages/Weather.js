@@ -506,13 +506,38 @@ const Weather = () => {
           {climateType === 'temperature' ? climateInsightsTemp : climateInsightsRain}
         </div>
 
-        <div className="climate-section">
+        {/* <div className="climate-section">
           <img
             src="/images/future.png"
             alt="Future Climate"
             className="climate-image"
           />
+        </div> */}
+
+        <div
+          className="climate-section"
+          style={{
+            backgroundImage: `url(${process.env.PUBLIC_URL}/images/future-insights.jpg)`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            padding: "60px 20px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center"
+          }}
+        >
+          <div className="climate-chart-card">
+            <img
+              src="/images/future.png"
+              alt="Future Climate"
+              className="climate-image"
+            />
+          </div>
         </div>
+
+
+
+
 
         <div className="green-box climate-box">
           <div className="climate-card-grid">

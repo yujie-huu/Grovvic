@@ -631,14 +631,21 @@
 }
 
 
-.future-climate-banner {
-  width: 100%;
-  max-width: 800px;
-  display: block;
-  margin: 40px auto 20px auto; /* 上下间距 + 居中 */
+.climate-chart-card {
+  background: rgba(255, 255, 255, 0.9); /* 半透明白色背景，让图更清晰 */
+  padding: 2rem;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  max-width: 1000px;
+  width: 100%;
 }
+
+.climate-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
 
 /* ===== Watering Guide (Irrigation Table) ===== */
 .watering-guide {
