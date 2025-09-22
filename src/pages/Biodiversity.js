@@ -179,7 +179,8 @@ const Biodiversity = () => {
           {loading ? (
             <div className="loading">Loading...</div>
           ) : (
-            <MapContainer center={[-37.8, 145]} zoom={7} style={{ height: "400px", width: "100%" }}>
+            <MapContainer center={[-37.8, 145]} zoom={7} className="map-leaflet" 
+            >
               <TileLayer url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png" />
               {occurrences.map((item, idx) => (
                 <CircleMarker

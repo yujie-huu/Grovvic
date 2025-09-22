@@ -107,6 +107,7 @@
   background: #edf2f7;
   border-radius: 8px;
   overflow: hidden;
+  min-height: 1000px;
 }
 
 .map-header {
@@ -143,6 +144,24 @@
   display: block;
   margin: 4px 0;
 }
+
+.map-leaflet {
+  height: 600px !important;  /* 400px × 2.5 = 1000px */
+  width: 95%;
+}
+
+.map-container .leaflet-container {
+  flex: 1;
+  height: 100% !important;   /* ✅ 撑满父容器 */
+}
+
+/* 左侧栏和右侧保持等高 */
+.biodiversity-container {
+  display: flex;
+  align-items: stretch;
+}
+
+
 
 /* 外层绿色背景 */
 .explore-wrapper {
