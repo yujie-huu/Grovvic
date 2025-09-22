@@ -136,18 +136,18 @@ const AboutPage = () => {
               <p className="mission-description">Foster a supportive environment through local government programs and gardening communities.</p>
             </article>
           </div>
-          <div class="mission-side">
-            <div class="mission-side-card">
+          <div className="mission-side">
+            <div className="mission-side-card">
               <img className="mission-side-card-icon" src="/images/mission1.png" alt="gardener" />
-              <div class="mission-side-card-text">Gardeners First</div>
+              <div className="mission-side-card-text">Gardeners First</div>
             </div>
-            <div class="mission-side-card">
+            <div className="mission-side-card">
               <img className="mission-side-card-icon" src="/images/mission2.png" alt="sustainability" />
-              <div class="mission-side-card-text">Sustainability</div>
+              <div className="mission-side-card-text">Sustainability</div>
             </div>
-            <div class="mission-side-card">
+            <div className="mission-side-card">
               <img className="mission-side-card-icon" src="/images/mission3.png" alt="integrity" />
-              <div class="mission-side-card-text">Integrity</div>
+              <div className="mission-side-card-text">Integrity</div>
             </div>
           </div>
         </div>
