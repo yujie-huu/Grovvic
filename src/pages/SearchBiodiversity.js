@@ -94,7 +94,8 @@ const SearchBiodiversity = ({ onSelect = () => {} }) => {
         </div>
 
         {/* 搜索结果展示 */}
-        <div className="explore-results">
+        
+        {/* <div className="explore-results">
           {results.map((item, idx) => (
             <div className="explore-card" key={idx} style={{ cursor: "default" }}>
               <img
@@ -110,7 +111,7 @@ const SearchBiodiversity = ({ onSelect = () => {} }) => {
                   <i>{item.animal_taxon_name}</i>
                 </p>
                 <p className="explore-views">👁 {item.number_of_records}</p>
-                {/* Explore more：把当前 q 一并带过去（返回更易恢复） */}
+                
                 <p
                   className="explore-more-link"
                   onClick={(e) => {
@@ -127,7 +128,56 @@ const SearchBiodiversity = ({ onSelect = () => {} }) => {
               </div>
             </div>
           ))}
+        </div> */}
+
+        <div className="explore-results">
+          {results.map((item, idx) => {
+            // 判断 vernacular_name 是否有效（排除 null、undefined、空字符串、"nan"）
+            const hasCommon =
+              typeof item.vernacular_name === "string" &&
+              item.vernacular_name.trim().length > 0 &&
+              item.vernacular_name.toLowerCase() !== "nan";
+
+            return (
+              <div className="explore-card" key={idx} style={{ cursor: "default" }}>
+                <img
+                  src={item.image_url}
+                  alt={item.animal_taxon_name}
+                  className="explore-img"
+                />
+                <div className="explore-info">
+                  <h3 className="explore-name">
+                    {hasCommon ? item.vernacular_name : item.animal_taxon_name}
+                  </h3>
+
+                  {hasCommon && (
+                    <p className="explore-latin">
+                      <i>{item.animal_taxon_name}</i>
+                    </p>
+                  )}
+
+                  <p className="explore-views">👁 {item.number_of_records}</p>
+
+                  <p
+                    className="explore-more-link"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigate(
+                        `/animal/${encodeURIComponent(item.animal_taxon_name)}${
+                          query ? `?q=${encodeURIComponent(query)}` : ""
+                        }`
+                      );
+                    }}
+                  >
+                    Explore more →
+                  </p>
+                </div>
+              </div>
+            );
+          })}
         </div>
+
+
 
         <p className="explore-count">{results.length} results</p>
       </div>

@@ -536,9 +536,6 @@ const Weather = () => {
         </div>
 
 
-
-
-
         <div className="green-box climate-box">
           <div className="climate-card-grid">
             <div className="climate-card">
