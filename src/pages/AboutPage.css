@@ -1,383 +1,427 @@
 /* ===== ABOUT PAGE STYLES ===== */
 .about-page {
-  min-height: 100vh;
   background: white;
   position: relative;
-  font-family: 'Raleway', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  /* font-family: 'Raleway', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif; */
 }
 
-/* ===== ABOUT SECTION BASE STYLES ===== */
-.about-section {
-  padding: 80px 20px;
+/* ===== ABOUT BANNER STYLES ===== */
+.about-banner {
+  background: linear-gradient(rgba(15, 66, 41, 0.7), rgba(15, 66, 41, 0.7)), url('../../public/images/about_banner.jpg') center / cover no-repeat;
+  height: 70vh;
   position: relative;
 }
 
-.section-content {
-  max-width: 1200px;
-  margin: 0 auto;
+.about-header {
+  background: transparent;
+  height: 52vh;
   display: flex;
   flex-direction: column;
-  gap: 40px;
-  align-items: center;
-}
-
-.section-content.full-width {
-  width: 100%;
-}
-
-.section-content.with-image {
-  flex-direction: row;
-  align-items: flex-start;
-  gap: 60px;
-}
-
-.section-text {
-  flex: 1;
-  text-align: center;
-}
-
-.section-text.left-aligned {
-  text-align: left;
-}
-
-.section-title {
-  font-family: 'Raleway', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
-  font-size: 2.8rem; /* 28px equivalent */
-  font-weight: 400; /* Regular weight */
-  margin-bottom: 30px;
-  text-align: left;
-  line-height: 1.2;
-}
-
-.section-text.left-aligned .section-title {
-  text-align: left;
-}
-
-.section-description {
-  font-family: 'Raleway', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
-  font-size: 1.2rem;
-  line-height: 1.7;
-  max-width: 1200px;
-  margin: 0 auto 200px;
-  text-align: left;
-}
-
-.section-text.left-aligned .section-description {
-  margin: 0 0 20px 0;
-  text-align: left;
-}
-
-.section-description:last-child {
-  margin-bottom: 0;
-}
-
-.section-image {
-  flex: 1;
-  position: relative;
-  width: 100%;
-  max-width: 500px;
-  height: 300px;
-}
-
-/* ===== WHO WE ARE SECTION ===== */
-.who-we-are {
-  background: #3C5E48; /* Dark green background */
-  color: #B9B9B9;
-  min-height: 400px;
-  position: relative;
-  z-index: 1;
-}
-
-.who-we-are .section-title {
-  color: #B9B9B9;
-}
-
-.who-we-are .section-description {
-  color: #B9B9B9;
-}
-
-/* ===== WHY WE BUILT SECTION ===== */
-.why-we-built {
-  background: white;
-  color: #474747;
-  min-height: 400px;
-  position: relative;
-  z-index: 2;
-}
-
-.why-we-built .section-title {
-  color: #474747;
-}
-
-.why-we-built .section-description {
-  color: #635D5D;
-}
-
-/* Spanning image that extends from previous section */
-.spanning-image {
-  position: absolute;
-  top: -100px; /* Position image to overlap with previous section */
-  right: 0;
-  width: 500px;
-  height: 450px;
-  z-index: 10;
-}
-
-/* Ensure text area in Why We Built section avoids the spanning image */
-.why-we-built .section-text.left-aligned {
-  margin-right: 400px; /* Leave space for the 500px wide image + 20px gap */
-  max-width: calc(100% - 40px); /* Constrain text width to avoid image */
-}
-
-.plant-illustration {
-  width: 100%;
-  height: 100%;
-  display: flex;
   align-items: center;
   justify-content: center;
-  /* background: rgba(255, 255, 255, 0.1); */
-  border-radius: 20px;
-  overflow: hidden;
-  /* box-shadow: 0 10px 30px rgba(0,0,0,0.2); */
+  color: white;
+  padding: 8vh 16vw 4vh;
 }
 
-.plant-illustration img {
+.about-header-title {
+  font-size: 1.7rem;
+  font-weight: 400;
+  margin-bottom: 1.5rem;
+  margin-top: 4vh;
+  text-align: center;
+  font-family: 'Rubik', sans-serif;
+  font-weight: 400;
+}
+
+.about-header-description {
+  font-size: 3.2rem;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+  font-family: 'Jost', sans-serif;
+  font-weight: 500;
+}
+
+.about-header-notes {
+  background: linear-gradient(to bottom, transparent 50%, white 50%, white 100%);
+  height: 18vh;
+  padding-bottom: 10px;
+}
+
+.about-header-notes-content {
+  background: white;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-inline: 10vw;
+  padding: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.about-header-notes-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  font-family: 'Rubik', sans-serif;
+  color: #539407;
+  margin-bottom: 0.5rem;
+}
+
+.about-header-notes-text {
+  font-size: 1.1rem;
+  font-weight: 300;
+  font-family: 'Rubik', sans-serif;
+  color: #0f4229;
+}
+
+
+
+/* ===== ABOUT US SECTION ===== */
+.about-us-section {
+  min-height: 80vh;
+}
+
+.about-us-content {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  align-items: stretch;
+  justify-content: center;
+  padding: 2.5rem;
+}
+
+.about-us-text {
+  width: 62%;
+  padding: 0.6rem 0;
+  align-items: center;
+}
+
+.about-us-title {
+  font-size: 2rem;
+  font-weight: 400;
+  font-family: 'Rubik', sans-serif;
+  margin-bottom: 1.3rem;
+  color: #539407;
+}
+
+.about-us-description {
+  font-size: 1.13rem;
+  font-weight: 300;
+  font-family: 'Rubik', sans-serif;
+  margin-bottom: 1.3rem;
+  line-height: 1.5;
+  color: black;
+}
+
+.about-us-image {
+  width: 38%;
+  display: flex;
+}
+
+.about-us-image img {
   width: 100%;
   height: 100%;
+  max-height: 80vh;
   object-fit: cover;
   border-radius: 20px;
 }
 
 /* ===== WHAT WE OFFER SECTION ===== */
-.what-we-offer {
-  background: #2A463C; /* Dark green background */
-  color: #C2C2C2;
-  min-height: 400px;
-  position: relative;
-  z-index: 1;
+.what-we-offer-section {
+  min-height: 80vh;
 }
 
-.what-we-offer .section-title {
-  color: #C2C2C2;
-}
-
-.offerings {
+.what-we-offer-container {
   display: flex;
   flex-direction: column;
-  gap: 30px;
-  margin-bottom: 20px;
-}
-
-.offering-item {
-  text-align: center;
-}
-
-.section-text.left-aligned .offering-item {
-  text-align: left;
-}
-
-.offering-title {
-  font-family: 'Raleway', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: #C2C2C2;
-  margin-bottom: 15px;
-  text-align: center;
-  display: inline;
-  margin-right: 8px;
-}
-
-.section-text.left-aligned .offering-title {
-  text-align: left;
-}
-
-.offering-description {
-  font-family: 'Raleway', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
-  font-size: 1.1rem;
-  line-height: 1.6;
-  color: #C2C2C2;
-  max-width: 500px;
-  margin: 0 auto;
-  text-align: center;
-  display: inline;
-}
-
-.section-text.left-aligned .offering-description {
-  text-align: left;
-  margin: 0;
-}
-
-.landscape-illustration {
-  width: 100%;
-  height: 100%;
-  display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 20px;
-  overflow: hidden;
+  padding: 2.5rem;
+  background: linear-gradient(to bottom, #0f4229e7 0 40%, #fff 40% 100%);
 }
 
-.landscape-illustration img {
+.what-we-offer-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 0;
+}
+
+.what-we-offer-title {
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: white;
+  font-family: 'Rubik', sans-serif;
+  margin-bottom: 0.2rem;
+}
+
+.what-we-offer-subtitle {
+  font-size: 2.5rem;
+  font-weight: 500;
+  color: white;
+  font-family: 'Jost', sans-serif;
+}
+
+.what-we-offer-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: 1.6rem;
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 20px;
+  padding-inline: 4.5rem;
+  padding-bottom: 2rem;
+}
+
+.what-we-offer-card {
+  display: grid;
+  grid-template-rows: 4fr 7fr 6rem;
+  background: white;
+  border-radius: 8px;
+  gap: 0.3rem;
+  padding: 1.2rem 1.2rem;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+}
+
+.what-we-offer-card-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #0f4229;
+  font-family: 'Jost', sans-serif;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.what-we-offer-card-description {
+  font-size: 0.9rem;
+  font-weight: 300;
+  font-family: 'Rubik', sans-serif;
+  color: #525368;
+  text-align: left;
+  justify-self: flex-start;
+  border-bottom: 1px solid rgba(52, 142, 56, 0.6);
+  line-height: 1.8;
+  padding-bottom: 1.4rem;
+}
+
+.what-we-offer-card-image {
+  display: flex;
+  justify-content: flex-start;
+  align-items: left;
+  padding: 1rem 0;
+}
+
+.what-we-offer-card-image img {
+  width: 3.8rem;
+  height: auto;
+  object-fit: contain;
+  border-radius: 12px;
 }
 
 /* ===== OUR MISSION SECTION ===== */
-.our-mission {
-  background: white;
-  color: #333;
-  min-height: 400px;
+.our-mission-section {
+  background: #e8f5e9;
+  padding: 3rem 8rem;
+  --overlap: 32px;          /* How much to shrink image (to make cards "overflow") */
+  --media-radius: 12px;
+  --card-radius: 12px;
+  --media-max: 80vh;        /* Set an upper limit for the image; cards are not limited */
+}
+
+/* Two-column layout: left column height is determined by cards, right column is equal height */
+.our-mission-container {
+  display: grid;
+  grid-template-columns: 8fr 3fr;
+  gap: 2.5rem;
+  width: 100%;
+  align-items: stretch;
+}
+
+/* Left image container (as positioning context) */
+.mission-media {
+  position: relative;
+  border-radius: var(--media-radius);
+}
+
+/* Background image as pseudo-element */
+.mission-media::before{
+  content: "";
+  position: absolute;
+  inset: var(--overlap) 0;   /* Shrink image on top and bottom */
+  background: url("../../public/images/our_mission.jpg") center/cover no-repeat;
+  border-radius: var(--media-radius);
+  box-shadow: 0 6px 20px rgba(0,0,0,.12);
+  z-index: 0;
+  max-height: var(--media-max); /* Set height limit for image, not for cards */
+}
+
+/* Mission Card: decide the height of the left column */
+.mission-card {
   position: relative;
   z-index: 1;
+  width: min(520px, 50%);       /* Card width is narrower than image */
+  margin-left: 24px;            /* Move left for visual overlap of image and card */
+  background: #ffffff;
+  border-bottom-left-radius: var(--card-radius);
+  border-bottom-right-radius: var(--card-radius);
+  border-top: 8px solid #539407;
+  box-shadow: 0 10px 30px rgba(0,0,0,.16);
+  padding: 20px 24px;
+  overflow: visible;
 }
 
-.our-mission .section-title {
-  color: #333;
+.mission-card-title{
+  margin: 20px 0 14px;
+  font-family: 'Jost', sans-serif;
+  font-weight: 500;
+  font-size: 1.5rem;
+  color:#111;
 }
 
-.our-mission .section-description {
-  color: #666;
+.mission-description{
+  font-size: 1rem;
+  font-weight: 300;
+  font-family: 'Rubik', sans-serif;
+  color: #525368;
+  line-height: 1.4;
+  margin-bottom: 1rem;
 }
 
-.mission-illustration {
-  width: 100%;
-  height: 100%;
+/* Right three cards, equal height stacking, total height matches left */
+.mission-side{
   display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: var(--overlap) 0;
+  height: 100%;           /* Same height as container (= left image height) */
+}
+
+.mission-side-card{
+  flex: 1 1 0;            /* Three cards share available height */
+  background: #0e4b2d;    /* Dark green */
+  color: #fff;
+  border-radius: 12px;
+  padding: 22px 24px;
+  display:flex; 
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 16px;
+  box-shadow: 0 6px 18px rgba(0,0,0,.14);
+}
+
+.mission-side-card-icon{
+  justify-content: center;
+  align-items: center;
+  padding-left: 0.2rem;
+}
+
+.mission-side-card-icon img{
+  width: auto;
+  height: 50px;
+  object-fit: cover;
+}
+
+.mission-side-card-text{
+  font: 500 1.2rem/1.3 "Rubik", sans-serif;
+}
+
+/* ===== ABOUT CONTACT SECTION ===== */
+.about-contact {
+  height: 60vh;
+  padding: 2.5rem;
+}
+
+.about-contact-container {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  border-radius: 20px;
-  overflow: hidden;
 }
 
-.mission-illustration img {
+.about-contact-title {
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: #539407;
+  font-family: 'Rubik', sans-serif;
+  margin-bottom: 0.5rem;
+}
+
+.about-contact-subtitle {
+  font-size: 2.5rem;
+  font-weight: 500;
+  color: #0f4229;
+  font-family: 'Jost', sans-serif;
+  margin-bottom: 1rem;
+}
+
+.about-contact-button {
+  background: #539407;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: 400;
+  font-family: 'Rubik', sans-serif;
+  cursor: pointer;
+}
+
+/* ===== ABOUT REFERENCE SECTION ===== */
+.about-reference {
+  background: #0f4229;
+  padding: 3rem 6rem;
+  color: white;
+}
+
+.about-reference-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 20px;
 }
 
-/* ===== RESPONSIVE DESIGN ===== */
-@media (max-width: 767px) {
-  .section-content.with-image {
-    flex-direction: column;
-    gap: 40px;
+.about-reference-title {
+  font-size: 2.5rem;
+  font-weight: 500;
+  font-family: 'Jost', sans-serif;
+  margin-bottom: 2rem;
+}
+
+
+.about-reference-list {
+  font-size: 1.1rem;
+  font-weight: 300;
+  font-family: 'Rubik', sans-serif;
+  color: white;
+  margin-left: 1.1rem;
+  line-height: 1.4;
+  width: 100%;
+}
+
+.about-reference-list li{
+  margin-bottom: 0.5rem;
+}
+
+
+/* Responsive Media */
+@media (max-width: 900px){
+  .our-mission-container{
+    grid-template-columns: 1fr;    /* Up Down Layout */
   }
-  
-  .section-text {
-    text-align: center;
+
+  .mission-media::before{ 
+    inset: 16px 0; 
   }
-  
-  .section-text.left-aligned {
-    text-align: center;
-  }
-  
-  .section-title {
-    text-align: center;
-  }
-  
-  .section-text.left-aligned .section-title {
-    text-align: center;
-  }
-  
-  .section-description {
-    text-align: center;
-    margin: 0 auto 20px;
-  }
-  
-  .section-text.left-aligned .section-description {
-    text-align: center;
-    margin: 0 auto 20px;
-  }
-  
-  .offering-item {
-    text-align: center;
-  }
-  
-  .offering-title {
-    text-align: center;
-  }
-  
-  .offering-description {
-    text-align: center;
-    margin: 0 auto;
-  }
-  
-  /* Adjust spanning image for mobile */
-  .spanning-image {
-    position: relative;
-    top: 0;
-    right: auto;
+
+  .mission-card{
     width: 100%;
-    order: -1; /* Move image above text on mobile */
+    margin-left: 0;
   }
-  
-  /* Reset text margins on mobile for Why We Built section */
-  .why-we-built .section-text.left-aligned {
-    margin-right: 0;
-    max-width: 100%;
+  .mission-side{
+    height: auto;
   }
 }
-
-@media (min-width: 768px) {
-  .section-content.with-image {
-    flex-direction: row;
-    align-items: flex-start;
-    gap: 60px;
-  }
-  
-  .section-text.left-aligned {
-    text-align: left;
-  }
-  
-  .section-text.left-aligned .section-title {
-    text-align: left;
-  }
-  
-  .section-text.left-aligned .section-description {
-    text-align: left;
-    margin: 0 0 20px 0;
-  }
-  
-  .section-text.left-aligned .offering-item {
-    text-align: left;
-  }
-  
-  .section-text.left-aligned .offering-title {
-    text-align: left;
-  }
-  
-  .section-text.left-aligned .offering-description {
-    text-align: left;
-    margin: 0;
-  }
-}
-
-@media (min-width: 1024px) {
-  .section-title {
-    font-size: 2.8rem; /* Keep 28px equivalent */
-  }
-  
-  .section-description {
-    font-size: 1.3rem;
-  }
-  
-  .offering-title {
-    font-size: 1.5rem;
-  }
-  
-  .offering-description {
-    font-size: 1.2rem;
-  }
-}
-
-@media (min-width: 1200px) {
-  .section-title {
-    font-size: 2.8rem; /* Keep 28px equivalent */
-  }
-  
-  .section-content.with-image {
-    gap: 80px;
-  }
-} 
