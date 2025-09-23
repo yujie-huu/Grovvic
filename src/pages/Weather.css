@@ -5,7 +5,7 @@
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding: 40px 20px;
+  /* padding: 40px 20px; */
   font-family: 'Arial', sans-serif;
   gap: 40px;
   flex-wrap: wrap; /* Enable wrapping for responsive layout */

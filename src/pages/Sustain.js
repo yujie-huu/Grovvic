@@ -311,35 +311,38 @@ const Sustain = () => {
   return (
     <div className="sustain-page">
       <section className="sustain-header">
-        <h1 className="sustain-title">Why Sustainable Gardening</h1>
-        <h2 className="sustain-subtitle">Flip each card to discover why it matters</h2>
-        <div className="why-sustain-cards">
-          {cards.map((card) => (
-            <div 
-              key={card.id}
-              className={`sustain-card ${flippedCards[card.id] ? 'flipped' : ''}`}
-              onClick={() => toggleCard(card.id)}
-            >
-              <div className="card-inner">
-                <div className="card-front">
-                  <img src={card.image} alt={card.title} />
-                  <div className="card-title">
-                    <span className="card-title-text">{card.title}</span>
+        <div className='sustain-header-container'>
+          <h1 className="sustain-title">Why Sustainable Gardening</h1>
+          <h2 className="sustain-subtitle">Flip each card to discover why it matters</h2>
+          <div className="why-sustain-cards">
+            {cards.map((card) => (
+              <div 
+                key={card.id}
+                className={`sustain-card ${flippedCards[card.id] ? 'flipped' : ''}`}
+                onClick={() => toggleCard(card.id)}
+              >
+                <div className="card-inner">
+                  <div className="card-front">
+                    <img src={card.image} alt={card.title} />
+                    <div className="card-title">
+                      <span className="card-title-text">{card.title}</span>
+                      <div className="flip-icon">
+                        <MdFlipToFront />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="card-back">
+                    <div className="card-description">{card.description}</div>
                     <div className="flip-icon">
                       <MdFlipToFront />
                     </div>
                   </div>
                 </div>
-                <div className="card-back">
-                  <div className="card-description">{card.description}</div>
-                  <div className="flip-icon">
-                    <MdFlipToFront />
-                  </div>
-                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
+        
       </section>
 
       <section className="sustain-gardening-section">

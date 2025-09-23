@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './HomePage.css';
 import HomePageCard from '../components/HomePageCard';
-import { MdArrowDownward, MdArrowDropDown } from 'react-icons/md';
+import { MdArrowDownward, MdArrowDropDown, MdArrowDropUp, MdKeyboardArrowDown } from 'react-icons/md';
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -65,8 +65,8 @@ const HomePage = () => {
             </p> */}
             {/* <button className="cta-button" onClick={handleLearnMoreClick}>Learn More</button> */}
             <div className="scroll-down-hint">
-              <MdArrowDownward/>
               <p className='scroll-down-hint-text'>Scroll down to explore more</p>
+              <MdKeyboardArrowDown className='scroll-down-arrow'/>
             </div>
           </div>
           

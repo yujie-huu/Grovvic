@@ -109,6 +109,15 @@
   padding: 0.5rem 0;
 }
 
+.scroll-down-arrow {
+  font-size: 2rem;
+  font-weight: 300;
+}
+
+.scroll-down-arrow :hover {
+  transform: translateY(2px) 0.2s;
+}
+
 
 .hero-visual {
   width: 100%;

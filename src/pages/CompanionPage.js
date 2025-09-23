@@ -5,7 +5,6 @@ import './CompanionPage.css';
 
 const CompanionPage = () => {
   const navigate = useNavigate();
-  const [availablePlants, setAvailablePlants] = useState([]);
   const [selectedPlant, setSelectedPlant] = useState('');
   const [companionPlants, setCompanionPlants] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -16,24 +15,13 @@ const CompanionPage = () => {
   const inputRef = useRef(null);
   const suggestionsRef = useRef(null);
 
-  // Fetch available plants on component mount
-  useEffect(() => {
-    const fetchAvailablePlants = async () => {
-      try {
-        const response = await fetch('https://netzero-vigrow-api.duckdns.org/iter2/companion/plants');
-        if (!response.ok) {
-          throw new Error('Failed to fetch available plants');
-        }
-        const data = await response.json();
-        setAvailablePlants(data);
-      } catch (err) {
-        setError('Failed to load available plants');
-        console.error('Error fetching available plants:', err);
-      }
-    };
-
-    fetchAvailablePlants();
-  }, []);
+  const availablePlants = [
+    "All","Asparagus","Bean","Beetroot","Broccoli","Bulb Onion","Cabbage","Capsicum","Carrot","Cauliflower",
+    "Celery","Chilli","Chive","Corn","Cucumber","Dill","Eggplant","German Chamomile","Kohlrabi","Leek",
+    "Lemon Balm","Lettuce","Nasturtium","Parsley","Pea","Potato","Pumpkin & Winter Squash","Radish","Raspberry",
+    "Rosemary","Sage","Silverbeet","Spinach","Strawberry","Summer Squash","Sunflower","Tomato","Turnip",
+    "Watermelon","Zucchini"
+  ];
 
   // Handle input change and show suggestions
   const handleInputChange = (e) => {
