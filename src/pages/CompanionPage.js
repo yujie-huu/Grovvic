@@ -159,7 +159,7 @@ const CompanionPage = () => {
               )}
             </div>
             
-            <button className="search-button" onClick={handleSearch} disabled={loading}>
+            <button className="companion-search-button" onClick={handleSearch} disabled={loading}>
               Search
             </button>
           </div>

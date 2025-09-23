@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './HomePage.css';
 import HomePageCard from '../components/HomePageCard';
+import { MdArrowDownward, MdArrowDropDown } from 'react-icons/md';
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -59,34 +60,39 @@ const HomePage = () => {
             <span className="hero-description">aste-wise for </span>
             <span className="hero-description-highlight">Vic</span>
             <span className="hero-description">toria</span>
-            <p className="hero-description">
+            {/* <p className="hero-description">
               Your guide to climate-smart gardening in Victoria.
-            </p>
-            <button className="cta-button" onClick={handleLearnMoreClick}>Learn More</button>
+            </p> */}
+            {/* <button className="cta-button" onClick={handleLearnMoreClick}>Learn More</button> */}
+            <div className="scroll-down-hint">
+              <MdArrowDownward/>
+              <p className='scroll-down-hint-text'>Scroll down to explore more</p>
+            </div>
           </div>
-          <div className="hero-visual">
+          
+          {/* <div className="hero-visual">
             <div className="earth-placeholder">
               <img src="/images/lightingEarth.png" alt="3D Earth Globe" />
             </div>
-          </div>
+          </div> */}
         </div>
       </section>
 
       {/* Banner Section - Ribbon-like area */}
-      <section className="banner-section">
+      {/* <section className="banner-section">
         <div className="banner-background">
           <div className="banner-overlay">
             <div className="banner-content">
               <h2 className="banner-title">
                 <span className="banner-line">Grow Smarter</span>
                 <span className="banner-line">Garden Greener</span>
-                <span className="banner-line">Live NetZero</span>
+                <span className="banner-line">Live NetZero</span> */}
                 {/* <img src="/images/banner_TreeRoot.png" alt="home page banner - tree root" /> */}
-              </h2>
+              {/* </h2>
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Content Cards Section - Continuous white background */}
       <div className="content-cards-section">
