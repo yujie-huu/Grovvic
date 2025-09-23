@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState, useRef } from "react";
 import { MapContainer, TileLayer, CircleMarker, Tooltip } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import "./Biodiversity.css";
@@ -25,6 +25,9 @@ const Biodiversity = () => {
   const [speciesFlags, setSpeciesFlags] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  const mapBoxRef = useRef(null);
+  const [mapHeight, setMapHeight] = useState(0);
+
   // 拉取 flags 数据
   useEffect(() => {
     fetch("https://netzero-vigrow-api.duckdns.org/iter2/species/animals/flags")
@@ -42,7 +45,7 @@ const Biodiversity = () => {
 
   // 根据分类 + group/All 加载 occurrences
   useEffect(() => {
-    if (!selectedCategory) return; // 未选择分类，不加载（保持上次或清空由 Clear 控制）
+    if (!selectedCategory) return;
 
     const key = LABEL_TO_KEY[selectedCategory];
     if (!key) return;
@@ -55,7 +58,7 @@ const Biodiversity = () => {
       return false;
     });
 
-    // “All” 未勾选时，按小类过滤；如果一个小类都没勾选，则不显示任何分布
+    // “All” 未勾选时，按小类过滤
     if (!selectAll) {
       if (selectedGroups.length > 0) {
         const set = new Set(selectedGroups);
@@ -91,7 +94,7 @@ const Biodiversity = () => {
 
   // 勾选/取消某个小类
   const toggleGroup = (g, checked) => {
-    setSelectAll(false); // 勾选具体小类时，自动取消 All
+    setSelectAll(false);
     setSelectedGroups((prev) =>
       checked ? Array.from(new Set([...prev, g])) : prev.filter((x) => x !== g)
     );
@@ -101,7 +104,7 @@ const Biodiversity = () => {
   const handleSelectCategory = (label) => {
     setSelectedCategory(label);
     setSelectedGroups([]);
-    setSelectAll(false); // 切类时默认不选 All
+    setSelectAll(false);
   };
 
   // 点击 Clear
@@ -109,8 +112,17 @@ const Biodiversity = () => {
     setSelectedCategory("");
     setSelectedGroups([]);
     setSelectAll(false);
-    setOccurrences([]); // ✅ 立即清空地图分布
+    setOccurrences([]);
   };
+
+  useEffect(() => {
+    const setH = () => {
+      if (mapBoxRef.current) setMapHeight(mapBoxRef.current.offsetHeight);
+    };
+    setH();
+    window.addEventListener("resize", setH);
+    return () => window.removeEventListener("resize", setH);
+  }, []);
 
   return (
     <div className="biodiversity-page">
@@ -118,8 +130,11 @@ const Biodiversity = () => {
       <p>Filter by category and hover over map dots to highlight species with total observations.</p>
 
       <div className="biodiversity-container">
-        {/* 左侧过滤栏 */}
-        <div className="filter-panel">
+        {/* 左侧过滤栏：高度跟随地图；列表仅在溢出时滚动 */}
+        <div
+          className="filter-panel"
+          style={{ height: mapHeight || "auto", display: "flex", flexDirection: "column" }}
+        >
           <h3>Which local organisms do you want to see?</h3>
           <div className="category-buttons">
             {Object.values(CATEGORY_LABELS).map((label) => (
@@ -131,19 +146,18 @@ const Biodiversity = () => {
                 {label}
               </button>
             ))}
-            {/* Clear 与上面按钮同列、左对齐 */}
             <button className="clear-btn" onClick={handleClear}>
               Clear
             </button>
           </div>
 
-          <h3>Filter by animal group:</h3>
-
-          {/* 小类复选（包含 All），超过 8 个滚动 */}
-          <div className="checkbox-list scrollable-list">
+          <h3>Filter by group:</h3>
+          <div
+            className="checkbox-list scrollable-list"
+            style={{ flex: 1, minHeight: 0, overflowY: "auto", paddingRight: 4 }}
+          >
             {!selectedCategory && <div className="muted">Select a category first</div>}
 
-            {/* ✅ 只有选择了大类才显示 All，位置与子分类一致（在列表顶部） */}
             {selectedCategory && (
               <label key="__all__">
                 <input
@@ -152,7 +166,7 @@ const Biodiversity = () => {
                   onChange={(e) => {
                     const checked = e.target.checked;
                     setSelectAll(checked);
-                    if (checked) setSelectedGroups([]); // 选 All 时清空具体小类选择
+                    if (checked) setSelectedGroups([]);
                   }}
                 />{" "}
                 All
@@ -166,7 +180,7 @@ const Biodiversity = () => {
                     type="checkbox"
                     checked={selectedGroups.includes(group)}
                     onChange={(e) => toggleGroup(group, e.target.checked)}
-                    disabled={selectAll} // 选中 All 时禁用小类
+                    disabled={selectAll}
                   />{" "}
                   {group}
                 </label>
@@ -175,11 +189,15 @@ const Biodiversity = () => {
         </div>
 
         {/* 右侧地图 */}
-        <div className="map-container">
+        <div className="map-container" ref={mapBoxRef}>
           {loading ? (
             <div className="loading">Loading...</div>
           ) : (
-            <MapContainer center={[-37.8, 145]} zoom={7} className="map-leaflet" 
+            <MapContainer
+              center={[-37.8, 145]}
+              zoom={7}
+              className="map-leaflet"
+              style={{ height: "400px", width: "100%" }}
             >
               <TileLayer url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png" />
               {occurrences.map((item, idx) => (
@@ -191,7 +209,8 @@ const Biodiversity = () => {
                   fillOpacity={0.7}
                 >
                   <Tooltip direction="top" offset={[0, -5]} opacity={1} permanent={false}>
-                    {item.eventDate}
+                    <div>{item.animal_taxon_name}</div>
+                    <div>{item.eventDate}</div>
                   </Tooltip>
                 </CircleMarker>
               ))}
@@ -200,7 +219,6 @@ const Biodiversity = () => {
         </div>
       </div>
 
-      {/* 你原来的搜索组件（如需联动可在 onSelect 内更新状态） */}
       <SearchBiodiversity onSelect={(animalName) => console.log("Search:", animalName)} />
     </div>
   );
