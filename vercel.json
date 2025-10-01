@@ -2,7 +2,7 @@
   "routes": [
     { "src": "/api/(.*)", "dest": "/api/$1" },
 
-    { "src": "/(manifest\\.json|favicon\\.ico|robots\\.txt|logo.*\\.png)", "dest": "/$1" },
+    { "src": "/(manifest\\.json|webicon\\.png|robots\\.txt|logo.*\\.png)", "dest": "/$1" },
 
     {
       "src": "/(.*)",
