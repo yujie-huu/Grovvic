@@ -1,7 +1,18 @@
 {
+  "headers": [
+    {
+      "source": "/favicon.ico",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400"
+        }
+      ]
+    }
+  ],
   "routes": [
     { "src": "/api/(.*)", "dest": "/api/$1" },
-    { "src": "/(manifest\\.json|favicon\\.ico|webicon\\.png|robots\\.txt|logo.*\\.png)", "dest": "/$1" },
+    { "src": "/(manifest\\.json|favicon.*\\.(ico|png)|webicon\\.png|robots\\.txt|logo.*\\.png)", "dest": "/$1" },
     {
       "src": "/(.*)",
       "has": [{ "type": "cookie", "key": "auth", "value": "1" }],
