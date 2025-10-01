@@ -23,8 +23,7 @@ const Navigation = () => {
   const NAV_ALL = [
     ...NAV_MAIN,
     { label: 'About', path: '/about' },
-    { label: 'Support', path: '/support' },
-    { label: 'Contact', path: '/contact' },
+    { label: 'Support', path: '/support' }
   ];
 
   return (
