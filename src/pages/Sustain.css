@@ -25,7 +25,7 @@
   z-index: 1;
 }
 
-/* Header container for responsive UI */
+/* Header container */
 .sustain-header-container {
   width: 90vw;
   height: 100%;
@@ -251,6 +251,7 @@
   background: #fff;
   padding: 4rem 5rem;
   display: flex;
+  width: 100%;
 }
 
 .sustain-gardening-container {
@@ -559,6 +560,7 @@
   cursor: pointer;
   transition: transform .15s ease, box-shadow .2s ease, background .2s ease;
 }
+
 .companion-button:hover {
   background: #276a33;
   transform: translateY(-1px);
@@ -630,6 +632,7 @@
   box-shadow: 0 6px 18px rgba(47,125,61,.25);
   transition: transform .15s ease, box-shadow .2s ease, background .2s ease;
 }
+
 .composting-button:hover {
   background: #1e5327;
   transform: translateY(-1px);
@@ -1063,12 +1066,17 @@
 }
 
 @media (max-width: 768px) {
+  .sustain-header-container {
+    padding-bottom: 1rem;
+  }
+  
   .sustain-title {
     font-size: 2rem;
   }
   
   .sustain-subtitle {
     font-size: 1rem;
+    margin-bottom: 4rem;
   }
   
   .sustain-card {
@@ -1076,7 +1084,7 @@
   }
   
   .card-front img {
-    height: 75%;
+    height: 78%;
   }
   
   .card-description {
@@ -1095,9 +1103,60 @@
     font-size: 1rem;
   }
   
+  /* Sustain Gardening Section - Mobile Layout */
+  .sustain-gardening-section {
+    padding: 2rem;
+  }
+
+  .sustain-gardening-container {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .sustain-gardening-content {
+    order: 1;
+  }
   
+  .sustain-gardening-title {
+    font-size: 2rem;
+    text-align: center;
+  }
+
+  .sustain-gardening-subtitle {
+    font-size: 1.2rem;
+    text-align: center;
+  }
+
+  .sustain-gardening-button-container {
+    gap: 10px;
+    padding-right: 0;
+  }
+
+  .sustain-gardening-images-container {
+    order: 2;
+    height: 60vh;
+    width: 100%;
+    margin-bottom: 8vh;
+    margin-inline: 0;
+  }
+
   .habitat-videos {
-    padding: 1rem;
+    padding: 3rem 1rem 2rem 1rem;
+  }
+  
+  /* Title styling */
+  .habitat-title {
+    font-size: 2.2rem;
+  }
+  
+  .habitat-subtitle {
+    font-size: 1.2rem;
+    font-weight: 600;
+    max-width: 75%;
+  }
+
+  .habitat-scorll-instruction {
+    max-width: 80%;
   }
 
   .video-card {
@@ -1109,9 +1168,29 @@
   }
 
   .sustain-companion-section {
-    padding: 60px 16px;
+    padding: 50px 25px;
     min-height: 360px;
     background-position: 70% center;
+  }
+  
+  .sustain-companion-title {
+    font-size: 2.1rem;
+    font-weight: 700;
+    color: #173d25;
+  }
+  
+  .sustain-companion-subtitle {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin: 20px 0 15px 0;
+    text-shadow: #ffffff 1px 0px 3px;
+  }
+  
+  .companion-button {
+    padding: 10px 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    letter-spacing: .5px;
   }
 
   .sustain-mulch-title {
@@ -1176,56 +1255,38 @@
     display:none; 
   }
 
-  /* Sustain Gardening Section - Mobile Layout */
-.sustain-gardening-section {
-  padding: 2rem 1rem;
-}
-
-.sustain-gardening-container {
-  grid-template-columns: 1fr;
-  gap: 2rem;
-}
-
-.sustain-gardening-content {
-  order: 1;
-}
-
-.sustain-gardening-images-container {
-  order: 2;
-  height: 60vh;
-  margin-bottom: 8vh;
-}
-
-.sustain-gardening-button-container {
-  gap: 10px;
-  padding-right: 0px;
-}
-
-.sustain-gardening-title {
-  font-size: 2rem;
-  text-align: center;
-}
-
-.sustain-gardening-subtitle {
-  font-size: 1.2rem;
-  text-align: center;
-}
 }
 
 @media (max-width: 480px) {
-  .why-sustain-cards {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
   
   .card-description {
-    font-size: 0.75rem;
+    font-size: 0.9rem;
     line-height: 1.2;
   }
   
   .card-back {
     padding-bottom: 2.5rem;
   }
+
+  .sustain-gardening-button-container{
+    padding-inline: 0;
+    margin-inline: 0;
+  }
+
+  .sustain-gardening-button{
+    padding: 0.8rem 0.6rem;
+    font-size: 15px;
+  }
+
+  .sustain-gardening-images-container {
+    order: 2;
+    height: 40vh;
+    width: 100%;
+    margin-bottom: 10px;
+    justify-content: center;
+    align-items: center;
+  }
+
 
   .video-card {
     flex: 0 0 200px;
