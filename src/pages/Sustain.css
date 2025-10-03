@@ -1397,4 +1397,8 @@
   .mulch-type-title {
     font-size: 1.3rem;
   }
+
+  .mulch-types-grid {
+    grid-template-columns: repeat(1, 1fr);
+  }
 }
