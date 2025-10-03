@@ -153,14 +153,6 @@ const AboutPage = () => {
         </div>
       </section>
 
-      <section className='about-contact'>
-        <div className='about-contact-container'>
-          <h2 className='about-contact-title'>TALK TO US</h2>
-          <h2 className='about-contact-subtitle'>We’d Love to Hear from You</h2>
-          <button className='about-contact-button' onClick={handleContactUs}>Contact Us</button>
-        </div>
-      </section>
-
       <section className='about-reference'>
         <div className='about-reference-container'>
           <h2 className='about-reference-title'>References</h2>
