@@ -1065,6 +1065,83 @@
   }
 }
 
+@media (max-width: 900px) {
+  /* Move the background split line up to avoid pushing the list too low */
+  .water-section{
+    padding: 2rem 5vw;
+    background:
+      linear-gradient(to bottom, transparent 0 38vh, #fff 38vh 100%),
+      url('../../public/images/water-section-background.jpg') center/cover no-repeat;
+  }
+
+  /* Top-bottom layout: detail on top, list below */
+  .waterwise-content{
+    flex-direction: column;
+    align-items: stretch;
+
+    /* Mobile no longer uses fixed height calculation, let content adapt */
+    --ww-visible-cards: 3;
+    --ww-card-h: 120px;
+    --ww-gap: 12px;
+  }
+
+  /* Right detail is displayed first (top) */
+  .ww-right{
+    order: -1;
+    width: 100%;
+    min-width: 0;
+    padding: 0 0 2rem 0;
+    height: auto;
+    margin-bottom: 2rem;
+    border-bottom: 3px solid #276a33;
+  }
+  .ww-detail-card{
+    grid-template-rows: 200px 1fr; 
+  }
+  .ww-detail-content{
+    padding: 1rem 1.25rem 1.25rem;
+  }
+  .ww-detail-title{
+    font-size: 1.35rem;
+  }
+
+  /* Left list becomes 100% width, internal scrolling */
+  .ww-left{
+    order: 0;
+    width: 100%;
+    min-width: 0;
+    padding: 0;
+    height: auto;
+  }
+  .ww-cardlist{
+    max-height: 58vh;
+    height: auto;            /* auto height to avoid overflow */
+    overflow-y: auto;
+    padding: 0;
+    gap: var(--ww-gap);
+  }
+
+  .ww-card{
+    grid-template-columns: 100px 1fr;
+    height: var(--ww-card-h);
+    padding: 10px;
+    border-radius: 12px;
+  }
+  .ww-card-thumb{
+    width: 100px;
+    height: 100%;
+    border-radius: 10px;
+  }
+  .ww-card-title{
+    font-size: 1.2rem;
+    margin-bottom: .5rem;
+  }
+  .ww-card-intro{
+    font-size: .95rem;
+    line-height: 1.35;
+  }
+}
+
 @media (max-width: 768px) {
   .sustain-header-container {
     padding-bottom: 1rem;
