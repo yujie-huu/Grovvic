@@ -107,7 +107,7 @@ const Biodiversity = () => {
     setSelectAll(false);
   };
 
-  // 点击 Clear
+  // Handle click on Clear
   const handleClear = () => {
     setSelectedCategory("");
     setSelectedGroups([]);

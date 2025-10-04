@@ -23,6 +23,26 @@ const CompanionPage = () => {
     "Watermelon","Zucchini"
   ];
 
+  // Fetch companion plants for "All" plants when the page loads
+  useEffect(() => {
+    const fetchDefaultCompanions = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch(`https://netzero-vigrow-api.duckdns.org/iter2/companion/plant/All`);
+        if (response.ok) {
+          const data = await response.json();
+          setCompanionPlants(data);
+        }
+      } catch (err) {
+        console.error('Error fetching default companion plants:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDefaultCompanions();
+  }, []);
+
   // Handle input change and show suggestions
   const handleInputChange = (e) => {
     const value = e.target.value;
@@ -95,6 +115,9 @@ const CompanionPage = () => {
   const goodCompanions = companionPlants.filter(plant => plant.good_or_bad === 'good');
   const badCompanions = companionPlants.filter(plant => plant.good_or_bad === 'bad');
 
+  // Show the plant name in the results section
+  const displayPlantName = selectedPlant || 'All';
+
   return (
     <div className="companion-page">
       {/* Header Section */}
@@ -157,7 +180,7 @@ const CompanionPage = () => {
       {/* Error Message */}
       {error && (
         <div className="error-message">
-          <icon style={{ marginRight: '8px'}}><MdWarning/></icon>
+          <div style={{ marginRight: '8px'}}><MdWarning/></div>
           {error}
         </div>
       )}
@@ -178,7 +201,7 @@ const CompanionPage = () => {
           {goodCompanions.length > 0 && (
             <div className="companion-section good-section">
               <div className="section-header good-header">
-                <span>Good for {selectedPlant}</span>
+                <span>Good for {displayPlantName}</span>
               </div>
               <div className="companion-grid">
                 {goodCompanions.map((companion, index) => (
@@ -187,6 +210,10 @@ const CompanionPage = () => {
                       <img 
                         src={companion.neighbour_image_url} 
                         alt={companion.neighbour}
+                        loading="lazy"
+                        decoding="async"
+                        width="250"
+                        height="200"
                         onError={(e) => {
                           e.target.src = '/images/no_image_available.jpg';
                         }}
@@ -206,7 +233,7 @@ const CompanionPage = () => {
           {badCompanions.length > 0 && (
             <div className="companion-section bad-section">
               <div className="section-header bad-header">
-                <span>Bad for {selectedPlant}</span>
+                <span>Bad for {displayPlantName}</span>
               </div>
               <div className="companion-grid">
                 {badCompanions.map((companion, index) => (
@@ -215,6 +242,10 @@ const CompanionPage = () => {
                       <img 
                         src={companion.neighbour_image_url} 
                         alt={companion.neighbour}
+                        loading="lazy"
+                        decoding="async"
+                        width="250"
+                        height="200"
                         onError={(e) => {
                           e.target.src = '/images/no_image_available.jpg';
                         }}

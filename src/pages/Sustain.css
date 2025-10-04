@@ -25,7 +25,7 @@
   z-index: 1;
 }
 
-/* Header container for responsive UI */
+/* Header container */
 .sustain-header-container {
   width: 90vw;
   height: 100%;
@@ -78,6 +78,8 @@
   height: 50vh;
   perspective: 1000px;
   cursor: pointer;
+  background: #322716e6;
+  border-radius: 15px;
 }
 
 .card-inner {
@@ -105,13 +107,13 @@
 }
 
 .card-front {
-  background: black;
+  /* background: rgba(0, 0, 0, 0.85); */
   display: flex;
   flex-direction: column;
 }
 
 .card-back {
-  background: black;
+  /* background: rgba(0, 0, 0, 0.85); */
   transform: rotateY(180deg);
   display: flex;
   flex-direction: column;
@@ -132,8 +134,8 @@
 /* Card title */
 .card-title {
   height: 20%;
-  background: black;
-  color: white;
+  /* background: rgba(0, 0, 0, 0.85); */
+  color: #f4f3f3;
   font-weight: bold;
   font-size: 0.9rem;
   padding: 0.5rem;
@@ -152,7 +154,7 @@
 
 /* Card description */
 .card-description {
-  color: white;
+  color: #f4f3f3;
   font-size: 1.1rem;
   line-height: 1.4;
   text-align: left;
@@ -195,7 +197,7 @@
   position: relative;
   width: 30px;
   height: 30px;
-  background: rgba(0, 123, 255, 0.9);
+  background: rgba(139, 139, 139, 0.9);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -203,7 +205,7 @@
   color: white;
   font-size: 1.2rem;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+  /* box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3); */
   flex-shrink: 0;
 }
 
@@ -213,7 +215,7 @@
   right: 0.8rem;
   width: 30px;
   height: 30px;
-  background: rgba(0, 123, 255, 0.9);
+  background: rgba(139, 139, 139, 0.9);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -221,12 +223,12 @@
   color: white;
   font-size: 1.2rem;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+  /* box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3); */
   z-index: 10;
 }
 
 .flip-icon:hover {
-  background: rgba(0, 123, 255, 1);
+  background: rgb(62, 62, 62);
   transform: scale(1.1);
   box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
 }
@@ -249,6 +251,7 @@
   background: #fff;
   padding: 4rem 5rem;
   display: flex;
+  width: 100%;
 }
 
 .sustain-gardening-container {
@@ -313,6 +316,7 @@
   gap: 20px;
   width: 100%;
   height: 80vh;
+  margin-inline: 1rem;
 }
 
 .sustain-gardening-images-container img {
@@ -556,6 +560,7 @@
   cursor: pointer;
   transition: transform .15s ease, box-shadow .2s ease, background .2s ease;
 }
+
 .companion-button:hover {
   background: #276a33;
   transform: translateY(-1px);
@@ -627,6 +632,7 @@
   box-shadow: 0 6px 18px rgba(47,125,61,.25);
   transition: transform .15s ease, box-shadow .2s ease, background .2s ease;
 }
+
 .composting-button:hover {
   background: #1e5327;
   transform: translateY(-1px);
@@ -1059,13 +1065,96 @@
   }
 }
 
+@media (max-width: 900px) {
+  /* Move the background split line up to avoid pushing the list too low */
+  .water-section{
+    padding: 2rem 5vw;
+    background:
+      linear-gradient(to bottom, transparent 0 38vh, #fff 38vh 100%),
+      url('../../public/images/water-section-background.jpg') center/cover no-repeat;
+  }
+
+  /* Top-bottom layout: detail on top, list below */
+  .waterwise-content{
+    flex-direction: column;
+    align-items: stretch;
+
+    /* Mobile no longer uses fixed height calculation, let content adapt */
+    --ww-visible-cards: 3;
+    --ww-card-h: 120px;
+    --ww-gap: 12px;
+  }
+
+  /* Right detail is displayed first (top) */
+  .ww-right{
+    order: -1;
+    width: 100%;
+    min-width: 0;
+    padding: 0 0 2rem 0;
+    height: auto;
+    margin-bottom: 2rem;
+    border-bottom: 3px solid #276a33;
+  }
+  .ww-detail-card{
+    grid-template-rows: 200px 1fr; 
+  }
+  .ww-detail-content{
+    padding: 1rem 1.25rem 1.25rem;
+  }
+  .ww-detail-title{
+    font-size: 1.35rem;
+  }
+
+  /* Left list becomes 100% width, internal scrolling */
+  .ww-left{
+    order: 0;
+    width: 100%;
+    min-width: 0;
+    padding: 0;
+    height: auto;
+  }
+  .ww-cardlist{
+    max-height: 58vh;
+    height: auto;            /* auto height to avoid overflow */
+    overflow-y: auto;
+    padding: 0;
+    gap: var(--ww-gap);
+  }
+
+  .ww-card{
+    grid-template-columns: 100px 1fr;
+    height: var(--ww-card-h);
+    padding: 10px;
+    border-radius: 12px;
+  }
+  .ww-card-thumb{
+    width: 100px;
+    height: 100%;
+    border-radius: 10px;
+  }
+  .ww-card-title{
+    font-size: 1.2rem;
+    margin-bottom: .5rem;
+  }
+  .ww-card-intro{
+    font-size: .95rem;
+    line-height: 1.35;
+  }
+}
+
+/* ipad End */
 @media (max-width: 768px) {
+  .sustain-header-container {
+    padding-bottom: 1rem;
+  }
+  
   .sustain-title {
     font-size: 2rem;
   }
   
   .sustain-subtitle {
     font-size: 1rem;
+    margin-bottom: 4rem;
   }
   
   .sustain-card {
@@ -1073,7 +1162,7 @@
   }
   
   .card-front img {
-    height: 75%;
+    height: 78%;
   }
   
   .card-description {
@@ -1092,9 +1181,60 @@
     font-size: 1rem;
   }
   
+  /* Sustain Gardening Section - Mobile Layout */
+  .sustain-gardening-section {
+    padding: 2rem;
+  }
+
+  .sustain-gardening-container {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .sustain-gardening-content {
+    order: 1;
+  }
   
+  .sustain-gardening-title {
+    font-size: 2rem;
+    text-align: center;
+  }
+
+  .sustain-gardening-subtitle {
+    font-size: 1.2rem;
+    text-align: center;
+  }
+
+  .sustain-gardening-button-container {
+    gap: 10px;
+    padding-right: 0;
+  }
+
+  .sustain-gardening-images-container {
+    order: 2;
+    height: 60vh;
+    width: 100%;
+    margin-bottom: 8vh;
+    margin-inline: 0;
+  }
+
   .habitat-videos {
-    padding: 1rem;
+    padding: 3rem 1rem 2rem 1rem;
+  }
+  
+  /* Title styling */
+  .habitat-title {
+    font-size: 2.2rem;
+  }
+  
+  .habitat-subtitle {
+    font-size: 1.2rem;
+    font-weight: 600;
+    max-width: 75%;
+  }
+
+  .habitat-scorll-instruction {
+    max-width: 80%;
   }
 
   .video-card {
@@ -1106,17 +1246,46 @@
   }
 
   .sustain-companion-section {
-    padding: 60px 16px;
+    padding: 50px 25px;
     min-height: 360px;
     background-position: 70% center;
+  }
+  
+  .sustain-companion-title {
+    font-size: 2.1rem;
+    font-weight: 700;
+    color: #173d25;
+  }
+  
+  .sustain-companion-subtitle {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin: 20px 0 15px 0;
+    text-shadow: #ffffff 1px 0px 3px;
+  }
+  
+  .companion-button {
+    padding: 10px 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    letter-spacing: .5px;
+  }
+
+  .sustain-mulch-content {
+    max-width: 100%;
+    margin: 5rem 0 0;
+    width: 100%;
+    padding: 0.5rem;
   }
 
   .sustain-mulch-title {
     font-size: 2rem;
+    margin: 1.5rem 0;
   }
   
   .mulch-tabs {
-    max-width: 300px;
+    max-width: 100%;
+    margin: 0;
   }
   
   .mulch-tab {
@@ -1172,22 +1341,40 @@
   .ww-splitter{ 
     display:none; 
   }
+
 }
 
+/* Mobile End */
 @media (max-width: 480px) {
-  .why-sustain-cards {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
   
   .card-description {
-    font-size: 0.75rem;
+    font-size: 0.9rem;
     line-height: 1.2;
   }
   
   .card-back {
     padding-bottom: 2.5rem;
   }
+
+  .sustain-gardening-button-container{
+    padding-inline: 0;
+    margin-inline: 0;
+  }
+
+  .sustain-gardening-button{
+    padding: 0.8rem 0.6rem;
+    font-size: 15px;
+  }
+
+  .sustain-gardening-images-container {
+    order: 2;
+    height: 40vh;
+    width: 100%;
+    margin-bottom: 10px;
+    justify-content: center;
+    align-items: center;
+  }
+
 
   .video-card {
     flex: 0 0 200px;
@@ -1198,11 +1385,16 @@
   }
 
   .sustain-mulch-content {
-    padding: 1rem;
+    padding: 0;
   }
   
+  .sustain-mulch-title {
+    font-size: 1.8rem;
+  }
+
   .mulch-tabs {
-    max-width: 250px;
+    padding: 5px;
+    margin-inline: 0;
   }
   
   .mulch-tab {
@@ -1211,7 +1403,8 @@
   }
   
   .mulch-content-area {
-    padding: 1.5rem;
+    padding: 0;
+    margin-top: 1.5rem;
   }
   
   .mulch-content-title {
@@ -1220,5 +1413,9 @@
   
   .mulch-type-title {
     font-size: 1.3rem;
+  }
+
+  .mulch-types-grid {
+    grid-template-columns: repeat(1, 1fr);
   }
 }

@@ -136,7 +136,7 @@ const CompostingQuizPage = () => {
     },
     {
       id: 8,
-      question: "Where is the ideal compost location? ",
+      question: "Where is the ideal compost location? (Select all that apply)",
       options: [
         "Right next to your back door",
         "On moisture-managing surface like wood chips, concrete, or hardened soil",
