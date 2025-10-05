@@ -62,7 +62,7 @@
   gap: 32px;
   align-items: start;
   margin-top: 0rem;
-  margin-bottom: 5rem;
+  margin-bottom: 6rem;
 }
 
 /* 右侧图片卡片 */
@@ -190,4 +190,238 @@
   color: #374151;       /* ✅ 和问题一样的深灰色 */
   line-height: 1.6;
   list-style: decimal;  /* ✅ 普通数字列表 */
+}
+
+
+/* Local Programs Section */
+.local-programs-section {
+  background-color: #14532d; /* 深绿色背景 */
+  text-align: center;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  padding: left 2rem;
+  padding: right 2rem;
+  position: relative;
+  height: 300px; 
+  margin-bottom: 10rem;
+}
+
+.local-programs-header p {
+  color: #ffffff;
+  font-size: 0.9rem;
+  letter-spacing: 2px;
+  margin-bottom: 0.5rem;
+}
+
+.local-programs-header h2 {
+  color: #ffffff;
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.local-programs-cards {
+  display: flex;
+  justify-content: space-between;  /* ✅ 平均分布卡片 */
+  align-items: stretch;             /* ✅ 高度对齐 */
+  margin: 0 auto;
+  padding: 0 5%;                    /* ✅ 屏幕两侧留点空间 */
+  flex-wrap: nowrap;                /* ✅ 保持一行 */
+}
+
+
+.local-program-card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  flex: 1;                         /* ✅ 每张卡片自动占等宽 */
+  margin: 0 0.75rem;               /* ✅ 卡片之间留等间距 */
+  max-width: 220px;                /* 限制卡片最大宽度（防止过宽） */
+  min-width: 180px;                /* 防止过窄 */
+  text-align: left;
+  position: relative;
+  height: 320px;
+  top: 2.5rem;
+
+  display: flex;              /* ✅ 使用弹性布局控制内容结构 */
+  flex-direction: column;
+  justify-content: space-between; /* ✅ 确保 divider + link 永远在底部 */
+  overflow: visible;        /* ✅ 防止内容超出 */
+}
+
+.local-program-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;      /* ✅ 开启垂直滚动 */
+  scrollbar-width: none; /* Firefox 隐藏滚动条 */
+}
+.local-program-body::-webkit-scrollbar {
+  display: none;         /* Chrome / Edge 隐藏滚动条 */
+}
+
+
+
+.local-program-card img {
+  width: auto;                /* ✅ 不强制宽度 */
+  height: auto;               /* ✅ 不强制高度 */
+  max-width: 100%;            /* ✅ 防止超出卡片 */
+  max-height: 80px;           /* ✅ 限制最大高度（可微调） */
+  object-fit: contain;        /* ✅ 保持原比例缩放 */
+  margin-bottom: 0.5rem;      /* ✅ 与标题留一点空隙 */
+  display: block;
+  margin-left: auto;
+  margin-right: auto;         /* ✅ 图片居中 */
+}
+
+
+.local-program-card h3 {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: -0.5rem;
+  margin-top: 0rem; 
+}
+
+.local-program-card p {
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 0rem;
+  margin-bottom: 1rem;
+
+  flex: 1;
+  overflow-y: auto;           /* ✅ 开启垂直滚动 */
+  scrollbar-width: none;      /* ✅ 隐藏滚动条（Firefox） */
+}
+
+
+.local-program-card p::-webkit-scrollbar {
+  display: none;              /* ✅ 隐藏滚动条（Chrome / Edge） */
+}
+
+.local-program-card a {
+  color: #2563eb;
+  font-weight: bold;
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.local-program-card a:hover {
+  text-decoration: underline;
+}
+
+/* ✅ 灰色分割线 */
+.local-program-divider {
+  width: 100%;
+  height: 1px;
+  background-color: #e5e7eb;
+  margin: 1rem 0;
+}
+
+/* ✅ Learn More 链接 */
+.local-program-link {
+  color: #2563eb;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.local-program-link:hover {
+  color: #1e40af;
+}
+
+/* Local Gardening Communities Section */
+.local-communities-section {
+  text-align: center;
+  padding-top: 3rem;
+  padding-bottom: 3rem;   /* 留点下边距，别为 0 */
+  margin: 3rem 0 4rem;    /* 与上下模块拉开间距 */
+  height: auto;           /* ✅ 自适应高度 */
+  overflow: visible;
+  position: relative;
+  z-index: 2;
+}
+
+
+
+.local-communities-header h2 {
+  color: #111;
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 0rem;
+  margin-top: 0rem;
+}
+
+/* ✅ 左右淡出遮罩 */
+.local-communities-section::before,
+.local-communities-section::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 60px;
+  height: 100%;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.local-communities-section::before {
+  left: 0;
+  background: linear-gradient(to right, white 30%, transparent 100%);
+}
+
+.local-communities-section::after {
+  right: 0;
+  background: linear-gradient(to left, white 30%, transparent 100%);
+}
+
+
+.local-communities-track {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;               /* ✅ 开启横向滚动 */
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;  /* ✅ 保持对齐感 */
+  padding: 0 1rem;
+  scroll-behavior: smooth; 
+
+  /* ✅ 限制显示区域宽度，仅展示 3 张卡片 */
+  max-width: calc(3 * 240px + 2rem); /* 3 张卡片宽度 + 间距（根据你卡片宽度调整） */
+  margin: 0 auto;                    /* 居中显示 */
+
+  scrollbar-width: none;             /* Firefox 隐藏滚动条 */
+}
+.local-communities-track::-webkit-scrollbar {
+  display: none;                     /* Chrome / Edge 隐藏滚动条 */
+}
+
+/* ✅ 鼠标拖拽滑动效果 */
+.local-communities-track {
+  cursor: grab;
+}
+.local-communities-track:active {
+  cursor: grabbing;
+}
+
+
+.community-card-img {
+  width: 100%;
+  height: auto;               /* ✅ 保持原比例 */
+  max-height: 80px;           /* ✅ 控制占位高度 */
+  object-fit: contain;        /* ✅ 不拉伸变形 */
+  margin-bottom: 0.75rem;     /* ✅ 图片与文字留空隙 */
+  display: block;
+}
+
+.local-communities-section .local-program-card {
+  top: 0; 
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;  /* 确保 Learn More 在底部不被挤掉 */
+  height: 300px;  /* 需要统一高度时再开启 */
+  flex: 0 0 220px;              /* ✅ 卡片按自身宽度排布，不被拉伸 */
+  scroll-snap-align: start;  
 }
