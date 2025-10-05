@@ -143,62 +143,88 @@ const Support = () => {
     });
   }, []);
 
-  // 鼠标拖拽
-  const onMouseDown = (e) => {
-    if (!trackRef.current) return;
-    setIsDragging(true);
-    dragState.current.startX =
-      e.pageX - trackRef.current.getBoundingClientRect().left;
-    dragState.current.scrollLeft = trackRef.current.scrollLeft;
-  };
+// 鼠标拖拽
+const onMouseDown = (e) => {
+  if (!trackRef.current) return;
+  setIsDragging(true);
+  dragState.current.startX =
+    e.pageX - trackRef.current.getBoundingClientRect().left;
+  dragState.current.scrollLeft = trackRef.current.scrollLeft;
+};
 
-  const onMouseMove = (e) => {
-    if (!isDragging || !trackRef.current) return;
-    e.preventDefault();
-    const x = e.pageX - trackRef.current.getBoundingClientRect().left;
-    const walk = x - dragState.current.startX;
-    trackRef.current.scrollLeft = dragState.current.scrollLeft - walk;
-  };
+const onMouseMove = (e) => {
+  if (!isDragging || !trackRef.current) return;
+  e.preventDefault();
+  const x = e.pageX - trackRef.current.getBoundingClientRect().left;
+  const walk = x - dragState.current.startX;
+  trackRef.current.scrollLeft = dragState.current.scrollLeft - walk;
+};
 
-  const onMouseUpOrLeave = () => setIsDragging(false);
+const onMouseUpOrLeave = () => setIsDragging(false);
 
-  // 触摸滑动
-  const onTouchStart = (e) => {
-    if (!trackRef.current) return;
-    const touch = e.touches[0];
-    setIsDragging(true);
-    dragState.current.startX =
-      touch.pageX - trackRef.current.getBoundingClientRect().left;
-    dragState.current.scrollLeft = trackRef.current.scrollLeft;
-  };
+// 触摸滑动
+const onTouchStart = (e) => {
+  if (!trackRef.current) return;
+  const touch = e.touches[0];
+  setIsDragging(true);
+  dragState.current.startX =
+    touch.pageX - trackRef.current.getBoundingClientRect().left;
+  dragState.current.scrollLeft = trackRef.current.scrollLeft;
+};
 
-  const onTouchMove = (e) => {
-    if (!isDragging || !trackRef.current) return;
-    const touch = e.touches[0];
-    const x = touch.pageX - trackRef.current.getBoundingClientRect().left;
-    const walk = x - dragState.current.startX;
-    trackRef.current.scrollLeft = dragState.current.scrollLeft - walk;
-  };
+const onTouchMove = (e) => {
+  if (!isDragging || !trackRef.current) return;
+  const touch = e.touches[0];
+  const x = touch.pageX - trackRef.current.getBoundingClientRect().left;
+  const walk = x - dragState.current.startX;
+  trackRef.current.scrollLeft = dragState.current.scrollLeft - walk;
+};
 
-  const onTouchEnd = () => setIsDragging(false);
+const onTouchEnd = () => setIsDragging(false);
 
-  // ✅ 关键：原生 wheel 监听，非被动，映射纵向滚动到横向
-  useEffect(() => {
-    const el = trackRef.current;
-    if (!el) return;
+// ✅ 滚轮逻辑：文字滚动完全独立，不会触发横向滚动
+useEffect(() => {
+  const el = trackRef.current;
+  if (!el) return;
 
-    const onWheelNative = (e) => {
-      // 触控板可能有横向量，取更明显的那个
-      const delta = Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
-      if (delta !== 0) {
-        e.preventDefault();          // 阻止页面上下滚
-        el.scrollLeft += delta* 6;      // 映射为横向滚动
+  const onWheelNative = (e) => {
+    const pElement = e.target.closest(".local-program-card p");
+
+    if (pElement) {
+      const canScroll = pElement.scrollHeight > pElement.clientHeight;
+
+      if (canScroll) {
+        const atTop = pElement.scrollTop === 0;
+        const atBottom =
+          pElement.scrollTop + pElement.clientHeight >= pElement.scrollHeight - 1;
+
+        // ✅ 文字区可滚时允许默认行为，不传递给外层
+        // 即使在顶或底，也阻止事件冒泡，防止卡片滑动
+        if (e.deltaY < 0 && atTop) {
+          e.preventDefault();
+          return;
+        }
+        if (e.deltaY > 0 && atBottom) {
+          e.preventDefault();
+          return;
+        }
+
+        // 允许文字区滚动（上下）
+        return;
       }
-    };
+    }
 
-    el.addEventListener("wheel", onWheelNative, { passive: false });
-    return () => el.removeEventListener("wheel", onWheelNative);
-  }, []);
+    // ✅ 非文字区才执行横向滚动
+    e.preventDefault();
+    const delta =
+      Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
+    el.scrollLeft += delta * 3; // 横向灵敏度调整
+  };
+
+  el.addEventListener("wheel", onWheelNative, { passive: false });
+  return () => el.removeEventListener("wheel", onWheelNative);
+}, []);
+
 
 
   return (
