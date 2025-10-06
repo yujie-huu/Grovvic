@@ -204,7 +204,7 @@ const AnimalDetail = () => {
         {animal.vernacular_name || animal.animal_taxon_name}
       </h1>
       <p className="animal-scientific">
-        <i>{animal.animal_taxon_name}</i> ({animal.genus})
+        <i>{animal.animal_taxon_name}</i> ({animal.family})
       </p>
 
       {/* 图片 + 描述 */}
