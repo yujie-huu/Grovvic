@@ -1,7 +1,7 @@
 // src/pages/iteration_2/AnimalDetail.js
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { MapContainer, TileLayer, CircleMarker, Tooltip, Polygon } from "react-leaflet";
+import { MapContainer, TileLayer, CircleMarker, Tooltip, Polygon, GeoJSON } from "react-leaflet";
 import * as turf from "@turf/turf";
 import "leaflet/dist/leaflet.css";
 import "./AnimalDetail.css";
@@ -12,8 +12,64 @@ const AnimalDetail = () => {
   const [occurrences, setOccurrences] = useState([]);
   const [polygonBounds, setPolygonBounds] = useState(null);
 
-  // ✅ Related plants（已做“按 plant_scientific_name 合并”）
+  // Related plants（已做“按 plant_scientific_name 合并”）
   const [relations, setRelations] = useState([]);
+
+  // Victoria 边界（从 public/data/victoria_fixed.geojson 加载）
+  const [vicBoundary, setVicBoundary] = useState(null);
+
+  // 交互类型映射（关键词 -> 可读句子）
+  const INTERACTION_MAP = {
+    eatenBy: "It eats this plant.",
+    hasParasite: "It is a parasite for this plant.",
+    hasHost: "It is hosted by this plant.",
+    visitedBy: "It visits this plant.",
+    hasPathogen: "It infects this plant.",
+    hasEggsLayedOnBy: "It lays eggs on this plant.",
+    pollinatedBy: "It pollinates this plant.",
+  };
+
+  const formatInteraction = (raw) => {
+    if (!raw) return "";
+
+    const cleaned = String(raw)
+      .trim()
+      .replace(/\(.*?\)/g, "") // 去掉括号
+      .replace(/[^a-zA-Z]/g, "") // 去掉非字母字符
+      .toLowerCase();
+
+    // 1️⃣ 原始精确匹配
+    for (const [key, val] of Object.entries(INTERACTION_MAP)) {
+      if (key.toLowerCase() === cleaned) {
+        return val;
+      }
+    }
+
+    // 2️⃣ 模糊匹配（关键词包含）
+    const lower = raw.toLowerCase();
+    if (lower.includes("visit")) return INTERACTION_MAP.visitedBy;
+    if (lower.includes("pollinat")) return INTERACTION_MAP.pollinatedBy;
+    if (lower.includes("host")) return INTERACTION_MAP.hasHost;
+    if (lower.includes("parasite")) return INTERACTION_MAP.hasParasite;
+    if (lower.includes("pathogen")) return INTERACTION_MAP.hasPathogen;
+    if (lower.includes("egg")) return INTERACTION_MAP.hasEggsLayedOnBy;
+    if (lower.includes("eat")) return INTERACTION_MAP.eatenBy;
+
+    // 3️⃣ 未匹配则原样返回（保持你原逻辑）
+    return raw.trim();
+  };
+
+  // ✅ 将一组交互映射后去重
+  const mapAndDedupeInteractions = (arr = []) => {
+    const result = [];
+    arr.forEach((item) => {
+      const formatted = formatInteraction(item);
+      if (formatted && !result.includes(formatted)) {
+        result.push(formatted);
+      }
+    });
+    return result;
+  };
 
   // 获取动物信息 & 分布信息
   useEffect(() => {
@@ -68,7 +124,7 @@ const AnimalDetail = () => {
       .catch((err) => console.error("Error fetching occurrences:", err));
   }, [name]);
 
-  // ✅ 获取相关植物信息；按 plant_scientific_name 合并，图片用 plant_image_url，关系逐行展示
+  // 获取相关植物（按 plant_scientific_name 合并）
   useEffect(() => {
     if (!name) return;
 
@@ -81,46 +137,66 @@ const AnimalDetail = () => {
       .then((data) => {
         const list = Array.isArray(data) ? data : [];
 
-        // 按 plant_scientific_name 合并
         const map = new Map();
         list.forEach((rel) => {
           const key = (rel.plant_scientific_name || "").trim();
           if (!key) return;
 
           if (!map.has(key)) {
+            // ✅ 把 plant_common_name 一起存进去
             map.set(key, {
               plant_scientific_name: key,
+              plant_common_name: (rel.plant_common_name || "").trim(), // <—— 新增
               vernacular_name: rel.vernacular_name || rel.plant_scientific_name || "",
-              plant_image_url: rel.plant_image_url || "", // 首个有图的条目会保留下来
+              plant_image_url: rel.plant_image_url || "",
               interactions: [],
             });
           }
 
           const entry = map.get(key);
 
-          // 记录更友好的名字（如果还没有）
+          // ✅ 保留第一个非空的 common name（如果之前没存到）
+          if (!entry.plant_common_name && rel.plant_common_name) {
+            entry.plant_common_name = rel.plant_common_name.trim();
+          }
+
           if (!entry.vernacular_name && (rel.vernacular_name || rel.plant_scientific_name)) {
             entry.vernacular_name = rel.vernacular_name || rel.plant_scientific_name;
           }
 
-          // 记录首个有效图片
           if (!entry.plant_image_url && rel.plant_image_url) {
             entry.plant_image_url = rel.plant_image_url;
           }
 
-          // 依序收集 interaction_type_raw（去空、按出现顺序去重）
           const it = (rel.interaction_type_raw || "").trim();
-          if (it && !entry.interactions.includes(it)) {
-            entry.interactions.push(it);
-          }
+          if (it && !entry.interactions.includes(it)) entry.interactions.push(it);
         });
 
-        setRelations(Array.from(map.values()));
+        const merged = Array.from(map.values());
+        setRelations(merged);
+
+        // 可选：调试看看是否有 common name
+        // console.log("relations sample:", merged.slice(0, 5));
       })
       .catch((err) => console.error("Error fetching relations:", err));
   }, [name]);
 
+
+  // 从 public 目录加载 Victoria 边界 GeoJSON
+  useEffect(() => {
+    fetch("/data/victoria_fixed.geojson") // 确保文件位于 public/data/victoria_fixed.geojson
+      .then((res) => res.json())
+      .then(setVicBoundary)
+      .catch((err) => console.error("Error loading Victoria boundary:", err));
+  }, []);
+
   if (!animal) return <p>No animals.</p>;
+
+  // 维州固定边界（用于锁死视图）
+  const VIC_BOUNDS = [
+    [-39.2, 140.8], // 西南角
+    [-33.8, 150.1], // 东北角
+  ];
 
   return (
     <div className="animal-detail">
@@ -152,14 +228,33 @@ const AnimalDetail = () => {
         {polygonBounds && (
           <div className="animal-map">
             <h3 className="compiled-map-title">Compiled Distribution Map</h3>
+
+            {/* 🔒 固定不可缩放/不可拖拽，只显示维州区域 */}
             <MapContainer
-              center={[-25, 133]}
-              zoom={3}
+              bounds={VIC_BOUNDS}
+              maxBounds={VIC_BOUNDS}
+              maxBoundsViscosity={1.0}
               style={{ height: "300px", width: "100%" }}
               zoomControl={false}
               scrollWheelZoom={false}
+              doubleClickZoom={false}
+              touchZoom={false}
+              boxZoom={false}
+              keyboard={false}
+              dragging={false}
             >
+              {/* 背景瓦片层 */}
               <TileLayer url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png" />
+
+              {/* 显示 Victoria 边界（蓝色轮廓） */}
+              {vicBoundary && (
+                <GeoJSON
+                  data={vicBoundary}
+                  style={{ color: "blue", weight: 2, fillOpacity: 0.1 }}
+                />
+              )}
+
+              {/* 物种分布区域（红色 polygon） */}
               <Polygon
                 positions={polygonBounds}
                 pathOptions={{ color: "red", fillColor: "red", fillOpacity: 0.5 }}
@@ -168,7 +263,7 @@ const AnimalDetail = () => {
           </div>
         )}
 
-        {/* 点分布地图 */}
+        {/* 点分布地图（保持可交互） */}
         <div className="animal-map">
           <h3 className="occurrence-map-title">Occurrence Records Map</h3>
           <MapContainer center={[-25, 133]} zoom={3} style={{ height: "300px", width: "100%" }}>
@@ -191,7 +286,7 @@ const AnimalDetail = () => {
         </div>
       </div>
 
-      {/* ✅ Related Plants：同一植物一张卡，底部逐行显示所有 interaction_type_raw */}
+      {/* Related Plants：同一植物一张卡；名称优先 vernacular_name；交互映射 */}
       {Array.isArray(relations) && relations.length > 0 && (
         <section className="related-plants-section">
           <div className="related-plants-hero">
@@ -199,41 +294,55 @@ const AnimalDetail = () => {
           </div>
 
           <div className="related-plants-grid">
-            {relations.map((rel, idx) => (
-              <article className="related-plant-card" key={idx}>
-                {/* 名称 */}
-                <h3 className="related-plant-name">
-                  {rel.vernacular_name || rel.plant_scientific_name || "No Name"}
-                </h3>
+            {relations.map((rel, idx) => {
+              // ✅ 优先显示 plant_common_name，没有则显示 plant_scientific_name
+              const displayName =
+                (rel.plant_common_name && rel.plant_common_name.trim()) ||
+                (rel.plant_scientific_name && rel.plant_scientific_name.trim()) ||
+                "No Name";
 
-                {/* 图片（relations 的 plant_image_url） */}
-                {rel.plant_image_url ? (
-                  <img
-                    src={rel.plant_image_url}
-                    alt={rel.vernacular_name || rel.plant_scientific_name || "No Image"}
-                    className="related-plant-img"
-                  />
-                ) : (
-                  <div className="related-plant-noimg">No Data</div>
-                )}
+              return (
+                <article className="related-plant-card" key={idx}>
+                  {/* ✅ 名称（优先 plant_common_name） */}
+                  <h3
+                    className={`related-plant-name ${
+                      displayName.length > 24 ? "long-text" : ""
+                    }`}
+                  >
+                    {displayName}
+                  </h3>
 
-                {/* 所有 interaction_type_raw：一条一行，按顺序 */}
-                <div className="related-plant-relation-list">
-                  {rel.interactions && rel.interactions.length > 0 ? (
-                    rel.interactions.map((t, i) => (
-                      <p className="related-plant-relation" key={i}>
-                        {t}
-                      </p>
-                    ))
+                  {/* ✅ 图片 */}
+                  {rel.plant_image_url ? (
+                    <img
+                      src={rel.plant_image_url}
+                      alt={displayName}
+                      className="related-plant-img"
+                    />
                   ) : (
-                    <p className="related-plant-relation">No Relation Data</p>
+                    <div className="related-plant-noimg">No Data</div>
                   )}
-                </div>
-              </article>
-            ))}
+
+                  {/* ✅ interactions：映射格式化输出 */}
+                  <div className="related-plant-relation-list">
+                    {rel.interactions && rel.interactions.length > 0 ? (
+                      mapAndDedupeInteractions(rel.interactions).map((t, i) => (
+                        <p className="related-plant-relation" key={i}>
+                          {t}
+                        </p>
+                      ))
+                    ) : (
+                      <p className="related-plant-relation">No Relation Data</p>
+                    )}
+                  </div>
+
+                </article>
+              );
+            })}
           </div>
         </section>
       )}
+
     </div>
   );
 };

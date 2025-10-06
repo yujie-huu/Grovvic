@@ -63,7 +63,7 @@ const SearchBiodiversity = ({ onSelect = () => {} }) => {
       .then((res) => res.json())
       .then((data) => setResults(runFilter(data, initialQuery)))
       .catch((err) => console.error("Error fetching animals:", err));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, [initialQuery]); // 仅在 URL 的 q 变更时运行
 
   return (
@@ -93,42 +93,6 @@ const SearchBiodiversity = ({ onSelect = () => {} }) => {
           </button>
         </div>
 
-        {/* 搜索结果展示 */}
-        
-        {/* <div className="explore-results">
-          {results.map((item, idx) => (
-            <div className="explore-card" key={idx} style={{ cursor: "default" }}>
-              <img
-                src={item.image_url}
-                alt={item.animal_taxon_name}
-                className="explore-img"
-              />
-              <div className="explore-info">
-                <h3 className="explore-name">
-                  {item.vernacular_name || item.animal_taxon_name}
-                </h3>
-                <p className="explore-latin">
-                  <i>{item.animal_taxon_name}</i>
-                </p>
-                <p className="explore-views">👁 {item.number_of_records}</p>
-                
-                <p
-                  className="explore-more-link"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    navigate(
-                      `/animal/${encodeURIComponent(item.animal_taxon_name)}${
-                        query ? `?q=${encodeURIComponent(query)}` : ""
-                      }`
-                    );
-                  }}
-                >
-                  Explore more →
-                </p>
-              </div>
-            </div>
-          ))}
-        </div> */}
 
         <div className="explore-results">
           {results.map((item, idx) => {
@@ -176,8 +140,6 @@ const SearchBiodiversity = ({ onSelect = () => {} }) => {
             );
           })}
         </div>
-
-
 
         <p className="explore-count">{results.length} results</p>
       </div>
