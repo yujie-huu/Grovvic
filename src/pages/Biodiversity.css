@@ -26,6 +26,17 @@
   padding: 15px;
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  display: flex;              /* 新增 */
+  flex-direction: column;     /* 新增 */
+  min-height: 0;              /* 新增：允许子元素正确收缩 */
+}
+
+/* 2) 让“选项列表”占用剩余空间，超出时滚动（隐藏多出选项） */
+.checkbox-list.scrollable-list {
+  flex: 1;        /* 改为占满剩余高度 */
+  min-height: 0;  /* 关键：允许在flex容器中收缩 */
+  overflow: auto; /* 超出时滚动 */
+  padding-right: 4px;
 }
 
 .filter-panel h3 {
@@ -85,7 +96,6 @@
 }
 
 .scrollable-list {
-  max-height: 220px; /* 大约 8 个复选框高度 */
   overflow-y: auto;
   padding-right: 4px;
 }
