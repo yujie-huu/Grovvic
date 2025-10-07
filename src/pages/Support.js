@@ -1,21 +1,24 @@
-import React, { useEffect, useState,useRef} from "react";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
+import React, { useEffect, useState, useRef } from "react";
 import "./Support.css";
 
 const Support = () => {
-  const [faqContent, setFaqContent] = useState("");
   const [parsedData, setParsedData] = useState([]);
   const [openSection, setOpenSection] = useState(null);
   const [openQuestion, setOpenQuestion] = useState({});
   const [communityData, setCommunityData] = useState([]);
 
+  // 搜索输入值（仅在回车时进行搜索）
+  const [searchTerm, setSearchTerm] = useState("");
+
+  // 每个问题节点的引用，用于回车搜索后滚动定位
+  const questionRefs = useRef({}); // key: `${sIdx}-${qIdx}` -> HTMLElement
+  const pendingScrollKeyRef = useRef(null); // 等待渲染后滚动的目标
+
+  // 社区横滑相关
   const [isDragging, setIsDragging] = useState(false);
   const dragState = useRef({ startX: 0, scrollLeft: 0 });
-  
   const trackRef = useRef(null);
 
-  // 映射表：标题 → 图片路径
   const imageMap = {
     "Hume City Council – Community Gardens": "/images/support_community_1.png",
     "Cultivating Community": "/images/support_community_2.webp",
@@ -24,237 +27,190 @@ const Support = () => {
     "Gardens for Wildlife Victoria": "/images/support_community_5.png",
   };
 
-  // 从 public 目录加载 markdown 文件
+  // 并行加载并解析 markdown
   useEffect(() => {
-    fetch("/faq/faq.md")
-      .then((res) => res.text())
-      .then((text) => setFaqContent(text))
-      .catch((err) => console.error("Error loading FAQ:", err));
-  }, []);
-
-  // 解析 markdown 文本结构
-  useEffect(() => {
-    if (!faqContent) return;
-
-    const lines = faqContent.split("\n");
-    const data = [];
-    let currentSection = null;
-    let currentQuestion = null;
-
-    for (const line of lines) {
-      if (line.startsWith("## ")) {
-        currentSection = { section: line.replace("## ", "").trim(), items: [] };
-        data.push(currentSection);
-      } else if (line.startsWith("### ")) {
-        currentQuestion = {
-          q: line.replace("### ", "").trim(),
-          a: [],
-        };
-        currentSection?.items.push(currentQuestion);
-      } else if (line.match(/^\d+\./)) {
-        currentQuestion?.a.push(line.replace(/^\d+\.\s*/, "").trim());
+    const parseFAQ = (text) => {
+      const lines = text.split("\n");
+      const data = [];
+      let curSec = null, curQ = null;
+      for (const raw of lines) {
+        const line = raw.trim();
+        if (!line) continue;
+        if (line.startsWith("## ")) {
+          curSec = { section: line.slice(3).trim(), items: [] };
+          data.push(curSec);
+        } else if (line.startsWith("### ")) {
+          curQ = { q: line.slice(4).trim(), a: [] };
+          curSec?.items.push(curQ);
+        } else if (/^\d+\./.test(line)) {
+          curQ?.a.push(line.replace(/^\d+\.\s*/, "").trim());
+        }
       }
-    }
-    setParsedData(data);
-  }, [faqContent]);
+      return data;
+    };
 
-  const toggleSection = (idx) => {
-    setOpenSection(openSection === idx ? null : idx);
-  };
-
-  const toggleQuestion = (sIdx, qIdx) => {
-    setOpenQuestion((prev) => {
-      const key = `${sIdx}`;
-      const cur = prev[key] === qIdx ? null : qIdx;
-      return { ...prev, [key]: cur };
-    });
-  };
-
-
-  // ✅ 读取 community.md 文件
-  useEffect(() => {
-    fetch("/community/community.md")
-      .then((res) => res.text())
-      .then((text) => {
-        // 拆分每个条目：根据空行分块
-        const blocks = text
-          .split(/\n\s*\n/) // 两个换行表示一个项目
-          .map((b) => b.trim())
-          .filter(Boolean);
-
-        // 每个 block 包含 3 行：标题、链接、描述
-        const parsed = blocks.map((block) => {
+    const parseCommunities = (text) =>
+      text
+        .split(/\n\s*\n/)
+        .map((b) => b.trim())
+        .filter(Boolean)
+        .map((block) => {
           const lines = block.split("\n").filter(Boolean);
-
-          // 去掉标题前的 ##
-          const rawTitle = lines[0]?.trim() || "";
-          const title = rawTitle.replace(/^#+\s*/, "");
-
-          // ✅ 链接识别逻辑
-          let url = lines[1]?.trim() || "";
-          const match = url.match(/\((https?:\/\/[^\s)]+)\)/);
-          if (match) url = match[1];
-          if (url && !url.startsWith("http")) url = "https://" + url;
-
-          const desc = lines.slice(2).join(" ").trim() || "";
-
-          // ✅ 添加图片路径映射
-          const img = imageMap[title] || "/images/default.png";
-
-          return { title, url, desc, img };
+          const title = (lines[0] || "").replace(/^#+\s*/, "").trim();
+          let url = (lines[1] || "").trim();
+          const m = url.match(/\((https?:\/\/[^\s)]+)\)/);
+          url = m ? m[1] : url;
+          if (url && !/^https?:\/\//.test(url)) url = "https://" + url;
+          const desc = lines.slice(2).join(" ").trim();
+          return { title, url, desc, img: imageMap[title] || "/images/default.png" };
         });
 
-        setCommunityData(parsed);
+    Promise.all([fetch("/faq/faq.md"), fetch("/community/community.md")])
+      .then(([f1, f2]) => Promise.all([f1.text(), f2.text()]))
+      .then(([faqText, communityText]) => {
+        setParsedData(parseFAQ(faqText));
+        setCommunityData(parseCommunities(communityText));
       })
-      .catch((err) => console.error("Failed to load community.md:", err));
+      .catch((e) => console.error("Load markdown failed:", e));
   }, []);
 
+  const toggleSection = (idx) => setOpenSection((s) => (s === idx ? null : idx));
+  const toggleQuestion = (sIdx, qIdx) =>
+    setOpenQuestion((prev) => ({ ...prev, [sIdx]: prev[sIdx] === qIdx ? null : qIdx }));
+
+  // —— 社区横滑拖拽 —— //
+  const startDrag = (pageX) => {
+    const el = trackRef.current;
+    if (!el) return;
+    setIsDragging(true);
+    const left = el.getBoundingClientRect().left;
+    dragState.current = { startX: pageX - left, scrollLeft: el.scrollLeft };
+  };
+  const moveDrag = (pageX) => {
+    const el = trackRef.current;
+    if (!isDragging || !el) return;
+    const left = el.getBoundingClientRect().left;
+    el.scrollLeft = dragState.current.scrollLeft - (pageX - left - dragState.current.startX);
+  };
+  const endDrag = () => setIsDragging(false);
+
+  const onMouseDown = (e) => startDrag(e.pageX);
+  const onMouseMove = (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    moveDrag(e.pageX);
+  };
+  const onTouchStart = (e) => startDrag(e.touches[0].pageX);
+  const onTouchMove = (e) => moveDrag(e.touches[0].pageX);
+
+  // —— 社区横滑滚轮 —— //
   useEffect(() => {
-    const track = trackRef.current;
-    if (!track) return;
-
-    let isDown = false;
-    let startX;
-    let scrollLeft;
-
-    track.addEventListener("mousedown", (e) => {
-      isDown = true;
-      track.classList.add("active");
-      startX = e.pageX - track.offsetLeft;
-      scrollLeft = track.scrollLeft;
-    });
-
-    track.addEventListener("mouseleave", () => {
-      isDown = false;
-      track.classList.remove("active");
-    });
-
-    track.addEventListener("mouseup", () => {
-      isDown = false;
-      track.classList.remove("active");
-    });
-
-    track.addEventListener("mousemove", (e) => {
-      if (!isDown) return;
-      e.preventDefault();
-      const x = e.pageX - track.offsetLeft;
-      const walk = (x - startX) * 1; // 移动速度
-      track.scrollLeft = scrollLeft - walk;
-    });
-  }, []);
-
-// 鼠标拖拽
-const onMouseDown = (e) => {
-  if (!trackRef.current) return;
-  setIsDragging(true);
-  dragState.current.startX =
-    e.pageX - trackRef.current.getBoundingClientRect().left;
-  dragState.current.scrollLeft = trackRef.current.scrollLeft;
-};
-
-const onMouseMove = (e) => {
-  if (!isDragging || !trackRef.current) return;
-  e.preventDefault();
-  const x = e.pageX - trackRef.current.getBoundingClientRect().left;
-  const walk = x - dragState.current.startX;
-  trackRef.current.scrollLeft = dragState.current.scrollLeft - walk;
-};
-
-const onMouseUpOrLeave = () => setIsDragging(false);
-
-// 触摸滑动
-const onTouchStart = (e) => {
-  if (!trackRef.current) return;
-  const touch = e.touches[0];
-  setIsDragging(true);
-  dragState.current.startX =
-    touch.pageX - trackRef.current.getBoundingClientRect().left;
-  dragState.current.scrollLeft = trackRef.current.scrollLeft;
-};
-
-const onTouchMove = (e) => {
-  if (!isDragging || !trackRef.current) return;
-  const touch = e.touches[0];
-  const x = touch.pageX - trackRef.current.getBoundingClientRect().left;
-  const walk = x - dragState.current.startX;
-  trackRef.current.scrollLeft = dragState.current.scrollLeft - walk;
-};
-
-const onTouchEnd = () => setIsDragging(false);
-
-// ✅ 滚轮逻辑：文字滚动完全独立，不会触发横向滚动
-useEffect(() => {
-  const el = trackRef.current;
-  if (!el) return;
-
-  const onWheelNative = (e) => {
-    const pElement = e.target.closest(".local-program-card p");
-
-    if (pElement) {
-      const canScroll = pElement.scrollHeight > pElement.clientHeight;
-
-      if (canScroll) {
-        const atTop = pElement.scrollTop === 0;
-        const atBottom =
-          pElement.scrollTop + pElement.clientHeight >= pElement.scrollHeight - 1;
-
-        // ✅ 文字区可滚时允许默认行为，不传递给外层
-        // 即使在顶或底，也阻止事件冒泡，防止卡片滑动
-        if (e.deltaY < 0 && atTop) {
-          e.preventDefault();
-          return;
-        }
-        if (e.deltaY > 0 && atBottom) {
-          e.preventDefault();
-          return;
-        }
-
-        // 允许文字区滚动（上下）
+    const el = trackRef.current;
+    if (!el) return;
+    const onWheel = (e) => {
+      const p = e.target.closest(".local-program-card p");
+      if (p && p.scrollHeight > p.clientHeight) {
+        const atTop = p.scrollTop === 0;
+        const atBottom = p.scrollTop + p.clientHeight >= p.scrollHeight - 1;
+        if ((e.deltaY < 0 && atTop) || (e.deltaY > 0 && atBottom)) e.preventDefault();
         return;
       }
-    }
+      e.preventDefault();
+      const delta = Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
+      el.scrollLeft += delta * 3;
+    };
+    el.addEventListener("wheel", onWheel, { passive: false });
+    return () => el.removeEventListener("wheel", onWheel);
+  }, []);
 
-    // ✅ 非文字区才执行横向滚动
-    e.preventDefault();
-    const delta =
-      Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
-    el.scrollLeft += delta * 3; // 横向灵敏度调整
+  // —— 回车搜索：只在按下 Enter 时触发 —— //
+
+  // 简单评分：问题 > 答案 > section 标题；多关键词累加；整词/前缀稍加权
+  const scoreText = (text, terms) => {
+    const t = text.toLowerCase();
+    let score = 0;
+    terms.forEach((term) => {
+      if (!term) return;
+      if (t.includes(term)) score += 10;
+      if (t.startsWith(term)) score += 3;
+      if (new RegExp(`\\b${term}\\b`).test(t)) score += 5;
+    });
+    return score;
   };
 
-  el.addEventListener("wheel", onWheelNative, { passive: false });
-  return () => el.removeEventListener("wheel", onWheelNative);
-}, []);
+  const findBestMatch = (data, keyword) => {
+    const terms = keyword.toLowerCase().trim().split(/\s+/).filter(Boolean);
+    if (!terms.length) return null;
 
+    let best = { sIdx: -1, qIdx: -1, score: 0 };
 
+    data.forEach((sec, sIdx) => {
+      sec.items.forEach((item, qIdx) => {
+        let s = 0;
+        s += scoreText(item.q, terms) * 5;          // 问题权重
+        item.a.forEach((ans) => (s += scoreText(ans, terms) * 2)); // 答案权重
+        s += scoreText(sec.section, terms);         // section 低权重
+        if (s > best.score) best = { sIdx, qIdx, score: s };
+      });
+    });
+
+    return best.score > 0 ? best : null;
+  };
+
+  const handleSearchKeyDown = (e) => {
+    if (e.key !== "Enter") return;
+    const keyword = searchTerm.trim();
+    if (!keyword || !parsedData.length) return;
+
+    const best = findBestMatch(parsedData, keyword);
+    if (!best) return; // 无匹配则不动
+
+    // 展开匹配的问题（展开所属 section + 展开答案）
+    setOpenSection(best.sIdx);
+    setOpenQuestion({ [best.sIdx]: best.qIdx });
+
+    // 记录需要滚动到的问题，等待渲染完成后再滚动
+    const key = `${best.sIdx}-${best.qIdx}`;
+    pendingScrollKeyRef.current = key;
+  };
+
+  // 渲染后执行滚动定位
+  useEffect(() => {
+    if (!pendingScrollKeyRef.current) return;
+    const key = pendingScrollKeyRef.current;
+    const el = questionRefs.current[key];
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+      pendingScrollKeyRef.current = null;
+    }
+  }, [openSection, openQuestion]);
 
   return (
     <div className="support-page">
-      {/* 背景图区域 */}
-      <div
-        className="support-hero"
-        style={{
-          backgroundImage: "url(/images/support_1.jpg)", // ✅ 仅保留动态部分
-        }}
-      >
+      {/* Hero */}
+      <div className="support-hero" style={{ backgroundImage: "url(/images/support_1.jpg)" }}>
         <div className="support-hero-content">
           <h1>
             Hello,
             <br /> How can we help?
           </h1>
           <p>Find the answer to your gardening questions.</p>
+          {/* 仅在回车时触发搜索与展开 */}
           <input
             type="text"
-            placeholder="Search"
+            placeholder="Search FAQs..."
             className="support-search"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyDown={handleSearchKeyDown}
           />
         </div>
       </div>
 
-      {/*FAQ布局*/}
+      {/* FAQ */}
       <section className="support-section">
         <h2>Frequently Asked Questions</h2>
         <div className="support-faq-grid">
-          {/* 左边 FAQ 列表 */}
           <ul className="support-links">
             {parsedData.map((sec, sIdx) => (
               <li key={sIdx}>
@@ -269,19 +225,25 @@ useEffect(() => {
                   <span className="chevron"></span>
                 </button>
 
-                {/* ✅ 如果展开小标题，显示其中的问题 */}
                 {openSection === sIdx && (
                   <ul className="faq-questions">
                     {sec.items.map((item, qIdx) => {
-                      const isOpen = openQuestion[`${sIdx}`] === qIdx;
+                      const isOpen = openQuestion[sIdx] === qIdx;
+                      const key = `${sIdx}-${qIdx}`;
                       return (
-                        <li key={qIdx}>
+                        <li
+                          key={qIdx}
+                          ref={(el) => {
+                            if (el) questionRefs.current[key] = el;
+                          }}
+                        >
                           <button
                             className={`question-link ${isOpen ? "is-open" : ""}`}
                             onClick={() => toggleQuestion(sIdx, qIdx)}
                           >
                             {item.q}
                           </button>
+
                           {isOpen && (
                             <div className="answer">
                               <ol>
@@ -300,11 +262,9 @@ useEffect(() => {
             ))}
           </ul>
 
-
-          {/* 右边 FAQ 配图 */}
           <div className="faq-right">
             <img
-              src="/images/support_2.jpg"   // ✅ 这里用 public 下的路径
+              src="/images/support_2.jpg"
               alt="FAQ illustration"
               className="faq-side-image"
             />
@@ -312,106 +272,79 @@ useEffect(() => {
         </div>
       </section>
 
-      {/* Local Programs Section */}
+      {/* Local Programs */}
       <section className="local-programs-section">
         <div className="local-programs-header">
           <p>DISCOVER MORE</p>
           <h2>LOCAL GOVERNMENT PROGRAMS</h2>
         </div>
-
         <div className="local-programs-cards">
-          {/* 卡片 1 */}
-          <div className="local-program-card">
-            <div className="local-program-body">
-              <img src="/images/support_local_1.png" alt="Gardens for Harvest" />
-              <h3>GARDENS FOR HARVEST</h3>
-              <p>
-                A free program offering home-growing guides, seasonal tips,
-                workshops, and community connections to support sustainable
-                food gardening at home—even in small spaces.
-              </p>
+          {[
+            {
+              img: "/images/support_local_1.png",
+              title: "GARDENS FOR HARVEST",
+              desc:
+                "A free program offering home-growing guides, seasonal tips, workshops, and community connections to support sustainable food gardening at home—even in small spaces.",
+            },
+            {
+              img: "/images/support_local_2.png",
+              title: "GARDENS FOR WILD LIFE VICTORIA",
+              desc:
+                "A statewide network supporting wildlife-friendly gardens, building skills, partnerships, and community connections through resources and workshops.",
+            },
+            {
+              img: "/images/support_local_3.png",
+              title: "MY SMART GARDEN",
+              desc:
+                "A free program run by partner councils across Melbourne, offering education and support for sustainable home gardening.",
+            },
+            {
+              img: "/images/support_local_4.png",
+              title: "VICTORIAN SCHOOLS GARDEN PROGRAM",
+              desc:
+                "Supports student learning, health, and wellbeing by encouraging schools to use outdoor spaces and build lifelong connections with nature.",
+            },
+          ].map(({ img, title, desc }, i) => (
+            <div className="local-program-card" key={i}>
+              <div className="local-program-body">
+                <img src={img} alt={title} />
+                <h3>{title}</h3>
+                <p>{desc}</p>
+              </div>
+              <div className="local-program-divider"></div>
+              <a href="#" className="local-program-link">
+                LEARN MORE
+              </a>
             </div>
-            <div className="local-program-divider"></div>
-            <a href="#" className="local-program-link">LEARN MORE</a>
-          </div>
-
-          {/* 卡片 2 */}
-          <div className="local-program-card">
-            <div className="local-program-body">
-              <img src="/images/support_local_2.png" alt="Gardens for Wildlife Victoria" />
-              <h3>GARDENS FOR WILD LIFE VICTORIA</h3>
-              <p>
-                A statewide network supporting wildlife-friendly gardens,
-                building skills, partnerships, and community connections
-                through resources and workshops.
-              </p>
-            </div>
-            <div className="local-program-divider"></div>
-            <a href="#" className="local-program-link">LEARN MORE</a>
-          </div>
-
-          {/* 卡片 3 */}
-          <div className="local-program-card">
-            <div className="local-program-body">
-              <img src="/images/support_local_3.png" alt="My Smart Garden" />
-              <h3>MY SMART GARDEN</h3>
-              <p>
-                A free program run by partner councils across Melbourne,
-                offering education and support for sustainable home gardening.
-              </p>
-            </div>
-            <div className="local-program-divider"></div>
-            <a href="#" className="local-program-link">LEARN MORE</a>
-          </div>
-
-          {/* 卡片 4 */}
-          <div className="local-program-card">
-            <div className="local-program-body">
-              <img src="/images/support_local_4.png" alt="Victorian Schools Garden Program" />
-              <h3>VICTORIAN SCHOOLS GARDEN PROGRAM</h3>
-              <p>
-                Supports student learning, health, and wellbeing by encouraging
-                schools to use outdoor spaces and build lifelong connections
-                with nature.
-              </p>
-            </div>
-            <div className="local-program-divider"></div>
-            <a href="#" className="local-program-link">LEARN MORE</a>
-          </div>
+          ))}
         </div>
       </section>
-      
-      {/* Local Gardening Communities Section */}
+
+      {/* Local Gardening Communities */}
       <section className="local-communities-section">
         <div className="local-communities-header">
           <h2>LOCAL GARDENING COMMUNITIES</h2>
         </div>
-
         <div
           ref={trackRef}
           className="local-communities-track"
           role="region"
           aria-label="Local communities horizontal scroller"
-          // 鼠标拖拽
           onMouseDown={onMouseDown}
           onMouseMove={onMouseMove}
-          onMouseUp={onMouseUpOrLeave}
-          onMouseLeave={onMouseUpOrLeave}
-          // 触摸滑动
+          onMouseUp={endDrag}
+          onMouseLeave={endDrag}
           onTouchStart={onTouchStart}
           onTouchMove={onTouchMove}
-          onTouchEnd={onTouchEnd}
-          // 注意：这里不再挂 React 的 onWheel，使用原生监听（见 useEffect）
+          onTouchEnd={endDrag}
         >
           {communityData.map((item, idx) => (
             <div className="local-program-card community-card" key={idx}>
               <img src={item.img} alt={item.title} className="community-card-img" />
-
               <div className="local-program-body">
                 <h3>{item.title}</h3>
                 <p>{item.desc}</p>
               </div>
-
               <div className="local-program-divider"></div>
               <a
                 href={item.url}
@@ -425,11 +358,8 @@ useEffect(() => {
           ))}
         </div>
       </section>
-
-
-
-
     </div>
   );
 };
+
 export default Support;
