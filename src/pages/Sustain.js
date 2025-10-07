@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MdFlipToFront, MdOpenInNew } from 'react-icons/md';
 import './Sustain.css';
@@ -23,7 +23,7 @@ const Sustain = () => {
     {
       id: 1,
       image: '/images/why_sustain_1.jpg',
-      title: 'Cut Food Waste & Food Miles',
+      title: 'Cut Food Waste',
       description: 'Food waste accounts or 8-10% of annual worldwide carbon emissions. ' +
         '\n\nCompared to landfilling, composting food waste reduces emissions by 96%. ' + 
         '\n\nWithout transport, retail, and packaging, gardening reduces food miles by 18%. ' +
@@ -312,7 +312,7 @@ const Sustain = () => {
     <div className="sustain-page">
       <section className="sustain-header">
         <div className='sustain-header-container'>
-          <h1 className="sustain-title">Why Sustainable Gardening</h1>
+          <h1 className="sustain-title">Your guide to climate-smart gardening</h1>
           <h2 className="sustain-subtitle">Flip each card to discover why it matters</h2>
           <div className="why-sustain-cards">
             {cards.map((card) => (
@@ -324,18 +324,15 @@ const Sustain = () => {
                 <div className="card-inner">
                   <div className="card-front">
                     <img src={card.image} alt={card.title} />
-                    <div className="card-title">
-                      <span className="card-title-text">{card.title}</span>
-                      <div className="flip-icon">
-                        <MdFlipToFront />
-                      </div>
-                    </div>
                   </div>
                   <div className="card-back">
                     <div className="card-description">{card.description}</div>
-                    <div className="flip-icon">
-                      <MdFlipToFront />
-                    </div>
+                  </div>
+                </div>
+                <div className="card-title">
+                  <span className="card-title-text">{card.title}</span>
+                  <div className="flip-icon">
+                    <MdFlipToFront />
                   </div>
                 </div>
               </div>
