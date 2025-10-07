@@ -1,70 +1,132 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./SearchBiodiversity.css";
+
+const SS_Q = "bio.search.q";         // 会话内保存的查询词
+const SS_RESULTS = "bio.search.res"; // 会话内保存的查询结果（字符串化）
 
 const SearchBiodiversity = ({ onSelect = () => {} }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // get q from url
-  const params = new URLSearchParams(location.search);
-  const initialQuery = params.get("q") || "";
-
-  const [query, setQuery] = useState(initialQuery);
+  const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
+  const isInitialMount = useRef(true);
 
   const runFilter = (all, q) => {
-    const qq = q.toLowerCase();
+    if (!Array.isArray(all)) return [];
+    const qq = (q || "").toLowerCase();
     return all.filter((item) => {
       const sci = (item.animal_taxon_name || "").toLowerCase();
       const com = (item.vernacular_name || "").toLowerCase();
-      if (qq.length === 1) {
-        return sci.startsWith(qq) || com.startsWith(qq);
-      }
+      if (qq.length === 1) return sci.startsWith(qq) || com.startsWith(qq);
       return sci.includes(qq) || com.includes(qq);
     });
   };
 
-  const handleSearch = () => {
-    if (!query) {
+  const fetchAndFilter = async (q) => {
+    if (!q) {
       setResults([]);
-      // 清空时，移除 URL 的 q
-      navigate({ pathname: location.pathname }, { replace: true });
+      sessionStorage.removeItem(SS_RESULTS);
       return;
     }
-    fetch("https://netzero-vigrow-api.duckdns.org/iter2/species/animals")
-      .then((res) => res.json())
-      .then((data) => {
-        setResults(runFilter(data, query));
-        // 把 q 写回当前路径（不会跳到其它页面）
-        navigate(
-          { pathname: location.pathname, search: `?q=${encodeURIComponent(query)}` },
-          { replace: true }
-        );
-      })
-      .catch((err) => console.error("Error fetching animals:", err));
+    try {
+      const res = await fetch("https://netzero-vigrow-api.duckdns.org/iter2/species/animals");
+      const data = await res.json();
+      const filtered = runFilter(data, q);
+      setResults(filtered);
+      sessionStorage.setItem(SS_RESULTS, JSON.stringify(filtered));
+    } catch (e) {
+      console.error("Error fetching animals:", e);
+    }
+  };
+
+  const setURLQuery = (q, replace = false) => {
+    const search = q ? `?q=${encodeURIComponent(q)}` : "";
+    navigate({ pathname: location.pathname, search }, { replace });
+  };
+
+  const handleSearch = () => {
+    const q = (query || "").trim();
+    if (!q) {
+      setResults([]);
+      sessionStorage.removeItem(SS_Q);
+      sessionStorage.removeItem(SS_RESULTS);
+      setURLQuery("", false);
+      return;
+    }
+    sessionStorage.setItem(SS_Q, q);
+    fetchAndFilter(q);
+    setURLQuery(q, false);
   };
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") handleSearch();
   };
 
-  // 当 URL 的 q 变化时，自动恢复搜索结果
+  // 仅在浏览器刷新时清空
   useEffect(() => {
-    // 与本地状态不同步时，先同步输入框
-    if (initialQuery !== query) setQuery(initialQuery);
-
-    if (!initialQuery) {
+    const navEntry = window.performance?.getEntriesByType?.("navigation")?.[0];
+    const isReload = navEntry?.type === "reload" || window.performance?.navigation?.type === 1;
+    if (isReload) {
+      sessionStorage.removeItem(SS_Q);
+      sessionStorage.removeItem(SS_RESULTS);
+      setQuery("");
       setResults([]);
-      return;
+      setURLQuery("", true);
     }
-    // 用 URL 中的 q 触发一次搜索，恢复结果
-    fetch("https://netzero-vigrow-api.duckdns.org/iter2/species/animals")
-      .then((res) => res.json())
-      .then((data) => setResults(runFilter(data, initialQuery)))
-      .catch((err) => console.error("Error fetching animals:", err));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialQuery]); // 仅在 URL 的 q 变更时运行
+  }, []);
+
+  // 状态恢复逻辑（初始化和URL变化时）
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const qFromURL = params.get("q") || "";
+    const qFromSS = sessionStorage.getItem(SS_Q) || "";
+    const resFromSSStr = sessionStorage.getItem(SS_RESULTS);
+
+    // 优先使用 sessionStorage，其次使用 URL 参数
+    const effectiveQ = qFromSS || qFromURL;
+
+    // 如果是初始挂载或从详情页返回，强制恢复状态
+    if (effectiveQ) {
+      // 同步查询框
+      setQuery(effectiveQ);
+      
+      // 恢复结果
+      if (resFromSSStr) {
+        try {
+          const cached = JSON.parse(resFromSSStr);
+          if (Array.isArray(cached)) {
+            setResults(cached);
+          } else {
+            fetchAndFilter(effectiveQ);
+          }
+        } catch {
+          fetchAndFilter(effectiveQ);
+        }
+      } else {
+        fetchAndFilter(effectiveQ);
+      }
+
+      // 确保 URL 和 sessionStorage 同步
+      if (!qFromURL && qFromSS) {
+        setURLQuery(qFromSS, true);
+      }
+      if (qFromURL && !qFromSS) {
+        sessionStorage.setItem(SS_Q, qFromURL);
+      }
+    } else {
+      // 没有任何查询时，清空状态
+      setQuery("");
+      setResults([]);
+    }
+
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.search, location.pathname]);
 
   return (
     <div className="explore-wrapper">
@@ -75,7 +137,6 @@ const SearchBiodiversity = ({ onSelect = () => {} }) => {
       </p>
 
       <div className="explore-section">
-        {/* 搜索框 */}
         <div className="explore-search-box">
           <div className="search-input-wrapper">
             <span className="search-icon">🔍</span>
@@ -86,6 +147,7 @@ const SearchBiodiversity = ({ onSelect = () => {} }) => {
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={handleKeyDown}
               className="search-input"
+              autoComplete="off"
             />
           </div>
           <button className="search-btn" onClick={handleSearch}>
@@ -93,46 +155,8 @@ const SearchBiodiversity = ({ onSelect = () => {} }) => {
           </button>
         </div>
 
-        {/* 搜索结果展示 */}
-        
-        {/* <div className="explore-results">
-          {results.map((item, idx) => (
-            <div className="explore-card" key={idx} style={{ cursor: "default" }}>
-              <img
-                src={item.image_url}
-                alt={item.animal_taxon_name}
-                className="explore-img"
-              />
-              <div className="explore-info">
-                <h3 className="explore-name">
-                  {item.vernacular_name || item.animal_taxon_name}
-                </h3>
-                <p className="explore-latin">
-                  <i>{item.animal_taxon_name}</i>
-                </p>
-                <p className="explore-views">👁 {item.number_of_records}</p>
-                
-                <p
-                  className="explore-more-link"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    navigate(
-                      `/animal/${encodeURIComponent(item.animal_taxon_name)}${
-                        query ? `?q=${encodeURIComponent(query)}` : ""
-                      }`
-                    );
-                  }}
-                >
-                  Explore more →
-                </p>
-              </div>
-            </div>
-          ))}
-        </div> */}
-
         <div className="explore-results">
           {results.map((item, idx) => {
-            // 判断 vernacular_name 是否有效（排除 null、undefined、空字符串、"nan"）
             const hasCommon =
               typeof item.vernacular_name === "string" &&
               item.vernacular_name.trim().length > 0 &&
@@ -162,9 +186,15 @@ const SearchBiodiversity = ({ onSelect = () => {} }) => {
                     className="explore-more-link"
                     onClick={(e) => {
                       e.stopPropagation();
+                      const currentQ = query.trim();
+                      // 在跳转前确保 sessionStorage 保存了当前状态
+                      if (currentQ) {
+                        sessionStorage.setItem(SS_Q, currentQ);
+                        sessionStorage.setItem(SS_RESULTS, JSON.stringify(results));
+                      }
                       navigate(
                         `/animal/${encodeURIComponent(item.animal_taxon_name)}${
-                          query ? `?q=${encodeURIComponent(query)}` : ""
+                          currentQ ? `?q=${encodeURIComponent(currentQ)}` : ""
                         }`
                       );
                     }}
@@ -176,8 +206,6 @@ const SearchBiodiversity = ({ onSelect = () => {} }) => {
             );
           })}
         </div>
-
-
 
         <p className="explore-count">{results.length} results</p>
       </div>

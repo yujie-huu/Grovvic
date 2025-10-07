@@ -1,0 +1,251 @@
+/* ========== Base / Reset-ish ========== */
+:root{
+  --page-bg: #ffffff;
+  --text-dark: #111827;
+  --link-blue: #2563eb;
+  --green-700: #15803d;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+*{ box-sizing: border-box; }
+img{ max-width:100%; height:auto; display:block; }
+
+/* 仅在支持 hover 的设备启用悬停样式 */
+@media (hover: hover){
+  .support-link:hover{ background-color:#f9fafb; box-shadow:var(--shadow-sm); }
+  .local-program-card a:hover{ text-decoration: underline; }
+}
+
+/* 减少动画用户的平滑滚动降级 */
+@media (prefers-reduced-motion: reduce){
+  .local-communities-track{ scroll-behavior: auto; }
+}
+
+/* ========== 页面框架 ========== */
+.support-page{ font-family: Arial, sans-serif; background: var(--page-bg); color: var(--text-dark); }
+
+/* ========== Hero ========== */
+.support-hero{
+  position: relative;
+  height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: clamp(1rem, 8vw, 15%);
+  color: #fff;
+  text-align: left;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding-right: env(safe-area-inset-right, 0);
+  padding-left: calc(clamp(1rem, 8vw, 15%) + env(safe-area-inset-left, 0));
+}
+.support-hero-content{ position: relative; z-index:1; max-width: min(600px, 90vw); }
+.support-hero h1{ font-size: clamp(1.8rem, 3.2vw, 2.8rem); margin-bottom: .5rem; text-shadow:1px 1px 5px rgba(0,0,0,.6); }
+.support-hero p{ font-size: clamp(1rem, 1.4vw, 1.2rem); margin-bottom: 1.5rem; }
+.support-search{
+  width:100%; padding:12px 16px; border:none; border-radius:8px; font-size:1rem; outline:none;
+}
+
+/* ========== FAQ 标题与布局 ========== */
+.support-section h2{
+  font-size: clamp(1.4rem, 2.1vw, 1.75rem);
+  font-weight:700;
+  margin: 8rem 0 0rem;
+  margin-left: clamp(1rem, 8vw, 10rem);
+  color: var(--text-dark);
+}
+
+.support-faq-grid{
+  display:grid;
+  grid-template-columns: minmax(0,1fr) 420px;
+  gap: clamp(16px, 3vw, 32px);
+  align-items:start;
+  margin: 0 0 6rem 0;
+}
+
+/* 右侧图片卡片 */
+.faq-right{ display:flex; justify-content:center; align-items:flex-start; margin-right: clamp(0rem, 10vw, 18rem); }
+.faq-side-image{
+  max-width: 520px;
+  width: auto;
+  height: auto; /* ✅ fix: 补全注释闭合 */
+  border: 2px solid var(--link-blue);
+  border-radius: 14px;
+  box-shadow: var(--shadow-md);
+}
+
+/* FAQ 列表 */
+.support-links{ list-style:none; padding:0; margin: 1rem 0 0 clamp(1rem, 8vw, 10rem); }
+
+.support-link{
+  display:flex; align-items:center; justify-content:space-between;
+  width: 450px; max-width: 90vw;
+  background:#fff; border:1px solid #e5e7eb; border-radius:10px;
+  padding:12px 16px; margin-bottom:12px; font-size:1rem; color:var(--text-dark);
+  cursor:pointer; transition: background-color .2s ease, box-shadow .2s ease;
+}
+.support-link .left{ display:flex; align-items:center; gap:10px; }
+.support-link .dot{ width:12px; height:12px; background-color:#15803d; border-radius:50%; }
+.support-link .text{ font-weight:500; }
+.support-link .chevron{
+  width:6px; height:6px; border-right:2px solid #6b7280; border-bottom:2px solid #6b7280;
+  transform: rotate(-45deg); transition: transform .2s ease;
+}
+.support-link.is-open .chevron{ transform: rotate(45deg); }
+
+.faq-questions{ list-style:none; padding-left:1.5rem; margin:.5rem 0 1rem 0; border-left:2px dashed #e5e7eb; }
+.question-link{ display:block; width:100%; text-align:left; background:none; border:none; padding:8px 0; font-size:.95rem; color:#374151; cursor:pointer; }
+.question-link:hover{ color: var(--link-blue); }
+
+/* 答案块 */
+.answer{
+  background:#e5e7eb; padding:10px 16px; margin:4px 0 12px 0; border-radius:8px;
+  width:100%; max-width: 420px; box-sizing:border-box;
+}
+.answer ol{ margin:0; padding-left:1.2rem; }
+.answer ol li{ font-size:.95rem; color:#374151; line-height:1.6; list-style:decimal; }
+
+/* ========== Local Programs Section ========== */
+.local-programs-section{
+  background-color:#14532d; text-align:center;
+  padding-top:3rem; padding-bottom:3rem;
+  padding-left: 2rem; padding-right: 2rem; /* ✅ 修正语法 */
+  position:relative; height:300px; margin-bottom:10rem;
+}
+
+.local-programs-header p{ color:#fff; font-size:.9rem; letter-spacing:2px; margin-bottom:.5rem; }
+.local-programs-header h2{ color:#fff; font-size:1.8rem; font-weight:bold; margin:0; }
+
+.local-programs-cards{
+  display:flex; justify-content:space-between; align-items:stretch;
+  margin:0 auto; padding:0 5%; flex-wrap:nowrap;
+}
+
+.local-program-card{
+  background:#fff; border-radius:10px; box-shadow: var(--shadow-md);
+  padding:1.5rem; flex:1; margin:0 .75rem;
+  max-width:220px; min-width:180px; text-align:left; position:relative; height:320px; top:2.5rem;
+  display:flex; flex-direction:column; justify-content:space-between; overflow:visible;
+}
+.local-program-body{ display:flex; flex-direction:column; gap:.75rem; flex:1; min-height:0; overflow-y:auto; scrollbar-width:none; }
+.local-program-body::-webkit-scrollbar{ display:none; }
+
+.local-program-card img{
+  width:auto; height:auto; max-width:100%; max-height:80px; object-fit:contain;
+  margin:0 auto .5rem;
+}
+.local-program-card h3{ font-size:1rem; font-weight:bold; margin:0 0 -.5rem 0; }
+.local-program-card p{
+  font-size:.9rem; color:#666; margin:.0 0 1rem 0; flex:1; overflow-y:auto; scrollbar-width:none;
+}
+.local-program-card p::-webkit-scrollbar{ display:none; }
+.local-program-card a{ color:var(--link-blue); font-weight:bold; font-size:.9rem; text-decoration:none; }
+.local-program-divider{ width:100%; height:1px; background:#e5e7eb; margin:1rem 0; }
+.local-program-link{ color:var(--link-blue); font-weight:600; text-transform:uppercase; font-size:.85rem; text-decoration:none; transition:color .2s ease; }
+.local-program-link:hover{ color:#1e40af; }
+
+/* ========== Local Gardening Communities ========== */
+.local-communities-section{
+  text-align:center; padding-top:3rem; padding-bottom:3rem;
+  margin:3rem 0 3rem; height:auto; overflow:visible; position:relative; z-index:2;
+}
+
+/* 标题 */
+.local-communities-header h2{
+  color:#111; font-size: clamp(1.6rem, 2.4vw, 1.8rem); font-weight:bold; margin:0 0 0 0;
+}
+
+/* 左右淡出遮罩（颜色跟随页面背景） */
+.local-communities-section::before,
+.local-communities-section::after{
+  content:""; position:absolute; top:0; width:60px; height:100%;
+  pointer-events:none; z-index:3;
+}
+.local-communities-section::before{
+  left:0; background: linear-gradient(to right, var(--page-bg) 30%, transparent 100%);
+}
+.local-communities-section::after{
+  right:0; background: linear-gradient(to left, var(--page-bg) 30%, transparent 100%);
+}
+
+/* 滚动轨道 */
+.local-communities-track{
+  display:flex; gap:1rem; overflow-x:auto; overflow-y:hidden;
+  scroll-snap-type:x mandatory; padding:0 1rem;
+  scroll-behavior: smooth;
+  max-width: min(100%, calc(3 * 240px + 2rem)); /* 只露 3 张 */
+  margin:0 auto;
+  scrollbar-width:none;
+  overscroll-behavior: contain;
+  touch-action: pan-y; /* 允许纵向滚轮 → 横向映射的方案正常工作 */
+}
+.local-communities-track::-webkit-scrollbar{ display:none; }
+
+.local-communities-track{ cursor: grab; }
+.local-communities-track:active{ cursor: grabbing; }
+
+.community-card-img{ width:100%; height:auto; max-height:80px; object-fit:contain; margin-bottom:.75rem; }
+
+.local-communities-section .local-program-card{
+  top:0; display:flex; flex-direction:column; justify-content:space-between;
+  height:300px; flex: 0 0 220px; scroll-snap-align:start;
+}
+
+/* ========== 响应式优化 ========== */
+
+/* ≥1280px：让 FAQ 右图更宽松，三卡区域居中稳定 */
+@media (min-width: 1280px){
+  .support-faq-grid{ grid-template-columns: minmax(0,1fr) 480px; }
+  .faq-side-image{ max-width: 560px; }
+}
+
+/* ≤1200px：FAQ 标题与右图边距收紧；Programs区高度略减 */
+@media (max-width: 1200px){
+  .support-section h2{ margin-left: clamp(2rem, 6vw, 6rem); }
+  .faq-right{ margin-right: clamp(0rem, 6vw, 8rem); }
+  .local-programs-section{ height: 280px; }
+}
+
+/* ≤1024px：FAQ 两列变为 1 列堆叠；图片下置；三卡滚动仍保留 */
+@media (max-width: 1024px){
+  .support-faq-grid{ grid-template-columns: 1fr; }
+  .faq-right{ order: 2; margin: 1rem auto 0; }
+  .support-links{ margin-left: clamp(1rem, 6vw, 4rem); }
+  .support-link{ width: min(560px, 92vw); }
+  .answer{ max-width: min(560px, 92vw); }
+  .local-programs-section{ height:auto; padding-bottom: 4rem; }
+}
+
+/* ≤768px：整体左右留白缩小，三卡区域根据屏幕宽度自适应，仍然可横滑 */
+@media (max-width: 768px){
+  .support-section h2{ margin-left: 1.25rem; margin-top: 4rem; }
+  .support-links{ margin: 1rem 1.25rem 0 1.25rem; }
+  .support-hero{ height: 64vh; }
+  .local-communities-track{
+    max-width: min(100%, calc(3 * 220px + 2rem)); /* 略缩三卡宽度 */
+  }
+  .local-communities-section::before,
+  .local-communities-section::after{ width: 36px; }
+}
+
+/* ≤600px：按钮与卡片进一步收紧；标题缩小；Programs区卡片高度降低 */
+@media (max-width: 600px){
+  .support-link{ width: 100%; }
+  .answer{ max-width: 100%; }
+  .local-program-card{ height: 300px; }
+  .local-communities-section .local-program-card{ height: 280px; flex: 0 0 200px; }
+  .local-communities-track{ gap: .75rem; }
+}
+
+/* ≤480px：单手操作友好；遮罩变窄；三卡容器铺满屏宽 */
+@media (max-width: 480px){
+  .support-hero{ padding-left: 1rem; }
+  .support-hero h1{ font-size: clamp(1.6rem, 6vw, 2rem); }
+  .support-hero p{ font-size: 1rem; }
+  .local-communities-section::before,
+  .local-communities-section::after{ width: 24px; }
+  .local-communities-track{ max-width: 100%; padding: 0 .5rem; }
+  .local-communities-section .local-program-card{ flex: 0 0 180px; height: 260px; }
+}

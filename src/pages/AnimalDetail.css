@@ -188,30 +188,60 @@
 
 /* 顶部名称 */
 .related-plant-name {
-  margin: 0 0 10px;
-  font-size: 1.2rem;
   font-weight: 700;
-  color: #1a202c;
+  color: #0a0a0a;
+  text-align: center;
+  margin: 0;
+  padding: 0 8px;
+  height: 48px;                     /* 固定区域高度 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
   line-height: 1.3;
+  box-sizing: border-box;
+  white-space: normal;              /* ✅ 允许换行 */
+  word-break: break-word;           /* ✅ 避免长词溢出 */
+  overflow: hidden;                 /* ✅ 超出高度隐藏 */
+  transition: font-size 0.2s ease;
 }
+
+/* ✅ 如果标题较长，则缩小字体以容纳两行 */
+.related-plant-name.long-text {
+  font-size: 0.85rem;
+  line-height: 1.2;
+}
+
+
 
 /* 中间图片 */
 .related-plant-img {
   width: 100%;
-  height: 160px;
+  height: 100px;                 /* ↓ 原先约 130-150px，缩小留出空间 */
   object-fit: cover;
-  border-radius: 6px;
-  margin-bottom: 12px;
+  border-radius: 8px;
+  margin-top: 6px;
+  margin-bottom: 8px;
+  transition: transform 0.3s ease;
 }
 
 /* 底部关系描述 */
-.related-plant-relation {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: #3b3f45;
-  letter-spacing: 0.4px;
-  margin: 0;
+.related-plant-relation-list {
+  max-height: 120px;            /* 固定内容高度，超出即滚动 */
+  overflow-y: auto;
+  scroll-behavior: smooth;      /* 平滑滚动 */
+  -webkit-overflow-scrolling: touch;
+  padding-right: 4px;
+  margin-top: 8px;
+
+  /* ✅ 隐藏滚动条（各浏览器兼容） */
+  scrollbar-width: none;        /* Firefox */
+  -ms-overflow-style: none;     /* IE 10+ */
+  text-align: left;
 }
+.related-plant-relation-list::-webkit-scrollbar {
+  display: none;                /* Chrome / Safari / Edge */
+}
+
 
 /* 没有图片时显示的占位 */
 .related-plant-noimg {

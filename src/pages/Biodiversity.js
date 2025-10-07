@@ -107,7 +107,7 @@ const Biodiversity = () => {
     setSelectAll(false);
   };
 
-  // Handle click on Clear
+  // 清空过滤
   const handleClear = () => {
     setSelectedCategory("");
     setSelectedGroups([]);
@@ -115,6 +115,7 @@ const Biodiversity = () => {
     setOccurrences([]);
   };
 
+  // 左侧过滤栏等高（跟随地图容器）
   useEffect(() => {
     const setH = () => {
       if (mapBoxRef.current) setMapHeight(mapBoxRef.current.offsetHeight);
@@ -219,6 +220,7 @@ const Biodiversity = () => {
         </div>
       </div>
 
+      {/* 不传任何 reset，完全由子组件自行管理恢复 */}
       <SearchBiodiversity onSelect={(animalName) => console.log("Search:", animalName)} />
     </div>
   );
