@@ -85,7 +85,7 @@
 .card-inner {
   position: relative;
   width: 100%;
-  height: 100%;
+  height: 80%;
   text-align: center;
   transition: transform 0.6s;
   transform-style: preserve-3d;
@@ -117,14 +117,14 @@
   transform: rotateY(180deg);
   display: flex;
   flex-direction: column;
-  padding: 1.5rem;
-  padding-bottom: 3.5rem;
+  padding: 1rem;
+  padding-right: 0.6rem;
 }
 
 /* Card front image */
 .card-front img {
   width: 100%;
-  height: 80%;
+  height: 100%;
   object-fit: cover;
   object-position: center;
   border-radius: 15px;
@@ -137,7 +137,7 @@
   /* background: rgba(0, 0, 0, 0.85); */
   color: #f4f3f3;
   font-weight: bold;
-  font-size: 0.9rem;
+  font-size: 1.1rem;
   padding: 0.5rem;
   text-align: center;
   display: flex;
@@ -150,6 +150,7 @@
 .card-title-text {
   flex: 1;
   text-align: center;
+  padding-right: 0.2rem;
 }
 
 /* Card description */
@@ -160,10 +161,8 @@
   text-align: left;
   white-space: pre-line; /* keep line breaks */
   width: 100%;
-  flex: 1; /* take up remaining space */
+  height: 100%; /* take full height of card-back */
   overflow-y: auto; /* allow vertical scrolling */
-  padding-right: 0.5rem; /* leave space for scrollbar */
-  padding-bottom: 2rem; /* leave space for flip icon */
 }
 
 /* Scrollbar */
@@ -193,7 +192,7 @@
 }
 
 /* Flip icon */
-.card-front .flip-icon {
+.flip-icon {
   position: relative;
   width: 30px;
   height: 30px;
@@ -205,32 +204,12 @@
   color: white;
   font-size: 1.2rem;
   transition: all 0.3s ease;
-  /* box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3); */
   flex-shrink: 0;
 }
 
-.card-back .flip-icon {
-  position: absolute;
-  bottom: 0.8rem;
-  right: 0.8rem;
-  width: 30px;
-  height: 30px;
-  background: rgba(139, 139, 139, 0.9);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-size: 1.2rem;
-  transition: all 0.3s ease;
-  /* box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3); */
-  z-index: 10;
-}
-
 .flip-icon:hover {
-  background: rgb(62, 62, 62);
   transform: scale(1.1);
-  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
+  box-shadow: 0 1px 2px rgba(250, 249, 249, 0.541);
 }
 
 /* Hover effects */
@@ -355,7 +334,7 @@
   align-items: center;
   justify-content: center;
   padding: 5rem 2rem 2rem 2rem;
-  background: linear-gradient(to bottom, #0f4229 25%, #e8e8e3);
+  background: linear-gradient(to bottom, #0f4229 10%, #1a5237 25%, #e8e8e3);
 }
 
 /* Title styling */
@@ -470,7 +449,7 @@
 .video-thumbnail {
   position: relative;
   width: 100%;
-  height: 100;
+  height: 100%;
   overflow: hidden;
 }
 
@@ -500,7 +479,7 @@
   right: 8px;
   color: #fff;
   font-size: 20px;
-  background: rgba(0,0,0,.6);
+  background: rgba(0,0,0,0.4);
   border-radius: 50%;
   padding: 4px;
   transition: all 0.3s ease;
@@ -526,7 +505,7 @@
 }
 
 .sustain-companion-title {
-  font-size: clamp(40px, 4vw, 36px);
+  font-size: 40px;
   font-weight: 800;
   color: #173d25;
 }
@@ -588,10 +567,11 @@
 }
 
 .sustain-soil-subtitle {
-  font-size: clamp(18px, 2vw, 22px);
+  font-size: 22px;
   line-height: 1.4;
   font-weight: 600;
   margin: 30px 0;
+  width: 100%;
 }
 
 .sustain-composting-content {
@@ -599,21 +579,19 @@
   margin: 0 auto 48px;
   background: #000000a2;
   border-radius: 14px;
-  box-shadow: 0 10px 30px rgba(0,0,0,.08);
-  padding: clamp(20px, 4vw, 36px);
+  padding: 30px 40px;
   text-align: center;
   color: #d9d9d9;
 }
 
 .sustain-composting-title {
-  margin: 10px 0 15px;
+  margin-bottom: 15px;
   font-size: clamp(22px, 3vw, 26px);
   font-weight: 800;
 }
 
 .sustain-composting-subtitle {
-  margin: 0 auto 28px;
-  max-width: 640px;
+  margin-bottom: 28px;
   font-size: clamp(14px, 1.8vw, 17px);
   line-height: 1.6;
 }
@@ -678,7 +656,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
 }
 
 .mulch-tab:hover {
@@ -692,14 +669,6 @@
   box-shadow: 0 2px 8px rgba(44, 85, 48, 0.3);
 }
 
-.tab-icon {
-  font-size: 1.2rem;
-}
-
-.mulch-content-area {
-  padding: 0 2rem;
-}
-
 .mulch-content-subtitle {
   font-size: 1.5rem;
   color: #d9d9d9;
@@ -708,16 +677,65 @@
 }
 
 .mulch-content-description {
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   font-weight: 500;
   color: #d9d9d9;
   text-align: center;
   margin-bottom: 2rem;
 }
 
+/* Why Tab - Image grid and benefits list */
+.mulch-why-content {
+  text-align: center;
+}
+
+.mulch-benefits {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.benefit-item {
+  display: flex;
+  align-items: center;
+  background: #0000008d;
+  box-shadow: #170f02 1px 4px 12px;
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+}
+
+.benefit-item-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 2px 10px;
+}
+
+.benefit-text {
+  color: white;
+  line-height: 1.4;
+  font-weight: 500;
+}
+
+.mulch-images-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.mulch-example-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
 /* Which Tab - Three vertical cards */
 .mulch-which-content {
   text-align: center;
+  margin-top: 3rem;
 }
 
 .mulch-types-grid {
@@ -725,7 +743,7 @@
   grid-template-columns: repeat(3, 1fr);
   background: #0000008d;
   gap: 2rem;
-  margin-top: 2rem;
+  border-radius: 12px;
   align-items: stretch;
   padding: 2rem;
 }
@@ -780,64 +798,16 @@
   object-fit: cover;
 }
 
-/* Why Tab - Image grid and benefits list */
-.mulch-why-content {
-  text-align: center;
-}
-
-.mulch-benefits {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-  text-align: left;
-}
-
-.benefit-item {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: #0000008d;
-  box-shadow: #170f02 1px 4px 12px;
-  padding: 0.8rem 1.5rem;
-  border-radius: 8px;
-}
-
-.benefit-item-container {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.5rem;
-  padding: 2px 10px;
-}
-
-.benefit-text {
-  color: white;
-  line-height: 1.4;
-  font-weight: 500;
-}
-
-.mulch-images-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1rem;
-}
-
-.mulch-example-image {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 12px;
-}
-
 /* How Tab - Steps and image */
 .mulch-how-content {
   text-align: center;
 }
+
 .mulch-how-body {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  width: 100%;
   gap: 1rem;
-  /* align-items: flex-start; */
-  align-items: stretch;
 }
 
 .mulch-steps {
@@ -876,7 +846,6 @@
 .mulch-how-image {
   /* flex: 1; */
   flex-grow: 1;
-  max-width: 400px;
   margin-bottom: 1rem;
 }
 
@@ -1057,6 +1026,605 @@
   margin-top:0.8rem;
 }
 
+/* ========== Wide Screens (1440px–1919px) ========== */
+@media (min-width: 1440px) {
+  .sustain-title {
+    font-size: 3.5rem;
+  }
+
+  .sustain-subtitle {
+    font-size: 2rem;
+  }
+
+  .why-sustain-cards {
+    gap: 2rem;
+  }
+
+  .card-title {
+    font-size: 1.5rem;
+    padding: 1rem;
+  }
+
+  .card-back {
+    padding: 1.2rem;
+    padding-right: 0.6rem;
+  }
+  .card-description {
+    font-size: 1.5rem;
+    padding-right: 0.6rem;
+  }
+
+  .flip-icon {
+    width: 45px;
+    height: 45px;
+    font-size: 1.6rem;
+  }
+
+  .sustain-gardening-title {
+    font-size: 3rem;
+    margin-bottom: 1.8rem;
+  }
+
+  .sustain-gardening-subtitle {
+    font-size: 1.8rem;
+    margin-bottom: 3rem;
+  }
+
+  .sustain-gardening-button-container {
+    padding-right: 2rem;
+  }
+
+  .sustain-gardening-button {
+    font-size: 1.3rem;
+  }
+
+  .sustain-gardening-images-container {
+    height: 70vh;
+  }
+  
+  .habitat-videos {
+    padding: 6.5rem 3rem;
+  }
+
+  .habitat-title {
+    font-size: 3rem;
+    margin-bottom: 1.6rem;
+  }
+
+  .habitat-subtitle {
+    font-size: 1.6rem;
+    margin-bottom: 1.6rem;
+  }
+
+  .habitat-scorll-instruction {
+    font-size: 1.5rem;
+    margin-bottom: 1.6rem;
+  }
+
+  /* Custom Scrollbar */
+  .custom-scrollbar-container {
+    width: 360px;
+    margin: 0 auto 3rem auto;
+  }
+
+  .video-scroll-panel {
+    gap: 35px;
+    padding-inline: 16px;
+  }
+
+
+  .video-card {
+    flex: 0 0 330px;
+  }
+
+  .video-title {
+    font-size: 1.2rem;
+  }
+
+  .open-icon {
+    font-size: 1.2rem;
+    bottom: 4px;
+    padding: 5px;
+  }
+
+  .sustain-companion-section {
+    position: relative;
+    padding: 4rem 2rem 8rem;
+  }
+
+  .sustain-companion-title {
+    font-size: 3rem;
+  }
+
+  .sustain-companion-subtitle {
+    font-size: 1.8rem;
+    margin: 2.2rem 0;
+  }
+
+  .companion-button {
+    font-size: 1.4rem;
+    padding: 12px 25px;
+    border-radius: 12px;
+    margin-top: 1.5rem;
+  }
+
+  .sustain-soil-header {
+    max-width: 1200px;
+    width: 60vw;
+    margin: 70px 0 120px 0;
+  }
+
+  .sustain-soil-title {
+    font-size: 3.2rem;
+  }
+  
+  .sustain-soil-subtitle {
+    font-size: 1.8rem;
+    margin-top: 45px;
+  }
+
+  .sustain-composting-content {
+    max-width: 1200px;
+    width: 60vw;
+    margin: 0 auto 60px;
+    padding: 45px 60px 60px;
+  }
+  
+  .sustain-composting-title {
+    font-size: 2.5rem;
+    margin-bottom: 25px;
+  }
+
+  .sustain-composting-subtitle {
+    font-size: 1.5rem;
+    margin-bottom: 40px;
+  }
+
+  .composting-button {
+    font-size: 1.2rem;
+    padding: 12px 25px;
+    border-radius: 10px;
+  }
+
+  .sustain-mulch-content {
+    max-width: 1300px;
+    padding: 3rem;
+  }
+
+  .sustain-mulch-title {
+    font-size: 2.6rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .mulch-tabs {
+    gap: 0.8rem;
+  }
+
+  .mulch-tab {
+    font-size: 1.5rem;
+    width: 180px;
+    gap: 1rem;
+    padding: 0.8rem 1.2rem;
+  }
+
+  .mulch-content-subtitle {
+    font-size: 1.6rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .mulch-content-description {
+    font-size: 1.6rem;
+    margin: 3rem 0;
+  }
+
+  .mulch-benefits {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.8rem;
+  }
+
+  .benefit-item {
+    font-size: 1.5rem;
+  }
+
+  .mulch-images-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.8rem;
+  }
+
+  .mulch-example-image {
+    height: 250px;
+  }
+
+  .mulch-types-grid {
+    gap: 2.5rem;
+  }
+
+  .mulch-type-header {
+    margin-bottom: 1rem;
+  }
+  
+  .mulch-type-title {
+    font-size: 2.2rem;
+    margin-bottom: 1.2rem;
+  }
+  
+  .mulch-type-subtitle {
+    font-size: 1.5rem;
+  }
+
+  .mulch-type-description {
+    font-size: 1.3rem;
+    margin-bottom: 1.8rem;
+  }
+
+  .mulch-type-image {
+    height: 270px;
+  }
+
+  .mulch-how-body {
+    grid-template-columns: 1fr 450px;
+    gap: 1.5rem;
+    width: 100%;
+  }
+
+  .mulch-step {
+    padding: 1.3rem 1.5rem;
+    font-size: 1.4rem;
+    gap: 1.5rem;
+  }
+
+  .water-section {
+    padding: 5rem 7rem;
+  }
+
+  .water-title{
+    font-size: 3.2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .ww-card{
+    grid-template-columns: 190px 1fr; 
+  }
+
+  .ww-card-thumb{ 
+    width: 190px; /* same as the grid column*/ 
+  }
+
+  .ww-card-title{ 
+    font-size: 1.7rem;
+    margin-bottom:1rem; 
+  }
+  
+  .ww-card-intro{ 
+    font-size: 1.3rem; 
+  }
+
+  .ww-detail-content{ 
+    padding: 1.5rem 3.3rem;
+  }
+
+  .ww-detail-title{ 
+    font-size: 1.8rem; 
+    margin-bottom: 1.2rem;
+  }
+  
+  .ww-detail-list{  
+    font-size: 1.35rem;
+  }
+  
+  .ww-detail-list li+li{ 
+    margin-top:1rem;
+  }
+}
+
+/* ========== Ultra-Wide Screens (≥1920px) ========== */
+@media (min-width: 1920px) {
+  .sustain-title {
+    font-size: 4.5rem;
+  }
+
+  .sustain-subtitle {
+    font-size: 2.8rem;
+  }
+
+  .why-sustain-cards {
+    gap: 3rem;
+  }
+
+  .card-title {
+    font-size: 2.1rem;
+    padding: 1rem;
+  }
+
+  .card-title-text {
+    padding-right: 0.5rem;
+  }
+
+  .card-back {
+    padding: 1.5rem;
+    padding-right: 0.8rem;
+  }
+  .card-description {
+    font-size: 1.8rem;
+    padding-right: 0.8rem;
+  }
+
+  .flip-icon {
+    width: 55px;
+    height: 55px;
+    font-size: 1.8rem;
+  }
+
+  .sustain-gardening-title {
+    font-size: 3.8rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .sustain-gardening-subtitle {
+    font-size: 2.5rem;
+    margin-bottom: 4rem;
+  }
+
+  .sustain-gardening-button-container {
+    padding-right: 4rem;
+  }
+
+  .sustain-gardening-button {
+    font-size: 1.8rem;
+  }
+
+  .sustain-gardening-images-container {
+    height: 75vh;
+  }
+
+  .habitat-videos {
+    padding: 8rem 4rem;
+  }
+
+  .habitat-title {
+    font-size: 3.6rem;
+    margin-bottom: 2rem;
+  }
+
+  .habitat-subtitle {
+    font-size: 2.2rem;
+    margin-bottom: 2rem;
+  }
+
+  .habitat-scorll-instruction {
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+  }
+
+  /* Custom Scrollbar */
+  .custom-scrollbar-container {
+    width: 450px;
+    margin: 0 auto 4rem auto;
+  }
+
+  .custom-scrollbar-track {
+    height: 8px;
+    border-radius: 5px;
+  }
+
+  .custom-scrollbar-thumb {
+    border-radius: 5px;
+  }
+
+  .habitat-videos-container {
+    max-width: 1600px;
+  }
+
+  .video-scroll-panel {
+    gap: 40px;
+    padding-inline: 20px;
+    min-width: max-content;
+  }
+
+
+  .video-card {
+    flex: 0 0 380px;
+  }
+
+  .video-title {
+    font-size: 1.5rem;
+  }
+
+  .open-icon {
+    font-size: 1.5rem;
+    bottom: 4px;
+    padding: 6px;
+  }
+
+  .sustain-companion-section {
+    position: relative;
+    padding: 5rem 2rem 10rem;
+  }
+
+  .sustain-companion-title {
+    font-size: 3.6rem;
+  }
+
+  .sustain-companion-subtitle {
+    font-size: 2.4rem;
+    margin: 3rem 0;
+  }
+
+  .companion-button {
+    font-size: 1.8rem;
+    padding: 15px 30px;
+    border-radius: 15px;
+    margin-top: 2rem;
+  }
+
+  .sustain-soil-header {
+    max-width: 1300px;
+    width: 60vw;
+    margin: 80px 0 140px 0;
+  }
+
+  .sustain-soil-title {
+    font-size: 3.5rem;
+  }
+  
+  .sustain-soil-subtitle {
+    font-size: 2rem;
+    margin-top: 55px;
+  }
+
+  .sustain-composting-content {
+    margin: 0 auto 66px;
+    padding: 60px 75px 80px;
+  }
+  
+  .sustain-composting-title {
+    font-size: 2.8rem;
+    margin-bottom: 40px;
+  }
+
+  .sustain-composting-subtitle {
+    font-size: 1.8rem;
+    margin-bottom: 55px;
+  }
+
+  .composting-button {
+    font-size: 1.6rem;
+    padding: 16px 25px;
+  }
+
+  .sustain-mulch-content {
+    max-width: 1700px;
+    padding: 5rem 4rem;
+  }
+
+  .sustain-mulch-title {
+    font-size: 3.2rem;
+    margin-bottom: 3.3rem;
+  }
+
+  .mulch-tabs {
+    gap: 1rem;
+  }
+
+  .mulch-tab {
+    font-size: 1.8rem;
+    width: 200px;
+    gap: 1rem;
+  }
+
+  .mulch-content-subtitle {
+    font-size: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  .mulch-content-description {
+    font-size: 1.8rem;
+    margin: 3rem 0;
+  }
+
+  .mulch-benefits {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  .benefit-item {
+    font-size: 1.8rem;
+  }
+
+  .mulch-images-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  .mulch-example-image {
+    height: 300px;
+  }
+
+  .mulch-types-grid {
+    gap: 4rem;
+    padding:2.5rem;
+  }
+
+  .mulch-type-header {
+    margin-bottom: 1.4rem;
+  }
+  
+  .mulch-type-title {
+    font-size: 2.6rem;
+    margin-bottom: 1.2rem;
+  }
+  
+  .mulch-type-subtitle {
+    font-size: 1.8rem;
+  }
+
+  .mulch-type-description {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .mulch-type-image {
+    height: 300px;
+  }
+
+  .mulch-how-body {
+    grid-template-columns: 1fr 550px;
+    gap: 2rem;
+    width: 100%;
+  }
+
+  .mulch-step {
+    padding: 1.5rem 2rem;
+    font-size: 1.8rem;
+    gap: 1.8rem;
+  }
+
+  .water-section {
+    padding: 7rem 9rem;
+  }
+
+  .water-title{
+    font-size: 3.6rem;
+    margin-bottom: 2rem;
+  }
+
+  .ww-card{
+    grid-template-columns: 250px 1fr; 
+  }
+
+  .ww-card-thumb{ 
+    width: 250px; /* same as the grid column*/ 
+  }
+
+  .ww-card-title{ 
+    font-size: 2.4rem;
+    margin-bottom: 1.3rem; 
+  }
+  
+  .ww-card-intro{ 
+    font-size: 1.9rem; 
+  }
+
+  .ww-detail-content{ 
+    padding: 1.8rem 5rem;
+  }
+
+  .ww-detail-title{ 
+    font-size: 2.8rem; 
+    margin-bottom: 1.6rem;
+  }
+  
+  .ww-detail-list{  
+    font-size: 1.85rem;
+  }
+  
+  .ww-detail-list li+li{ 
+    margin-top:1.1rem;
+  }
+}
+
 /* Responsive adjustments */
 @media (max-width: 1024px) {
   .why-sustain-cards {
@@ -1066,6 +1634,19 @@
 }
 
 @media (max-width: 900px) {
+  .mulch-how-body {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    width: 100%;
+    gap: 1rem;
+  }
+
+  .mulch-step {
+    padding: 1rem 1.2rem;
+    font-size: 1rem;
+    gap: 1.2rem;
+  }
+
   /* Move the background split line up to avoid pushing the list too low */
   .water-section{
     padding: 2rem 5vw;
@@ -1322,8 +1903,16 @@
   }
   
   .mulch-how-body {
-    flex-direction: column;
-    gap: 2rem;
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    width: 100%;
+    gap: 1rem;
+  }
+
+  .mulch-step {
+    padding: 0.8rem 1rem;
+    font-size: 0.9rem;
+    gap: 1rem;
   }
   
   .mulch-how-image {
@@ -1417,5 +2006,17 @@
 
   .mulch-types-grid {
     grid-template-columns: repeat(1, 1fr);
+  }
+
+  .mulch-how-body {
+    flex-direction: column;
+    display: flex;
+    gap: 1rem;
+  }
+
+  .mulch-step {
+    padding: 0.8rem 1rem;
+    font-size: 0.9rem;
+    gap: 1rem;
   }
 }

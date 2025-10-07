@@ -352,6 +352,26 @@ const CompostingQuizPage = () => {
         <div className="quiz-title">Quiz</div>
       </div>
 
+      {/* navigation  between questions*/}
+      <div className="quiz-nav-header">
+        <button 
+          className="nav-button" 
+          onClick={handlePrev}
+          disabled={currentQuestion === 0}
+        >
+          Prev
+        </button>
+        <div className="question-counter">
+          {currentQuestion + 1} of {questions.length}
+        </div>
+        <button 
+          className="nav-button next" 
+          onClick={handleNext}
+        >
+          Next
+        </button>
+      </div>
+
       {/* Main content */}
       <div className="quiz-content">
         <div className="question-section">
@@ -441,26 +461,6 @@ const CompostingQuizPage = () => {
             className={`question-image ${currentState.showAnswer ? 'clear' : 'blurred'}`}
           />
         </div>
-      </div>
-
-      {/* Footer navigation */}
-      <div className="quiz-footer">
-        <button 
-          className="nav-button" 
-          onClick={handlePrev}
-          disabled={currentQuestion === 0}
-        >
-          Prev
-        </button>
-        <div className="question-counter">
-          {currentQuestion + 1} of {questions.length}
-        </div>
-        <button 
-          className="nav-button next" 
-          onClick={handleNext}
-        >
-          Next
-        </button>
       </div>
 
       {/* Exit confirmation modal */}
