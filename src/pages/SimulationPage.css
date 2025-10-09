@@ -579,7 +579,7 @@
 .setup-close:hover{ background:#dfe9df; }
 
 .setup-title{
-  text-align: left; margin: 6px 0 12px 48px;
+  text-align: center; margin: 6px 0 12px 0;
   font-size: clamp(22px, 4vw, 34px); font-weight: 800;
 }
 .setup-title span{ font-weight: 700; color:#111; margin-right:.4rem; }
@@ -587,19 +587,19 @@
 
 .setup-progress{
   height: 6px; background: #e8eef3; border-radius: 999px; overflow: hidden;
-  margin: 8px 0 10px 48px; width: calc(100% - 80px);
+  margin: 8px auto 10px auto; width: 80%;
 }
 .setup-progress-bar{
   height: 100%; background: #4f7f4e;
   width: 0%; transition: width .25s ease;
 }
 .setup-step-indicator{
-  margin: 6px 0 6px 48px; color:#6b6f6d; font-size:.9rem;
+  margin: 6px 0; color:#6b6f6d; font-size:.9rem; text-align: center;
 }
 
-.setup-panel{ padding: 6px 8px 6px 48px; }
-.setup-panel-title{ font-size: 1.25rem; font-weight: 700; margin-bottom: .35rem; }
-.setup-panel-sub{ color:#6b6f6d; margin: 0 0 10px; }
+.setup-panel{ padding: 6px 8px; }
+.setup-panel-title{ font-size: 1.25rem; font-weight: 700; margin-bottom: .35rem; text-align: left; }
+.setup-panel-sub{ color:#6b6f6d; margin: 0 0 10px; text-align: left; }
 
 /* Step 1: bed size */
 .size-grid{
@@ -608,6 +608,7 @@
   align-items: start;
   gap: 16px; 
   max-width: 480px;
+  margin: 0 auto;
 }
 .size-field label{ display:block; font-weight:600; margin-bottom: 6px; }
 .size-field input[type="range"]{ 
@@ -653,15 +654,15 @@
   margin-top: 2.5rem; /* 对齐到值的中间位置 */
 }
 
-.field{ max-width: 360px; }
-.field label{ display:block; font-weight:600; margin-bottom:6px; }
+.field{ max-width: 360px; text-align: left; }
+.field label{ display:block; font-weight:600; margin-bottom:6px; text-align: left; }
 .field select{
   width: 100%; padding: 10px 12px; border-radius: 10px;
   border: 1px solid #d9dfd9; background:#fff;
 }
 
 /* info tooltip */
-.label-with-info{ display:flex; align-items:center; gap:8px; }
+.label-with-info{ display:flex; align-items:center; gap:8px; justify-content: flex-start; }
 .info{
   position: relative; display:inline-grid; place-items:center;
   width: 18px; height: 18px; border-radius:50%;
@@ -681,8 +682,8 @@
 
 /* Footer buttons */
 .setup-actions{
-  display:flex; justify-content: flex-end; gap: 10px;
-  padding: 12px 8px 6px 48px;
+  display:flex; justify-content: center; gap: 10px;
+  padding: 12px 8px 6px 8px;
 }
 .btn-primary, .btn-secondary{
   border: none; padding: 10px 16px; border-radius: 999px; cursor: pointer;
@@ -713,8 +714,8 @@
 }
 
 @media (max-width: 520px){
-  .setup-title{ margin-left: 44px; }
-  .setup-progress, .setup-step-indicator, .setup-panel, .setup-actions{ margin-left: 44px; padding-left: 0; }
+  .setup-title{ margin-left: 0; }
+  .setup-progress, .setup-step-indicator, .setup-panel, .setup-actions{ margin-left: 0; padding-left: 0; }
   .size-grid{ grid-template-columns: 1fr; }
   .size-times{ display:none; }
   
