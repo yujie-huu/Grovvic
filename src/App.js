@@ -17,9 +17,9 @@ import Composting from './pages/CompostingQuizPage';
 import Biodiversity from './pages/Biodiversity';
 import Companion from './pages/CompanionPage';
 import Support from './pages/Support';
-
 import AnimalDetail from "./pages/AnimalDetail";
 import GardeningType from "./pages/GardenType";
+import SimulationPage from './pages/SimulationPage';
 
 function App() {
   return (
@@ -41,6 +41,7 @@ function App() {
           <Route path="/support" element={<Support />} />
           <Route path="/animal/:name" element={<AnimalDetail />} />
           <Route path="/gardening/:type" element={<GardeningType />} />
+          <Route path="/simulation" element={<SimulationPage />} />
         </Routes>
         <Footer />
         <BackToTopButton />

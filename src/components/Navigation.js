@@ -15,8 +15,9 @@ const Navigation = () => {
     { label: 'Home', path: '/' },
     { label: 'Weather', path: '/weather' },
     { label: 'Garden', path: '/gardenplan' },
-    { label: 'Sustain', path: '/sustain' },
+    { label: 'Sustainability', path: '/sustain' },
     { label: 'Biodiversity', path: '/biodiversity' },
+    { label: 'Simulation', path: '/simulation' }
   ];
 
   // 8 total destionations in nav drawer

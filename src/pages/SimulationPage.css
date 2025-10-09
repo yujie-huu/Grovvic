@@ -1,0 +1,112 @@
+/* ---------- Garden Setup Modal ---------- */
+.open-setup-btn{
+    margin: 12px 0 20px;
+    padding: 10px 14px;
+    border-radius: 999px;
+    background:#0f4229;
+    color:#fff; border:none; cursor:pointer;
+  }
+  .open-setup-btn:hover{ filter:brightness(1.05); }
+  
+  .setup-modal-overlay{
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.35);
+    display: grid; place-items: center;
+    z-index: 1000;
+  }
+  .setup-modal{
+    position: relative;
+    width: min(720px, 92vw);
+    background: #fff; border-radius: 16px;
+    box-shadow: 0 24px 60px rgba(0,0,0,.25);
+    padding: 22px 26px 20px;
+  }
+  
+  .setup-close{
+    position: absolute; right: 12px; top: 12px;
+    width: 36px; height: 36px;
+    border-radius: 50%; border:none; cursor:pointer;
+    background: #e9efe9; color:#1c2e23; font-size: 18px;
+  }
+  .setup-close:hover{ background:#dfe9df; }
+  
+  .setup-title{
+    text-align: left; margin: 6px 0 12px 48px;
+    font-size: clamp(22px, 4vw, 34px); font-weight: 800;
+  }
+  .setup-title span{ font-weight: 700; color:#111; margin-right:.4rem; }
+  .setup-title strong{ background:#4f7f4e; color:#fff; padding: 4px 8px; border-radius:6px; }
+  
+  .setup-progress{
+    height: 6px; background: #e8eef3; border-radius: 999px; overflow: hidden;
+    margin: 8px 0 10px 48px; width: calc(100% - 80px);
+  }
+  .setup-progress-bar{
+    height: 100%; background: #4f7f4e;
+    width: 0%; transition: width .25s ease;
+  }
+  .setup-step-indicator{
+    margin: 6px 0 6px 48px; color:#6b6f6d; font-size:.9rem;
+  }
+  
+  .setup-panel{ padding: 6px 8px 6px 48px; }
+  .setup-panel-title{ font-size: 1.25rem; font-weight: 700; margin-bottom: .35rem; }
+  .setup-panel-sub{ color:#6b6f6d; margin: 0 0 10px; }
+  
+  /* Step 1: bed size */
+  .size-grid{
+    display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+    gap: 16px; max-width: 480px;
+  }
+  .size-field label{ display:block; font-weight:600; margin-bottom: 6px; }
+  .size-field input[type="range"]{ width: 100%; }
+  .size-value{ margin-top: 4px; font-weight:600; }
+  
+  .size-times{ font-size: 22px; color:#333; }
+  
+  .field{ max-width: 360px; }
+  .field label{ display:block; font-weight:600; margin-bottom:6px; }
+  .field select{
+    width: 100%; padding: 10px 12px; border-radius: 10px;
+    border: 1px solid #d9dfd9; background:#fff;
+  }
+  
+  /* info tooltip */
+  .label-with-info{ display:flex; align-items:center; gap:8px; }
+  .info{
+    position: relative; display:inline-grid; place-items:center;
+    width: 18px; height: 18px; border-radius:50%;
+    background:#eef5ee; color:#1f3b2a; font-size: 12px; cursor: help;
+  }
+  .info .tooltip{
+    position: absolute; left: 22px; top: 0; z-index: 10;
+    min-width: 240px; max-width: 340px;
+    background:#1f3b2a; color:#fff; font-size: 12.5px; line-height: 1.45;
+    padding: 10px 12px; border-radius: 8px; box-shadow: 0 10px 24px rgba(0,0,0,.2);
+    opacity: 0; transform: translateY(-6px); pointer-events: none;
+    transition: .18s ease;
+  }
+  .info:hover .tooltip, .info:focus .tooltip{
+    opacity: 1; transform: translateY(0);
+  }
+  
+  /* Footer buttons */
+  .setup-actions{
+    display:flex; justify-content: flex-end; gap: 10px;
+    padding: 12px 8px 6px 48px;
+  }
+  .btn-primary, .btn-secondary{
+    border: none; padding: 10px 16px; border-radius: 999px; cursor: pointer;
+  }
+  .btn-primary{ background:#4f7f4e; color:#fff; }
+  .btn-primary:hover{ filter:brightness(1.05); }
+  .btn-secondary{ background:#eef2ee; color:#213525; }
+  .btn-secondary:hover{ filter:brightness(0.98); }
+  
+  @media (max-width: 520px){
+    .setup-title{ margin-left: 44px; }
+    .setup-progress, .setup-step-indicator, .setup-panel, .setup-actions{ margin-left: 44px; padding-left: 0; }
+    .size-grid{ grid-template-columns: 1fr; }
+    .size-times{ display:none; }
+  }
+  
