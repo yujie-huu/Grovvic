@@ -437,7 +437,7 @@ export default function SimulationPage(){
                         title={`${planted}`}
                         />
                     )}
-                    </div>
+              </div>
                 );
                 })}
               </div>
@@ -477,10 +477,7 @@ export default function SimulationPage(){
                       value={bedWidth ?? 40}
                       onChange={(e) => setBedWidth(parseInt(e.target.value, 10))}
                     />
-                    <div className="size-value">{cm(bedWidth ?? 40)}</div>
                   </div>
-
-                  <div className="size-times">×</div>
 
                   <div className="size-field">
                     <label>Length</label>
@@ -490,8 +487,9 @@ export default function SimulationPage(){
                       value={bedLength ?? 40}
                       onChange={(e) => setBedLength(parseInt(e.target.value, 10))}
                     />
-                    <div className="size-value">{cm(bedLength ?? 40)}</div>
                   </div>
+                  
+                  <div className="size-value">{cm(bedWidth ?? 40)} × {cm(bedLength ?? 40)}</div>
                 </div>
               </div>
             )}
@@ -572,3 +570,4 @@ export default function SimulationPage(){
     </div>
   );
 }
+
