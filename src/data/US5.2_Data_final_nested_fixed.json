@@ -1,0 +1,1910 @@
+{
+  "Category: Leaf Problems": {
+    "Problem: Leaves turning yellow?": {
+      "Step Question: Do you see the symptom: Leaves turning yellow?": {
+        "Yes": {
+          "Step Question: Does it look like Overwatering?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Overwatering. Suggested solution: Reduce watering"
+            ],
+            [
+              "Answer=No",
+              "Try next possible cause."
+            ]
+          ],
+          "Step Question: Does it look like nitrogen deficiency?": [
+            [
+              "Answer=Yes",
+              "Likely cause: nitrogen deficiency. Suggested solution: improve drainage"
+            ],
+            [
+              "Answer=No",
+              "Try next possible cause."
+            ]
+          ],
+          "Step Question: Does it look like root damage?": [
+            [
+              "Answer=Yes",
+              "Likely cause: root damage. Suggested solution: apply nitrogen fertilizer"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Leaf tips turning brown?": {
+      "Step Question: Do you see the symptom: Leaf tips turning brown?": {
+        "Yes": {
+          "Step Question: Does it look like Overfertilization?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Overfertilization. Suggested solution: Flush soil"
+            ],
+            [
+              "Answer=No",
+              "Try next possible cause."
+            ]
+          ],
+          "Step Question: Does it look like low humidity?": [
+            [
+              "Answer=Yes",
+              "Likely cause: low humidity. Suggested solution: reduce fertilizer"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Leaves curling?": {
+      "Step Question: Do you see the symptom: Leaves curling?": {
+        "Yes": {
+          "Step Question: Does it look like Water stress?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Water stress. Suggested solution: Water regularly"
+            ],
+            [
+              "Answer=No",
+              "Try next possible cause."
+            ]
+          ],
+          "Step Question: Does it look like heat?": [
+            [
+              "Answer=Yes",
+              "Likely cause: heat. Suggested solution: provide shade"
+            ],
+            [
+              "Answer=No",
+              "Try next possible cause."
+            ]
+          ],
+          "Step Question: Does it look like aphids?": [
+            [
+              "Answer=Yes",
+              "Likely cause: aphids. Suggested solution: control aphids"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Brown spots on leaves?": {
+      "Step Question: Do you see the symptom: Brown spots on leaves?": {
+        "Yes": {
+          "Step Question: Does it look like Fungal leaf spot?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Fungal leaf spot. Suggested solution: Remove infected leaves"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: White powder on leaves?": {
+      "Step Question: Do you see the symptom: White powder on leaves?": {
+        "Yes": {
+          "Step Question: Does it look like Powdery mildew?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Powdery mildew. Suggested solution: Thin plants"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Pale leaves (chlorosis)?": {
+      "Step Question: Do you see the symptom: Pale leaves (chlorosis)?": {
+        "Yes": {
+          "Step Question: Does it look like Iron or magnesium deficiency?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Iron or magnesium deficiency. Suggested solution: Apply iron chelate or magnesium sulfate"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Sticky leaves?": {
+      "Step Question: Do you see the symptom: Sticky leaves?": {
+        "Yes": {
+          "Step Question: Does it look like Aphids or scale insects secreting honeydew?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Aphids or scale insects secreting honeydew. Suggested solution: Wash leaves"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Leaves dropping early?": {
+      "Step Question: Do you see the symptom: Leaves dropping early?": {
+        "Yes": {
+          "Step Question: Does it look like Drought stress or sudden temperature change?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Drought stress or sudden temperature change. Suggested solution: Water evenly"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Yellow between veins?": {
+      "Step Question: Do you see the symptom: Yellow between veins?": {
+        "Yes": {
+          "Step Question: Does it look like Magnesium deficiency?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Magnesium deficiency. Suggested solution: Add Epsom salt solution"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Blackened leaf edges?": {
+      "Step Question: Do you see the symptom: Blackened leaf edges?": {
+        "Yes": {
+          "Step Question: Does it look like Cold damage or salt buildup?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Cold damage or salt buildup. Suggested solution: Protect from frost"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Leaves with holes?": {
+      "Step Question: Do you see the symptom: Leaves with holes?": {
+        "Yes": {
+          "Step Question: Does it look like Caterpillars?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Caterpillars. Suggested solution: Handpick pests"
+            ],
+            [
+              "Answer=No",
+              "Try next possible cause."
+            ]
+          ],
+          "Step Question: Does it look like beetles?": [
+            [
+              "Answer=Yes",
+              "Likely cause: beetles. Suggested solution: use biological insecticides"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Leaves mottled?": {
+      "Step Question: Do you see the symptom: Leaves mottled?": {
+        "Yes": {
+          "Step Question: Does it look like Viral infection?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Viral infection. Suggested solution: Remove infected plants"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Leaf scorch?": {
+      "Step Question: Do you see the symptom: Leaf scorch?": {
+        "Yes": {
+          "Step Question: Does it look like Excess sun or wind?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Excess sun or wind. Suggested solution: Provide partial shade"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Wilting leaves (wet soil)?": {
+      "Step Question: Do you see the symptom: Wilting leaves (wet soil)?": {
+        "Yes": {
+          "Step Question: Does it look like Root rot?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Root rot. Suggested solution: Reduce watering"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Wilting leaves (dry soil)?": {
+      "Step Question: Do you see the symptom: Wilting leaves (dry soil)?": {
+        "Yes": {
+          "Step Question: Does it look like Underwatering?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Underwatering. Suggested solution: Deep watering regularly"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Shiny silver patches?": {
+      "Step Question: Do you see the symptom: Shiny silver patches?": {
+        "Yes": {
+          "Step Question: Does it look like Thrips feeding?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Thrips feeding. Suggested solution: Use sticky traps"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Yellow spots?": {
+      "Step Question: Do you see the symptom: Yellow spots?": {
+        "Yes": {
+          "Step Question: Does it look like Spider mites?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Spider mites. Suggested solution: Increase humidity"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Small distorted leaves?": {
+      "Step Question: Do you see the symptom: Small distorted leaves?": {
+        "Yes": {
+          "Step Question: Does it look like Herbicide damage?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Herbicide damage. Suggested solution: Avoid drift"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Holes with slime trails?": {
+      "Step Question: Do you see the symptom: Holes with slime trails?": {
+        "Yes": {
+          "Step Question: Does it look like Slugs/snails?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Slugs/snails. Suggested solution: Beer traps"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Sudden leaf death?": {
+      "Step Question: Do you see the symptom: Sudden leaf death?": {
+        "Yes": {
+          "Step Question: Does it look like Verticillium wilt?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Verticillium wilt. Suggested solution: Rotate crops"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Brown blotches?": {
+      "Step Question: Do you see the symptom: Brown blotches?": {
+        "Yes": {
+          "Step Question: Does it look like Bacterial leaf blight?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Bacterial leaf blight. Suggested solution: Prune infected tissue"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Drooping leaves at midday?": {
+      "Step Question: Do you see the symptom: Drooping leaves at midday?": {
+        "Yes": {
+          "Step Question: Does it look like Transpiration stress?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Transpiration stress. Suggested solution: Mulch soil"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Crinkled leaves?": {
+      "Step Question: Do you see the symptom: Crinkled leaves?": {
+        "Yes": {
+          "Step Question: Does it look like Mineral imbalance?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Mineral imbalance. Suggested solution: Balanced fertilization"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Leaves turning purple?": {
+      "Step Question: Do you see the symptom: Leaves turning purple?": {
+        "Yes": {
+          "Step Question: Does it look like Phosphorus deficiency or cold stress?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Phosphorus deficiency or cold stress. Suggested solution: Apply phosphorus"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Yellow new leaves?": {
+      "Step Question: Do you see the symptom: Yellow new leaves?": {
+        "Yes": {
+          "Step Question: Does it look like Zinc deficiency?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Zinc deficiency. Suggested solution: Apply zinc foliar spray"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    }
+  },
+  "Category: Flower & Fruit Problems": {
+    "Problem: Flower buds dropping?": {
+      "Step Question: Do you see the symptom: Flower buds dropping?": {
+        "Yes": {
+          "Step Question: Does it look like Irregular watering?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Irregular watering. Suggested solution: Keep soil moisture stable"
+            ],
+            [
+              "Answer=No",
+              "Try next possible cause."
+            ]
+          ],
+          "Step Question: Does it look like temperature stress?": [
+            [
+              "Answer=Yes",
+              "Likely cause: temperature stress. Suggested solution: avoid sudden stress"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Plant not flowering?": {
+      "Step Question: Do you see the symptom: Plant not flowering?": {
+        "Yes": {
+          "Step Question: Does it look like Low light?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Low light. Suggested solution: Provide 6+ hrs sunlight"
+            ],
+            [
+              "Answer=No",
+              "Try next possible cause."
+            ]
+          ],
+          "Step Question: Does it look like too much nitrogen?": [
+            [
+              "Answer=Yes",
+              "Likely cause: too much nitrogen. Suggested solution: reduce N fertilizer"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Few flowers?": {
+      "Step Question: Do you see the symptom: Few flowers?": {
+        "Yes": {
+          "Step Question: Does it look like Young plant?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Young plant. Suggested solution: Wait until maturity"
+            ],
+            [
+              "Answer=No",
+              "Try next possible cause."
+            ]
+          ],
+          "Step Question: Does it look like wrong pruning?": [
+            [
+              "Answer=Yes",
+              "Likely cause: wrong pruning. Suggested solution: prune correctly"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Flowers small/pale?": {
+      "Step Question: Do you see the symptom: Flowers small/pale?": {
+        "Yes": {
+          "Step Question: Does it look like Nutrient deficiency?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Nutrient deficiency. Suggested solution: Apply balanced fertilizer"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Flowers distorted?": {
+      "Step Question: Do you see the symptom: Flowers distorted?": {
+        "Yes": {
+          "Step Question: Does it look like Virus or pest damage?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Virus or pest damage. Suggested solution: Remove infected flowers"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Fruit not setting?": {
+      "Step Question: Do you see the symptom: Fruit not setting?": {
+        "Yes": {
+          "Step Question: Does it look like Poor pollination?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Poor pollination. Suggested solution: Hand pollinate"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Fruits misshapen?": {
+      "Step Question: Do you see the symptom: Fruits misshapen?": {
+        "Yes": {
+          "Step Question: Does it look like Inadequate pollination?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Inadequate pollination. Suggested solution: Assist pollination"
+            ],
+            [
+              "Answer=No",
+              "Try next possible cause."
+            ]
+          ],
+          "Step Question: Does it look like cool temps?": [
+            [
+              "Answer=Yes",
+              "Likely cause: cool temps. Suggested solution: protect from cold"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Fruits splitting?": {
+      "Step Question: Do you see the symptom: Fruits splitting?": {
+        "Yes": {
+          "Step Question: Does it look like Irregular watering?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Irregular watering. Suggested solution: Maintain even soil moisture"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Fruits rotting at blossom end?": {
+      "Step Question: Do you see the symptom: Fruits rotting at blossom end?": {
+        "Yes": {
+          "Step Question: Does it look like Calcium deficiency?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Calcium deficiency. Suggested solution: Add calcium"
+            ],
+            [
+              "Answer=No",
+              "Try next possible cause."
+            ]
+          ],
+          "Step Question: Does it look like uneven water?": [
+            [
+              "Answer=Yes",
+              "Likely cause: uneven water. Suggested solution: water consistently"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Fruits with sunburn?": {
+      "Step Question: Do you see the symptom: Fruits with sunburn?": {
+        "Yes": {
+          "Step Question: Does it look like Excess direct sun?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Excess direct sun. Suggested solution: Provide shading nets"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Fruit drop?": {
+      "Step Question: Do you see the symptom: Fruit drop?": {
+        "Yes": {
+          "Step Question: Does it look like Drought or nutrient imbalance?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Drought or nutrient imbalance. Suggested solution: Water consistently"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Small fruits?": {
+      "Step Question: Do you see the symptom: Small fruits?": {
+        "Yes": {
+          "Step Question: Does it look like Overcrowding?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Overcrowding. Suggested solution: Thin fruits"
+            ],
+            [
+              "Answer=No",
+              "Try next possible cause."
+            ]
+          ],
+          "Step Question: Does it look like lack of nutrients?": [
+            [
+              "Answer=Yes",
+              "Likely cause: lack of nutrients. Suggested solution: fertilize"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Fruits tasteless?": {
+      "Step Question: Do you see the symptom: Fruits tasteless?": {
+        "Yes": {
+          "Step Question: Does it look like Excess water?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Excess water. Suggested solution: Reduce irrigation before harvest"
+            ],
+            [
+              "Answer=No",
+              "Try next possible cause."
+            ]
+          ],
+          "Step Question: Does it look like lack of sun?": [
+            [
+              "Answer=Yes",
+              "Likely cause: lack of sun. Suggested solution: ensure sun exposure"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Fruits with holes?": {
+      "Step Question: Do you see the symptom: Fruits with holes?": {
+        "Yes": {
+          "Step Question: Does it look like Insect damage (fruit borers)?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Insect damage (fruit borers). Suggested solution: Use pheromone traps"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Fruits turning black?": {
+      "Step Question: Do you see the symptom: Fruits turning black?": {
+        "Yes": {
+          "Step Question: Does it look like Fungal infections?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Fungal infections. Suggested solution: Remove affected fruits"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Rotten spots on fruits?": {
+      "Step Question: Do you see the symptom: Rotten spots on fruits?": {
+        "Yes": {
+          "Step Question: Does it look like Bacterial rot?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Bacterial rot. Suggested solution: Remove and destroy"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Green shoulders on tomato?": {
+      "Step Question: Do you see the symptom: Green shoulders on tomato?": {
+        "Yes": {
+          "Step Question: Does it look like Sunscald or uneven ripening?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Sunscald or uneven ripening. Suggested solution: Provide shade"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Fruits falling unripe?": {
+      "Step Question: Do you see the symptom: Fruits falling unripe?": {
+        "Yes": {
+          "Step Question: Does it look like Temperature extremes?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Temperature extremes. Suggested solution: Protect plants"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Seedless fruits?": {
+      "Step Question: Do you see the symptom: Seedless fruits?": {
+        "Yes": {
+          "Step Question: Does it look like Natural parthenocarpy or pollination failure?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Natural parthenocarpy or pollination failure. Suggested solution: No action needed or encourage pollinators"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Cracked fruit skin?": {
+      "Step Question: Do you see the symptom: Cracked fruit skin?": {
+        "Yes": {
+          "Step Question: Does it look like Water fluctuations?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Water fluctuations. Suggested solution: Mulch"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Bitter fruit (cucumber)?": {
+      "Step Question: Do you see the symptom: Bitter fruit (cucumber)?": {
+        "Yes": {
+          "Step Question: Does it look like Heat stress?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Heat stress. Suggested solution: Provide shade"
+            ],
+            [
+              "Answer=No",
+              "Try next possible cause."
+            ]
+          ],
+          "Step Question: Does it look like irregular water?": [
+            [
+              "Answer=Yes",
+              "Likely cause: irregular water. Suggested solution: water regularly"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Hollow fruits?": {
+      "Step Question: Do you see the symptom: Hollow fruits?": {
+        "Yes": {
+          "Step Question: Does it look like Nutrient deficiency (boron)?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Nutrient deficiency (boron). Suggested solution: Apply boron supplement"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Overripe fruit issues?": {
+      "Step Question: Do you see the symptom: Overripe fruit issues?": {
+        "Yes": {
+          "Step Question: Does it look like Delayed harvest?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Delayed harvest. Suggested solution: Harvest on time"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Pest-infested fruit?": {
+      "Step Question: Do you see the symptom: Pest-infested fruit?": {
+        "Yes": {
+          "Step Question: Does it look like Fruit flies?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Fruit flies. Suggested solution: Use traps"
+            ],
+            [
+              "Answer=No",
+              "Try next possible cause."
+            ]
+          ],
+          "Step Question: Does it look like codling moth?": [
+            [
+              "Answer=Yes",
+              "Likely cause: codling moth. Suggested solution: bagging"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Deformed strawberries?": {
+      "Step Question: Do you see the symptom: Deformed strawberries?": {
+        "Yes": {
+          "Step Question: Does it look like Poor pollination?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Poor pollination. Suggested solution: Encourage bees"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    }
+  },
+  "Category: Root & Stem Problems": {
+    "Problem: Root rot?": {
+      "Step Question: Do you see the symptom: Root rot?": {
+        "Yes": {
+          "Step Question: Does it look like Overwatering?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Overwatering. Suggested solution: Improve soil drainage"
+            ],
+            [
+              "Answer=No",
+              "Try next possible cause."
+            ]
+          ],
+          "Step Question: Does it look like poor drainage?": [
+            [
+              "Answer=Yes",
+              "Likely cause: poor drainage. Suggested solution: reduce watering"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Root knots?": {
+      "Step Question: Do you see the symptom: Root knots?": {
+        "Yes": {
+          "Step Question: Does it look like Nematodes?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Nematodes. Suggested solution: Rotate crops"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Stunted roots?": {
+      "Step Question: Do you see the symptom: Stunted roots?": {
+        "Yes": {
+          "Step Question: Does it look like Compacted soil?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Compacted soil. Suggested solution: Aerate soil"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Brown root tips?": {
+      "Step Question: Do you see the symptom: Brown root tips?": {
+        "Yes": {
+          "Step Question: Does it look like Salt damage?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Salt damage. Suggested solution: Flush soil with water"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Blackened stems (damping-off)?": {
+      "Step Question: Do you see the symptom: Blackened stems (damping-off)?": {
+        "Yes": {
+          "Step Question: Does it look like Fungal pathogens in seedlings?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Fungal pathogens in seedlings. Suggested solution: Use sterile soil"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Hollow stems?": {
+      "Step Question: Do you see the symptom: Hollow stems?": {
+        "Yes": {
+          "Step Question: Does it look like Boron deficiency?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Boron deficiency. Suggested solution: Apply boron"
+            ],
+            [
+              "Answer=No",
+              "Try next possible cause."
+            ]
+          ],
+          "Step Question: Does it look like rapid growth?": [
+            [
+              "Answer=Yes",
+              "Likely cause: rapid growth. Suggested solution: balance fertilization"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Cracked stems?": {
+      "Step Question: Do you see the symptom: Cracked stems?": {
+        "Yes": {
+          "Step Question: Does it look like Rapid growth or drought?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Rapid growth or drought. Suggested solution: Maintain steady growth conditions"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Swollen stems?": {
+      "Step Question: Do you see the symptom: Swollen stems?": {
+        "Yes": {
+          "Step Question: Does it look like Viral disease?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Viral disease. Suggested solution: Remove affected plants"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Stem cankers?": {
+      "Step Question: Do you see the symptom: Stem cankers?": {
+        "Yes": {
+          "Step Question: Does it look like Fungal or bacterial infection?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Fungal or bacterial infection. Suggested solution: Prune infected tissue"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Crown rot?": {
+      "Step Question: Do you see the symptom: Crown rot?": {
+        "Yes": {
+          "Step Question: Does it look like Soilborne fungi?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Soilborne fungi. Suggested solution: Improve drainage"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Root discoloration?": {
+      "Step Question: Do you see the symptom: Root discoloration?": {
+        "Yes": {
+          "Step Question: Does it look like Iron toxicity or disease?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Iron toxicity or disease. Suggested solution: Adjust soil pH"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Weak stems?": {
+      "Step Question: Do you see the symptom: Weak stems?": {
+        "Yes": {
+          "Step Question: Does it look like Etiolation (low light)?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Etiolation (low light). Suggested solution: Provide adequate light"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Thin stems?": {
+      "Step Question: Do you see the symptom: Thin stems?": {
+        "Yes": {
+          "Step Question: Does it look like Excess nitrogen?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Excess nitrogen. Suggested solution: Reduce N fertilizer"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Wilted seedlings?": {
+      "Step Question: Do you see the symptom: Wilted seedlings?": {
+        "Yes": {
+          "Step Question: Does it look like Damping-off disease?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Damping-off disease. Suggested solution: Better ventilation"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Galls on roots?": {
+      "Step Question: Do you see the symptom: Galls on roots?": {
+        "Yes": {
+          "Step Question: Does it look like Clubroot (in brassicas)?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Clubroot (in brassicas). Suggested solution: Lime soil"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Stem lodging?": {
+      "Step Question: Do you see the symptom: Stem lodging?": {
+        "Yes": {
+          "Step Question: Does it look like Wind or weak structure?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Wind or weak structure. Suggested solution: Stake plants"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Red stems?": {
+      "Step Question: Do you see the symptom: Red stems?": {
+        "Yes": {
+          "Step Question: Does it look like Cold stress or phosphorus deficiency?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Cold stress or phosphorus deficiency. Suggested solution: Protect from cold"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Cracked crown?": {
+      "Step Question: Do you see the symptom: Cracked crown?": {
+        "Yes": {
+          "Step Question: Does it look like Freezing damage?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Freezing damage. Suggested solution: Mulch around crown"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Woody stems?": {
+      "Step Question: Do you see the symptom: Woody stems?": {
+        "Yes": {
+          "Step Question: Does it look like Over-mature plants?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Over-mature plants. Suggested solution: Prune regularly"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Basal stem swelling?": {
+      "Step Question: Do you see the symptom: Basal stem swelling?": {
+        "Yes": {
+          "Step Question: Does it look like Collar rot?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Collar rot. Suggested solution: Improve drainage"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Roots chewed?": {
+      "Step Question: Do you see the symptom: Roots chewed?": {
+        "Yes": {
+          "Step Question: Does it look like Root maggots?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Root maggots. Suggested solution: Use row covers"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Sudden root death?": {
+      "Step Question: Do you see the symptom: Sudden root death?": {
+        "Yes": {
+          "Step Question: Does it look like Fusarium wilt?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Fusarium wilt. Suggested solution: Rotate crops"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Bulb rotting?": {
+      "Step Question: Do you see the symptom: Bulb rotting?": {
+        "Yes": {
+          "Step Question: Does it look like Excess moisture?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Excess moisture. Suggested solution: Dry soil"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Stem splitting?": {
+      "Step Question: Do you see the symptom: Stem splitting?": {
+        "Yes": {
+          "Step Question: Does it look like Rapid water uptake?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Rapid water uptake. Suggested solution: Water consistently"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Vine decline?": {
+      "Step Question: Do you see the symptom: Vine decline?": {
+        "Yes": {
+          "Step Question: Does it look like Soilborne pathogens?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Soilborne pathogens. Suggested solution: Rotate crops"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    }
+  },
+  "Category: Pest & Disease Problems": {
+    "Problem: Aphid infestation?": {
+      "Step Question: Do you see the symptom: Aphid infestation?": {
+        "Yes": {
+          "Step Question: Does it look like Sap-sucking insects?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Sap-sucking insects. Suggested solution: Spray insecticidal soap"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Whiteflies?": {
+      "Step Question: Do you see the symptom: Whiteflies?": {
+        "Yes": {
+          "Step Question: Does it look like Small white insects under leaves?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Small white insects under leaves. Suggested solution: Yellow sticky traps"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Spider mites?": {
+      "Step Question: Do you see the symptom: Spider mites?": {
+        "Yes": {
+          "Step Question: Does it look like Tiny mites causing stippling?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Tiny mites causing stippling. Suggested solution: Increase humidity"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Scale insects?": {
+      "Step Question: Do you see the symptom: Scale insects?": {
+        "Yes": {
+          "Step Question: Does it look like Hard bumps on stems/leaves?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Hard bumps on stems/leaves. Suggested solution: Scrape off"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Mealybugs?": {
+      "Step Question: Do you see the symptom: Mealybugs?": {
+        "Yes": {
+          "Step Question: Does it look like White cotton-like pests?": [
+            [
+              "Answer=Yes",
+              "Likely cause: White cotton-like pests. Suggested solution: Dab with alcohol"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Slugs and snails?": {
+      "Step Question: Do you see the symptom: Slugs and snails?": {
+        "Yes": {
+          "Step Question: Does it look like Chewed leaves?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Chewed leaves. Suggested solution: Beer traps"
+            ],
+            [
+              "Answer=No",
+              "Try next possible cause."
+            ]
+          ],
+          "Step Question: Does it look like slime trails?": [
+            [
+              "Answer=Yes",
+              "Likely cause: slime trails. Suggested solution: handpick"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Caterpillars?": {
+      "Step Question: Do you see the symptom: Caterpillars?": {
+        "Yes": {
+          "Step Question: Does it look like Large holes in leaves?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Large holes in leaves. Suggested solution: Handpick"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Leaf miners?": {
+      "Step Question: Do you see the symptom: Leaf miners?": {
+        "Yes": {
+          "Step Question: Does it look like Squiggly lines in leaves?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Squiggly lines in leaves. Suggested solution: Remove infested leaves"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Thrips?": {
+      "Step Question: Do you see the symptom: Thrips?": {
+        "Yes": {
+          "Step Question: Does it look like Silvery streaks on leaves?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Silvery streaks on leaves. Suggested solution: Sticky traps"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Fungus gnats?": {
+      "Step Question: Do you see the symptom: Fungus gnats?": {
+        "Yes": {
+          "Step Question: Does it look like Small flies in soil?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Small flies in soil. Suggested solution: Dry soil"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Root maggots?": {
+      "Step Question: Do you see the symptom: Root maggots?": {
+        "Yes": {
+          "Step Question: Does it look like Damaged roots?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Damaged roots. Suggested solution: Crop rotation"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Cabbage worms?": {
+      "Step Question: Do you see the symptom: Cabbage worms?": {
+        "Yes": {
+          "Step Question: Does it look like Holes in brassica leaves?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Holes in brassica leaves. Suggested solution: Netting"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Cutworms?": {
+      "Step Question: Do you see the symptom: Cutworms?": {
+        "Yes": {
+          "Step Question: Does it look like Seedlings cut at base?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Seedlings cut at base. Suggested solution: Protective collars"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Fruit flies?": {
+      "Step Question: Do you see the symptom: Fruit flies?": {
+        "Yes": {
+          "Step Question: Does it look like Infested fruits?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Infested fruits. Suggested solution: Use traps"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Codling moth?": {
+      "Step Question: Do you see the symptom: Codling moth?": {
+        "Yes": {
+          "Step Question: Does it look like Worms in apples?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Worms in apples. Suggested solution: Use pheromone traps"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Powdery mildew?": {
+      "Step Question: Do you see the symptom: Powdery mildew?": {
+        "Yes": {
+          "Step Question: Does it look like White powder on leaves?": [
+            [
+              "Answer=Yes",
+              "Likely cause: White powder on leaves. Suggested solution: Improve airflow"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Downy mildew?": {
+      "Step Question: Do you see the symptom: Downy mildew?": {
+        "Yes": {
+          "Step Question: Does it look like Yellow patches?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Yellow patches. Suggested solution: Remove infected leaves"
+            ],
+            [
+              "Answer=No",
+              "Try next possible cause."
+            ]
+          ],
+          "Step Question: Does it look like fuzzy undersides?": [
+            [
+              "Answer=Yes",
+              "Likely cause: fuzzy undersides. Suggested solution: fungicide"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Rust disease?": {
+      "Step Question: Do you see the symptom: Rust disease?": {
+        "Yes": {
+          "Step Question: Does it look like Orange pustules?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Orange pustules. Suggested solution: Remove leaves"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Leaf spot?": {
+      "Step Question: Do you see the symptom: Leaf spot?": {
+        "Yes": {
+          "Step Question: Does it look like Dark spots on leaves?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Dark spots on leaves. Suggested solution: Improve air circulation"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Blight?": {
+      "Step Question: Do you see the symptom: Blight?": {
+        "Yes": {
+          "Step Question: Does it look like Sudden plant death?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Sudden plant death. Suggested solution: Remove and destroy plants"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Clubroot?": {
+      "Step Question: Do you see the symptom: Clubroot?": {
+        "Yes": {
+          "Step Question: Does it look like Swollen brassica roots?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Swollen brassica roots. Suggested solution: Lime soil"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Verticillium wilt?": {
+      "Step Question: Do you see the symptom: Verticillium wilt?": {
+        "Yes": {
+          "Step Question: Does it look like Yellowing and wilting?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Yellowing and wilting. Suggested solution: Rotate crops"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Fusarium wilt?": {
+      "Step Question: Do you see the symptom: Fusarium wilt?": {
+        "Yes": {
+          "Step Question: Does it look like Plant collapse?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Plant collapse. Suggested solution: Soil solarization"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Bacterial canker?": {
+      "Step Question: Do you see the symptom: Bacterial canker?": {
+        "Yes": {
+          "Step Question: Does it look like Oozing stems?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Oozing stems. Suggested solution: Destroy infected plants"
+            ],
+            [
+              "Answer=No",
+              "Try next possible cause."
+            ]
+          ],
+          "Step Question: Does it look like wilting?": [
+            [
+              "Answer=Yes",
+              "Likely cause: wilting. Suggested solution: copper sprays"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    },
+    "Problem: Mosaic virus?": {
+      "Step Question: Do you see the symptom: Mosaic virus?": {
+        "Yes": {
+          "Step Question: Does it look like Mottled leaves?": [
+            [
+              "Answer=Yes",
+              "Likely cause: Mottled leaves. Suggested solution: Remove infected plants"
+            ],
+            [
+              "Answer=No",
+              "Explore alternative causes."
+            ]
+          ]
+        },
+        "No": "Check other problems in this category."
+      }
+    }
+  }
+}
