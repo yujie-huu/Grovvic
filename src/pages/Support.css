@@ -49,35 +49,59 @@ img{ max-width:100%; height:auto; display:block; }
 }
 
 /* ========== FAQ 标题与布局 ========== */
-.support-section h2{
-  font-size: clamp(1.4rem, 2.1vw, 1.75rem);
-  font-weight:700;
-  margin: 8rem 0 0rem;
-  margin-left: clamp(1rem, 8vw, 10rem);
+/* FAQ 标题 */
+.support-section h2 {
+  font-size: clamp(1.8rem, 2.2vw, 2.2rem);
+  font-weight: 700;
+  margin-top: 4rem;           /* ✅ 控制 FAQ 与上一部分距离 */
+  margin-bottom: 3rem;        /* ✅ 标题与内容间距 */
+  text-align: left;
+  margin-left: 16.5rem;         /* ✅ 稍微左移，使更居中对齐 */
   color: var(--text-dark);
+  position: relative;          /* ✅ 保证定位不影响其他块 */
+  z-index: 1;
 }
 
-.support-faq-grid{
-  display:grid;
-  grid-template-columns: minmax(0,1fr) 420px;
-  gap: clamp(16px, 3vw, 32px);
-  align-items:start;
-  margin: 0 0 6rem 0;
+/* FAQ 主体布局 */
+.support-faq-grid {
+  display: grid;
+  grid-template-columns: 520px 540px;  /* ✅ 稍加宽，使左右更平衡 */
+  justify-content: center;
+  align-items: start;
+  gap: 2.5rem;                         /* ✅ 适中列间距 */
+  margin: -2rem auto 6rem auto;            /* ✅ 居中 + 下方留白 */
+  max-width: 1150px;
+  position: relative;                  /* ✅ 仅对该部分上下偏移有效 */
+  top: 20px;                           /* ✅ 整个FAQ整体下移，不影响其他区域 */
 }
 
-/* 右侧图片卡片 */
-.faq-right{ display:flex; justify-content:center; align-items:flex-start; margin-right: clamp(0rem, 10vw, 18rem); }
-.faq-side-image{
-  max-width: 520px;
-  width: auto;
-  height: auto; /* ✅ fix: 补全注释闭合 */
+/* FAQ 列表（左侧） */
+.support-links {
+  list-style: none;
+  padding: 0;
+  margin: -1rem 0 0 0;                 /* ✅ 微调顶部位置 */
+  justify-self: end;
+}
+
+/* 图片卡片（右侧） */
+.faq-right {
+  display: flex;
+  justify-content: flex-start;         /* ✅ 向左靠近中线 */
+  align-items: flex-start;
+  margin-right: 0;
+  margin-top: -2rem;                 /* ✅ 图片略向上，与FAQ内容对齐 */
+}
+
+.faq-side-image {
+  max-width: 540px;
+  width: 100%;
+  height: auto;
   border: 2px solid var(--link-blue);
   border-radius: 14px;
   box-shadow: var(--shadow-md);
+  object-fit: contain;
 }
 
-/* FAQ 列表 */
-.support-links{ list-style:none; padding:0; margin: 1rem 0 0 clamp(1rem, 8vw, 10rem); }
 
 .support-link{
   display:flex; align-items:center; justify-content:space-between;
@@ -197,7 +221,7 @@ img{ max-width:100%; height:auto; display:block; }
 
 /* ≥1280px：让 FAQ 右图更宽松，三卡区域居中稳定 */
 @media (min-width: 1280px){
-  .support-faq-grid{ grid-template-columns: minmax(0,1fr) 480px; }
+  .support-faq-grid{ grid-template-columns: minmax(0,1fr) 520px; }
   .faq-side-image{ max-width: 560px; }
 }
 
