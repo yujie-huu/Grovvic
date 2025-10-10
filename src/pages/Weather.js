@@ -3,7 +3,9 @@ import React, { useEffect, useState } from 'react'
 import './Weather.css'
 import axios from 'axios'
 import { buildWateringTable } from '../utils/watering.js';
-
+import Plot from "react-plotly.js";
+import tempSpec from "../data/annual_temp_anomaly.json";
+import rainSpec from "../data/annual_rainfall_anomaly.json";
 
 const Weather = () => {
   const [current, setCurrent] = useState(null)
@@ -497,8 +499,38 @@ const Weather = () => {
               <option value="rainfall">Rainfall</option>
             </select>
           </div>
-          <img src={imageSrc} alt="Climate" className="climate-image" />
+
+          {/* 图表容器：添加 margin-bottom 保证不遮盖卡片 */}
+          <div
+            className="climate-image"
+            style={{
+              position: "relative",
+              zIndex: 1,            // 确保图表层级较低
+              marginBottom: "40px", // 与下方卡片留出空间
+            }}
+          >
+            <Plot
+              data={(climateType === "temperature" ? tempSpec : rainSpec).data}
+              layout={{
+                ...(climateType === "temperature" ? tempSpec : rainSpec).layout,
+                autosize: true,
+                dragmode: false, // 禁止拖拽
+              }}
+              config={{
+                //staticPlot: true,       禁止交互，仅悬停提示
+                displayModeBar: false, // 隐藏右上角工具栏
+                displaylogo: false,
+                responsive: true,
+              }}
+              style={{
+                width: "100%",
+                height: "100%",
+              }}
+              useResizeHandler
+            />
+          </div>
         </div>
+
 
 
         <div className="green-box climate-box">
