@@ -1,5 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
 import "./Support.css";
+import DiagnosisWizard from "../components/DiagnosisWizard";
+import diagnosisData from "../data/US5.2_Data_final_nested_fixed.json";
+
+
 
 const Support = () => {
   const [parsedData, setParsedData] = useState([]);
@@ -271,6 +275,21 @@ const Support = () => {
           </div>
         </div>
       </section>
+
+
+      {/* Plant Diagnosis Wizard */}
+      <section className="diagnosis-section">
+        <DiagnosisWizard
+          data={diagnosisData}
+          onStepDone={({ categoryKey, problemKey }) => {
+            console.log("User selected:", categoryKey, problemKey);
+            // ✅ 后续可以在这里添加进入第三步逻辑
+          }}
+        />
+      </section>
+
+
+
 
       {/* Local Programs */}
       <section className="local-programs-section">
