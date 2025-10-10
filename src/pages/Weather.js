@@ -6,6 +6,7 @@ import { buildWateringTable } from '../utils/watering.js';
 import Plot from "react-plotly.js";
 import tempSpec from "../data/annual_temp_anomaly.json";
 import rainSpec from "../data/annual_rainfall_anomaly.json";
+import futureSpec from "../data/climatology_monthly_interactive.json";
 
 const Weather = () => {
   const [current, setCurrent] = useState(null)
@@ -538,13 +539,7 @@ const Weather = () => {
           {climateType === 'temperature' ? climateInsightsTemp : climateInsightsRain}
         </div>
 
-        {/* <div className="climate-section">
-          <img
-            src="/images/future.png"
-            alt="Future Climate"
-            className="climate-image"
-          />
-        </div> */}
+
 
         <div
           className="climate-section"
@@ -555,17 +550,40 @@ const Weather = () => {
             padding: "60px 20px",
             display: "flex",
             justifyContent: "center",
-            alignItems: "center"
+            alignItems: "center",
           }}
         >
           <div className="climate-chart-card">
-            <img
-              src="/images/future.png"
-              alt="Future Climate"
+            {/* 图表容器：与下方代码一致用 climate-image，并留出下方间距避免遮盖卡片 */}
+            <div
               className="climate-image"
-            />
+              style={{
+                position: "relative",
+                zIndex: 1,             // 确保图表层级较低
+                marginBottom: "40px",  // 与下方卡片留出空间
+              }}
+            >
+              <Plot
+                data={futureSpec.data}
+                layout={{
+                  ...futureSpec.layout,
+                  autosize: true,
+                  dragmode: false,              // 禁止拖拽
+                  // 如需去掉底部缩略滑块，可加：xaxis: { ...(futureSpec.layout?.xaxis||{}), rangeslider: { visible: false } }
+                }}
+                config={{
+                  staticPlot: true,             // 仅展示，不可操作（保留悬停提示）
+                  displayModeBar: false,        // 隐藏右上角工具栏
+                  displaylogo: false,
+                  responsive: true,
+                }}
+                style={{ width: "100%", height: "100%" }}  // 占满 climate-image 容器
+                useResizeHandler
+              />
+            </div>
           </div>
         </div>
+
 
 
         <div className="green-box climate-box">
