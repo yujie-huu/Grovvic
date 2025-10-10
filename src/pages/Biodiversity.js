@@ -4,6 +4,11 @@ import "leaflet/dist/leaflet.css";
 import "./Biodiversity.css";
 import "./SearchBiodiversity.css";
 import SearchBiodiversity from "./SearchBiodiversity";
+import MarkerClusterGroup from "react-leaflet-markercluster";
+import "leaflet.markercluster/dist/MarkerCluster.css";
+import "leaflet.markercluster/dist/MarkerCluster.Default.css";
+
+
 
 // 从 pages 目录相对引入
 import orders from "../data/vernacular_orders.json";
@@ -283,20 +288,28 @@ const Biodiversity = () => {
               style={{ height: "400px", width: "100%" }}
             >
               <TileLayer url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png" />
-              {occurrences.map((item, idx) => (
-                <CircleMarker
-                  key={`${idx}-${item.decimalLatitude}-${item.decimalLongitude}-${item.eventDate}`}
-                  center={[item.decimalLatitude, item.decimalLongitude]}
-                  radius={5}
-                  color="red"
-                  fillOpacity={0.7}
-                >
-                  {/* 使用 map-flags 的内容替换原有 tooltip 渲染 */}
-                  <Tooltip direction="top" offset={[0, -5]} opacity={1} permanent={false}>
-                    {renderTooltipContent(item.animal_taxon_name)}
-                  </Tooltip>
-                </CircleMarker>
-              ))}
+
+              <MarkerClusterGroup
+                showCoverageOnHover={false}
+                spiderfyOnEveryZoom={true}
+                disableClusteringAtZoom={12}
+                maxClusterRadius={80}
+                chunkedLoading
+              >
+                {occurrences.map((item, idx) => (
+                  <CircleMarker
+                    key={`${idx}-${item.decimalLatitude}-${item.decimalLongitude}`}
+                    center={[item.decimalLatitude, item.decimalLongitude]}
+                    radius={5}
+                    color="red"
+                    fillOpacity={0.7}
+                  >
+                    <Tooltip direction="top" offset={[0, -5]} opacity={1} permanent={false}>
+                      {renderTooltipContent(item.animal_taxon_name)}
+                    </Tooltip>
+                  </CircleMarker>
+                ))}
+              </MarkerClusterGroup>
             </MapContainer>
           )}
         </div>
