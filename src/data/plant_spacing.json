@@ -1,0 +1,278 @@
+[
+    {
+        "plant_name": "Alyssum",
+        "plant_spacing_cm": 20
+    },
+    {
+        "plant_name": "Asparagus",
+        "plant_spacing_cm": 40
+    },
+    {
+        "plant_name": "Basil",
+        "plant_spacing_cm": 100
+    },
+    {
+        "plant_name": "Bean",
+        "plant_spacing_cm": 20
+    },
+    {
+        "plant_name": "Beetroot",
+        "plant_spacing_cm": 20
+    },
+    {
+        "plant_name": "Blackberry",
+        "plant_spacing_cm": 160
+    },
+    {
+        "plant_name": "Borage",
+        "plant_spacing_cm": 40
+    },
+    {
+        "plant_name": "Broccoli",
+        "plant_spacing_cm": 60
+    },
+    {
+        "plant_name": "Brussels Sprouts",
+        "plant_spacing_cm": 60
+    },
+    {
+        "plant_name": "Bulb Onion",
+        "plant_spacing_cm": 20
+    },
+    {
+        "plant_name": "Cabbage",
+        "plant_spacing_cm": 60
+    },
+    {
+        "plant_name": "Calendula",
+        "plant_spacing_cm": 60
+    },
+    {
+        "plant_name": "Capsicum",
+        "plant_spacing_cm": 60
+    },
+    {
+        "plant_name": "Carrot",
+        "plant_spacing_cm": 20
+    },
+    {
+        "plant_name": "Catnip",
+        "plant_spacing_cm": 60
+    },
+    {
+        "plant_name": "Cauliflower",
+        "plant_spacing_cm": 100
+    },
+    {
+        "plant_name": "Celery",
+        "plant_spacing_cm": 40
+    },
+    {
+        "plant_name": "Chamomile",
+        "plant_spacing_cm": 40
+    },
+    {
+        "plant_name": "Chervil",
+        "plant_spacing_cm": 40
+    },
+    {
+        "plant_name": "Chilli",
+        "plant_spacing_cm": 100
+    },
+    {
+        "plant_name": "Chive",
+        "plant_spacing_cm": 20
+    },
+    {
+        "plant_name": "Collards",
+        "plant_spacing_cm": 100
+    },
+    {
+        "plant_name": "Comfrey",
+        "plant_spacing_cm": 60
+    },
+    {
+        "plant_name": "Coreopsis",
+        "plant_spacing_cm": 80
+    },
+    {
+        "plant_name": "Coriander",
+        "plant_spacing_cm": 20
+    },
+    {
+        "plant_name": "Corn",
+        "plant_spacing_cm": 40
+    },
+    {
+        "plant_name": "Cress",
+        "plant_spacing_cm": 20
+    },
+    {
+        "plant_name": "Cucumber",
+        "plant_spacing_cm": 120
+    },
+    {
+        "plant_name": "Dill",
+        "plant_spacing_cm": 40
+    },
+    {
+        "plant_name": "Eggplant",
+        "plant_spacing_cm": 80
+    },
+    {
+        "plant_name": "Fennel",
+        "plant_spacing_cm": 60
+    },
+    {
+        "plant_name": "Garlic",
+        "plant_spacing_cm": 20
+    },
+    {
+        "plant_name": "Geranium",
+        "plant_spacing_cm": null
+    },
+    {
+        "plant_name": "Gladiolus Corms",
+        "plant_spacing_cm": 20
+    },
+    {
+        "plant_name": "Gooseberry",
+        "plant_spacing_cm": 40
+    },
+    {
+        "plant_name": "Horseradish Roots",
+        "plant_spacing_cm": 40
+    },
+    {
+        "plant_name": "Hyssop",
+        "plant_spacing_cm": 60
+    },
+    {
+        "plant_name": "Kohlrabi",
+        "plant_spacing_cm": 20
+    },
+    {
+        "plant_name": "Lavender",
+        "plant_spacing_cm": 80
+    },
+    {
+        "plant_name": "Leek",
+        "plant_spacing_cm": 20
+    },
+    {
+        "plant_name": "Lemon Balm",
+        "plant_spacing_cm": 60
+    },
+    {
+        "plant_name": "Lettuce",
+        "plant_spacing_cm": 60
+    },
+    {
+        "plant_name": "Lovage",
+        "plant_spacing_cm": 100
+    },
+    {
+        "plant_name": "Marigold",
+        "plant_spacing_cm": 60
+    },
+    {
+        "plant_name": "Mint",
+        "plant_spacing_cm": 60
+    },
+    {
+        "plant_name": "Nasturtium",
+        "plant_spacing_cm": 80
+    },
+    {
+        "plant_name": "Oregano",
+        "plant_spacing_cm": 60
+    },
+    {
+        "plant_name": "Parsley",
+        "plant_spacing_cm": 40
+    },
+    {
+        "plant_name": "Parsnip",
+        "plant_spacing_cm": 20
+    },
+    {
+        "plant_name": "Pea",
+        "plant_spacing_cm": 20
+    },
+    {
+        "plant_name": "Potato",
+        "plant_spacing_cm": 40
+    },
+    {
+        "plant_name": "Pumpkin & Winter Squash",
+        "plant_spacing_cm": 120
+    },
+    {
+        "plant_name": "Pyrethrum",
+        "plant_spacing_cm": null
+    },
+    {
+        "plant_name": "Radish",
+        "plant_spacing_cm": 20
+    },
+    {
+        "plant_name": "Raspberry",
+        "plant_spacing_cm": 40
+    },
+    {
+        "plant_name": "Rosemary",
+        "plant_spacing_cm": null
+    },
+    {
+        "plant_name": "Sage",
+        "plant_spacing_cm": 60
+    },
+    {
+        "plant_name": "Shallots",
+        "plant_spacing_cm": null
+    },
+    {
+        "plant_name": "Silverbeet",
+        "plant_spacing_cm": 40
+    },
+    {
+        "plant_name": "Spinach",
+        "plant_spacing_cm": 40
+    },
+    {
+        "plant_name": "Strawberry",
+        "plant_spacing_cm": 40
+    },
+    {
+        "plant_name": "Summer Squash",
+        "plant_spacing_cm": 60
+    },
+    {
+        "plant_name": "Sunflower",
+        "plant_spacing_cm": 40
+    },
+    {
+        "plant_name": "Thyme",
+        "plant_spacing_cm": 80
+    },
+    {
+        "plant_name": "Tomato",
+        "plant_spacing_cm": 80
+    },
+    {
+        "plant_name": "Turnip",
+        "plant_spacing_cm": 20
+    },
+    {
+        "plant_name": "Watermelon",
+        "plant_spacing_cm": 80
+    },
+    {
+        "plant_name": "Zinnia",
+        "plant_spacing_cm": 40
+    },
+    {
+        "plant_name": "Zucchini",
+        "plant_spacing_cm": 80
+    }
+]

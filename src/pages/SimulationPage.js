@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import './SimulationPage.css';
-import { MdSearch } from 'react-icons/md';
+import { MdSearch, MdDelete, MdDeleteForever } from 'react-icons/md';
 
 const API_URL = 'https://netzero-vigrow-api.duckdns.org/iter3/plants/filter';
 
@@ -166,7 +166,12 @@ export default function SimulationPage(){
 
   const allowDrop = (e) => {
     e.preventDefault();
-    e.dataTransfer.dropEffect = 'copy';
+    const info = dragInfoRef.current;
+    if (info && info.kind === 'cell') {
+      e.dataTransfer.dropEffect = 'move';
+    } else {
+      e.dataTransfer.dropEffect = 'copy';
+    }
   };
 
   const onCellDragEnter = (index) => setOverIndex(index);
@@ -393,7 +398,7 @@ export default function SimulationPage(){
           </button>
 
           {/* Trash dropzone */}
-          <div 
+          <div
             className={`trash-dropzone ${trashHot ? 'hot' : ''}`}
             onDragOver={onTrashDragOver}
             onDragLeave={onTrashDragLeave}
@@ -401,7 +406,8 @@ export default function SimulationPage(){
             title="Drag a planted item here to remove it from the bed"
             aria-label="Trash bin"
           >
-            🗑️ Remove
+            {trashHot ? <MdDeleteForever className="trash-icon" /> : <MdDelete className="trash-icon" />}
+            <span className="trash-text">Remove</span>
           </div>
         </div>
 
