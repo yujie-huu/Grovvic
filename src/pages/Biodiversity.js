@@ -25,6 +25,9 @@ const Biodiversity = () => {
   const [speciesFlags, setSpeciesFlags] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  // 新增：按物种名缓存 map-flags 数据
+  const [mapFlagsByName, setMapFlagsByName] = useState({}); // { [animal_taxon_name]: mapFlagsObj }
+
   const mapBoxRef = useRef(null);
   const [mapHeight, setMapHeight] = useState(0);
 
@@ -43,7 +46,7 @@ const Biodiversity = () => {
     return (orders?.[key] ?? []).slice();
   }, [selectedCategory]);
 
-  // 根据分类 + group/All 加载 occurrences
+  // 根据分类 + group/All 加载 occurrences，并为需要的物种加载 map-flags
   useEffect(() => {
     if (!selectedCategory) return;
 
@@ -70,24 +73,53 @@ const Biodiversity = () => {
 
     if (filtered.length === 0) {
       setOccurrences([]);
+      setMapFlagsByName({});
       return;
     }
 
-    setLoading(true);
-    Promise.all(
-      filtered.map((s) =>
-        fetch(
-          `https://netzero-vigrow-api.duckdns.org/iter2/occurrences/by-animal?animal=${encodeURIComponent(
-            s.animal_taxon_name || s.taxon_name
-          )}`
-        )
-          .then((res) => res.json())
-          .catch(() => [])
+    // 需要的物种名列表（用于请求 map-flags & occurrences）
+    const speciesNames = Array.from(
+      new Set(
+        filtered
+          .map((s) => s.animal_taxon_name || s.taxon_name)
+          .filter(Boolean)
       )
-    )
-      .then((results) => {
-        const merged = results.flat().filter(Boolean);
+    );
+
+    setLoading(true);
+
+    // 1) 拉取所有物种的 occurrences（坐标点）
+    const occPromises = speciesNames.map((name) =>
+      fetch(
+        `https://netzero-vigrow-api.duckdns.org/iter2/occurrences/by-animal?animal=${encodeURIComponent(
+          name
+        )}`
+      )
+        .then((res) => res.json())
+        .catch(() => [])
+    );
+
+    // 2) 拉取所有物种的 map-flags（悬浮提示信息来源）
+    const mapFlagsPromises = speciesNames.map((name) =>
+      fetch(
+        `https://netzero-vigrow-api.duckdns.org/iter2/species/animal/${encodeURIComponent(
+          name
+        )}/map-flags`
+      )
+        .then((res) => res.json())
+        .then((data) => [name, data])
+        .catch(() => [name, null])
+    );
+
+    Promise.all([Promise.all(occPromises), Promise.all(mapFlagsPromises)])
+      .then(([occResults, flagsEntries]) => {
+        // 合并坐标点
+        const merged = occResults.flat().filter(Boolean);
         setOccurrences(merged);
+
+        // 合并 map-flags 到字典
+        const flagsDict = Object.fromEntries(flagsEntries);
+        setMapFlagsByName(flagsDict);
       })
       .finally(() => setLoading(false));
   }, [selectedCategory, selectedGroups, selectAll, speciesFlags]);
@@ -105,6 +137,8 @@ const Biodiversity = () => {
     setSelectedCategory(label);
     setSelectedGroups([]);
     setSelectAll(false);
+    setOccurrences([]);
+    setMapFlagsByName({});
   };
 
   // 清空过滤
@@ -113,6 +147,7 @@ const Biodiversity = () => {
     setSelectedGroups([]);
     setSelectAll(false);
     setOccurrences([]);
+    setMapFlagsByName({});
   };
 
   // 左侧过滤栏等高（跟随地图容器）
@@ -124,6 +159,53 @@ const Biodiversity = () => {
     window.addEventListener("resize", setH);
     return () => window.removeEventListener("resize", setH);
   }, []);
+
+  // 根据 map-flags 生成 Tooltip 内容（替换原先的 tooltip）
+  const renderTooltipContent = (animalTaxonName) => {
+    const info = mapFlagsByName?.[animalTaxonName];
+    if (!info) {
+      return <div>Loading...</div>;
+    }
+
+    // 只在 count > 0 时显示对应条目
+    const countKeys = [
+      "visits",
+      "eats",
+      "pollinates",
+      "parasite_to",
+      "pathogen_to",
+      "lays_eggs_on",
+    ];
+
+    const countsToShow = countKeys
+      .map((key) => {
+        const c = info?.[key]?.count ?? 0;
+        return c > 0 ? { key, count: c } : null;
+      })
+      .filter(Boolean);
+
+    return (
+      <div style={{ lineHeight: 1.4 }}>
+        {/* 头部三行 */}
+        {info.vernacular_name && <div>{info.vernacular_name}</div>}
+        {info.vernacular_order && <div>order: {info.vernacular_order}</div>}
+        {typeof info.number_of_records === "number" && (
+          <div>number_of_records: {info.number_of_records}</div>
+        )}
+
+        {/* 计数类（仅显示 >0 的） */}
+        {countsToShow.length > 0 && (
+          <div style={{ marginTop: 0, lineHeight: 1.4 }}>
+            {countsToShow.map(({ key, count }) => (
+              <div key={key}>
+                {key}: {count}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  };
 
   return (
     <div className="biodiversity-page">
@@ -209,9 +291,9 @@ const Biodiversity = () => {
                   color="red"
                   fillOpacity={0.7}
                 >
+                  {/* 使用 map-flags 的内容替换原有 tooltip 渲染 */}
                   <Tooltip direction="top" offset={[0, -5]} opacity={1} permanent={false}>
-                    <div>{item.animal_taxon_name}</div>
-                    <div>{item.eventDate}</div>
+                    {renderTooltipContent(item.animal_taxon_name)}
                   </Tooltip>
                 </CircleMarker>
               ))}
