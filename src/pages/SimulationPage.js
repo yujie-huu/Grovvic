@@ -364,14 +364,14 @@ export default function SimulationPage(){
     });
   };
 
-  // 从当前花床中提取唯一的已种植物名数组
+  // Extract unique planted plant names from current garden bed
   const getPlantedNames = useCallback(() => {
     const names = new Set();
     plantInstances.forEach(p => { if (p?.name) names.add(p.name); });
     return Array.from(names);
   }, [plantInstances]);
 
-  // 请求推荐（只要 plant_name 就行）
+  // Request recommendations (only plant_name needed)
   const fetchRecommendations = useCallback(async () => {
     try {
       setRecLoading(true);
@@ -396,7 +396,7 @@ export default function SimulationPage(){
     }
   }, [getPlantedNames]);
 
-  // 已种植物变化时自动刷新推荐（也可点卡片右上角刷新）
+  // Auto-refresh recommendations when planted plants change (can also click card refresh)
   useEffect(() => {
     fetchRecommendations();
   }, [fetchRecommendations]);
@@ -404,35 +404,35 @@ export default function SimulationPage(){
   // Download garden layout as image
   const downloadGardenLayout = async (format = 'jpg') => {
     try {
-      // 1) 找到真正的内容节点（建议用 grid）
+      // 1) Find the actual content node (recommend using grid)
       const grid = document.querySelector('.garden-grid');
       if (!grid) {
         showAlert('Garden grid not found');
         return;
       }
 
-      // 2) 从当前网格推导完整尺寸（每格 60px；行列你已有变量 rows/cols）
-      const cellPx = 60;                          // 与样式中 minmax(60px, 1fr) 对齐
+      // 2) Derive full dimensions from current grid (60px per cell; rows/cols variables available)
+      const cellPx = 60;                          // Align with minmax(60px, 1fr) in styles
       const fullW = cols * cellPx;
-      const fullH = rows * cellPx;                // 只计算网格本身的高度
+      const fullH = rows * cellPx;                // Only calculate grid height itself
 
-      // 3) 动态加载 html2canvas
+      // 3) Dynamically load html2canvas
       const { default: html2canvas } = await import('html2canvas');
 
-      // 4) 用 onclone 改造克隆出来的 DOM：去掉 overflow，给 grid 固定像素尺寸
+      // 4) Modify cloned DOM with onclone: remove overflow, set fixed pixel dimensions for grid
       const canvas = await html2canvas(grid, {
         backgroundColor: '#f5f5f5',
-        scale: 2,                         // 提高分辨率
+        scale: 2,                         // Increase resolution
         useCORS: true,
         allowTaint: true,
-        windowWidth: fullW,               // 关键：让渲染视窗与完整尺寸一致
+        windowWidth: fullW,               // Key: make render viewport match full dimensions
         windowHeight: fullH,
-        width: fullW,                     // 关键：生成的画布大小
+        width: fullW,                     // Key: generated canvas size
         height: fullH,
         scrollX: 0,
         scrollY: 0,
         onclone: (doc) => {
-          // 找到克隆节点中的相关元素，统一去裁剪、定宽高
+          // Find related elements in cloned nodes, uniformly remove clipping and set width/height
           const clonedContainer = doc.querySelector('.simulation-garden-container');
           const clonedScroll = doc.querySelector('.simulation-garden-scroll');
           const clonedGrid = doc.querySelector('.garden-grid');
@@ -447,14 +447,14 @@ export default function SimulationPage(){
             clonedScroll.style.width = `${fullW}px`;
           }
           if (clonedGrid) {
-            // 固定像素行列，确保完整渲染
+            // Set fixed pixel rows/columns to ensure complete rendering
             clonedGrid.style.gridTemplateColumns = `repeat(${cols}, ${cellPx}px)`;
             clonedGrid.style.gridTemplateRows = `repeat(${rows}, ${cellPx}px)`;
             clonedGrid.style.width = `${fullW}px`;
             clonedGrid.style.height = `${fullH}px`;
           }
 
-          // 为每个有植物的格子添加植物名称标签
+          // Add plant name labels for each cell with plants
           const clonedCells = doc.querySelectorAll('.garden-cell');
           clonedCells.forEach((cell, index) => {
             const plantId = cells[index];
@@ -462,7 +462,7 @@ export default function SimulationPage(){
               const plantInstance = plantInstances.get(plantId);
               const plantName = plantInstance.name;
               
-              // 创建植物名称标签
+              // Create plant name label
               const label = doc.createElement('div');
               label.textContent = plantName;
               label.style.cssText = `
@@ -483,7 +483,7 @@ export default function SimulationPage(){
                 box-sizing: border-box;
               `;
               
-              // 设置父容器为相对定位
+              // Set parent container to relative positioning
               cell.style.position = 'relative';
               cell.appendChild(label);
             }
@@ -491,7 +491,7 @@ export default function SimulationPage(){
         }
       });
 
-      // 5) 保存为图片
+      // 5) Save as image
       const blob = await new Promise(resolve => {
         canvas.toBlob(resolve, format === 'pdf' ? 'image/png' : `image/${format}`, 0.92);
       });
@@ -550,7 +550,7 @@ export default function SimulationPage(){
   const [overIndex, setOverIndex] = useState(null);
 
   const onCellDragOver = (e, index) => {
-    e.preventDefault();              // 关键：保证 dragover 持续触发
+    e.preventDefault();              // Key: ensure dragover continues to trigger
     const info = dragInfoRef.current;
     if (!info) return;
     setOverIndex(index);
@@ -858,7 +858,7 @@ export default function SimulationPage(){
                     className="apply-filter-btn" 
                     onClick={() => {
                       handleFilter();
-                      setShowFilters(false); // 关闭filter栏
+                      setShowFilters(false); // Close filter panel
                     }} 
                     disabled={loading}
                   >
