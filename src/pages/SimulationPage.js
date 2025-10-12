@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import './SimulationPage.css';
-import { MdSearch, MdDelete, MdDeleteForever } from 'react-icons/md';
+import { MdSearch, MdDelete, MdDeleteForever, MdDownload, MdUpload } from 'react-icons/md';
+import plantSpacingData from '../data/plant_spacing.json';
 
 const API_URL = 'https://netzero-vigrow-api.duckdns.org/iter3/plants/filter';
 
@@ -35,6 +36,71 @@ const normalizeHardiness = (h) => {
   return h; // "Frost Hardy" | "Frost Tender" | "Half Hardy"
 };
 const normalizeSunshine = (s) => s || 'All';
+
+// Plant spacing utilities
+const getPlantSpacing = (plantName) => {
+  const plant = plantSpacingData.find(p => p.plant_name === plantName);
+  return plant ? plant.plant_spacing_cm : null;
+};
+
+// Check if a specific plant cell has sufficient spacing
+const checkPlantSpacing = (plantName, cellIndex, cells, cols, rows) => {
+  const requiredSpacing = getPlantSpacing(plantName);
+  if (!requiredSpacing) return { isValid: true, reason: 'No spacing requirement' };
+
+  const cellSize = 20; // cm per cell
+  const requiredCells = Math.ceil(requiredSpacing / cellSize);
+  
+  const row = Math.floor(cellIndex / cols);
+  const col = cellIndex % cols;
+  
+  // Check horizontal (X-axis) spacing
+  let horizontalSpan = 1; // Start with current cell
+  let leftCol = col;
+  let rightCol = col;
+  
+  // Expand left
+  while (leftCol > 0 && cells[row * cols + (leftCol - 1)] === plantName) {
+    leftCol--;
+    horizontalSpan++;
+  }
+  
+  // Expand right
+  while (rightCol < cols - 1 && cells[row * cols + (rightCol + 1)] === plantName) {
+    rightCol++;
+    horizontalSpan++;
+  }
+  
+  // Check vertical (Y-axis) spacing
+  let verticalSpan = 1; // Start with current cell
+  let topRow = row;
+  let bottomRow = row;
+  
+  // Expand up
+  while (topRow > 0 && cells[(topRow - 1) * cols + col] === plantName) {
+    topRow--;
+    verticalSpan++;
+  }
+  
+  // Expand down
+  while (bottomRow < rows - 1 && cells[(bottomRow + 1) * cols + col] === plantName) {
+    bottomRow++;
+    verticalSpan++;
+  }
+  
+  // Check if both dimensions meet the requirement
+  const horizontalSize = horizontalSpan * cellSize;
+  const verticalSize = verticalSpan * cellSize;
+  
+  if (horizontalSize >= requiredSpacing && verticalSize >= requiredSpacing) {
+    return { isValid: true, reason: 'Sufficient spacing' };
+  }
+  
+  return { 
+    isValid: false, 
+    reason: `Needs ${requiredSpacing}cm × ${requiredSpacing}cm (${requiredCells}×${requiredCells} cells)` 
+  };
+};
 
 export default function SimulationPage(){
   // ---------- Garden Setup Modal (3-step wizard) ----------
@@ -79,6 +145,133 @@ export default function SimulationPage(){
 
   // Main page button: open the setup modal
   const openSetup = () => setShowSetup(true);
+
+  // ---------- Export functionality ----------
+  const exportGardenConfig = () => {
+    try {
+      const gardenConfig = {
+        metadata: {
+          exportedAt: new Date().toISOString(),
+          version: '1.0',
+          appName: 'ZeroNet Garden Simulator'
+        },
+        gardenSetup: {
+          bedWidth: bedWidth ?? DEFAULTS.bedWidth,
+          bedLength: bedLength ?? DEFAULTS.bedLength,
+          season: season ?? DEFAULTS.season,
+          sunshine: sunshine ?? DEFAULTS.sunshine,
+          gridCols: cols,
+          gridRows: rows,
+          totalCells: size
+        },
+        plantLayout: {
+          cells: cells.map((plantName, index) => ({
+            cellIndex: index,
+            row: Math.floor(index / cols),
+            col: index % cols,
+            plantName: plantName || null
+          }))
+        },
+        plantedPlants: cells.filter(Boolean).map((plantName, index) => ({
+          plantName,
+          cellIndex: cells.indexOf(plantName)
+        })),
+        statistics: {
+          totalPlants: cells.filter(Boolean).length,
+          coverage: Math.round((cells.filter(Boolean).length / size) * 100),
+          emptyCells: cells.filter(cell => !cell).length
+        }
+      };
+
+      // Create and download the file
+      const dataStr = JSON.stringify(gardenConfig, null, 2);
+      const dataBlob = new Blob([dataStr], { type: 'application/json' });
+      const url = URL.createObjectURL(dataBlob);
+      
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `garden-config-${new Date().toISOString().split('T')[0]}.json`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+
+      // Show success message
+      alert('Garden configuration exported successfully!');
+    } catch (error) {
+      console.error('Export error:', error);
+      alert('Failed to export garden configuration. Please try again.');
+    }
+  };
+
+  // ---------- Import functionality ----------
+  const fileInputRef = useRef(null);
+
+  const handleImportClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileImport = (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    if (file.type !== 'application/json') {
+      alert('Please select a valid JSON file.');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const gardenConfig = JSON.parse(e.target.result);
+        
+        // Validate the imported configuration
+        if (!gardenConfig.gardenSetup || !gardenConfig.plantLayout) {
+          throw new Error('Invalid garden configuration format');
+        }
+
+        const setup = gardenConfig.gardenSetup;
+        const layout = gardenConfig.plantLayout;
+
+        // Confirm import with user
+        const confirmMessage = `Import garden configuration?\n\n` +
+          `Garden Size: ${setup.bedWidth}cm × ${setup.bedLength}cm\n` +
+          `Season: ${setup.season}\n` +
+          `Sunshine: ${setup.sunshine}\n` +
+          `Plants: ${layout.cells.filter(cell => cell.plantName).length}\n\n` +
+          `This will replace your current garden configuration.`;
+
+        if (!window.confirm(confirmMessage)) {
+          return;
+        }
+
+        // Apply the imported configuration
+        setBedWidth(setup.bedWidth);
+        setBedLength(setup.bedLength);
+        setSeason(setup.season);
+        setSunshine(setup.sunshine);
+
+        // Restore plant layout
+        const newCells = Array(setup.totalCells).fill(null);
+        layout.cells.forEach(cell => {
+          if (cell.plantName && cell.cellIndex < newCells.length) {
+            newCells[cell.cellIndex] = cell.plantName;
+          }
+        });
+        setCells(newCells);
+
+        // Clear file input
+        event.target.value = '';
+
+        alert('Garden configuration imported successfully!');
+      } catch (error) {
+        console.error('Import error:', error);
+        alert('Failed to import garden configuration. Please check the file format.');
+      }
+    };
+
+    reader.readAsText(file);
+  };
 
   // ---------- Left panel: filters & plant inventory ----------
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -140,11 +333,29 @@ export default function SimulationPage(){
   const size = cols * rows;
 
   const [cells, setCells] = useState([]); // array of plant names or null
+  const [spacingErrors, setSpacingErrors] = useState(new Set()); // Set of cell indices with spacing errors
 
   // Reset grid when bed size changes
   useEffect(() => {
     setCells(Array(size).fill(null));
+    setSpacingErrors(new Set());
   }, [size]);
+
+  // Check plant spacing whenever cells change
+  useEffect(() => {
+    const errors = new Set();
+    
+    cells.forEach((plantName, cellIndex) => {
+      if (plantName) {
+        const spacingCheck = checkPlantSpacing(plantName, cellIndex, cells, cols, rows);
+        if (!spacingCheck.isValid) {
+          errors.add(cellIndex);
+        }
+      }
+    });
+    
+    setSpacingErrors(errors);
+  }, [cells, cols, rows]);
 
   const dragInfoRef = useRef({});
 
@@ -397,6 +608,25 @@ export default function SimulationPage(){
             Edit garden setup
           </button>
 
+          <button className="export-btn" onClick={exportGardenConfig} title="Export garden configuration">
+            <MdDownload className="export-icon" />
+            Export Garden
+          </button>
+
+          <button className="import-btn" onClick={handleImportClick} title="Import garden configuration">
+            <MdUpload className="import-icon" />
+            Import Garden
+          </button>
+
+          {/* Hidden file input for import */}
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept=".json,application/json"
+            onChange={handleFileImport}
+            style={{ display: 'none' }}
+          />
+
           {/* Trash dropzone */}
           <div
             className={`trash-dropzone ${trashHot ? 'hot' : ''}`}
@@ -424,14 +654,21 @@ export default function SimulationPage(){
                 {Array.from({ length: size }).map((_, idx) => {
                 const planted = cells[idx];
                 const isOver = overIndex === idx;
+                const hasSpacingError = spacingErrors.has(idx);
+                const spacingInfo = planted ? getPlantSpacing(planted) : null;
+                const tooltipText = hasSpacingError && spacingInfo 
+                  ? `${planted} needs ${spacingInfo}cm × ${spacingInfo}cm space` 
+                  : planted || '';
+                
                 return (
                     <div
                     key={idx}
-                    className={`garden-cell ${isOver ? 'over' : ''}`}
+                    className={`garden-cell ${isOver ? 'over' : ''} ${hasSpacingError ? 'spacing-error' : ''}`}
                     onDragOver={allowDrop}
                     onDragEnter={() => onCellDragEnter(idx)}
                     onDragLeave={() => onCellDragLeave(idx)}
                     onDrop={(e) => onCellDrop(e, idx)}
+                    title={tooltipText}
                     >
                     {planted && (
                         <img
@@ -440,7 +677,6 @@ export default function SimulationPage(){
                         draggable
                         onDragStart={(e) => onDragStartCell(e, idx)}
                         className="planted-img"
-                        title={`${planted}`}
                         />
                     )}
               </div>
@@ -479,7 +715,7 @@ export default function SimulationPage(){
                     <label>Width</label>
                     <input
                       type="range"
-                      min="40" max="500" step="20"
+                      min="60" max="160" step="20"
                       value={bedWidth ?? 40}
                       onChange={(e) => setBedWidth(parseInt(e.target.value, 10))}
                     />
@@ -489,7 +725,7 @@ export default function SimulationPage(){
                     <label>Length</label>
                     <input
                       type="range"
-                      min="40" max="500" step="20"
+                      min="60" max="360" step="20"
                       value={bedLength ?? 40}
                       onChange={(e) => setBedLength(parseInt(e.target.value, 10))}
                     />

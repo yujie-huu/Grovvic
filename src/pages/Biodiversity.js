@@ -5,6 +5,7 @@ import "./Biodiversity.css";
 import "./SearchBiodiversity.css";
 import SearchBiodiversity from "./SearchBiodiversity";
 import MarkerClusterGroup from "react-leaflet-markercluster";
+// Import CSS files for marker clustering
 import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 
