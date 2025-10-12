@@ -431,9 +431,9 @@
 /* ---------- Right panel: tools & garden bed ---------- */
 .simulation-garden-section{ 
   background:#f8fbf8; 
-  border:1px solid #e2e9e2; 
+  /* border:1px solid #e2e9e2;  */
   border-radius:14px; 
-  padding:12px;
+  padding:0;
   height: 80vh;
   display: grid;
   grid-template-rows: auto 1fr;
@@ -935,7 +935,7 @@
   width: 100%;
   border-bottom: 2px solid #c8dfb5;
   flex-shrink: 0;
-  height: 40px;
+  height: 30px;
 }
 
 .tools-card .card-head h4{
@@ -956,12 +956,12 @@
 }
 .rec-item{
   display: grid; grid-template-columns: 28px 1fr 14px; align-items: center;
-  gap: 10px; padding: 0 6px; border-radius: 10px; cursor: pointer;
+  gap: 10px; padding: 3px 6px; border-radius: 10px; cursor: pointer;
   transition: background .15s ease, transform .12s ease;
 }
 .rec-item:hover{ background: #f6ecd7; transform: translateY(-1px); }
 .rec-item img{ width: 24px; height: 24px; object-fit: contain; }
-.rec-name{ font-size: 15px; font-weight: 500; color: #1e1e1e; }
+.rec-name{ font-size: 15px; font-weight: 500; color: #000; }
 .rec-chevron{ color: #5c5c5c; font-size: 18px; }
 
 .card-empty {
@@ -978,7 +978,7 @@
   grid-template-columns: 1fr 1fr;
   gap: 4px;
   flex: 1;
-  align-content: start;
+  align-content: space-between;
   align-items: start;
 }
 
@@ -987,7 +987,7 @@
   justify-self: center;
   background: #d4c4a8;
   border-radius: 6px;
-  padding: 4px;
+  padding: 5px;
   padding-right: 16px;
   margin-top: 2px;
   width: 100%;
@@ -995,15 +995,15 @@
 }
 
 .tool-actions .full-width:hover:not(:disabled) {
-  background: #107614;
+  background: #b39868;
 }
 
 .tool-actions button {
   background: transparent;
   border: none;
   color: #000;
-  padding: 4px 12px;
-  font-size: 0.9rem;
+  padding: 5px 12px;
+  font-size: 15px;
   font-weight: 500;
   cursor: pointer;
   border-radius: 6px;

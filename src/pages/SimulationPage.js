@@ -404,42 +404,109 @@ export default function SimulationPage(){
   // Download garden layout as image
   const downloadGardenLayout = async (format = 'jpg') => {
     try {
-      const gardenContainer = document.querySelector('.simulation-garden-container');
-      if (!gardenContainer) {
-        showAlert('Garden container not found');
+      // 1) 找到真正的内容节点（建议用 grid）
+      const grid = document.querySelector('.garden-grid');
+      if (!grid) {
+        showAlert('Garden grid not found');
         return;
       }
 
-      // Use html2canvas to capture the garden
+      // 2) 从当前网格推导完整尺寸（每格 60px；行列你已有变量 rows/cols）
+      const cellPx = 60;                          // 与样式中 minmax(60px, 1fr) 对齐
+      const fullW = cols * cellPx;
+      const fullH = rows * cellPx;                // 只计算网格本身的高度
+
+      // 3) 动态加载 html2canvas
       const { default: html2canvas } = await import('html2canvas');
-      
-      const canvas = await html2canvas(gardenContainer, {
+
+      // 4) 用 onclone 改造克隆出来的 DOM：去掉 overflow，给 grid 固定像素尺寸
+      const canvas = await html2canvas(grid, {
         backgroundColor: '#f5f5f5',
-        scale: 2, // Higher resolution
+        scale: 2,                         // 提高分辨率
         useCORS: true,
         allowTaint: true,
-        width: gardenContainer.offsetWidth,
-        height: gardenContainer.offsetHeight
+        windowWidth: fullW,               // 关键：让渲染视窗与完整尺寸一致
+        windowHeight: fullH,
+        width: fullW,                     // 关键：生成的画布大小
+        height: fullH,
+        scrollX: 0,
+        scrollY: 0,
+        onclone: (doc) => {
+          // 找到克隆节点中的相关元素，统一去裁剪、定宽高
+          const clonedContainer = doc.querySelector('.simulation-garden-container');
+          const clonedScroll = doc.querySelector('.simulation-garden-scroll');
+          const clonedGrid = doc.querySelector('.garden-grid');
+
+          if (clonedContainer) {
+            clonedContainer.style.overflow = 'visible';
+            clonedContainer.style.height = 'auto';
+          }
+          if (clonedScroll) {
+            clonedScroll.style.overflow = 'visible';
+            clonedScroll.style.height = 'auto';
+            clonedScroll.style.width = `${fullW}px`;
+          }
+          if (clonedGrid) {
+            // 固定像素行列，确保完整渲染
+            clonedGrid.style.gridTemplateColumns = `repeat(${cols}, ${cellPx}px)`;
+            clonedGrid.style.gridTemplateRows = `repeat(${rows}, ${cellPx}px)`;
+            clonedGrid.style.width = `${fullW}px`;
+            clonedGrid.style.height = `${fullH}px`;
+          }
+
+          // 为每个有植物的格子添加植物名称标签
+          const clonedCells = doc.querySelectorAll('.garden-cell');
+          clonedCells.forEach((cell, index) => {
+            const plantId = cells[index];
+            if (plantId && plantInstances.has(plantId)) {
+              const plantInstance = plantInstances.get(plantId);
+              const plantName = plantInstance.name;
+              
+              // 创建植物名称标签
+              const label = doc.createElement('div');
+              label.textContent = plantName;
+              label.style.cssText = `
+                position: absolute;
+                bottom: 5px;
+                left: 50%;
+                transform: translateX(-50%);
+                font-size: 6px;
+                font-weight: 400;
+                color:rgb(223, 222, 210);
+                white-space: normal;
+                text-align: center;
+                z-index: 10;
+                width: 90%;
+                word-wrap: break-word;
+                line-height: 1;
+                overflow: visible;
+                box-sizing: border-box;
+              `;
+              
+              // 设置父容器为相对定位
+              cell.style.position = 'relative';
+              cell.appendChild(label);
+            }
+          });
+        }
       });
 
-      // Convert canvas to blob
+      // 5) 保存为图片
       const blob = await new Promise(resolve => {
-        canvas.toBlob(resolve, format === 'pdf' ? 'image/png' : `image/${format}`, 0.9);
+        canvas.toBlob(resolve, format === 'pdf' ? 'image/png' : `image/${format}`, 0.92);
       });
-
-      // Create download link
       const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `garden-layout-${new Date().toISOString().split('T')[0]}.${format}`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `garden-layout-${new Date().toISOString().split('T')[0]}.${format}`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
       URL.revokeObjectURL(url);
 
       showAlert(`Garden layout downloaded as ${format.toUpperCase()}!`);
-    } catch (error) {
-      console.error('Download error:', error);
+    } catch (err) {
+      console.error('Download error:', err);
       showAlert('Failed to download garden layout. Please try again.');
     }
   };
