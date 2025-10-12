@@ -163,6 +163,7 @@ export default function SimulationPage(){
   const [showFilters, setShowFilters] = useState(false);
 
   const [plants, setPlants] = useState([]); // array of { name, ... }
+  const [allPlants, setAllPlants] = useState([]); // array of all plants from plant_spacing.json
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -200,6 +201,38 @@ export default function SimulationPage(){
       setLoading(false);
     }
   }, [season, sunshine, selectedCategory, selectedSpacing, selectedHardiness, DEFAULTS]);
+
+  // Load all plants from plant_spacing.json on component mount
+  useEffect(() => {
+    const allPlantsData = plantSpacingData.map(plant => ({
+      plant_name: plant.plant_name,
+      plant_spacing_cm: plant.plant_spacing_cm
+    }));
+    setAllPlants(allPlantsData);
+  }, []);
+
+  // Handle search functionality
+  const handleSearch = useCallback(() => {
+    if (!searchTerm.trim()) {
+      // If search is empty, show all plants from API
+      handleFilter();
+      return;
+    }
+    
+    // Search in allPlants (from plant_spacing.json)
+    const filteredPlants = allPlants.filter(plant => 
+      plant.plant_name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setPlants(filteredPlants);
+    setError('');
+  }, [searchTerm, allPlants, handleFilter]);
+
+  // Handle Enter key press in search input
+  const handleSearchKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  };
 
   // Load plants when component mounts and setup is complete
   useEffect(() => {
@@ -755,6 +788,7 @@ export default function SimulationPage(){
                 placeholder="Search"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
+                onKeyPress={handleSearchKeyPress}
               />
             </div>
           </div>
@@ -928,6 +962,8 @@ export default function SimulationPage(){
                       <img
                         src={`/images/cute-plants/${name}.png`}
                         alt={name}
+                        draggable
+                        onDragStart={(e) => onDragStartInventory(e, name)}
                         onError={(e) => (e.currentTarget.style.visibility = 'hidden')}
                       />
                       <span className="rec-name">{name}</span>
