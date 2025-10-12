@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import './SimulationPage.css';
-import { MdSearch, MdDelete, MdDeleteForever, MdDownload, MdUpload, MdWarning } from 'react-icons/md';
+import { MdSearch, MdDelete, MdDeleteForever, MdWarning, MdInfo, MdCheckCircle, MdCancel, MdSettings, MdUndo, MdRedo, MdClear, MdImage } from 'react-icons/md';
 import plantSpacingData from '../data/plant_spacing.json';
 
 const API_URL = 'https://netzero-vigrow-api.duckdns.org/iter3/plants/filter';
+
 
 // Map UI values -> API values
 const normalizeSeason = (s) => {
@@ -153,132 +154,6 @@ export default function SimulationPage(){
   // Main page button: open the setup modal
   const openSetup = () => setShowSetup(true);
 
-  // ---------- Export functionality ----------
-  const exportGardenConfig = () => {
-    try {
-      const gardenConfig = {
-        metadata: {
-          exportedAt: new Date().toISOString(),
-          version: '1.0',
-          appName: 'ZeroNet Garden Simulator'
-        },
-        gardenSetup: {
-          bedWidth: bedWidth ?? DEFAULTS.bedWidth,
-          bedLength: bedLength ?? DEFAULTS.bedLength,
-          season: season ?? DEFAULTS.season,
-          sunshine: sunshine ?? DEFAULTS.sunshine,
-          gridCols: cols,
-          gridRows: rows,
-          totalCells: size
-        },
-        plantLayout: {
-          cells: cells.map((plantName, index) => ({
-            cellIndex: index,
-            row: Math.floor(index / cols),
-            col: index % cols,
-            plantName: plantName || null
-          }))
-        },
-        plantedPlants: cells.filter(Boolean).map((plantName, index) => ({
-          plantName,
-          cellIndex: cells.indexOf(plantName)
-        })),
-        statistics: {
-          totalPlants: cells.filter(Boolean).length,
-          coverage: Math.round((cells.filter(Boolean).length / size) * 100),
-          emptyCells: cells.filter(cell => !cell).length
-        }
-      };
-
-      // Create and download the file
-      const dataStr = JSON.stringify(gardenConfig, null, 2);
-      const dataBlob = new Blob([dataStr], { type: 'application/json' });
-      const url = URL.createObjectURL(dataBlob);
-      
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `garden-config-${new Date().toISOString().split('T')[0]}.json`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
-
-      // Show success message
-      showAlert('Garden configuration exported successfully!');
-    } catch (error) {
-      console.error('Export error:', error);
-      showAlert('Failed to export garden configuration. Please try again.');
-    }
-  };
-
-  // ---------- Import functionality ----------
-  const fileInputRef = useRef(null);
-
-  const handleImportClick = () => {
-    fileInputRef.current?.click();
-  };
-
-  const handleFileImport = (event) => {
-    const file = event.target.files[0];
-    if (!file) return;
-
-    if (file.type !== 'application/json') {
-      showAlert('Please select a valid JSON file.');
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      try {
-        const gardenConfig = JSON.parse(e.target.result);
-        
-        // Validate the imported configuration
-        if (!gardenConfig.gardenSetup || !gardenConfig.plantLayout) {
-          throw new Error('Invalid garden configuration format');
-        }
-
-        const setup = gardenConfig.gardenSetup;
-        const layout = gardenConfig.plantLayout;
-
-        // Confirm import with user
-        const confirmMessage = `Import garden configuration?\n\n` +
-          `Garden Size: ${setup.bedWidth}cm × ${setup.bedLength}cm\n` +
-          `Season: ${setup.season}\n` +
-          `Sunshine: ${setup.sunshine}\n` +
-          `Plants: ${layout.cells.filter(cell => cell.plantName).length}\n\n` +
-          `This will replace your current garden configuration.`;
-
-        if (!window.confirm(confirmMessage)) {
-          return;
-        }
-
-        // Apply the imported configuration
-        setBedWidth(setup.bedWidth);
-        setBedLength(setup.bedLength);
-        setSeason(setup.season);
-        setSunshine(setup.sunshine);
-
-        // Restore plant layout
-        const newCells = Array(setup.totalCells).fill(null);
-        layout.cells.forEach(cell => {
-          if (cell.plantName && cell.cellIndex < newCells.length) {
-            newCells[cell.cellIndex] = cell.plantName;
-          }
-        });
-        setCells(newCells);
-
-        // Clear file input
-        event.target.value = '';
-
-        showAlert('Garden configuration imported successfully!');
-      } catch (error) {
-        console.error('Import error:', error);
-        showAlert('Failed to import garden configuration. Please check the file format.');
-      }
-    };
-
-    reader.readAsText(file);
-  };
 
   // ---------- Left panel: filters & plant inventory ----------
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -343,7 +218,19 @@ export default function SimulationPage(){
   const [hoveredIndices, setHoveredIndices] = useState([]); // indices being hovered for planting
   const [hoveredPlant, setHoveredPlant] = useState(null); // plant being hovered
   const [plantInstances, setPlantInstances] = useState(new Map()); // Map of plantId -> plant data
-  const [alertMessage, setAlertMessage] = useState(null); // Custom alert message
+  const [alertMessage, setAlertMessage] = useState(null);
+  const [confirmDialog, setConfirmDialog] = useState(null); // Custom alert message
+  
+  // === Recommendations ===
+  const [recs, setRecs] = useState([]);           // ['Basil','Carrot','Onion']
+  const [recLoading, setRecLoading] = useState(false);
+  const [recError, setRecError] = useState('');
+  const RECOMMEND_API = 'https://netzero-vigrow-api.duckdns.org/iter3/plants/recommend';
+  
+  // History management for undo/redo
+  const [history, setHistory] = useState([]);
+  const [historyIndex, setHistoryIndex] = useState(-1);
+  const [isPerformingAction, setIsPerformingAction] = useState(false);
 
   // Reset grid when bed size changes
   useEffect(() => {
@@ -351,7 +238,99 @@ export default function SimulationPage(){
     setHoveredIndices([]);
     setHoveredPlant(null);
     setPlantInstances(new Map());
+    // Reset history when bed size changes
+    setHistory([]);
+    setHistoryIndex(-1);
   }, [size]);
+
+  // Initialize history with empty state
+  useEffect(() => {
+    if (history.length === 0) {
+      const initialState = {
+        cells: Array(size).fill(null),
+        plantInstances: new Map(),
+        timestamp: Date.now()
+      };
+      setHistory([initialState]);
+      setHistoryIndex(0);
+      console.log('History initialized with empty state');
+    }
+  }, [size, history.length]);
+
+  // Debug log for history state changes
+  useEffect(() => {
+    console.log('History state changed - length:', history.length, 'index:', historyIndex);
+  }, [history.length, historyIndex]);
+
+  // Save state to history
+  const saveToHistory = useCallback((newCells, newPlantInstances) => {
+    if (isPerformingAction) return; // Don't save during undo/redo
+    
+    const newState = {
+      cells: [...newCells],
+      plantInstances: new Map(newPlantInstances),
+      timestamp: Date.now()
+    };
+    
+    setHistory(prev => {
+      const newHistory = prev.slice(0, historyIndex + 1);
+      newHistory.push(newState);
+      console.log('Saving to history, new length:', newHistory.length); // Debug log
+      // Limit history to 50 states
+      if (newHistory.length > 50) {
+        newHistory.shift();
+        setHistoryIndex(prev => prev - 1); // Adjust index when removing oldest state
+        return newHistory;
+      }
+      return newHistory;
+    });
+    
+    setHistoryIndex(prev => {
+      const newIndex = Math.min(prev + 1, 49);
+      console.log('History index updated to:', newIndex); // Debug log
+      return newIndex;
+    });
+  }, [historyIndex, isPerformingAction]);
+
+  // Undo function
+  const undo = () => {
+    if (historyIndex > 0 && history.length > 0) {
+      setIsPerformingAction(true);
+      const prevState = history[historyIndex - 1];
+      if (prevState && prevState.cells && prevState.plantInstances) {
+        setCells(prevState.cells);
+        setPlantInstances(prevState.plantInstances);
+        setHistoryIndex(prev => prev - 1);
+      }
+      setTimeout(() => setIsPerformingAction(false), 100);
+    }
+  };
+
+  // Redo function
+  const redo = () => {
+    if (historyIndex < history.length - 1 && history.length > 0) {
+      setIsPerformingAction(true);
+      const nextState = history[historyIndex + 1];
+      if (nextState && nextState.cells && nextState.plantInstances) {
+        setCells(nextState.cells);
+        setPlantInstances(nextState.plantInstances);
+        setHistoryIndex(prev => prev + 1);
+      }
+      setTimeout(() => setIsPerformingAction(false), 100);
+    }
+  };
+
+  // Clear garden function
+  const clearGarden = async () => {
+    const confirmed = await showConfirm('Are you sure you want to clear all plants from the garden?');
+    if (confirmed) {
+      setCells(Array(size).fill(null));
+      setPlantInstances(new Map());
+      setHoveredIndices([]);
+      setHoveredPlant(null);
+      showAlert('Garden cleared successfully!');
+    }
+  };
 
   // Generate unique plant ID
   const generatePlantId = () => {
@@ -364,6 +343,105 @@ export default function SimulationPage(){
     setTimeout(() => {
       setAlertMessage(null);
     }, 2000);
+  };
+
+  // Custom confirm dialog function
+  const showConfirm = (message, onConfirm, onCancel = null) => {
+    return new Promise((resolve) => {
+      setConfirmDialog({
+        message,
+        onConfirm: () => {
+          setConfirmDialog(null);
+          if (onConfirm) onConfirm();
+          resolve(true);
+        },
+        onCancel: () => {
+          setConfirmDialog(null);
+          if (onCancel) onCancel();
+          resolve(false);
+        }
+      });
+    });
+  };
+
+  // 从当前花床中提取唯一的已种植物名数组
+  const getPlantedNames = useCallback(() => {
+    const names = new Set();
+    plantInstances.forEach(p => { if (p?.name) names.add(p.name); });
+    return Array.from(names);
+  }, [plantInstances]);
+
+  // 请求推荐（只要 plant_name 就行）
+  const fetchRecommendations = useCallback(async () => {
+    try {
+      setRecLoading(true);
+      setRecError('');
+      const body = { plants: getPlantedNames() };
+      const res = await fetch(RECOMMEND_API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      const top3 = Array.isArray(data?.candidates)
+        ? data.candidates.slice(0, 3).map(c => c.plant_name)
+        : [];
+      setRecs(top3);
+    } catch (e) {
+      setRecError('Failed to load recommendations');
+      setRecs([]);
+    } finally {
+      setRecLoading(false);
+    }
+  }, [getPlantedNames]);
+
+  // 已种植物变化时自动刷新推荐（也可点卡片右上角刷新）
+  useEffect(() => {
+    fetchRecommendations();
+  }, [fetchRecommendations]);
+
+  // Download garden layout as image
+  const downloadGardenLayout = async (format = 'jpg') => {
+    try {
+      const gardenContainer = document.querySelector('.simulation-garden-container');
+      if (!gardenContainer) {
+        showAlert('Garden container not found');
+        return;
+      }
+
+      // Use html2canvas to capture the garden
+      const { default: html2canvas } = await import('html2canvas');
+      
+      const canvas = await html2canvas(gardenContainer, {
+        backgroundColor: '#f5f5f5',
+        scale: 2, // Higher resolution
+        useCORS: true,
+        allowTaint: true,
+        width: gardenContainer.offsetWidth,
+        height: gardenContainer.offsetHeight
+      });
+
+      // Convert canvas to blob
+      const blob = await new Promise(resolve => {
+        canvas.toBlob(resolve, format === 'pdf' ? 'image/png' : `image/${format}`, 0.9);
+      });
+
+      // Create download link
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `garden-layout-${new Date().toISOString().split('T')[0]}.${format}`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+
+      showAlert(`Garden layout downloaded as ${format.toUpperCase()}!`);
+    } catch (error) {
+      console.error('Download error:', error);
+      showAlert('Failed to download garden layout. Please try again.');
+    }
   };
 
 
@@ -471,19 +549,30 @@ export default function SimulationPage(){
         plantedAt: new Date().toISOString()
       };
       
+      let newCells, newPlantInstances;
+      
       setCells((prev) => {
         const next = [...prev];
         spaceCheck.requiredIndices.forEach(cellIndex => {
           next[cellIndex] = plantId;
         });
+        newCells = next;
         return next;
       });
       
       setPlantInstances((prev) => {
         const next = new Map(prev);
         next.set(plantId, plantInstance);
+        newPlantInstances = next;
         return next;
       });
+      
+      // Save to history after state updates
+      setTimeout(() => {
+        if (newCells && newPlantInstances) {
+          saveToHistory(newCells, newPlantInstances);
+        }
+      }, 0);
     } else if (info.kind === 'cell') {
       // Moving existing plant (multiple cells)
       const spaceCheck = checkSpaceAvailability(name, index, cells, cols, rows, info.plantIndices);
@@ -494,6 +583,8 @@ export default function SimulationPage(){
         setHoveredPlant(null);
         return;
       }
+      
+      let newCells;
       
       setCells((prev) => {
         const next = [...prev];
@@ -508,8 +599,19 @@ export default function SimulationPage(){
           next[cellIndex] = info.plantId;
         });
         
+        newCells = next;
         return next;
       });
+      
+      // Save to history after state updates
+      setTimeout(() => {
+        if (newCells) {
+          setPlantInstances(currentInstances => {
+            saveToHistory(newCells, currentInstances);
+            return currentInstances;
+          });
+        }
+      }, 0);
     }
     
     setOverIndex(null);
@@ -531,12 +633,15 @@ export default function SimulationPage(){
     e.preventDefault();
     const info = dragInfoRef.current;
     if (info.kind === 'cell' && info.plantIndices) {
+      let newCells, newPlantInstances;
+      
       setCells((prev) => {
         const next = [...prev];
         // Delete all cells occupied by the plant
         info.plantIndices.forEach(index => {
           next[index] = null;
         });
+        newCells = next;
         return next;
       });
       
@@ -544,8 +649,16 @@ export default function SimulationPage(){
       setPlantInstances((prev) => {
         const next = new Map(prev);
         next.delete(info.plantId);
+        newPlantInstances = next;
         return next;
       });
+      
+      // Save to history after state updates
+      setTimeout(() => {
+        if (newCells && newPlantInstances) {
+          saveToHistory(newCells, newPlantInstances);
+        }
+      }, 0);
     }
     setTrashHot(false);
     // Clear visual feedback after dropping in trash
@@ -727,40 +840,96 @@ export default function SimulationPage(){
 
       <section className="simulation-garden-section">
         <div className="simulation-tools-container">
-          <button className="open-setup-btn" onClick={openSetup}>
-            Edit garden setup
-          </button>
+          <div className="tools-grid">
+            
+            {/* Left: Top Recommendations */}
+            <section className="tools-card rec-card">
+              <div className="card-head">
+                <h4>Top Recommendations</h4>
+              </div>
 
-          <button className="export-btn" onClick={exportGardenConfig} title="Export garden configuration">
-            <MdDownload className="export-icon" />
-            Export Garden
-          </button>
+              {recLoading ? (
+                <div className="card-empty">Loading…</div>
+              ) : recError ? (
+                <div className="card-empty">{recError}</div>
+              ) : recs.length === 0 ? (
+                <div className="card-empty">No suggestions yet</div>
+              ) : (
+                <ul className="rec-list">
+                  {recs.map((name) => (
+                    <li key={name} className="rec-item" onClick={() => setSearchTerm(name)}>
+                      <img
+                        src={`/images/cute-plants/${name}.png`}
+                        alt={name}
+                        onError={(e) => (e.currentTarget.style.visibility = 'hidden')}
+                      />
+                      <span className="rec-name">{name}</span>
+                      <span className="rec-chevron">›</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </section>
 
-          <button className="import-btn" onClick={handleImportClick} title="Import garden configuration">
-            <MdUpload className="import-icon" />
-            Import Garden
-          </button>
+            {/* Middle: Tools */}
+            <section className="tools-card tools-card--actions">
+              <div className="card-head"><h4>Tools</h4></div>
+              <div className="tool-actions">
+                <button
+                  onClick={undo}
+                  disabled={historyIndex <= 0}
+                  title="Undo"
+                >
+                  <MdUndo />
+                  <span>Undo</span>
+                </button>
 
-          {/* Hidden file input for import */}
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept=".json,application/json"
-            onChange={handleFileImport}
-            style={{ display: 'none' }}
-          />
+                <button
+                  onClick={redo}
+                  disabled={historyIndex >= history.length - 1}
+                  title="Redo"
+                >
+                  <MdRedo />
+                  <span>Redo</span>
+                </button>
 
-          {/* Trash dropzone */}
-          <div
-            className={`trash-dropzone ${trashHot ? 'hot' : ''}`}
-            onDragOver={onTrashDragOver}
-            onDragLeave={onTrashDragLeave}
-            onDrop={onTrashDrop}
-            title="Drag a planted item here to remove it from the bed"
-            aria-label="Trash bin"
-          >
-            {trashHot ? <MdDeleteForever className="trash-icon" /> : <MdDelete className="trash-icon" />}
-            <span className="trash-text">Remove</span>
+                <button onClick={clearGarden} title="Clear all">
+                  <MdClear />
+                  <span>Clear</span>
+                </button>
+
+                <button onClick={() => downloadGardenLayout('jpg')}>
+                  <MdImage />
+                  <span>Download</span>
+                </button>
+
+                <button
+                  className="full-width"
+                  onClick={openSetup}
+                  title="Edit garden setup"
+                >
+                  <MdSettings />
+                  <span>Edit setup</span>
+                </button>
+              </div>
+            </section>
+
+            {/* Right: Trash can */}
+            <section className="tools-card trash-card">
+              <div className="card-head"><h4>Trash can</h4></div>
+              <div
+                className={`trash-dropzone block ${trashHot ? 'hot' : ''}`}
+                onDragOver={onTrashDragOver}
+                onDragLeave={onTrashDragLeave}
+                onDrop={onTrashDrop}
+                title="Drag a planted item here to remove it"
+                aria-label="Trash bin"
+              >
+                {trashHot ? <MdDeleteForever className="trash-icon" /> : <MdDelete className="trash-icon" />}
+                <div className="trash-label">Delete?</div>
+              </div>
+            </section>
+
           </div>
         </div>
 
@@ -894,7 +1063,7 @@ export default function SimulationPage(){
                   <div className="label-with-info">
                     <label>Sun Exposure</label>
                     <span className="info" aria-label="info" tabIndex={0}>
-                      ⓘ
+                      <MdInfo />
                       <span className="tooltip">
                         You can choose based on your experience; for more professional/accurate measurements, the following standards are provided as reference:<br/>
                         Full sun: ≥ 5 kWh·m⁻²<br/>
@@ -946,6 +1115,36 @@ export default function SimulationPage(){
               <MdWarning />
             </div>
             <div className="custom-alert-message">{alertMessage}</div>
+          </div>
+        </div>
+      )}
+
+      {/* Custom Confirm Dialog */}
+      {confirmDialog && (
+        <div className="custom-confirm-overlay">
+          <div className="custom-confirm">
+            <div className="custom-confirm-icon">
+              <MdWarning />
+            </div>
+            <div className="custom-confirm-message">
+              {confirmDialog.message}
+            </div>
+            <div className="custom-confirm-buttons">
+              <button 
+                className="custom-confirm-cancel"
+                onClick={confirmDialog.onCancel}
+              >
+                <MdCancel />
+                Cancel
+              </button>
+              <button 
+                className="custom-confirm-ok"
+                onClick={confirmDialog.onConfirm}
+              >
+                <MdCheckCircle />
+                Confirm
+              </button>
+            </div>
           </div>
         </div>
       )}

@@ -644,6 +644,7 @@
   }
 }
 
+
 .ghost-dot{ width:6px; height:6px; border-radius:50%; background:rgba(255,255,255,.35); }
 
 .planted-img{ 
@@ -655,19 +656,6 @@
 .planted-img:active{ cursor:grabbing; }
 
 /* ---------- Garden Setup Modal ---------- */
-.open-setup-btn{
-  margin: 0 0 12px 0;
-  padding: 10px 16px;
-  border-radius: 8px;
-  background:#0f4229;
-  color:#fff; 
-  border:none; 
-  cursor:pointer;
-  font-size: 0.9rem;
-  font-weight: 600;
-}
-.open-setup-btn:hover{ filter:brightness(1.05); }
-
 .setup-modal-overlay{
   position: fixed; inset: 0;
   background: rgba(0,0,0,.35);
@@ -709,7 +697,7 @@
   margin: 6px 0; color:#6b6f6d; font-size:.9rem; text-align: center;
 }
 
-.setup-panel{ padding: 6px 8px; text-align: center; }
+.setup-panel{ padding: 6px 8px; text-align: center; height: max-content; }
 .setup-panel-title{ font-size: 1.25rem; font-weight: 700; margin-bottom: .35rem; text-align: center; }
 .setup-panel-sub{ color:#6b6f6d; margin: 0 0 10px; text-align: center; }
 
@@ -768,7 +756,6 @@
 .size-value{ 
   grid-column: 1 / -1;
   grid-row: 2;
-  margin-top: 16px; 
   font-weight:600; 
   text-align: center;
   font-size: 1.1rem;
@@ -776,18 +763,35 @@
 }
 
 .field{ width: 100%; text-align: center; align-self: center; justify-content: center; }
-.field label{ display:block; font-weight:600; width: 100%; margin-bottom:6px; text-align: center; }
+.field label{ display:block; font-weight:600; width: 100%; margin-bottom:10px; text-align: center; }
 .field select{
   width: 160px; padding: 10px 12px; border-radius: 10px;
   border: 1px solid #d9dfd9; background:#fff;
 }
 
 /* info tooltip */
-.label-with-info{ display:flex; align-items:center; gap:8px; justify-content: flex-start; }
+.label-with-info{ 
+  display:flex; 
+  align-items:center; 
+  gap:4px; 
+  justify-content: center; 
+  align-items: center;
+  margin-bottom: 10px;
+  text-align: left;
+  width: auto;
+}
+
+.label-with-info label {
+  display: inline-block;
+  font-weight: 600;
+  margin-bottom: 0;
+  text-align: left;
+  width: auto;
+}
 .info{
-  position: relative; display:inline-grid; place-items:center;
+  position: relative; display:inline-grid; place-items:flex-start;
   width: 18px; height: 18px; border-radius:50%;
-  background:#eef5ee; color:#1f3b2a; font-size: 12px; cursor: help;
+  background:#eef5ee; color:#1f3b2a; font-size: 18px; cursor: help;
 }
 .info .tooltip{
   position: absolute; left: 22px; top: 0; z-index: 10;
@@ -813,6 +817,229 @@
 .btn-primary:hover{ filter:brightness(1.05); }
 .btn-secondary{ background:#eef2ee; color:#213525; }
 .btn-secondary:hover{ filter:brightness(0.98); }
+
+/* Custom Confirm Dialog Styles */
+.custom-confirm-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.custom-confirm {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  animation: slideUp 0.3s ease-out;
+}
+
+.custom-confirm-icon {
+  font-size: 32px;
+  color: #ff9800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-confirm-message {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+  text-align: center;
+  line-height: 1.5;
+}
+
+.custom-confirm-buttons {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  justify-content: center;
+}
+
+.custom-confirm-cancel,
+.custom-confirm-ok {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 100px;
+  justify-content: center;
+}
+
+.custom-confirm-cancel {
+  background-color: #f5f5f5;
+  color: #666;
+}
+
+.custom-confirm-cancel:hover {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+.custom-confirm-ok {
+  background-color: #4caf50;
+  color: white;
+}
+
+.custom-confirm-ok:hover {
+  background-color: #45a049;
+}
+
+.custom-confirm-cancel:active,
+.custom-confirm-ok:active {
+  transform: translateY(1px);
+}
+
+/* ===== Tools area as three cards ===== */
+.tools-grid{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  width: 100%;
+}
+
+.tools-card{
+  background: #fff7ea; 
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,.06);
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  min-height: 120px;
+  height: 100%;
+}
+
+.tools-card .card-head{
+  display: flex; align-items: center; justify-content: space-between;
+  padding-bottom: 8px; margin-bottom: 10px;
+  width: 100%;
+  border-bottom: 2px solid #c8dfb5;
+  flex-shrink: 0;
+  height: 40px;
+}
+
+.tools-card .card-head h4{
+  margin: 0; font-size: 1.05rem; font-weight: 800; color: #2b2b2b;
+}
+
+
+/* --- Recommendations list --- */
+.rec-list{ 
+  list-style: none; 
+  padding: 0; 
+  margin: 0; 
+  display: flex; 
+  flex-direction: column; 
+  gap: 2px; 
+  flex: 1;
+  justify-content: space-between;
+}
+.rec-item{
+  display: grid; grid-template-columns: 28px 1fr 14px; align-items: center;
+  gap: 10px; padding: 0 6px; border-radius: 10px; cursor: pointer;
+  transition: background .15s ease, transform .12s ease;
+}
+.rec-item:hover{ background: #f6ecd7; transform: translateY(-1px); }
+.rec-item img{ width: 24px; height: 24px; object-fit: contain; }
+.rec-name{ font-size: 15px; font-weight: 500; color: #1e1e1e; }
+.rec-chevron{ color: #5c5c5c; font-size: 18px; }
+
+.card-empty {
+  text-align: center;
+  color: #666;
+  font-style: italic;
+  padding: 20px 0;
+  font-size: 0.9rem;
+}
+
+/* --- Tools actions --- */
+.tools-card--actions .tool-actions{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  flex: 1;
+  align-content: start;
+  align-items: start;
+}
+
+.tool-actions .full-width {
+  grid-column: 1 / -1;
+  justify-self: center;
+  background: #d4c4a8;
+  border-radius: 6px;
+  padding: 4px;
+  padding-right: 16px;
+  margin-top: 2px;
+  width: 100%;
+  justify-content: center;
+}
+
+.tool-actions .full-width:hover:not(:disabled) {
+  background: #107614;
+}
+
+.tool-actions button {
+  background: transparent;
+  border: none;
+  color: #000;
+  padding: 4px 12px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tool-actions button:hover:not(:disabled) {
+  background: #f5f0e8;
+}
+
+.tool-actions button:disabled {
+  color: #999;
+  cursor: not-allowed;
+  background: transparent;
+}
+
+
+/* --- Trash card --- */
+.trash-card{ 
+  align-items: stretch; 
+  justify-content: flex-start; 
+}
+.trash-card .trash-dropzone.block{
+  width: 100%;
+  flex: 1;
+  display: grid; 
+  place-items: center;
+  gap: 6px;
+}
+.trash-card .trash-icon{ font-size: 34px; }
+.trash-card .trash-label{ font-size: .85rem; color: #666; }
+
 
 @media (max-width: 900px){
   .simulation-page{ 
@@ -852,4 +1079,10 @@
   .simulation-plant-name{
     font-size: 0.7rem;
   }
+}
+
+
+
+@media (max-width: 1100px){
+  .tools-grid{ grid-template-columns: 1fr; }
 }
