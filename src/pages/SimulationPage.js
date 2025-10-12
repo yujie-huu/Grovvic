@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import './SimulationPage.css';
-import { MdSearch, MdDelete, MdDeleteForever, MdDownload, MdUpload } from 'react-icons/md';
+import { MdSearch, MdDelete, MdDeleteForever, MdDownload, MdUpload, MdWarning } from 'react-icons/md';
 import plantSpacingData from '../data/plant_spacing.json';
 
 const API_URL = 'https://netzero-vigrow-api.duckdns.org/iter3/plants/filter';
@@ -43,63 +43,70 @@ const getPlantSpacing = (plantName) => {
   return plant ? plant.plant_spacing_cm : null;
 };
 
-// Check if a specific plant cell has sufficient spacing
-const checkPlantSpacing = (plantName, cellIndex, cells, cols, rows) => {
-  const requiredSpacing = getPlantSpacing(plantName);
-  if (!requiredSpacing) return { isValid: true, reason: 'No spacing requirement' };
+// Calculate required cells for a plant (each cell is 20x20cm)
+const getRequiredCells = (plantName) => {
+  const spacing = getPlantSpacing(plantName);
+  if (!spacing) return 1; // Default to 1 cell if no spacing requirement
+  return Math.ceil(spacing / 20); // Convert cm to cells (20cm per cell)
+};
 
-  const cellSize = 20; // cm per cell
-  const requiredCells = Math.ceil(requiredSpacing / cellSize);
+// Check if there's enough space for a plant at a given position
+const checkSpaceAvailability = (plantName, startIndex, cells, cols, rows, excludeIndices = []) => {
+  const requiredCells = getRequiredCells(plantName);
+  const startRow = Math.floor(startIndex / cols);
+  const startCol = startIndex % cols;
   
-  const row = Math.floor(cellIndex / cols);
-  const col = cellIndex % cols;
-  
-  // Check horizontal (X-axis) spacing
-  let horizontalSpan = 1; // Start with current cell
-  let leftCol = col;
-  let rightCol = col;
-  
-  // Expand left
-  while (leftCol > 0 && cells[row * cols + (leftCol - 1)] === plantName) {
-    leftCol--;
-    horizontalSpan++;
+  // For 1x1 plants (20cm), always return valid
+  if (requiredCells === 1) {
+    if (cells[startIndex] === null || excludeIndices.includes(startIndex)) {
+      return { isValid: true, requiredIndices: [startIndex] };
+    } else {
+      return { isValid: false, reason: `Space occupied` };
+    }
   }
   
-  // Expand right
-  while (rightCol < cols - 1 && cells[row * cols + (rightCol + 1)] === plantName) {
-    rightCol++;
-    horizontalSpan++;
+  // For larger plants, try different directions: right-down, right-up, left-up, left-down
+  const directions = [
+    { name: 'right-down', rowOffset: 0, colOffset: 0 },
+    { name: 'right-up', rowOffset: -(requiredCells - 1), colOffset: 0 },
+    { name: 'left-up', rowOffset: -(requiredCells - 1), colOffset: -(requiredCells - 1) },
+    { name: 'left-down', rowOffset: 0, colOffset: -(requiredCells - 1) }
+  ];
+  
+  for (const direction of directions) {
+    const baseRow = startRow + direction.rowOffset;
+    const baseCol = startCol + direction.colOffset;
+    
+    // Check if the required area fits within the grid
+    if (baseRow < 0 || baseCol < 0 || 
+        baseRow + requiredCells > rows || 
+        baseCol + requiredCells > cols) {
+      continue; // Try next direction
+    }
+    
+    // Check if all required cells are empty or excluded
+    const requiredIndices = [];
+    let hasOccupiedCell = false;
+    
+    for (let row = baseRow; row < baseRow + requiredCells; row++) {
+      for (let col = baseCol; col < baseCol + requiredCells; col++) {
+        const index = row * cols + col;
+        requiredIndices.push(index);
+        // Check if cell is occupied by other plants (not excluded)
+        if (cells[index] !== null && !excludeIndices.includes(index)) {
+          hasOccupiedCell = true;
+          break;
+        }
+      }
+      if (hasOccupiedCell) break;
+    }
+    
+    if (!hasOccupiedCell) {
+      return { isValid: true, requiredIndices };
+    }
   }
   
-  // Check vertical (Y-axis) spacing
-  let verticalSpan = 1; // Start with current cell
-  let topRow = row;
-  let bottomRow = row;
-  
-  // Expand up
-  while (topRow > 0 && cells[(topRow - 1) * cols + col] === plantName) {
-    topRow--;
-    verticalSpan++;
-  }
-  
-  // Expand down
-  while (bottomRow < rows - 1 && cells[(bottomRow + 1) * cols + col] === plantName) {
-    bottomRow++;
-    verticalSpan++;
-  }
-  
-  // Check if both dimensions meet the requirement
-  const horizontalSize = horizontalSpan * cellSize;
-  const verticalSize = verticalSpan * cellSize;
-  
-  if (horizontalSize >= requiredSpacing && verticalSize >= requiredSpacing) {
-    return { isValid: true, reason: 'Sufficient spacing' };
-  }
-  
-  return { 
-    isValid: false, 
-    reason: `Needs ${requiredSpacing}cm × ${requiredSpacing}cm (${requiredCells}×${requiredCells} cells)` 
-  };
+  return { isValid: false, reason: `No suitable space found in any direction` };
 };
 
 export default function SimulationPage(){
@@ -112,8 +119,8 @@ export default function SimulationPage(){
   const [setupStep, setSetupStep] = useState(1);
 
   const DEFAULTS = useMemo(() => ({
-    bedWidth: 40,
-    bedLength: 40,
+    bedWidth: 60,
+    bedLength: 60,
     season: 'All season',
     sunshine: 'All',
   }), []);
@@ -197,10 +204,10 @@ export default function SimulationPage(){
       URL.revokeObjectURL(url);
 
       // Show success message
-      alert('Garden configuration exported successfully!');
+      showAlert('Garden configuration exported successfully!');
     } catch (error) {
       console.error('Export error:', error);
-      alert('Failed to export garden configuration. Please try again.');
+      showAlert('Failed to export garden configuration. Please try again.');
     }
   };
 
@@ -216,7 +223,7 @@ export default function SimulationPage(){
     if (!file) return;
 
     if (file.type !== 'application/json') {
-      alert('Please select a valid JSON file.');
+      showAlert('Please select a valid JSON file.');
       return;
     }
 
@@ -263,10 +270,10 @@ export default function SimulationPage(){
         // Clear file input
         event.target.value = '';
 
-        alert('Garden configuration imported successfully!');
+        showAlert('Garden configuration imported successfully!');
       } catch (error) {
         console.error('Import error:', error);
-        alert('Failed to import garden configuration. Please check the file format.');
+        showAlert('Failed to import garden configuration. Please check the file format.');
       }
     };
 
@@ -332,30 +339,33 @@ export default function SimulationPage(){
   const rows = Math.max(1, Math.round((bedLength ?? DEFAULTS.bedLength) / 20));
   const size = cols * rows;
 
-  const [cells, setCells] = useState([]); // array of plant names or null
-  const [spacingErrors, setSpacingErrors] = useState(new Set()); // Set of cell indices with spacing errors
+  const [cells, setCells] = useState([]); // array of plant instances or null
+  const [hoveredIndices, setHoveredIndices] = useState([]); // indices being hovered for planting
+  const [hoveredPlant, setHoveredPlant] = useState(null); // plant being hovered
+  const [plantInstances, setPlantInstances] = useState(new Map()); // Map of plantId -> plant data
+  const [alertMessage, setAlertMessage] = useState(null); // Custom alert message
 
   // Reset grid when bed size changes
   useEffect(() => {
     setCells(Array(size).fill(null));
-    setSpacingErrors(new Set());
+    setHoveredIndices([]);
+    setHoveredPlant(null);
+    setPlantInstances(new Map());
   }, [size]);
 
-  // Check plant spacing whenever cells change
-  useEffect(() => {
-    const errors = new Set();
-    
-    cells.forEach((plantName, cellIndex) => {
-      if (plantName) {
-        const spacingCheck = checkPlantSpacing(plantName, cellIndex, cells, cols, rows);
-        if (!spacingCheck.isValid) {
-          errors.add(cellIndex);
-        }
-      }
-    });
-    
-    setSpacingErrors(errors);
-  }, [cells, cols, rows]);
+  // Generate unique plant ID
+  const generatePlantId = () => {
+    return `plant_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+  };
+
+  // Custom alert function
+  const showAlert = (message) => {
+    setAlertMessage(message);
+    setTimeout(() => {
+      setAlertMessage(null);
+    }, 2000);
+  };
+
 
   const dragInfoRef = useRef({});
 
@@ -366,29 +376,74 @@ export default function SimulationPage(){
   };
 
   const onDragStartCell = (e, index) => {
-    const plantName = cells[index];
-    if (!plantName) return; // nothing planted
-    dragInfoRef.current = { kind: 'cell', from: index, plantName };
-    e.dataTransfer.setData('text/plain', plantName);
+    const plantId = cells[index];
+    if (!plantId) return; // nothing planted
+    
+    const plantInstance = plantInstances.get(plantId);
+    if (!plantInstance) return;
+    
+    // Find all cells occupied by this plant instance
+    const plantIndices = [];
+    cells.forEach((cell, idx) => {
+      if (cell === plantId) {
+        plantIndices.push(idx);
+      }
+    });
+    
+    dragInfoRef.current = { 
+      kind: 'cell', 
+      from: index, 
+      plantId: plantId,
+      plantName: plantInstance.name,
+      plantIndices: plantIndices,
+      requiredCells: getRequiredCells(plantInstance.name)
+    };
+    e.dataTransfer.setData('text/plain', plantInstance.name);
     e.dataTransfer.effectAllowed = 'move';
   };
 
   const [overIndex, setOverIndex] = useState(null);
 
-  const allowDrop = (e) => {
-    e.preventDefault();
+  const onCellDragOver = (e, index) => {
+    e.preventDefault();              // 关键：保证 dragover 持续触发
     const info = dragInfoRef.current;
-    if (info && info.kind === 'cell') {
-      e.dataTransfer.dropEffect = 'move';
-    } else {
+    if (!info) return;
+    setOverIndex(index);
+    const plantName = info.plantName;
+    
+    let spaceCheck;
+    if (info.kind === 'inventory') {
+      spaceCheck = checkSpaceAvailability(plantName, index, cells, cols, rows);
       e.dataTransfer.dropEffect = 'copy';
+    } else { // moving from cell
+      // For moving plants, exclude only the current plant's positions
+      spaceCheck = checkSpaceAvailability(plantName, index, cells, cols, rows, info.plantIndices);
+      e.dataTransfer.dropEffect = 'move';
+    }
+    
+    if (spaceCheck.isValid) {
+      setHoveredIndices(spaceCheck.requiredIndices);
+      setHoveredPlant(plantName);
+    } else {
+      setHoveredIndices([]);
+      setHoveredPlant(plantName);
     }
   };
-
-  const onCellDragEnter = (index) => setOverIndex(index);
-  const onCellDragLeave = (index) => {
-    if (overIndex === index) setOverIndex(null);
-  };
+  
+  const onCellDragLeave = () => {
+    // Do not depend on overIndex for cleanup; rely on dragend event
+    };
+    
+     useEffect(() => {
+       const handleDragEnd = () => {
+         setOverIndex(null);
+         setHoveredIndices([]);
+         setHoveredPlant(null);
+         setTrashHot(false);
+       };
+       window.addEventListener('dragend', handleDragEnd);
+       return () => window.removeEventListener('dragend', handleDragEnd);
+     }, []);
 
   const onCellDrop = (e, index) => {
     e.preventDefault();
@@ -396,16 +451,70 @@ export default function SimulationPage(){
     const name = e.dataTransfer.getData('text/plain') || info.plantName;
     if (!name) return;
 
-    setCells((prev) => {
-      const next = [...prev];
-      next[index] = name; // plant or move into this cell
-      // If moving from another cell, clear old spot
-      if (info.kind === 'cell' && typeof info.from === 'number' && info.from !== index) {
-        next[info.from] = null;
+    // Check space availability for new plants from inventory
+    if (info.kind === 'inventory') {
+      const spaceCheck = checkSpaceAvailability(name, index, cells, cols, rows);
+      if (!spaceCheck.isValid) {
+        showAlert(`${name} needs ${getRequiredCells(name)}×${getRequiredCells(name)} cells (${getPlantSpacing(name) || 20}×${getPlantSpacing(name) || 20}cm) space`);
+        setOverIndex(null);
+        setHoveredIndices([]);
+        setHoveredPlant(null);
+        return;
       }
-      return next;
-    });
+      
+      // Create new plant instance
+      const plantId = generatePlantId();
+      const plantInstance = {
+        id: plantId,
+        name: name,
+        spacing: getPlantSpacing(name),
+        plantedAt: new Date().toISOString()
+      };
+      
+      setCells((prev) => {
+        const next = [...prev];
+        spaceCheck.requiredIndices.forEach(cellIndex => {
+          next[cellIndex] = plantId;
+        });
+        return next;
+      });
+      
+      setPlantInstances((prev) => {
+        const next = new Map(prev);
+        next.set(plantId, plantInstance);
+        return next;
+      });
+    } else if (info.kind === 'cell') {
+      // Moving existing plant (multiple cells)
+      const spaceCheck = checkSpaceAvailability(name, index, cells, cols, rows, info.plantIndices);
+      if (!spaceCheck.isValid) {
+        showAlert(`${name} needs ${getRequiredCells(name)}×${getRequiredCells(name)} cells (${getPlantSpacing(name) || 20}×${getPlantSpacing(name) || 20}cm) space`);
+        setOverIndex(null);
+        setHoveredIndices([]);
+        setHoveredPlant(null);
+        return;
+      }
+      
+      setCells((prev) => {
+        const next = [...prev];
+        
+        // Clear original plant cells
+        info.plantIndices.forEach(originalIndex => {
+          next[originalIndex] = null;
+        });
+        
+        // Plant in new location with same plant ID
+        spaceCheck.requiredIndices.forEach(cellIndex => {
+          next[cellIndex] = info.plantId;
+        });
+        
+        return next;
+      });
+    }
+    
     setOverIndex(null);
+    setHoveredIndices([]);
+    setHoveredPlant(null);
   };
 
   // Trash dropzone to delete plants dragged from cells
@@ -421,14 +530,28 @@ export default function SimulationPage(){
   const onTrashDrop = (e) => {
     e.preventDefault();
     const info = dragInfoRef.current;
-    if (info.kind === 'cell' && typeof info.from === 'number') {
+    if (info.kind === 'cell' && info.plantIndices) {
       setCells((prev) => {
         const next = [...prev];
-        next[info.from] = null; // delete from bed
+        // Delete all cells occupied by the plant
+        info.plantIndices.forEach(index => {
+          next[index] = null;
+        });
+        return next;
+      });
+      
+      // Remove plant instance from map
+      setPlantInstances((prev) => {
+        const next = new Map(prev);
+        next.delete(info.plantId);
         return next;
       });
     }
     setTrashHot(false);
+    // Clear visual feedback after dropping in trash
+    setOverIndex(null);
+    setHoveredIndices([]);
+    setHoveredPlant(null);
   };
   
   return (
@@ -652,31 +775,36 @@ export default function SimulationPage(){
                 }}
                 >
                 {Array.from({ length: size }).map((_, idx) => {
-                const planted = cells[idx];
+                const plantId = cells[idx];
+                const plantInstance = plantId ? plantInstances.get(plantId) : null;
                 const isOver = overIndex === idx;
-                const hasSpacingError = spacingErrors.has(idx);
-                const spacingInfo = planted ? getPlantSpacing(planted) : null;
-                const tooltipText = hasSpacingError && spacingInfo 
-                  ? `${planted} needs ${spacingInfo}cm × ${spacingInfo}cm space` 
-                  : planted || '';
+                const isHovered = hoveredIndices.includes(idx);
+                const isValidHover = isHovered && hoveredPlant;
+                const isInvalidHover = isOver && hoveredPlant && !isHovered;
+                
+                const tooltipText = plantInstance 
+                  ? `${plantInstance.name}${plantInstance.spacing ? ` (${plantInstance.spacing}×${plantInstance.spacing}cm)` : ''}`
+                  : isInvalidHover && hoveredPlant
+                    ? `${hoveredPlant} needs ${getRequiredCells(hoveredPlant)}×${getRequiredCells(hoveredPlant)} cells (${getPlantSpacing(hoveredPlant) || 20}×${getPlantSpacing(hoveredPlant) || 20}cm) space`
+                    : '';
                 
                 return (
                     <div
                     key={idx}
-                    className={`garden-cell ${isOver ? 'over' : ''} ${hasSpacingError ? 'spacing-error' : ''}`}
-                    onDragOver={allowDrop}
-                    onDragEnter={() => onCellDragEnter(idx)}
+                    className={`garden-cell ${isOver ? 'over' : ''} ${isValidHover ? 'valid-hover' : ''} ${isInvalidHover ? 'invalid-hover' : ''}`}
+                    onDragOver={(e) => onCellDragOver(e, idx)}
                     onDragLeave={() => onCellDragLeave(idx)}
                     onDrop={(e) => onCellDrop(e, idx)}
                     title={tooltipText}
                     >
-                    {planted && (
+                    {plantInstance && (
                         <img
-                        src={`/images/cute-plants/${planted}.png`}
-                        alt={planted}
+                        src={`/images/cute-plants/${plantInstance.name}.png`}
+                        alt={plantInstance.name}
                         draggable
                         onDragStart={(e) => onDragStartCell(e, idx)}
                         className="planted-img"
+                        title={`${plantInstance.name}${plantInstance.spacing ? ` (${plantInstance.spacing}×${plantInstance.spacing}cm)` : ''}`}
                         />
                     )}
               </div>
@@ -716,7 +844,7 @@ export default function SimulationPage(){
                     <input
                       type="range"
                       min="60" max="160" step="20"
-                      value={bedWidth ?? 40}
+                      value={bedWidth ?? 60}
                       onChange={(e) => setBedWidth(parseInt(e.target.value, 10))}
                     />
                   </div>
@@ -726,12 +854,12 @@ export default function SimulationPage(){
                     <input
                       type="range"
                       min="60" max="360" step="20"
-                      value={bedLength ?? 40}
+                      value={bedLength ?? 60}
                       onChange={(e) => setBedLength(parseInt(e.target.value, 10))}
                     />
                   </div>
                   
-                  <div className="size-value">{cm(bedWidth ?? 40)} × {cm(bedLength ?? 40)}</div>
+                  <div className="size-value">{cm(bedWidth ?? 60)} × {cm(bedLength ?? 60)}</div>
                 </div>
               </div>
             )}
@@ -806,6 +934,18 @@ export default function SimulationPage(){
                 {setupStep === 3 ? 'Save' : 'Next'}
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Custom Alert Modal */}
+      {alertMessage && (
+        <div className="custom-alert-overlay">
+          <div className="custom-alert">
+            <div className="custom-alert-icon">
+              <MdWarning />
+            </div>
+            <div className="custom-alert-message">{alertMessage}</div>
           </div>
         </div>
       )}
