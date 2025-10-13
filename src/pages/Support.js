@@ -1,9 +1,33 @@
 import React, { useEffect, useState, useRef } from "react";
+import { MapContainer, TileLayer, Marker, Popup, useMap, ZoomControl } from "react-leaflet";
+import L from "leaflet";
 import "./Support.css";
 import DiagnosisWizard from "../components/DiagnosisWizard";
 import diagnosisData from "../data/US5.2_Data_final_nested_fixed.json";
+import 'leaflet/dist/leaflet.css';
 
+// 修复 Leaflet 默认图标问题
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
+  iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+});
 
+// 地图视图更新组件
+function MapViewController({ center, zoom }) {
+  const map = useMap();
+  
+  useEffect(() => {
+    if (center && zoom) {
+      map.flyTo(center, zoom, {
+        duration: 1.5
+      });
+    }
+  }, [center, zoom, map]);
+  
+  return null;
+}
 
 const Support = () => {
   const [parsedData, setParsedData] = useState([]);
@@ -22,6 +46,16 @@ const Support = () => {
   const [isDragging, setIsDragging] = useState(false);
   const dragState = useRef({ startX: 0, scrollLeft: 0 });
   const trackRef = useRef(null);
+
+  // 地图相关状态
+  const [gardens, setGardens] = useState([]);
+  const [gardenSearchTerm, setGardenSearchTerm] = useState("");
+  const [selectedGarden, setSelectedGarden] = useState(null);
+  const [mapCenter, setMapCenter] = useState([-37.8136, 144.9631]); // 维多利亚州中心
+  const [mapZoom, setMapZoom] = useState(7);
+  const [searchResults, setSearchResults] = useState([]);
+  const [isSearchConfirmed, setIsSearchConfirmed] = useState(false); // 标记是否已确认搜索
+  const [lastConfirmedTerm, setLastConfirmedTerm] = useState(""); // 记录最后一次确认的搜索词
 
   const imageMap = {
     "Hume City Council – Community Gardens": "/images/support_community_1.png",
@@ -78,6 +112,14 @@ const Support = () => {
       .catch((e) => console.error("Load markdown failed:", e));
   }, []);
 
+  // 加载社区花园数据
+  useEffect(() => {
+    fetch("https://netzero-vigrow-api.duckdns.org/iter3/community/gardens")
+      .then((res) => res.json())
+      .then((data) => setGardens(Array.isArray(data) ? data : []))
+      .catch((err) => console.error("Failed to load gardens:", err));
+  }, []);
+
   const toggleSection = (idx) => setOpenSection((s) => (s === idx ? null : idx));
   const toggleQuestion = (sIdx, qIdx) =>
     setOpenQuestion((prev) => ({ ...prev, [sIdx]: prev[sIdx] === qIdx ? null : qIdx }));
@@ -128,8 +170,6 @@ const Support = () => {
   }, []);
 
   // —— 回车搜索：只在按下 Enter 时触发 —— //
-
-  // 简单评分：问题 > 答案 > section 标题；多关键词累加；整词/前缀稍加权
   const scoreText = (text, terms) => {
     const t = text.toLowerCase();
     let score = 0;
@@ -151,9 +191,9 @@ const Support = () => {
     data.forEach((sec, sIdx) => {
       sec.items.forEach((item, qIdx) => {
         let s = 0;
-        s += scoreText(item.q, terms) * 5;          // 问题权重
-        item.a.forEach((ans) => (s += scoreText(ans, terms) * 2)); // 答案权重
-        s += scoreText(sec.section, terms);         // section 低权重
+        s += scoreText(item.q, terms) * 5;
+        item.a.forEach((ans) => (s += scoreText(ans, terms) * 2));
+        s += scoreText(sec.section, terms);
         if (s > best.score) best = { sIdx, qIdx, score: s };
       });
     });
@@ -167,13 +207,11 @@ const Support = () => {
     if (!keyword || !parsedData.length) return;
 
     const best = findBestMatch(parsedData, keyword);
-    if (!best) return; // 无匹配则不动
+    if (!best) return;
 
-    // 展开匹配的问题（展开所属 section + 展开答案）
     setOpenSection(best.sIdx);
     setOpenQuestion({ [best.sIdx]: best.qIdx });
 
-    // 记录需要滚动到的问题，等待渲染完成后再滚动
     const key = `${best.sIdx}-${best.qIdx}`;
     pendingScrollKeyRef.current = key;
   };
@@ -189,6 +227,50 @@ const Support = () => {
     }
   }, [openSection, openQuestion]);
 
+  // 地图搜索功能
+  const handleGardenSearch = () => {
+    const term = gardenSearchTerm.trim().toLowerCase();
+    
+    if (!term) {
+      setSearchResults([]);
+      setIsSearchConfirmed(false);
+      setLastConfirmedTerm("");
+      return;
+    }
+
+    // 执行搜索并锁定结果
+    const matched = gardens.filter((g) => 
+      g.name.toLowerCase().includes(term)
+    );
+
+    setSearchResults(matched);
+    setIsSearchConfirmed(true); // 锁定结果
+    setLastConfirmedTerm(term); // 记录确认的搜索词
+  };
+
+  useEffect(() => {
+    // 如果已确认搜索，不响应输入变化
+    if (isSearchConfirmed) return;
+
+    const term = gardenSearchTerm.trim().toLowerCase();
+    
+    if (!term) {
+      setSearchResults([]);
+      return;
+    }
+
+    // 动态过滤结果
+    const matched = gardens.filter((g) => 
+      g.name.toLowerCase().includes(term)
+    );
+
+    setSearchResults(matched);
+
+  }, [gardenSearchTerm, isSearchConfirmed]);
+
+  const mapRef = useRef(null); 
+
+
   return (
     <div className="support-page">
       {/* Hero */}
@@ -199,7 +281,6 @@ const Support = () => {
             <br /> How can we help?
           </h1>
           <p>Find the answer to your gardening questions.</p>
-          {/* 仅在回车时触发搜索与展开 */}
           <input
             type="text"
             placeholder="Search FAQs..."
@@ -276,20 +357,15 @@ const Support = () => {
         </div>
       </section>
 
-
       {/* Plant Diagnosis Wizard */}
       <section className="diagnosis-section">
         <DiagnosisWizard
           data={diagnosisData}
           onStepDone={({ categoryKey, problemKey }) => {
             console.log("User selected:", categoryKey, problemKey);
-            // ✅ 后续可以在这里添加进入第三步逻辑
           }}
         />
       </section>
-
-
-
 
       {/* Local Programs */}
       <section className="local-programs-section">
@@ -375,6 +451,115 @@ const Support = () => {
               </a>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* Community Garden Map - 覆盖式布局 */}
+      <section className="community-garden-map-section">
+        {/* 背景图片层 */}
+        <div className="map-background-image">
+          <img
+            src="/images/support_community_map.jpg"
+            alt="Local Community Background"
+          />
+        </div>
+
+        {/* 地图内容层 */}
+        <div className="map-content-wrapper">
+          <h2>Join Your Local Garden Community</h2>
+          
+          <div className="map-container-wrapper">
+            {/* 👇 新增：左侧侧边栏，仅当有搜索结果且未锁定时显示 */}
+            {searchResults.length > 0 && (
+              <div className={`sidebar-panel ${isSearchConfirmed ? 'locked' : ''}`}>
+                <div className="sidebar-header">
+
+                </div>
+                <div className="sidebar-content">
+                  {searchResults.map((garden) => (
+                    <div
+                      key={garden.id}
+                      className="sidebar-item"
+                      onClick={() => {
+                        setSelectedGarden(garden);
+                        setMapCenter([garden.lat, garden.lng]);
+                        setMapZoom(13);
+                      }}
+                    >
+                      <h4>{garden.name}</h4>
+                      <p>{garden.address}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* 搜索栏 - 覆盖在地图顶部 */}
+            <div className="garden-search-overlay">
+              <div className="garden-search-container">
+                <input
+                  type="text"
+                  placeholder="Search by garden name..."
+                  value={gardenSearchTerm}
+                  onChange={(e) => {
+                    setGardenSearchTerm(e.target.value);
+                    // 👇 输入变化时，如果已锁定，解除锁定
+                    if (isSearchConfirmed) {
+                      setIsSearchConfirmed(false);
+                      setLastConfirmedTerm("");
+                    }
+                  }}
+                  onKeyDown={(e) => e.key === "Enter" && handleGardenSearch()}
+                  className="garden-search-input"
+                />
+                <button onClick={handleGardenSearch} className="garden-search-btn">
+                  🔍
+                </button>
+              </div>
+            </div>
+
+            {/* 地图容器 */}
+            <MapContainer
+              ref={mapRef}
+              center={mapCenter}
+              zoom={mapZoom}
+              style={{ height: "100%", width: "100%" }}
+              scrollWheelZoom={true}
+  
+            >
+              <ZoomControl position='topright' />
+              <TileLayer
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              />
+              <MapViewController center={mapCenter} zoom={mapZoom} />
+              {gardens.map((garden) => (
+                <Marker
+                  key={garden.id}
+                  position={[garden.lat, garden.lng]}
+                  eventHandlers={{
+                    click: () => {
+                      setSelectedGarden(garden);
+                      setMapCenter([garden.lat, garden.lng]);
+                      setMapZoom(13);
+                    }
+                  }}
+                >
+                  <Popup>
+                    <div style={{ minWidth: "200px" }}>
+                      <h3 style={{ margin: "0 0 8px 0", fontSize: "16px", fontWeight: "600" }}>
+                        {garden.name}
+                      </h3>
+                      <p style={{ margin: "0", fontSize: "14px", color: "#666" }}>
+                        {garden.address}
+                      </p>
+                    </div>
+                  </Popup>
+                </Marker>
+              ))}
+            </MapContainer>
+          </div>
+
         </div>
       </section>
     </div>

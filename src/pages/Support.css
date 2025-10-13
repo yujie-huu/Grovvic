@@ -173,7 +173,7 @@ img{ max-width:100%; height:auto; display:block; }
 /* ========== Local Gardening Communities ========== */
 .local-communities-section{
   text-align:center; padding-top:3rem; padding-bottom:3rem;
-  margin:3rem 0 3rem; height:auto; overflow:visible; position:relative; z-index:2;
+  margin:3rem 0 1rem; height:auto; overflow:visible; position:relative; z-index:2;
 }
 
 /* 标题 */
@@ -215,6 +215,340 @@ img{ max-width:100%; height:auto; display:block; }
 .local-communities-section .local-program-card{
   top:0; display:flex; flex-direction:column; justify-content:space-between;
   height:300px; flex: 0 0 220px; scroll-snap-align:start;
+}
+
+/* Community Map Section */
+.support-community-map {
+  padding: 40px 0;
+  text-align: center;
+  width: 100%; /* 确保容器自身宽度充足 */
+  margin-bottom: 100px;
+  margin-top: 10px;
+}
+
+.support-community-map img {
+  width: 100%;           /* 强制占满 */
+  height: 600px;
+  object-fit: cover;     /* 裁剪并保持比例 */
+  object-position: center;
+  border-radius: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: block;        /* 避免底部留白 */
+}
+
+/* Community Garden Map Section */
+.community-garden-map-section {
+  position: relative;
+  width: 100%;
+  min-height: 300px; /* 减小整体高度 */
+  overflow: visible;
+  background: white; /* 确保下半部分是白色背景 */
+}
+
+/* 背景图片层 */
+.map-background-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 300px; /* 减小背景图高度 */
+  z-index: 1;
+  overflow: hidden;
+}
+
+.map-background-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* 地图内容层 */
+.map-content-wrapper {
+  position: relative;
+  z-index: 2;
+  padding: 30px 0px 0px; /* 减小上下padding */
+  max-width: 1100px; /* 稍微减小最大宽度 */
+  margin: 0 auto;
+}
+
+.map-content-wrapper h2 {
+  text-align: center;
+  margin-top: 30px;
+  margin-bottom: 25px; /* 减小底部间距 */
+  font-size: 30px; /* 稍微减小字体 */
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  font-weight: 500;
+}
+
+/* 搜索栏覆盖层 - 浮动在地图顶部 */
+.garden-search-overlay {
+  position: absolute;
+  top: 20px; /* 距离地图容器顶部 20px */
+  left: 50%;
+  transform: translateX(-50%); /* 水平居中 */
+  z-index: 1000; /* 确保在地图之上 */
+  width: 90%;
+  max-width: 500px;
+}
+
+/* 搜索容器 - 半透明效果 */
+.garden-search-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.85); /* 半透明白色 */
+  backdrop-filter: blur(10px); /* 毛玻璃效果 */
+  -webkit-backdrop-filter: blur(10px);
+  padding: 4px 12px;
+  border-radius: 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+}
+
+.garden-search-container:hover {
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* 搜索图标 */
+.garden-search-icon {
+  font-size: 18px;
+  margin-left: 8px;
+  color: #666;
+  flex-shrink: 0;
+}
+
+/* 搜索输入框 */
+.garden-search-input {
+  flex: 1;
+  padding: 10px 12px;
+  border: none;
+  background: transparent;
+  border-radius: 25px;
+  font-size: 15px;
+  outline: none;
+  color: #333;
+}
+
+.garden-search-input::placeholder {
+  color: #999;
+}
+
+/* 搜索按钮 - 图标样式 */
+.garden-search-btn {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  background-color: transparent;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.garden-search-btn:hover {
+  background-color: transparent;
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+}
+
+/* 地图容器 - 关键：减小高度 */
+.map-container-wrapper {
+  width: 100%;
+  height: calc(100vh - 240px); /* 保持你之前修改的高度 */
+  border-radius: 0px;
+  overflow: hidden; 
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  background: white;
+  position: relative; 
+  margin-bottom: 80px;
+}
+
+.garden-search-sticky {
+  position: sticky;
+  top: 0; /* 固定在顶部 */
+  z-index: 1000; /* 确保在地图和其他元素之上 */
+  padding: 10px; /* 防止紧贴边缘 */
+  background: rgba(255, 255, 255, 0.1); /* 半透明白色背景，可选 */
+  backdrop-filter: blur(5px); /* 毛玻璃效果，可选 */
+  /* 如果你想让背景完全透明，可以移除上面两行 */
+}
+
+/* 搜索容器 - 半透明效果 */
+.garden-search-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: transparent; /* 半透明白色 */
+  padding: 1.5px 12px;
+  border-radius: 0px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+  width: 90%;
+  max-width: 500px;
+  margin: 0 60px; /* 居中 */
+}
+
+/* Leaflet 地图样式调整 */
+.map-container-wrapper .leaflet-container {
+  border-radius: 0px;
+  height: 100% !important;
+  width: 100% !important;
+}
+
+/* 👇 强制隐藏 Leaflet 默认的左上角缩放控件 👇 */
+/* .leaflet-control-zoom.leaflet-bar.leaflet-control.leaflet-top.leaflet-left {
+  display: none !important;
+} */
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .community-garden-map-section {
+    min-height: 600px;
+  }
+
+  .map-background-image {
+    height: 220px;
+  }
+
+  .map-content-wrapper {
+    padding: 25px 15px 0px;
+  }
+
+  .map-content-wrapper h2 {
+    font-size: 30px;
+    margin-bottom: 10px;
+  }
+
+  .map-container-wrapper {
+    height: 380px;
+  }
+
+  .garden-search-container {
+    flex-direction: column;
+    max-width: 90%;
+  }
+
+  .garden-search-btn {
+    width: 100%;
+  }
+}
+
+
+
+/* searchresults 侧边栏 */
+.sidebar-panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 30%;
+  height: 100%;
+  /* 👇 使用和搜索栏相同的背景效果 */
+  background: transparent;
+  backdrop-filter: blur(10px); /* 毛玻璃效果 */
+  -webkit-backdrop-filter: blur(10px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  z-index: 999;
+
+}
+
+/* when input confirmed */
+.sidebar-panel.locked {
+  background: tansparent;
+}
+
+/* 侧边栏头部 */
+.sidebar-header {
+  padding: 8px 12px; /* 和 .garden-search-container 的 padding 一致 */
+  margin: -5px; /* 与侧边栏边缘保持一点距离 */
+
+  border-radius: 50px; /* 和搜索栏容器一样的圆角 */
+  display: flex; /* 使内容居中 */
+  align-items: center;
+  justify-content: center;
+}
+
+.sidebar-header h3 {
+  margin: 0;
+  font-size: 16px; /* 调整字体大小，使其更协调 */
+  color: #333;
+  font-weight: 500; /* 调整字重 */
+}
+
+.sidebar-panel::-webkit-scrollbar {
+  width: 4px; 
+}
+
+/* 滚动条滑块 */
+.sidebar-panel::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.3); /* 滑块颜色 */
+  border-radius: 3px; /* 滑块圆角 */
+}
+
+/* 侧边栏内容 */
+.sidebar-content {
+  padding: 10px 0;
+  margin-top: 10px;
+}
+
+.sidebar-item {
+  padding: 6px 20px; /* 调整内边距，使其更紧凑 */
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  border-radius: 2px; /* 为每个项目添加圆角 */
+  margin: 0 10px 5px 10px; /* 添加左右外边距和底部外边距 */
+}
+
+.sidebar-item:hover {
+  /* background: rgba(240, 240, 240, 0.5); */
+  background: rgba(245, 245, 245, 0.7); /* 悬停时使用稍深一点的半透明色 */
+}
+
+.sidebar-item h4 {
+  margin: 0 0 3px 0; /* 减小底部外边距 */
+  font-size: 15px; /* 调整字体大小 */
+  font-weight: 600;
+  color: #333;
+}
+
+.sidebar-item p {
+  margin: 0;
+  font-size: 13px; /* 调整字体大小 */
+  color: #666;
+  line-height: 1.3; /* 调整行高 */
+}
+
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .map-background-image {
+    height: 250px;
+  }
+
+  .map-content-wrapper h2 {
+    font-size: 32px;
+  }
+
+  .map-container-wrapper {
+    height: 450px;
+  }
+
+  .garden-search-container {
+    flex-direction: column;
+  }
+
+  .garden-search-btn {
+    width: 100%;
+  }
 }
 
 /* ========== 响应式优化 ========== */
