@@ -5,7 +5,7 @@
 
 /* ===== HERO SECTION ===== */
 .hero-section {
-  min-height: 60vh;
+  min-height: 80vh;
   background: white;
   display: flex;
   height: 100%;
@@ -34,7 +34,7 @@
   width: 100%;
   padding: 7rem 3rem 4.5rem;
   height: 100%;
-  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(255, 255, 255, 0.3));
+  background: transparent;
   position: relative;
   z-index: 2;
 }

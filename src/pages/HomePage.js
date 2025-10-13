@@ -34,6 +34,12 @@ const HomePage = () => {
     navigate('/biodiversity');
   }
 
+  // Navigate to biodiversity page
+  const handleSimulatorClick = () => {
+    console.log('Navigating to Simulator Page');
+    navigate('/simulation');
+  }
+
 
 
   return (
@@ -97,7 +103,7 @@ const HomePage = () => {
           <div className="nav-item biodiversity-nav" onClick={handleBioClick}>
             <span className="nav-text">BIODIVERSITY</span>
           </div>
-          <div className="nav-item simulator-nav" onClick={() => navigate('/simulation')}>
+          <div className="nav-item simulator-nav" onClick={handleSimulatorClick}>
             <span className="nav-text">SIMULATOR</span>
           </div>
         </div>
