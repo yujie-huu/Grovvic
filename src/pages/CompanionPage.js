@@ -6,6 +6,7 @@ import './CompanionPage.css';
 const CompanionPage = () => {
   const navigate = useNavigate();
   const [selectedPlant, setSelectedPlant] = useState('');
+  const [searchedPlant, setSearchedPlant] = useState('All'); // Track the actually searched plant
   const [companionPlants, setCompanionPlants] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [filteredPlants, setFilteredPlants] = useState([]);
@@ -88,6 +89,7 @@ const CompanionPage = () => {
       }
       const data = await response.json();
       setCompanionPlants(data);
+      setSearchedPlant(selectedPlant); // Update the searched plant only after successful search
     } catch (err) {
       setError('Failed to load companion plants');
       console.error('Error fetching companion plants:', err);
@@ -116,7 +118,7 @@ const CompanionPage = () => {
   const badCompanions = companionPlants.filter(plant => plant.good_or_bad === 'bad');
 
   // Show the plant name in the results section
-  const displayPlantName = selectedPlant || 'All';
+  const displayPlantName = searchedPlant;
 
   return (
     <div className="companion-page">
