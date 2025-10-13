@@ -594,6 +594,11 @@
   animation: pulse-green 1s ease-in-out infinite alternate;
 }
 
+.garden-cell.incompatible {
+  border: 2px solid #dc3545 !important;
+  box-shadow: 0 0 8px rgba(220, 53, 69, 0.3);
+}
+
 .garden-cell.invalid-hover{ 
   background: rgba(244, 67, 54, 0.3); 
   box-shadow: inset 0 0 0 3px #f44336; 
@@ -1425,5 +1430,89 @@
 
 @media (max-width: 1100px){
   .tools-grid{ grid-template-columns: 1fr; }
+}
+
+/* --- Incompatible Plant Tooltip --- */
+.simulation-incompatible-tooltip {
+  position: absolute;
+  top: -50px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10001;
+  pointer-events: auto;
+}
+
+/* First row tooltip positioning */
+.simulation-incompatible-tooltip-first-row {
+  top: 5px;
+}
+
+.simulation-incompatible-tooltip-content {
+  background: #f5f0e8;
+  border-radius: 10px;
+  padding: 5px 4px 6px 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  position: relative;
+  min-width: 120px;
+  margin: 0;
+}
+
+.simulation-incompatible-tooltip-header {
+  display: block;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.simulation-incompatible-tooltip-title {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #2b2b2b;
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.simulation-incompatible-tooltip-close {
+  background: none;
+  border: none;
+  font-size: 0.8rem;
+  cursor: pointer;
+  color: #666;
+  padding: 2px;
+  border-radius: 2px;
+  transition: background-color 0.2s ease;
+  margin: 0;
+  line-height: 1;
+  float: right;
+  vertical-align: top;
+}
+
+.simulation-incompatible-tooltip-close:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.simulation-incompatible-tooltip-text {
+  font-size: 0.85rem;
+  color: #666;
+  line-height: 1.2;
+  margin: 0;
+  padding: 0;
+  display: block;
+}
+
+.simulation-incompatible-tooltip-arrow {
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid #f5f0e8;
 }
 
