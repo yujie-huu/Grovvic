@@ -260,6 +260,20 @@ export default function SimulationPage(){
   const [recError, setRecError] = useState('');
   const RECOMMEND_API = 'https://netzero-vigrow-api.duckdns.org/iter3/plants/recommend';
   
+  // === Insights ===
+  const [insights, setInsights] = useState({
+    companionships: 0,
+    wildlife: 0,
+    pollinators: 0,
+    pestsWeeds: 0
+  });
+  const [insightsLoading, setInsightsLoading] = useState(false);
+  const [insightsError, setInsightsError] = useState('');
+  const [wildlifeData, setWildlifeData] = useState([]);
+  const [showInsightModal, setShowInsightModal] = useState(null);
+  const COMPANIONS_API = 'https://netzero-vigrow-api.duckdns.org/iter3/plants/good-relations/count';
+  const WILDLIFE_API = 'https://netzero-vigrow-api.duckdns.org/iter3/species/animals/by-plants';
+  
   // History management for undo/redo
   const [history, setHistory] = useState([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
@@ -430,9 +444,96 @@ export default function SimulationPage(){
   }, [getPlantedNames]);
 
   // Auto-refresh recommendations when planted plants change (can also click card refresh)
+  // Fetch insights data
+  const fetchInsights = useCallback(async () => {
+    const plantedNames = getPlantedNames();
+    if (plantedNames.length === 0) {
+      setInsights({
+        companionships: 0,
+        wildlife: 0,
+        pollinators: 0,
+        pestsWeeds: 0
+      });
+      return;
+    }
+
+    try {
+      setInsightsLoading(true);
+      setInsightsError('');
+      
+      const body = { plants: plantedNames };
+      
+      // Fetch companionships
+      const companionsRes = await fetch(COMPANIONS_API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      
+      // Fetch wildlife data
+      const wildlifeRes = await fetch(WILDLIFE_API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      
+      if (!companionsRes.ok || !wildlifeRes.ok) {
+        throw new Error('Failed to fetch insights data');
+      }
+      
+      const companionsData = await companionsRes.json();
+      const wildlifeData = await wildlifeRes.json();
+      
+      setInsights({
+        companionships: companionsData.good_relation_count || 0,
+        wildlife: wildlifeData.summary?.animals || 0,
+        pollinators: wildlifeData.summary?.pollinators || 0,
+        pestsWeeds: wildlifeData.summary?.pests_and_weeds || 0
+      });
+      
+      // Store wildlife data for modals
+      setWildlifeData(wildlifeData.animals || []);
+      
+    } catch (e) {
+      setInsightsError('Failed to load insights');
+      console.error('Insights fetch error:', e);
+    } finally {
+      setInsightsLoading(false);
+    }
+  }, [getPlantedNames]);
+
+  // Auto-refresh recommendations and insights when planted plants change
   useEffect(() => {
     fetchRecommendations();
-  }, [fetchRecommendations]);
+    fetchInsights();
+  }, [fetchRecommendations, fetchInsights]);
+
+  // Handle insight button clicks
+  const handleInsightClick = (type) => {
+    setShowInsightModal(type);
+  };
+
+  // Filter wildlife data by type
+  const getFilteredWildlife = (type) => {
+    if (!wildlifeData || wildlifeData.length === 0) return [];
+    
+    switch (type) {
+      case 'wildlife':
+        return wildlifeData;
+      case 'pollinators':
+        return wildlifeData.filter(animal => animal.is_pollinator === 'T');
+      case 'pests':
+        return wildlifeData.filter(animal => animal.is_pest_or_weed === 'T');
+      default:
+        return [];
+    }
+  };
+
+  // Generate animal detail URL
+  const getAnimalUrl = (animal) => {
+    const encodedName = encodeURIComponent(animal.animal_taxon_name);
+    return `/animal/${encodedName}`;
+  };
 
   // Download garden layout as image
   const downloadGardenLayout = async (format = 'jpg') => {
@@ -781,15 +882,23 @@ export default function SimulationPage(){
             </button>
             
             <div className="simulation-search-container">
-              <span className="simulation-search-icon"><MdSearch /></span>
-              <input 
-                type="text"
-                className="simulation-search-input"
-                placeholder="Search"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                onKeyPress={handleSearchKeyPress}
-              />
+              <div className="simulation-search-input-group">
+                <span className="simulation-search-icon"><MdSearch /></span>
+                <input 
+                  type="text"
+                  className="simulation-search-input"
+                  placeholder="Search"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  onKeyPress={handleSearchKeyPress}
+                />
+              </div>
+              <button 
+                className="simulation-search-button"
+                onClick={handleSearch}
+              >
+                Go
+              </button>
             </div>
           </div>
 
@@ -946,7 +1055,7 @@ export default function SimulationPage(){
             {/* Left: Top Recommendations */}
             <section className="tools-card rec-card">
               <div className="card-head">
-                <h4>Top Recommendations</h4>
+                <h4>Recommendations</h4>
               </div>
 
               {recLoading ? (
@@ -967,14 +1076,65 @@ export default function SimulationPage(){
                         onError={(e) => (e.currentTarget.style.visibility = 'hidden')}
                       />
                       <span className="rec-name">{name}</span>
-                      <span className="rec-chevron">›</span>
                     </li>
                   ))}
                 </ul>
               )}
             </section>
 
-            {/* Middle: Tools */}
+            {/* Middle-left: Tools */}
+            <section className="tools-card insights-card">
+              <div className="card-head"><h4>Insights</h4></div>
+              <div className="insights-content">
+                <div className="insights-grid">
+                  <button 
+                    className="insight-item"
+                    onClick={() => handleInsightClick('companionships')}
+                  >
+                    <div className="insight-label">Plant Companionships</div>
+                    <div className="insight-value">
+                      {insightsLoading ? '...' : insights.companionships}
+                    </div>
+                  </button>
+                  
+                  <button 
+                    className="insight-item"
+                    onClick={() => handleInsightClick('wildlife')}
+                  >
+                    <div className="insight-label">Wildlife Connections</div>
+                    <div className="insight-value">
+                      {insightsLoading ? '...' : insights.wildlife}
+                    </div>
+                  </button>
+                  
+                  <button 
+                    className="insight-item"
+                    onClick={() => handleInsightClick('pollinators')}
+                  >
+                    <div className="insight-label">Pollinators</div>
+                    <div className="insight-value">
+                      {insightsLoading ? '...' : insights.pollinators}
+                    </div>
+                  </button>
+                  
+                  <button 
+                    className="insight-item"
+                    onClick={() => handleInsightClick('pests')}
+                  >
+                    <div className="insight-label">Pests/Weeds</div>
+                    <div className="insight-value">
+                      {insightsLoading ? '...' : insights.pestsWeeds}
+                    </div>
+                  </button>
+                </div>
+                
+                {insightsError && (
+                  <div className="insights-error">{insightsError}</div>
+                )}
+              </div>
+            </section>
+
+            {/* Middle-right: Tools */}
             <section className="tools-card tools-card--actions">
               <div className="card-head"><h4>Tools</h4></div>
               <div className="tool-actions">
@@ -1171,8 +1331,7 @@ export default function SimulationPage(){
                         You can choose based on your experience; for more professional/accurate measurements, the following standards are provided as reference:<br/>
                         Full sun: ≥ 5 kWh·m⁻²<br/>
                         Part sun: 3 – 6 kWh·m⁻²<br/>
-                        Part shade: 2 – 5 kWh·m⁻²<br/>
-                        Full shade: ≤ 3 kWh·m⁻²
+                        Part shade: 2 – 5 kWh·m⁻²
                       </span>
                     </span>
                   </div>
@@ -1185,7 +1344,6 @@ export default function SimulationPage(){
                     <option>Full sun</option>
                     <option>Part sun</option>
                     <option>Part shade</option>
-                    <option>Full shade</option>
                   </select>
                 </div>
               </div>
@@ -1247,6 +1405,91 @@ export default function SimulationPage(){
                 <MdCheckCircle />
                 Confirm
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Insights Modal */}
+      {showInsightModal && (
+        <div className="insights-modal-overlay">
+          <div className="insights-modal">
+            <div className="insights-modal-header">
+              <h3 className="insights-modal-title">
+                {showInsightModal === 'companionships' && 'Plant Companionships'}
+                {showInsightModal === 'wildlife' && 'Wildlife Connections'}
+                {showInsightModal === 'pollinators' && 'Pollinators'}
+                {showInsightModal === 'pests' && 'Pests/Weeds'}
+              </h3>
+              <button 
+                className="insights-modal-close"
+                onClick={() => setShowInsightModal(null)}
+              >
+                ✕
+              </button>
+            </div>
+            
+            <div className="insights-modal-description">
+              {showInsightModal === 'companionships' && 
+                'The number of beneficial plant relationships in your garden. Companion plants help each other grow better, deter pests, and improve soil health.'
+              }
+              {showInsightModal === 'wildlife' && 
+                'The number of wildlife species associated with the plants in your garden. Thank you for providing habitat and supporting local biodiversity!'
+              }
+              {showInsightModal === 'pollinators' && 
+                'The number of pollinator species associated with the plants in your garden. Pollinators are essential for plant reproduction and food production. Thank you for supporting these vital creatures!'
+              }
+              {showInsightModal === 'pests' && 
+                'The number of pest and weed species associated with the plants in your garden. Understanding these relationships helps you manage your garden more effectively.'
+              }
+            </div>
+            
+            <div className="insights-modal-content">
+              {showInsightModal === 'companionships' && (
+                <div className="companionships-content">
+                  <p>Plant companionships feature coming soon!</p>
+                  <p>This will show all plant companionships in your garden with images and relationships.</p>
+                  <a href="/companion" className="companionships-link">
+                    Find more companions for your plants
+                  </a>
+                </div>
+              )}
+              
+              {(showInsightModal === 'wildlife' || showInsightModal === 'pollinators' || showInsightModal === 'pests') && (
+                <div className="wildlife-content">
+                  {getFilteredWildlife(showInsightModal).length === 0 ? (
+                    <p>No {showInsightModal} found in your garden.</p>
+                  ) : (
+                    <div className="wildlife-cards">
+                      {getFilteredWildlife(showInsightModal).map((animal, idx) => (
+                        <a 
+                          key={idx} 
+                          href={getAnimalUrl(animal)}
+                          className="wildlife-card"
+                        >
+                          <img 
+                            src={animal.image_url} 
+                            alt={animal.vernacular_name || animal.animal_taxon_name}
+                            className="wildlife-card-img"
+                            onError={(e) => (e.currentTarget.style.display = 'none')}
+                          />
+                          <div className="wildlife-card-info">
+                            <h4 className="wildlife-card-name">
+                              {animal.vernacular_name || 'No common name'}
+                            </h4>
+                            <p className="wildlife-card-scientific">
+                              <i>{animal.animal_taxon_name}</i>
+                            </p>
+                            <span className="wildlife-card-link">
+                              Learn more
+                            </span>
+                          </div>
+                        </a>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </div>
