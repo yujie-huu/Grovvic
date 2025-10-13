@@ -173,8 +173,8 @@ const HomePage = () => {
 
         {/* Decorative Plant Images */}
         <div className="home-decorative-plants">
-          <img src="/images/cute-plants/corn.png" alt="Corn decoration" className="home-plant-decoration left" />
-          <img src="/images/cute-plants/pyrethrum.png" alt="Pyrethrum decoration" className="home-plant-decoration right" />
+          <img src="/images/cute-plants/Corn.png" alt="Corn decoration" className="home-plant-decoration left" />
+          <img src="/images/cute-plants/Pyrethrum.png" alt="Pyrethrum decoration" className="home-plant-decoration right" />
         </div>
       </section>
     </div>
