@@ -1,7 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './HomePage.css';
-import HomePageCard from '../components/HomePageCard';
 import { MdKeyboardArrowDown } from 'react-icons/md';
 
 const HomePage = () => {
@@ -104,7 +103,7 @@ const HomePage = () => {
             <span className="nav-text">BIODIVERSITY</span>
           </div>
           <div className="nav-item simulator-nav" onClick={handleSimulatorClick}>
-            <span className="nav-text">SIMULATOR</span>
+            <span className="nav-text">SIMULATION</span>
           </div>
         </div>
       </section>
@@ -118,49 +117,66 @@ const HomePage = () => {
         />
       </section>
 
-      {/* Content Cards Section - Continuous white background */}
-      <div className="content-cards-section">
+      {/* Content Cards Section */}
+      <section className="home-cards-section">
+        <div className="home-cards-header">
+          <h2 className="home-cards-main-title">Everything for Your Garden, All in One Place</h2>
+          <p className="home-cards-subtitle">From climate insights to planting guides, find everything you need to grow sustainably in Victoria.</p>
+        </div>
+        
+        <div className="home-cards-container">
+          {/* Weather Card */}
+          <div className="home-content-card" onClick={handleWeatherClick}>
+            <div className="home-card-image">
+              <img src="/images/homepage_weather1.png" alt="Garden & Weather" />
+            </div>
+            <h3 className="home-card-title">GARDENING WEATHER & CLIMATE DASHBOARD</h3>
+            <p className="home-card-description">Stay informed with daily forecasts, gardening tips, and climate insights. From past trends to future projections.</p>
+          </div>
 
-        {/* Weather Section */}
-        <HomePageCard
-          title="Gardening Weather & Climate Dashboard"
-          description="Stay informed with daily forecasts, gardening tips, and climate insights. from past trends to future projections."
-          imageSrc="/images/homepage_weather1.png"
-          imageAlt="Garden & Weather"
-          imagePosition="left"
-          onClick={handleWeatherClick}
-        />
+          {/* Garden Plan Card */}
+          <div className="home-content-card" onClick={handlePlanClick}>
+            <div className="home-card-image">
+              <img src="/images/homepage_plan1.png" alt="Green plants" />
+            </div>
+            <h3 className="home-card-title">PLANT YOUR GARDEN SMARTER</h3>
+            <p className="home-card-description">See what to plant each month, get simple care guides, and stay updated on local pests and diseases.</p>
+          </div>
 
-        {/* Garden Plan Section */}
-        <HomePageCard
-          title="Plan Your Garden Smarter"
-          description="See what to plant each month, get simple care guides, and stay updated on local pests and diseases."
-          imageSrc="/images/homepage_plan1.png"
-          imageAlt="Green plants"
-          imagePosition="right"
-          onClick={handlePlanClick}
-        />
+          {/* Sustainability Card */}
+          <div className="home-content-card" onClick={handleSustainClick}>
+            <div className="home-card-image">
+              <img src="/images/homepage_sustain1.jpg" alt="Sustainability" />
+            </div>
+            <h3 className="home-card-title">GROW YOUR GARDEN SUSTAINABLY</h3>
+            <p className="home-card-description">Make eco-friendly choices, design smarter spaces, care for your soil and water, and support biodiversity while keeping your garden thriving.</p>
+          </div>
 
-        {/* Sustainability Section */}
-        <HomePageCard
-          title="Grow Your Garden Sustainably"
-          description="Make eco-friendly choices, design smarter spaces, care for your soil and water, and support biodiversity while keeping your garden thriving."
-          imageSrc="/images/homepage_sustain1.jpg"
-          imageAlt="Sustainability"
-          imagePosition="left"
-          onClick={handleSustainClick}
-        />
+          {/* Biodiversity Card */}
+          <div className="home-content-card" onClick={handleBioClick}>
+            <div className="home-card-image">
+              <img src="/images/homepage_bio1.jpg" alt="Biodiversity" />
+            </div>
+            <h3 className="home-card-title">DISCOVER LOCAL BIODIVERSITY</h3>
+            <p className="home-card-description">Explore pollinators, native species, pests, and weeds in your area to make gardening choices that protect ecosystems and support conservation.</p>
+          </div>
 
-        {/* Biodiversity Section */}
-        <HomePageCard
-          title="Discover Local Biodiversity"
-          description="Explore pollinators, native species, pests, and weeds in your area to make gardening choices that protect ecosystems and support conservation."
-          imageSrc="/images/homepage_bio1.jpg"
-          imageAlt="Biodiversity"
-          imagePosition="right"
-          onClick={handleBioClick}
-        />
-      </div>
+          {/* Simulator Card */}
+          <div className="home-content-card" onClick={handleSimulatorClick}>
+            <div className="home-card-image">
+              <img src="/images/homepage_simulation1.jpg" alt="Garden Simulator" />
+            </div>
+            <h3 className="home-card-title">DESIGN YOUR GARDEN BLUEPRINT</h3>
+            <p className="home-card-description">Visualize your garden with a personalized garden design simulator. Learn sustainable choices and avoid common garden layout mistakes.</p>
+          </div>
+        </div>
+
+        {/* Decorative Plant Images */}
+        <div className="home-decorative-plants">
+          <img src="/images/cute-plants/Corn.png" alt="Corn decoration" className="home-plant-decoration left" />
+          <img src="/images/cute-plants/Pyrethrum.png" alt="Pyrethrum decoration" className="home-plant-decoration right" />
+        </div>
+      </section>
     </div>
   );
 };
