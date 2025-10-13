@@ -188,7 +188,7 @@ img{ max-width:100%; height:auto; display:block; }
 
 /* 标题 */
 .local-communities-header h2{
-  color:#111; font-size: clamp(1.6rem, 2.4vw, 1.8rem); font-weight:bold; margin:0 0 0 0;
+  color:#111; font-size: clamp(1.6rem, 2.4vw, 1.8rem); font-weight:bold; margin:1rem 0 2.5rem 0;
 }
 
 /* 左右淡出遮罩（颜色跟随页面背景） */
