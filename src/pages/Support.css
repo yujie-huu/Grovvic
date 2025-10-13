@@ -162,18 +162,41 @@ img{ max-width:100%; height:auto; display:block; }
   max-width:220px; min-width:180px; text-align:left; position:relative; height:320px; top:2.5rem;
   display:flex; flex-direction:column; justify-content:space-between; overflow:visible;
 }
-.local-program-body{ display:flex; flex-direction:column; gap:.75rem; flex:1; min-height:0; overflow-y:auto; scrollbar-width:none; }
+.local-program-body{ display:flex; flex-direction:column; gap:.75rem; flex:1; min-height:0;  }
 .local-program-body::-webkit-scrollbar{ display:none; }
 
 .local-program-card img{
   width:auto; height:auto; max-width:100%; max-height:80px; object-fit:contain;
   margin:0 auto .5rem;
 }
-.local-program-card h3{ font-size:1rem; font-weight:bold; margin:0 0 -.5rem 0; }
+.local-program-card h3{ font-size:1rem; font-weight:bold; margin: 0px 0 -.5rem 0; }
 .local-program-card p{
   font-size:.9rem; color:#666; margin:.0 0 1rem 0; flex:1; overflow-y:auto; scrollbar-width:none;
 }
 .local-program-card p::-webkit-scrollbar{ display:none; }
+
+/* 图片容器：固定高度，居中对齐 */
+.local-program-image-container {
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+}
+
+/* 文本容器：占据剩余空间，内部从顶部开始排列 */
+.local-program-text {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+.local-program-text::-webkit-scrollbar {
+  display: none;
+}
+
+
 .local-program-card a{ color:var(--link-blue); font-weight:bold; font-size:.9rem; text-decoration:none; }
 .local-program-divider{ width:100%; height:1px; background:#e5e7eb; margin:1rem 0; }
 .local-program-link{ color:var(--link-blue); font-weight:600; text-transform:uppercase; font-size:.85rem; text-decoration:none; transition:color .2s ease; }
