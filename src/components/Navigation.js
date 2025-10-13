@@ -14,7 +14,7 @@ const Navigation = () => {
   const NAV_MAIN = [
     { label: 'Home', path: '/' },
     { label: 'Weather', path: '/weather' },
-    { label: 'Garden', path: '/gardenplan' },
+    { label: 'Guide', path: '/gardenplan' },
     { label: 'Sustainability', path: '/sustain' },
     { label: 'Biodiversity', path: '/biodiversity' },
     { label: 'Simulation', path: '/simulation' }
