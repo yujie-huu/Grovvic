@@ -405,7 +405,7 @@ img{ max-width:100%; height:auto; display:block; }
 }
 
 /* 👇 强制隐藏 Leaflet 默认的左上角缩放控件 👇 */
-.leaflet-control-zoom.leaflet-bar.leaflet-control.leaflet-top.leaflet-left {
+.map-container-wrapper .leaflet-top.leaflet-left > *:first-child {
   display: none !important;
 }
 

@@ -525,6 +525,7 @@ const Support = () => {
               zoom={mapZoom}
               style={{ height: "100%", width: "100%" }}
               scrollWheelZoom={true}
+              zoomControl={false} // 禁用默认缩放控件
   
             >
               <ZoomControl position='topright' />
