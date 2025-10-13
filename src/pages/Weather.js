@@ -550,6 +550,7 @@ const Weather = () => {
             position: "relative", 
             minHeight: "520px",  
             marginBottom: "130px",
+            
           }}
         >
 

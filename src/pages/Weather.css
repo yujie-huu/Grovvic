@@ -363,7 +363,7 @@
   position: relative;
   width: 100%;
   max-width: calc(1200px * 7 / 9);
-  margin: 0 auto 2.5rem;
+  margin: 0rem auto 2.5rem;
   height: 520px;                          /* ✅ 加高横幅：420 → 520 */
   background-size: cover;
   background-position: center;
@@ -376,6 +376,7 @@
   text-align: center;
      /* 你要的高度 */
   overflow: hidden;
+  padding-bottom: 2rem;
 }
 
 .weekly-image-banner::before {
@@ -489,11 +490,12 @@
   display: grid;
   grid-template-columns: repeat(5, 200px); /* 每个卡片宽度 180px */
   gap: 2rem;
-  margin-top: 3rem;
-  margin-bottom: 5rem;
+  margin-top: 4rem;
+  margin-bottom: 3rem;
   justify-content: center; /* 整体居中 */
   min-height: 250px;
 }
+
 
 
 /* 单个卡片 */
