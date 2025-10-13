@@ -258,9 +258,13 @@ const PlantDetailPage = () => {
               <h2 className="instruction-card-title">Preparation</h2>
             </div>
             <div className="instruction-card-content">
-              {plantData.preparation.split('\n').map((paragraph, index) => (
-                <p key={index} className="paragraph">{paragraph}</p>
-              ))}
+              {plantData.preparation === "no information now" ? (
+                <p className="paragraph">No preparation information available.</p>
+              ) : (
+                plantData.preparation.split('\n').map((paragraph, index) => (
+                  <p key={index} className="paragraph">{paragraph}</p>
+                ))
+              )}
             </div>
           </div>
 
@@ -270,9 +274,13 @@ const PlantDetailPage = () => {
               <h2 className="instruction-card-title-green">How to Sow</h2>
             </div>
             <div className="instruction-card-content">
-              {plantData.how_to_sow.split('\n').map((paragraph, index) => (
-                <p key={index} className="paragraph-green">{paragraph}</p>
-              ))}
+              {plantData.how_to_sow === "no information now" ? (
+                <p className="paragraph-green">No how to sow information available.</p>
+              ) : (
+                plantData.how_to_sow.split('\n').map((paragraph, index) => (
+                  <p key={index} className="paragraph-green">{paragraph}</p>
+                ))
+              )}
             </div>
           </div>
 
@@ -282,25 +290,31 @@ const PlantDetailPage = () => {
               <h2 className="instruction-card-title">How to Grow</h2>
             </div>
             <div className="instruction-card-content">
-              {plantData.how_to_grow.split('\n').map((paragraph, index) => (
-                <p key={index} className="paragraph">{paragraph}</p>
-              ))}
+              {plantData.how_to_grow === "no information now" ? (
+                <p className="paragraph">No how to grow information available.</p>
+              ) : (
+                plantData.how_to_grow.split('\n').map((paragraph, index) => (
+                  <p key={index} className="paragraph">{paragraph}</p>
+                ))
+              )}
             </div>
           </div>
 
-          {plantData.how_to_harvest && plantData.how_to_harvest !== "no information now" && (
-            <div className="instruction-card-green">
-              <div className="instruction-card-header">
-                <img className="instruction-icon" src="/images/instruction_harvest_icon.png" alt="Harvest"/>
-                <h2 className="instruction-card-title-green">How to Harvest</h2>
-              </div>
-              <div className="instruction-card-content">
-                {plantData.how_to_harvest.split('\n').map((paragraph, index) => (
-                  <p key={index} className="paragraph-green">{paragraph}</p>
-                ))}
-              </div>
+          <div className="instruction-card-green">
+            <div className="instruction-card-header">
+              <img className="instruction-icon" src="/images/instruction_harvest_icon.png" alt="Harvest"/>
+              <h2 className="instruction-card-title-green">How to Harvest</h2>
             </div>
-          )}
+            <div className="instruction-card-content">
+              {plantData.how_to_harvest === "no information now" ? (
+                <p className="paragraph-green">No how to harvest information available.</p>
+              ) : (
+                plantData.how_to_harvest.split('\n').map((paragraph, index) => (
+                  <p key={index} className="paragraph-green">{paragraph}</p>
+                ))
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </div>

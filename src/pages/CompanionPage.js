@@ -17,7 +17,7 @@ const CompanionPage = () => {
 
   const availablePlants = [
     "All","Asparagus","Bean","Beetroot","Broccoli","Bulb Onion","Cabbage","Capsicum","Carrot","Cauliflower",
-    "Celery","Chilli","Chive","Corn","Cucumber","Dill","Eggplant","German Chamomile","Kohlrabi","Leek",
+    "Celery","Chilli","Chive","Corn","Cucumber","Dill","Eggplant","Chamomile","Kohlrabi","Leek",
     "Lemon Balm","Lettuce","Nasturtium","Parsley","Pea","Potato","Pumpkin & Winter Squash","Radish","Raspberry",
     "Rosemary","Sage","Silverbeet","Spinach","Strawberry","Summer Squash","Sunflower","Tomato","Turnip",
     "Watermelon","Zucchini"
