@@ -413,19 +413,7 @@ const Support = () => {
         <div className="local-communities-header">
           <h2>LOCAL GARDENING COMMUNITIES</h2>
         </div>
-        <div
-          ref={trackRef}
-          className="local-communities-track"
-          role="region"
-          aria-label="Local communities horizontal scroller"
-          onMouseDown={onMouseDown}
-          onMouseMove={onMouseMove}
-          onMouseUp={endDrag}
-          onMouseLeave={endDrag}
-          onTouchStart={onTouchStart}
-          onTouchMove={onTouchMove}
-          onTouchEnd={endDrag}
-        >
+        <div className="local-communities-track">
           {communityData.map((item, idx) => (
             <div className="local-program-card community-card" key={idx}>
               <img src={item.img} alt={item.title} className="community-card-img" />

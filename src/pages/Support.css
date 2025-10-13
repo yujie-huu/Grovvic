@@ -64,12 +64,11 @@ img{ max-width:100%; height:auto; display:block; }
   font-size: clamp(1.8rem, 2.2vw, 2.2rem);
   font-weight: 700;
   margin-top: 4rem;           /* ✅ 控制 FAQ 与上一部分距离 */
-  margin-bottom: 3rem;        /* ✅ 标题与内容间距 */
-  text-align: left;
-  margin-left: 22rem;         /* ✅ 稍微左移，使更居中对齐 */
+  margin-bottom: 4rem;        /* ✅ 标题与内容间距 */
   color: var(--text-dark);
-  position: relative;          /* ✅ 保证定位不影响其他块 */
+  position: relative;          
   z-index: 1;
+  text-align: center;
 }
 
 /* FAQ 主体布局 */
@@ -188,7 +187,7 @@ img{ max-width:100%; height:auto; display:block; }
 
 /* 标题 */
 .local-communities-header h2{
-  color:#111; font-size: clamp(1.6rem, 2.4vw, 1.8rem); font-weight:bold; margin:0 0 0 0;
+  color:#111; font-size: clamp(1.6rem, 2.4vw, 1.8rem); font-weight:bold; margin:1rem 0 2.5rem 0;
 }
 
 /* 左右淡出遮罩（颜色跟随页面背景） */
@@ -206,14 +205,14 @@ img{ max-width:100%; height:auto; display:block; }
 
 /* 滚动轨道 */
 .local-communities-track{
-  display:flex; gap:1rem; overflow-x:auto; overflow-y:hidden;
-  scroll-snap-type:x mandatory; padding:0 1rem;
-  scroll-behavior: smooth;
-  max-width: min(100%, calc(3 * 240px + 2rem)); /* 只露 3 张 */
-  margin:0 auto;
-  scrollbar-width:none;
-  overscroll-behavior: contain;
-  touch-action: pan-y; /* 允许纵向滚轮 → 横向映射的方案正常工作 */
+  display: flex;
+  justify-content: space-evenly; /* 👈 关键：均等间距 */
+  align-items: flex-start;
+  gap: 0; /* 确保间距完全由 space-evenly 控制 */
+  overflow-x: hidden; 
+  padding: 0 20px; /* 可选：添加左右内边距，让整体更居中 */
+  width: 100%;
+  box-sizing: border-box;
 }
 .local-communities-track::-webkit-scrollbar{ display:none; }
 
