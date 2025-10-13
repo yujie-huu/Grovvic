@@ -277,18 +277,11 @@ const Support = () => {
       <div className="support-hero" style={{ backgroundImage: "url(/images/support_1.jpg)" }}>
         <div className="support-hero-content">
           <h1>
-            Hello,
-            <br /> How can we help?
+            Find answers. Grow sustainably.
           </h1>
-          <p>Find the answer to your gardening questions.</p>
-          <input
-            type="text"
-            placeholder="Search FAQs..."
-            className="support-search"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            onKeyDown={handleSearchKeyDown}
-          />
+          <p>
+            Explore gardening FAQs, troubleshooting tools, and government programs in your region.
+          </p>
         </div>
       </div>
 

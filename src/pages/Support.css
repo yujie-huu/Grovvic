@@ -26,27 +26,37 @@ img{ max-width:100%; height:auto; display:block; }
 .support-page{ font-family: Arial, sans-serif; background: var(--page-bg); color: var(--text-dark); }
 
 /* ========== Hero ========== */
-.support-hero{
-  position: relative;
-  height: 80vh;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  padding-left: clamp(1rem, 8vw, 15%);
-  color: #fff;
-  text-align: left;
+/* Hero Section */
+.support-hero {
+  height: 500px; /* 调整高度以匹配截图 */
   background-size: cover;
   background-position: center;
-  background-repeat: no-repeat;
-  padding-right: env(safe-area-inset-right, 0);
-  padding-left: calc(clamp(1rem, 8vw, 15%) + env(safe-area-inset-left, 0));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
-.support-hero-content{ position: relative; z-index:1; max-width: min(600px, 90vw); }
-.support-hero h1{ font-size: clamp(1.8rem, 3.2vw, 2.8rem); margin-bottom: .5rem; text-shadow:1px 1px 5px rgba(0,0,0,.6); }
-.support-hero p{ font-size: clamp(1rem, 1.4vw, 1.2rem); margin-bottom: 1.5rem; }
-.support-search{
-  width:100%; padding:12px 16px; border:none; border-radius:8px; font-size:1rem; outline:none;
+
+.support-hero-content {
+  padding: 40px 20px;
+  max-width: 1400px;
 }
+
+.support-hero h1 {
+  font-size: 4rem;
+  margin-bottom: 10px;
+  font-weight: 2000;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.support-hero p {
+  font-size: 1.8rem;
+  color: white;
+  line-height: 1.6;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
 
 /* ========== FAQ 标题与布局 ========== */
 /* FAQ 标题 */
@@ -56,7 +66,7 @@ img{ max-width:100%; height:auto; display:block; }
   margin-top: 4rem;           /* ✅ 控制 FAQ 与上一部分距离 */
   margin-bottom: 3rem;        /* ✅ 标题与内容间距 */
   text-align: left;
-  margin-left: 16.5rem;         /* ✅ 稍微左移，使更居中对齐 */
+  margin-left: 22rem;         /* ✅ 稍微左移，使更居中对齐 */
   color: var(--text-dark);
   position: relative;          /* ✅ 保证定位不影响其他块 */
   z-index: 1;
