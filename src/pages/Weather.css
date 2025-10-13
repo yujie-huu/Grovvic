@@ -489,7 +489,8 @@
   display: grid;
   grid-template-columns: repeat(5, 200px); /* 每个卡片宽度 180px */
   gap: 2rem;
-  margin-top: 2rem;
+  margin-top: 3rem;
+  margin-bottom: 5rem;
   justify-content: center; /* 整体居中 */
   min-height: 250px;
 }
@@ -527,8 +528,6 @@
   line-height: 1.5;
   margin: 0;
 }
-
-
 
 
 
