@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './HomePage.css';
 import HomePageCard from '../components/HomePageCard';
-import { MdArrowDownward, MdArrowDropDown, MdArrowDropUp, MdKeyboardArrowDown } from 'react-icons/md';
+import { MdKeyboardArrowDown } from 'react-icons/md';
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -21,11 +21,6 @@ const HomePage = () => {
     navigate('/gardenplan');
   };
 
-  // Navigate to about page
-  const handleLearnMoreClick = () => {
-    console.log('Navigating to About Page');
-    navigate('/about');
-  };
 
   // Navigate to sustainability page
   const handleSustainClick = () => {
@@ -39,12 +34,27 @@ const HomePage = () => {
     navigate('/biodiversity');
   }
 
+  // Navigate to biodiversity page
+  const handleSimulatorClick = () => {
+    console.log('Navigating to Simulator Page');
+    navigate('/simulation');
+  }
+
 
 
   return (
     <div className="homepage">
       {/* Hero Section */}
       <section className="hero-section">
+        <video 
+          className="hero-video" 
+          autoPlay 
+          muted 
+          loop 
+          playsInline
+        >
+          <source src="/images/homepage_hero_video.mp4" type="video/mp4" />
+        </video>
         <div className="hero-content">
           <div className="hero-text">
             <h1 className="hero-title">
@@ -78,21 +88,35 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Banner Section - Ribbon-like area */}
-      {/* <section className="banner-section">
-        <div className="banner-background">
-          <div className="banner-overlay">
-            <div className="banner-content">
-              <h2 className="banner-title">
-                <span className="banner-line">Grow Smarter</span>
-                <span className="banner-line">Garden Greener</span>
-                <span className="banner-line">Live NetZero</span> */}
-                {/* <img src="/images/banner_TreeRoot.png" alt="home page banner - tree root" /> */}
-              {/* </h2>
-            </div>
+      {/* Navigation Directory Section */}
+      <section className="nav-directory-section">
+        <div className="nav-directory-container">
+          <div className="nav-item weather-nav" onClick={handleWeatherClick}>
+            <span className="nav-text">WEATHER</span>
+          </div>
+          <div className="nav-item guide-nav" onClick={handlePlanClick}>
+            <span className="nav-text">GUIDE</span>
+          </div>
+          <div className="nav-item sustainable-nav" onClick={handleSustainClick}>
+            <span className="nav-text">SUSTAINABLE</span>
+          </div>
+          <div className="nav-item biodiversity-nav" onClick={handleBioClick}>
+            <span className="nav-text">BIODIVERSITY</span>
+          </div>
+          <div className="nav-item simulator-nav" onClick={handleSimulatorClick}>
+            <span className="nav-text">SIMULATOR</span>
           </div>
         </div>
-      </section> */}
+      </section>
+
+      {/* Banner Section - Ribbon-like area */}
+      <section className="home-banner-section">
+        <img
+          className="home-banner-image"
+          src="/images/home_banner.png"
+          alt="Home banner"
+        />
+      </section>
 
       {/* Content Cards Section - Continuous white background */}
       <div className="content-cards-section">

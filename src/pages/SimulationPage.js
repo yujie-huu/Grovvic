@@ -270,7 +270,10 @@ export default function SimulationPage(){
   const [insightsLoading, setInsightsLoading] = useState(false);
   const [insightsError, setInsightsError] = useState('');
   const [wildlifeData, setWildlifeData] = useState([]);
+  const [companionshipData, setCompanionshipData] = useState(null);
   const [showInsightModal, setShowInsightModal] = useState(null);
+  const [incompatiblePlants, setIncompatiblePlants] = useState(new Map()); // plantId -> {conflicts: [], tooltipPosition: {x, y}}
+  const [showIncompatibleTooltips, setShowIncompatibleTooltips] = useState(new Map()); // plantId -> {conflicts, position}
   const COMPANIONS_API = 'https://netzero-vigrow-api.duckdns.org/iter3/plants/good-relations/count';
   const WILDLIFE_API = 'https://netzero-vigrow-api.duckdns.org/iter3/species/animals/by-plants';
   
@@ -443,6 +446,53 @@ export default function SimulationPage(){
     }
   }, [getPlantedNames]);
 
+  // Update incompatible plants based on companionship data
+  const updateIncompatiblePlants = useCallback((companionsData) => {
+    if (!companionsData?.bad_relations) return;
+    
+    const newIncompatiblePlants = new Map();
+    
+    // Get all currently planted plants
+    const plantedPlants = Array.from(plantInstances.values());
+    
+    // Check each planted plant for conflicts
+    plantedPlants.forEach(plantInstance => {
+      const conflicts = [];
+      
+      // Check against bad relations
+      companionsData.bad_relations.forEach(badRelation => {
+        if (plantInstance.name === badRelation.plant) {
+          // Check if the conflicting plant is also planted
+          const conflictingPlant = plantedPlants.find(p => p.name === badRelation.neighbour);
+          if (conflictingPlant) {
+            conflicts.push({
+              plant: badRelation.neighbour,
+              reason: badRelation.reason
+            });
+          }
+        } else if (plantInstance.name === badRelation.neighbour) {
+          // Check if the conflicting plant is also planted
+          const conflictingPlant = plantedPlants.find(p => p.name === badRelation.plant);
+          if (conflictingPlant) {
+            conflicts.push({
+              plant: badRelation.plant,
+              reason: badRelation.reason
+            });
+          }
+        }
+      });
+      
+      if (conflicts.length > 0) {
+        newIncompatiblePlants.set(plantInstance.id, {
+          conflicts,
+          tooltipPosition: null
+        });
+      }
+    });
+    
+    setIncompatiblePlants(newIncompatiblePlants);
+  }, [plantInstances]);
+
   // Auto-refresh recommendations when planted plants change (can also click card refresh)
   // Fetch insights data
   const fetchInsights = useCallback(async () => {
@@ -485,14 +535,18 @@ export default function SimulationPage(){
       const wildlifeData = await wildlifeRes.json();
       
       setInsights({
-        companionships: companionsData.good_relation_count || 0,
+        companionships: (companionsData.good_relation_count || 0) + (companionsData.bad_relation_count || 0),
         wildlife: wildlifeData.summary?.animals || 0,
         pollinators: wildlifeData.summary?.pollinators || 0,
         pestsWeeds: wildlifeData.summary?.pests_and_weeds || 0
       });
       
-      // Store wildlife data for modals
+          // Store data for modals
       setWildlifeData(wildlifeData.animals || []);
+      setCompanionshipData(companionsData);
+      
+      // Update incompatible plants
+      updateIncompatiblePlants(companionsData);
       
     } catch (e) {
       setInsightsError('Failed to load insights');
@@ -500,7 +554,7 @@ export default function SimulationPage(){
     } finally {
       setInsightsLoading(false);
     }
-  }, [getPlantedNames]);
+  }, [getPlantedNames, updateIncompatiblePlants]);
 
   // Auto-refresh recommendations and insights when planted plants change
   useEffect(() => {
@@ -534,6 +588,30 @@ export default function SimulationPage(){
     const encodedName = encodeURIComponent(animal.animal_taxon_name);
     return `/animal/${encodedName}`;
   };
+
+  // Update incompatible plants when plantInstances or companionshipData changes
+  useEffect(() => {
+    if (companionshipData && plantInstances.size > 0) {
+      updateIncompatiblePlants(companionshipData);
+    }
+  }, [plantInstances, companionshipData, updateIncompatiblePlants]);
+
+  // Auto-show tooltip for incompatible plants
+  useEffect(() => {
+    const newTooltips = new Map();
+    
+    // Show tooltips for all incompatible plants
+    incompatiblePlants.forEach((plantData, plantId) => {
+      if (plantData.conflicts.length > 0) {
+        newTooltips.set(plantId, {
+          conflicts: plantData.conflicts,
+          position: null
+        });
+      }
+    });
+    
+    setShowIncompatibleTooltips(newTooltips);
+  }, [incompatiblePlants]);
 
   // Download garden layout as image
   const downloadGardenLayout = async (format = 'jpg') => {
@@ -1214,8 +1292,17 @@ export default function SimulationPage(){
                 const isValidHover = isHovered && hoveredPlant;
                 const isInvalidHover = isOver && hoveredPlant && !isHovered;
                 
+                // Check if this plant has conflicts
+                const plantConflicts = plantInstance ? incompatiblePlants.get(plantInstance.id) : null;
+                const isIncompatible = plantConflicts && plantConflicts.conflicts.length > 0;
+                const isShowingTooltip = showIncompatibleTooltips.has(plantInstance?.id);
+                const isFirstCellOfPlant = plantInstance && cells[idx] === plantInstance.id && cells.indexOf(plantInstance.id) === idx;
+                const isFirstRow = Math.floor(idx / cols) === 0;
+                
                 const tooltipText = plantInstance 
-                  ? `${plantInstance.name}${plantInstance.spacing ? ` (${plantInstance.spacing}×${plantInstance.spacing}cm)` : ''}`
+                  ? isIncompatible 
+                    ? `Incompatible with ${plantConflicts.conflicts.map(c => c.plant).join(', ')}`
+                    : `${plantInstance.name}${plantInstance.spacing ? ` (${plantInstance.spacing}×${plantInstance.spacing}cm)` : ''}`
                   : isInvalidHover && hoveredPlant
                     ? `${hoveredPlant} needs ${getRequiredCells(hoveredPlant)}×${getRequiredCells(hoveredPlant)} cells (${getPlantSpacing(hoveredPlant) || 20}×${getPlantSpacing(hoveredPlant) || 20}cm) space`
                     : '';
@@ -1223,11 +1310,25 @@ export default function SimulationPage(){
                 return (
                     <div
                     key={idx}
-                    className={`garden-cell ${isOver ? 'over' : ''} ${isValidHover ? 'valid-hover' : ''} ${isInvalidHover ? 'invalid-hover' : ''}`}
+                    className={`garden-cell ${isOver ? 'over' : ''} ${isValidHover ? 'valid-hover' : ''} ${isInvalidHover ? 'invalid-hover' : ''} ${isIncompatible ? 'incompatible' : ''}`}
                     onDragOver={(e) => onCellDragOver(e, idx)}
                     onDragLeave={() => onCellDragLeave(idx)}
                     onDrop={(e) => onCellDrop(e, idx)}
-                    title={tooltipText}
+                    onClick={(e) => {
+                      if (isIncompatible && plantInstance) {
+                        const newTooltips = new Map(showIncompatibleTooltips);
+                        if (newTooltips.has(plantInstance.id)) {
+                          newTooltips.delete(plantInstance.id);
+                        } else {
+                          newTooltips.set(plantInstance.id, {
+                            conflicts: plantConflicts.conflicts,
+                            position: null
+                          });
+                        }
+                        setShowIncompatibleTooltips(newTooltips);
+                      }
+                    }}
+                    title={!isIncompatible ? tooltipText : ''}
                     >
                     {plantInstance && (
                         <img
@@ -1237,7 +1338,46 @@ export default function SimulationPage(){
                         onDragStart={(e) => onDragStartCell(e, idx)}
                         className="planted-img"
                         title={`${plantInstance.name}${plantInstance.spacing ? ` (${plantInstance.spacing}×${plantInstance.spacing}cm)` : ''}`}
+                        onClick={(e) => {
+                          if (isIncompatible && plantInstance) {
+                            e.stopPropagation();
+                            const newTooltips = new Map(showIncompatibleTooltips);
+                            if (newTooltips.has(plantInstance.id)) {
+                              newTooltips.delete(plantInstance.id);
+                            } else {
+                              newTooltips.set(plantInstance.id, {
+                                conflicts: plantConflicts.conflicts,
+                                position: null
+                              });
+                            }
+                            setShowIncompatibleTooltips(newTooltips);
+                          }
+                        }}
                         />
+                    )}
+                    
+                    {/* Tooltip positioned relative to this cell - only show on first cell of plant */}
+                    {isShowingTooltip && isFirstCellOfPlant && (
+                      <div className={`simulation-incompatible-tooltip ${isFirstRow ? 'simulation-incompatible-tooltip-first-row' : ''}`}>
+                        <div className="simulation-incompatible-tooltip-content">
+                          <div className="simulation-incompatible-tooltip-header">
+                            <button 
+                              className="simulation-incompatible-tooltip-close"
+                              onClick={() => {
+                                const newTooltips = new Map(showIncompatibleTooltips);
+                                newTooltips.delete(plantInstance.id);
+                                setShowIncompatibleTooltips(newTooltips);
+                              }}
+                            >
+                              ✕
+                            </button>
+                          </div>
+                          <span className="simulation-incompatible-tooltip-text">
+                            Incompatible with {[...new Set(plantConflicts.conflicts.map(c => c.plant.toLowerCase()))].join(', ')}
+                          </span>
+                        </div>
+                        <div className="simulation-incompatible-tooltip-arrow"></div>
+                      </div>
                     )}
               </div>
                 );
@@ -1412,24 +1552,24 @@ export default function SimulationPage(){
 
       {/* Insights Modal */}
       {showInsightModal && (
-        <div className="insights-modal-overlay">
-          <div className="insights-modal">
-            <div className="insights-modal-header">
-              <h3 className="insights-modal-title">
+            <div className="simulation-insights-modal-overlay">
+          <div className="simulation-insights-modal">
+            <div className="simulation-insights-modal-header">
+              <h3 className="simulation-insights-modal-title">
                 {showInsightModal === 'companionships' && 'Plant Companionships'}
                 {showInsightModal === 'wildlife' && 'Wildlife Connections'}
                 {showInsightModal === 'pollinators' && 'Pollinators'}
                 {showInsightModal === 'pests' && 'Pests/Weeds'}
               </h3>
               <button 
-                className="insights-modal-close"
+                className="simulation-insights-modal-close"
                 onClick={() => setShowInsightModal(null)}
               >
                 ✕
               </button>
             </div>
             
-            <div className="insights-modal-description">
+            <div className="simulation-insights-modal-description">
               {showInsightModal === 'companionships' && 
                 'The number of beneficial plant relationships in your garden. Companion plants help each other grow better, deter pests, and improve soil health.'
               }
@@ -1444,43 +1584,114 @@ export default function SimulationPage(){
               }
             </div>
             
-            <div className="insights-modal-content">
+            <div className="simulation-insights-modal-content">
               {showInsightModal === 'companionships' && (
-                <div className="companionships-content">
-                  <p>Plant companionships feature coming soon!</p>
-                  <p>This will show all plant companionships in your garden with images and relationships.</p>
-                  <a href="/companion" className="companionships-link">
-                    Find more companions for your plants
-                  </a>
+                <div className="simulation-companionships-content">
+                  {!companionshipData || (companionshipData.good_relations?.length === 0 && companionshipData.bad_relations?.length === 0) ? (
+                    <p>No plant companionships found in your garden.</p>
+                  ) : (
+                    <div className="simulation-companionship-cards">
+                      {/* Good Relations */}
+                      {companionshipData.good_relations?.map((relation, idx) => {
+                        const plant = relation.plant;
+                        const neighbour = relation.neighbour;
+                        const reason = relation.reason || '(good companion)';
+                        return (
+                          <div key={`good-${idx}`} className="simulation-companionship-card simulation-companionship-card-good">
+                            <div className="simulation-companionship-images">
+                              <div className="simulation-companion-image">
+                                <img 
+                                  src={`/images/cute-plants/${plant}.png`}
+                                  alt={plant}
+                                  onError={(e) => (e.currentTarget.style.display = 'none')}
+                                />
+                                <span className="simulation-companion-name">{plant}</span>
+                              </div>
+                              <div className="simulation-companion-separator simulation-companion-separator-good">+</div>
+                              <div className="simulation-companion-image">
+                                <img 
+                                  src={`/images/cute-plants/${neighbour}.png`}
+                                  alt={neighbour}
+                                  onError={(e) => (e.currentTarget.style.display = 'none')}
+                                />
+                                <span className="simulation-companion-name">{neighbour}</span>
+                              </div>
+                            </div>
+                            <div className="simulation-companionship-text simulation-companionship-text-good">
+                              {neighbour} {reason.toLowerCase()} for {plant}
+                            </div>
+                          </div>
+                        );
+                      })}
+                      
+                      {/* Bad Relations */}
+                      {companionshipData.bad_relations?.map((relation, idx) => {
+                        const plant = relation.plant;
+                        const neighbour = relation.neighbour;
+                        const reason = relation.reason || '(bad companion)';
+                        return (
+                          <div key={`bad-${idx}`} className="simulation-companionship-card simulation-companionship-card-bad">
+                            <div className="simulation-companionship-images">
+                              <div className="simulation-companion-image">
+                                <img 
+                                  src={`/images/cute-plants/${plant}.png`}
+                                  alt={plant}
+                                  onError={(e) => (e.currentTarget.style.display = 'none')}
+                                />
+                                <span className="simulation-companion-name">{plant}</span>
+                              </div>
+                              <div className="simulation-companion-separator simulation-companion-separator-bad">-</div>
+                              <div className="simulation-companion-image">
+                                <img 
+                                  src={`/images/cute-plants/${neighbour}.png`}
+                                  alt={neighbour}
+                                  onError={(e) => (e.currentTarget.style.display = 'none')}
+                                />
+                                <span className="simulation-companion-name">{neighbour}</span>
+                              </div>
+                            </div>
+                            <div className="simulation-companionship-text simulation-companionship-text-bad">
+                              {neighbour} {reason.toLowerCase()} for {plant}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                  <div className="simulation-companionships-footer">
+                    <a href="/companion" className="simulation-companionships-link">
+                      Find more companions for your plants
+                    </a>
+                  </div>
                 </div>
               )}
               
               {(showInsightModal === 'wildlife' || showInsightModal === 'pollinators' || showInsightModal === 'pests') && (
-                <div className="wildlife-content">
+                <div className="simulation-wildlife-content">
                   {getFilteredWildlife(showInsightModal).length === 0 ? (
                     <p>No {showInsightModal} found in your garden.</p>
                   ) : (
-                    <div className="wildlife-cards">
+                    <div className="simulation-wildlife-cards">
                       {getFilteredWildlife(showInsightModal).map((animal, idx) => (
                         <a 
                           key={idx} 
                           href={getAnimalUrl(animal)}
-                          className="wildlife-card"
+                          className="simulation-wildlife-card"
                         >
                           <img 
                             src={animal.image_url} 
                             alt={animal.vernacular_name || animal.animal_taxon_name}
-                            className="wildlife-card-img"
+                            className="simulation-wildlife-card-img"
                             onError={(e) => (e.currentTarget.style.display = 'none')}
                           />
-                          <div className="wildlife-card-info">
-                            <h4 className="wildlife-card-name">
+                          <div className="simulation-wildlife-card-info">
+                            <h4 className="simulation-wildlife-card-name">
                               {animal.vernacular_name || 'No common name'}
                             </h4>
-                            <p className="wildlife-card-scientific">
+                            <p className="simulation-wildlife-card-scientific">
                               <i>{animal.animal_taxon_name}</i>
                             </p>
-                            <span className="wildlife-card-link">
+                            <span className="simulation-wildlife-card-link">
                               Learn more
                             </span>
                           </div>
