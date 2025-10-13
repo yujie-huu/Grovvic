@@ -270,6 +270,7 @@ export default function SimulationPage(){
   const [insightsLoading, setInsightsLoading] = useState(false);
   const [insightsError, setInsightsError] = useState('');
   const [wildlifeData, setWildlifeData] = useState([]);
+  const [companionshipData, setCompanionshipData] = useState(null);
   const [showInsightModal, setShowInsightModal] = useState(null);
   const COMPANIONS_API = 'https://netzero-vigrow-api.duckdns.org/iter3/plants/good-relations/count';
   const WILDLIFE_API = 'https://netzero-vigrow-api.duckdns.org/iter3/species/animals/by-plants';
@@ -485,14 +486,15 @@ export default function SimulationPage(){
       const wildlifeData = await wildlifeRes.json();
       
       setInsights({
-        companionships: companionsData.good_relation_count || 0,
+        companionships: (companionsData.good_relation_count || 0) + (companionsData.bad_relation_count || 0),
         wildlife: wildlifeData.summary?.animals || 0,
         pollinators: wildlifeData.summary?.pollinators || 0,
         pestsWeeds: wildlifeData.summary?.pests_and_weeds || 0
       });
       
-      // Store wildlife data for modals
+      // Store data for modals
       setWildlifeData(wildlifeData.animals || []);
+      setCompanionshipData(companionsData);
       
     } catch (e) {
       setInsightsError('Failed to load insights');
@@ -1412,24 +1414,24 @@ export default function SimulationPage(){
 
       {/* Insights Modal */}
       {showInsightModal && (
-        <div className="insights-modal-overlay">
-          <div className="insights-modal">
-            <div className="insights-modal-header">
-              <h3 className="insights-modal-title">
+            <div className="simulation-insights-modal-overlay">
+          <div className="simulation-insights-modal">
+            <div className="simulation-insights-modal-header">
+              <h3 className="simulation-insights-modal-title">
                 {showInsightModal === 'companionships' && 'Plant Companionships'}
                 {showInsightModal === 'wildlife' && 'Wildlife Connections'}
                 {showInsightModal === 'pollinators' && 'Pollinators'}
                 {showInsightModal === 'pests' && 'Pests/Weeds'}
               </h3>
               <button 
-                className="insights-modal-close"
+                className="simulation-insights-modal-close"
                 onClick={() => setShowInsightModal(null)}
               >
                 ✕
               </button>
             </div>
             
-            <div className="insights-modal-description">
+            <div className="simulation-insights-modal-description">
               {showInsightModal === 'companionships' && 
                 'The number of beneficial plant relationships in your garden. Companion plants help each other grow better, deter pests, and improve soil health.'
               }
@@ -1444,43 +1446,110 @@ export default function SimulationPage(){
               }
             </div>
             
-            <div className="insights-modal-content">
+            <div className="simulation-insights-modal-content">
               {showInsightModal === 'companionships' && (
-                <div className="companionships-content">
-                  <p>Plant companionships feature coming soon!</p>
-                  <p>This will show all plant companionships in your garden with images and relationships.</p>
-                  <a href="/companion" className="companionships-link">
-                    Find more companions for your plants
-                  </a>
+                <div className="simulation-companionships-content">
+                  {!companionshipData || (companionshipData.good_relations?.length === 0 && companionshipData.bad_relations?.length === 0) ? (
+                    <p>No plant companionships found in your garden.</p>
+                  ) : (
+                    <div className="simulation-companionship-cards">
+                      {/* Good Relations */}
+                      {companionshipData.good_relations?.map((relation, idx) => {
+                        const [plant1, plant2] = relation.split(' - ');
+                        return (
+                          <div key={`good-${idx}`} className="simulation-companionship-card simulation-companionship-card-good">
+                            <div className="simulation-companionship-images">
+                              <div className="simulation-companion-image">
+                                <img 
+                                  src={`/images/cute-plants/${plant1}.png`}
+                                  alt={plant1}
+                                  onError={(e) => (e.currentTarget.style.display = 'none')}
+                                />
+                                <span className="simulation-companion-name">{plant1}</span>
+                              </div>
+                              <div className="simulation-companion-separator simulation-companion-separator-good">+</div>
+                              <div className="simulation-companion-image">
+                                <img 
+                                  src={`/images/cute-plants/${plant2}.png`}
+                                  alt={plant2}
+                                  onError={(e) => (e.currentTarget.style.display = 'none')}
+                                />
+                                <span className="simulation-companion-name">{plant2}</span>
+                              </div>
+                            </div>
+                            <div className="simulation-companionship-text simulation-companionship-text-good">
+                              {plant2} (good companion) for {plant1}
+                            </div>
+                          </div>
+                        );
+                      })}
+                      
+                      {/* Bad Relations */}
+                      {companionshipData.bad_relations?.map((relation, idx) => {
+                        const [plant1, plant2] = relation.split(' - ');
+                        return (
+                          <div key={`bad-${idx}`} className="simulation-companionship-card simulation-companionship-card-bad">
+                            <div className="simulation-companionship-images">
+                              <div className="simulation-companion-image">
+                                <img 
+                                  src={`/images/cute-plants/${plant1}.png`}
+                                  alt={plant1}
+                                  onError={(e) => (e.currentTarget.style.display = 'none')}
+                                />
+                                <span className="simulation-companion-name">{plant1}</span>
+                              </div>
+                              <div className="simulation-companion-separator simulation-companion-separator-bad">-</div>
+                              <div className="simulation-companion-image">
+                                <img 
+                                  src={`/images/cute-plants/${plant2}.png`}
+                                  alt={plant2}
+                                  onError={(e) => (e.currentTarget.style.display = 'none')}
+                                />
+                                <span className="simulation-companion-name">{plant2}</span>
+                              </div>
+                            </div>
+                            <div className="simulation-companionship-text simulation-companionship-text-bad">
+                              {plant2} (bad companion) for {plant1}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                  <div className="simulation-companionships-footer">
+                    <a href="/companion" className="simulation-companionships-link">
+                      Find more companions for your plants
+                    </a>
+                  </div>
                 </div>
               )}
               
               {(showInsightModal === 'wildlife' || showInsightModal === 'pollinators' || showInsightModal === 'pests') && (
-                <div className="wildlife-content">
+                <div className="simulation-wildlife-content">
                   {getFilteredWildlife(showInsightModal).length === 0 ? (
                     <p>No {showInsightModal} found in your garden.</p>
                   ) : (
-                    <div className="wildlife-cards">
+                    <div className="simulation-wildlife-cards">
                       {getFilteredWildlife(showInsightModal).map((animal, idx) => (
                         <a 
                           key={idx} 
                           href={getAnimalUrl(animal)}
-                          className="wildlife-card"
+                          className="simulation-wildlife-card"
                         >
                           <img 
                             src={animal.image_url} 
                             alt={animal.vernacular_name || animal.animal_taxon_name}
-                            className="wildlife-card-img"
+                            className="simulation-wildlife-card-img"
                             onError={(e) => (e.currentTarget.style.display = 'none')}
                           />
-                          <div className="wildlife-card-info">
-                            <h4 className="wildlife-card-name">
+                          <div className="simulation-wildlife-card-info">
+                            <h4 className="simulation-wildlife-card-name">
                               {animal.vernacular_name || 'No common name'}
                             </h4>
-                            <p className="wildlife-card-scientific">
+                            <p className="simulation-wildlife-card-scientific">
                               <i>{animal.animal_taxon_name}</i>
                             </p>
-                            <span className="wildlife-card-link">
+                            <span className="simulation-wildlife-card-link">
                               Learn more
                             </span>
                           </div>
