@@ -103,7 +103,7 @@ const HomePage = () => {
             <span className="nav-text">BIODIVERSITY</span>
           </div>
           <div className="nav-item simulator-nav" onClick={handleSimulatorClick}>
-            <span className="nav-text">SIMULATOR</span>
+            <span className="nav-text">SIMULATION</span>
           </div>
         </div>
       </section>
@@ -164,7 +164,7 @@ const HomePage = () => {
           {/* Simulator Card */}
           <div className="home-content-card" onClick={handleSimulatorClick}>
             <div className="home-card-image">
-              <img src="/images/homepage_plan2.png" alt="Garden Simulator" />
+              <img src="/images/homepage_simulation1.jpg" alt="Garden Simulator" />
             </div>
             <h3 className="home-card-title">DESIGN YOUR GARDEN BLUEPRINT</h3>
             <p className="home-card-description">Visualize your garden with a personalized garden design simulator. Learn sustainable choices and avoid common garden layout mistakes.</p>
