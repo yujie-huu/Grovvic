@@ -1,0 +1,156 @@
+/* 诊断向导主容器 */
+.diagnosis-wizard {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* 诊断步骤容器 */
+.diagnosis-step {
+  /* 内部元素会根据内容自动布局 */
+}
+
+.diagnosis-step h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #333;
+  font-size: 1.5em;
+  text-align: center;
+}
+
+.diagnosis-step h4 {
+  margin-top: 10px;
+  margin-bottom: 5px;
+  color: #555;
+  font-size: 1.2em;
+}
+
+/* 选项列表 */
+.options-list {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0;
+}
+
+.options-list li {
+  margin-bottom: 10px;
+}
+
+/* 选项按钮 */
+.option-btn {
+  width: 100%;
+  padding: 12px 16px;
+  background-color: #e0e0e0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  text-align: left; /* 左对齐文字 */
+  transition: background-color 0.3s ease;
+}
+
+.option-btn:hover {
+  background-color: #d0d0d0;
+}
+
+.option-btn.selected {
+  background-color: #007bff; /* 选中状态颜色 */
+  color: white;
+  border-color: #0056b3;
+}
+
+/* 结果容器 */
+.result-container {
+  background-color: #f8f9fa; /* 浅灰色背景 */
+  border: 1px solid #dee2e6; /* 边框 */
+  border-radius: 4px;
+  padding: 15px;
+  margin: 15px 0;
+  text-align: left; /* 左对齐文字 */
+}
+
+.result-container p {
+  margin: 0;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* 按钮样式 */
+.back-btn, .next-btn, .reset-btn {
+  margin: 5px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.back-btn {
+  background-color: #6c757d; /* 灰色 */
+  color: white;
+}
+
+.back-btn:hover {
+  background-color: #5a6268;
+}
+
+.next-btn, .reset-btn {
+  background-color: #28a745; /* 绿色 */
+  color: white;
+}
+
+.next-btn:hover, .reset-btn:hover {
+  background-color: #218838;
+}
+
+.next-btn:disabled {
+  background-color: #6c757d; /* 禁用状态灰色 */
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* 重置按钮 */
+.reset-btn {
+  background-color: #dc3545; /* 红色 */
+  color: white;
+  margin-top: 10px;
+  display: block; /* 独占一行 */
+}
+
+.reset-btn:hover {
+  background-color: #c82333;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .diagnosis-wizard {
+    margin: 10px;
+    padding: 15px;
+  }
+
+  .diagnosis-step h3 {
+    font-size: 1.3em;
+  }
+
+  .option-btn, .back-btn, .next-btn, .reset-btn {
+    font-size: 14px;
+    padding: 10px 14px;
+  }
+
+  /* 诊断结果部分的样式 */
+.result-part {
+  margin-bottom: 8px; /* 行间距 */
+  line-height: 1.5; /* 行高 */
+}
+
+.result-part strong {
+  display: inline-block; /* 确保 "Likely cause:" 和 "Suggested solution:" 占据独立行或与内容同行但有分隔 */
+  min-width: 150px; /* 可选：为标签设置最小宽度，对齐内容 */
+  margin-right: 5px; /* 与内容的间距 */
+  color: #555; /* 标签颜色 */
+}
+}

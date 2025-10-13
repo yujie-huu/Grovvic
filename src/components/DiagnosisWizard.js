@@ -1,6 +1,6 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 // 默认使用你项目中的 JSON 数据
-import rawData from "../data/US5.2_Data_final_nested_fixed.json";
+import rawData from "../data/diagnose_data.json";
 
 /**
  * DiagnosisWizard
@@ -128,16 +128,10 @@ export default function DiagnosisWizard({
       setSelectedCauseStepQ(null);
       return;
     }
-    if (step === "doYou") {
+
+    if (step === "causePicker") {
       // 返回 Problem
       setStep("problem");
-      setDoYouAnswer(null);
-      setSelectedCauseStepQ(null);
-      return;
-    }
-    if (step === "causePicker") {
-      // 返回 Do you
-      setStep("doYou");
       setSelectedCauseStepQ(null);
       return;
     }
@@ -200,6 +194,7 @@ export default function DiagnosisWizard({
       margin: "0 auto 60px",
       manHeight: "650px",
       textAlign: "center",
+      position: 'relative',
     },
     title: {
       fontSize: 32,
@@ -323,6 +318,17 @@ export default function DiagnosisWizard({
     },
   };
 
+  // 假设你有类似这样的 useEffect 来处理步骤变化
+  useEffect(() => {
+    if (step === "doYou" && currentProblemNode) {
+      setDoYouAnswer("Yes");
+      setStep("causePicker"); 
+
+      // 如果有其他状态需要重置，也在这里处理
+      // setSelectedCauseStepQ(null);
+    }
+  }, [step, currentProblemNode]);
+
   // —— 头部（绿色条） —— //
   function SelectHeader({ label }) {
     return (
@@ -424,6 +430,33 @@ export default function DiagnosisWizard({
 
       {/* 白色卡片 */}
       <div style={styles.cardContainer}>
+        {/* 👇 新增：左上角 Start over 按钮 */}
+        <button
+          onClick={() => {
+            setStep("category");
+            setSelectedCategory(null);
+            setSelectedProblem(null);
+            setDoYouAnswer(null);
+            setSelectedCauseStepQ(null);
+          }}
+          style={{
+            position: 'absolute',
+            top: '10px',
+            left: '10px',
+            padding: '5px 10px',
+            fontSize: '13px',
+            backgroundColor: '#b5babeff',
+            border: '1px solid #ccc',
+            borderRadius: '16px',
+            cursor: 'pointer',
+            zIndex: 10,
+            color: 'white',
+          }}
+        >
+          🔄 Start Over
+        </button>
+
+
         {/* 标题 */}
         <h1 style={{ fontSize: 34, fontWeight:600, margin: "30px 0 35px" }}>
           Select the{" "}
@@ -479,42 +512,7 @@ export default function DiagnosisWizard({
             />
           )}
 
-          {/* Do you（Yes/No） */}
-          {step === "doYou" && currentProblemNode && (
-            <div style={styles.yesNoWrap}>
-              <button
-                style={{
-                  ...styles.yesNoBtn,
-                  ...(doYouAnswer === "Yes" ? styles.yesNoBtnActive : {}),
-                }}
-                onClick={() => {
-                  setDoYouAnswer("Yes");
-                  setSelectedCauseStepQ(null);
-                }}
-              >
-                Yes
-              </button>
-              <button
-                style={{
-                  ...styles.yesNoBtn,
-                  ...(doYouAnswer === "No" ? styles.yesNoBtnActive : {}),
-                }}
-                onClick={() => {
-                  setDoYouAnswer("No");
-                  setSelectedCauseStepQ(null);
-                }}
-              >
-                No
-              </button>
-            </div>
-          )}
-
-          {/* Do you = No 时，直接显示对应内容 */}
-          {showDoYouNoResult && (
-            <div style={styles.resultBox}>
-              {doYouNoText}
-            </div>
-          )}
+ 
 
           {/* 选择 “Does it …” */}
           {step === "causePicker" && (
