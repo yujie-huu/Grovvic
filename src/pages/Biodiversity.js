@@ -204,7 +204,7 @@ const Biodiversity = () => {
           <div style={{ marginTop: 0, lineHeight: 1.4 }}>
             {countsToShow.map(({ key, count }) => (
               <div key={key}>
-                {key}: {count}
+                {key}: {count} plants
               </div>
             ))}
           </div>
