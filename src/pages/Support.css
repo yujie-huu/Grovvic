@@ -251,7 +251,7 @@ img{ max-width:100%; height:auto; display:block; }
   top: 0;
   left: 0;
   width: 100%;
-  height: 300px; /* 减小背景图高度 */
+  height: 400px; /* 减小背景图高度 */
   z-index: 1;
   overflow: hidden;
 }
@@ -405,9 +405,9 @@ img{ max-width:100%; height:auto; display:block; }
 }
 
 /* 👇 强制隐藏 Leaflet 默认的左上角缩放控件 👇 */
-/* .leaflet-control-zoom.leaflet-bar.leaflet-control.leaflet-top.leaflet-left {
+.leaflet-control-zoom.leaflet-bar.leaflet-control.leaflet-top.leaflet-left {
   display: none !important;
-} */
+}
 
 /* 响应式设计 */
 @media (max-width: 768px) {
@@ -416,7 +416,7 @@ img{ max-width:100%; height:auto; display:block; }
   }
 
   .map-background-image {
-    height: 220px;
+    height: 260px;
   }
 
   .map-content-wrapper {
