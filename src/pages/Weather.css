@@ -9,20 +9,23 @@
   font-family: 'Arial', sans-serif;
   gap: 40px;
   flex-wrap: wrap; /* Enable wrapping for responsive layout */
+  padding-top: 40px; /* Extra bottom padding for scroll */
 }
 
 /* Main weather card (left box) */
 .weather-main-card {
-  background-color: #1c1c1c;
-  color: #fff;
-  padding: 25px 40px;
+  background-color: #fffefe;
+  color: #2d2d2d;
+  padding: 25px 25px;
   border-radius: 25px;
-  width: 480px;
+  width: 500px;
+  min-height: 270px;
   height: auto;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 6px 15px rgba(8, 7, 7, 0.3);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  margin-top: 10px;
 }
 
 /* Top section with city and temperature unit */
@@ -35,19 +38,19 @@
 }
 
 .location-tag {
-  background-color: #2b2b2b;
+  background-color: #f9f8f8;
   padding: 6px 14px;
   border-radius: 12px;
   font-size: 1rem;
-  color: #e0e0e0;
+  color: #0d0d0d;
 }
 
 .unit-toggle {
-  background-color: #2b2b2b;
+  background-color: #f2f2f2;
   padding: 6px 12px;
   border-radius: 10px;
   font-size: 1rem;
-  color: #e0e0e0;
+  color: #0d0d0d;
 }
 
 /* Main section (date, icon, temperature) */
@@ -65,7 +68,7 @@
 }
 .weather-main-left .date {
   font-size: 1rem;
-  color: #ccc;
+  color: #0d0d0d;
   margin-top: 5px;
 }
 
@@ -85,7 +88,7 @@
 }
 .weather-main-right .minmax {
   font-size: 1.2rem;
-  color: #ccc;
+  color: #0d0d0d;
 }
 .weather-main-right .desc {
   font-size: 1.1rem;
@@ -94,15 +97,15 @@
 }
 .weather-main-right .feels {
   font-size: 0.95rem;
-  color: #aaa;
+  color: #0d0d0d;
   margin-top: 2px;
 }
 
 /* Highlights card (right box) */
 .weather-highlights-wrapper {
-  background-color: #1c1c1c;
+  background-color: #fffefe;
   color: #fff;
-  padding: 16px 24px;
+  padding: 25px 25px;
   border-radius: 25px;
   width: 540px;
   min-height: 290px; /* Just slightly taller than .weather-main-card */
@@ -116,6 +119,7 @@
   margin-bottom: 16px;
   font-size: 1.4rem;
   font-weight: bold;
+  color: black;
 }
 
 /* Grid layout for each highlight block */
@@ -127,7 +131,7 @@
 
 /* Each highlight box: compact spacing and font size */
 .highlight-box {
-  background-color: #111;
+  background-color: #f9f7f7;
   padding: 12px;
   border-radius: 16px;
   display: flex;
@@ -140,18 +144,18 @@
 .highlight-box p {
   margin: 0;
   font-size: 0.85rem;
-  color: #bbb;
+  color: #0a0a0a; 
 }
 
 .highlight-box strong {
   font-size: 1.1rem;
   margin-top: 4px;
-  color: #fff;
+  color: #222;
 }
 
 .highlight-box .subtext {
   font-size: 0.8rem;
-  color: #888;
+  color: #222;
   margin-top: 4px;
 }
 
@@ -160,11 +164,11 @@
   flex: 0 0 calc(100% / 8 - 1rem); /* display seven cards each line，minus  */
   max-width: 100px;               
   height: 100px;
-  background: linear-gradient(to bottom, #111, #333);
-  color: white;
+  background: #fffefe; 
+  color: #222;
   border-radius: 1rem;
   text-align: center;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   font-size: 0.75rem;
   display: flex;
   flex-direction: column;
@@ -274,7 +278,7 @@
   width: 100%;
   max-width: calc(1200px * 7 / 9);        /* match tips width */
   margin: 20px auto;                      /* centered */
-  background: #1e1e1e;
+  background: #f1efef;
   border-radius: 24px;
   padding: 20px 30px;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
@@ -282,7 +286,7 @@
 }
 
 .seven-day-forecast h3 {
-  color: white;
+  color: black;
   font-size: 1.5rem;
   margin-bottom: 14px;
   text-align: center;
@@ -298,8 +302,8 @@
   flex: 0 0 auto;             
   width: 90px;
   height: 140px;
-  background-color: #111;
-  color: white;
+  background-color: #f9f7f7;
+  color: black;
   border-radius: 18px;
   padding: 12px 6px;
   text-align: center;
@@ -314,7 +318,7 @@
   font-weight: 500;
   font-size: 0.95rem;
   margin-bottom: 6px;
-  color: #ccc;
+  color: #050505;
 }
 
 .day-icon {
@@ -359,7 +363,7 @@
   position: relative;
   width: 100%;
   max-width: calc(1200px * 7 / 9);
-  margin: 0 auto 2.5rem;
+  margin: 0rem auto 2.5rem;
   height: 520px;                          /* ✅ 加高横幅：420 → 520 */
   background-size: cover;
   background-position: center;
@@ -372,6 +376,7 @@
   text-align: center;
      /* 你要的高度 */
   overflow: hidden;
+  padding-bottom: 2rem;
 }
 
 .weekly-image-banner::before {
@@ -429,9 +434,9 @@
 
 .climate-dropdown {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  z-index: 1;
+  top: 0px;
+  right: 100px;
+  z-index: 100;
 }
 
 .climate-dropdown select {
@@ -450,7 +455,7 @@
   object-fit: contain; /* 保持比例，不拉伸 */
   display: block;
   border-radius: 10px;
-  margin: 40px auto 0; /* 居中，顶部留白 */
+  margin: 0px auto 0; /* 居中，顶部留白 */
 }
 
 /* --- Historical Climate Insights--- */
@@ -462,7 +467,7 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   text-align: center;
   margin-bottom: 6rem;
-  margin: 0 auto 2rem auto;  /* 自动居中 */
+  margin: 140px auto 2rem auto;  /* 自动居中 */
   max-width: 980px;
 }
 
@@ -485,10 +490,12 @@
   display: grid;
   grid-template-columns: repeat(5, 200px); /* 每个卡片宽度 180px */
   gap: 2rem;
-  margin-top: 2rem;
+  margin-top: 4rem;
+  margin-bottom: 3rem;
   justify-content: center; /* 整体居中 */
   min-height: 250px;
 }
+
 
 
 /* 单个卡片 */
@@ -523,8 +530,6 @@
   line-height: 1.5;
   margin: 0;
 }
-
-
 
 
 

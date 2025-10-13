@@ -507,7 +507,7 @@ const Weather = () => {
             style={{
               position: "relative",
               zIndex: 1,            // 确保图表层级较低
-              marginBottom: "40px", // 与下方卡片留出空间
+              marginBottom: "130px", // 与下方卡片留出空间
             }}
           >
             <Plot
@@ -532,17 +532,13 @@ const Weather = () => {
           </div>
         </div>
 
-
-
         <div className="green-box climate-box">
           {/* <h2>Historical Climate Insights</h2> */}
           {climateType === 'temperature' ? climateInsightsTemp : climateInsightsRain}
         </div>
 
-
-
         <div
-          className="climate-section"
+          className="climate-future-section"
           style={{
             backgroundImage: `url(${process.env.PUBLIC_URL}/images/future-insights.jpg)`,
             backgroundSize: "cover",
@@ -551,40 +547,48 @@ const Weather = () => {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
+            position: "relative", 
+            minHeight: "520px",  
+            marginBottom: "130px",
+            
           }}
         >
-          <div className="climate-chart-card">
-            {/* 图表容器：与下方代码一致用 climate-image，并留出下方间距避免遮盖卡片 */}
-            <div
-              className="climate-image"
-              style={{
-                position: "relative",
-                zIndex: 1,             // 确保图表层级较低
-                marginBottom: "40px",  // 与下方卡片留出空间
-              }}
-            >
-              <Plot
-                data={futureSpec.data}
-                layout={{
-                  ...futureSpec.layout,
-                  autosize: true,
-                  dragmode: false,              // 禁止拖拽
-                  // 如需去掉底部缩略滑块，可加：xaxis: { ...(futureSpec.layout?.xaxis||{}), rangeslider: { visible: false } }
-                }}
-                config={{
-                  staticPlot: true,             // 仅展示，不可操作（保留悬停提示）
-                  displayModeBar: false,        // 隐藏右上角工具栏
-                  displaylogo: false,
-                  responsive: true,
-                }}
-                style={{ width: "100%", height: "100%" }}  // 占满 climate-image 容器
-                useResizeHandler
-              />
-            </div>
-          </div>
+
+        {/* ✅ 白色标题：位于上部中央 */}
+        <h2
+          style={{
+            position: "absolute",
+            top: "80px",               // 距离顶部 40px（可根据需要调整）
+            left: "50%",
+            transform: "translateX(-50%)", // 水平居中
+            color: "#ffffff",          // 白色文字
+            fontSize: "2.2rem",        // 可按需调整大小
+            fontWeight: "bold",
+            margin: 0,
+            textShadow: "0 2px 6px rgba(0, 0, 0, 0.6)", // 增强可读性（深色描边效果）
+            zIndex: 3,                 // 确保在图片之上
+            textAlign: "center",
+          }}
+        >
+          Adapting to Future Climate
+        </h2>
+
+
+          {/* ✅ 叠加的 future.png 图片 */}
+          <img
+            src="/images/future.png"
+            alt="Future Climate Projection"
+            className="climate-image"
+            style={{
+              position: "absolute",
+              top: "80%",               // 距离顶部 50%
+              transform: "translateY(-50%)", // 向上偏移自身高度的一半，实现垂直居中
+              zIndex: 2,                // 确保在背景图之上
+              // 注意：className="climate-image" 已包含 width/max-width 等样式
+            }}
+          />
+
         </div>
-
-
 
         <div className="green-box climate-box">
           <div className="climate-card-grid">
