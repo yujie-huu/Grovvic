@@ -507,7 +507,7 @@ const Weather = () => {
             style={{
               position: "relative",
               zIndex: 1,            // 确保图表层级较低
-              marginBottom: "40px", // 与下方卡片留出空间
+              marginBottom: "130px", // 与下方卡片留出空间
             }}
           >
             <Plot
