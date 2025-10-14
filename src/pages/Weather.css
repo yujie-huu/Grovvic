@@ -455,8 +455,9 @@
   object-fit: contain; /* 保持比例，不拉伸 */
   display: block;
   border-radius: 10px;
-  margin: 0px auto 0; /* 居中，顶部留白 */
+  margin: 0px auto -50px; /* 居中，顶部留白 */
 }
+
 
 /* --- Historical Climate Insights--- */
 /* 长卡片样式 */
