@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import axios from 'axios';
 import './GardenPlan.css';
 import PlantSpeciesCard from '../components/PlantSpeciesCard';
@@ -12,6 +12,7 @@ const GardenPlan = () => {
 
   const [plantVarieties, setPlantVarieties] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null); // 添加错误状态
   const [showVarieties, setShowVarieties] = useState(false);
   const [selectedSpecies, setSelectedSpecies] = useState("");
   const [enteredViaCard, setEnteredViaCard] = useState(false);
@@ -41,7 +42,7 @@ const GardenPlan = () => {
   
 
   // fetch monthly flowers for recommendation
-  const fetchMonthlyPlants = async () => {
+  const fetchMonthlyPlants = useCallback(async () => {
     const currentMonthUrl = `https://netzero-vigrow-api.duckdns.org/plants/month/${currentMonth}`;
     setMonthlyPlantsLoading(true);
     try {
@@ -57,7 +58,7 @@ const GardenPlan = () => {
     } finally {
       setMonthlyPlantsLoading(false);
     }
-  };
+  }, [currentMonth]);
   
   // fetch all plant names
   useEffect(() => {
@@ -75,10 +76,40 @@ const GardenPlan = () => {
     fetchAllPlantNames();
   }, []);
 
+  // handle show all click
+  const handleShowAll = useCallback(async () => {
+    setSelectedCategory("Plants");
+    setSelectedMonth("all months");    
+    setSelectedPlantName("");
+    setShowDropdown(false);
+    setAppliedCategory("Plants");
+    setAppliedMonth("all months");
+    
+    // fetch plants by directly call the API
+    setLoading(true);
+    setError(null);
+    setShowVarieties(false);
+    try {
+      const response = await axios.get('https://netzero-vigrow-api.duckdns.org/plants');
+      setPlants(response.data);
+    } catch (error) {
+      console.error("Error fetching plants:", error);
+      setError("Failed to fetch plants. Please try again.");
+      setPlants([]);
+    } finally {
+      setLoading(false);
+    }
+  }, []); // Empty dependency array, because the functions inside useCallback use only setState functions
+
   // fetch monthly plants on component mount
   useEffect(() => {
     fetchMonthlyPlants();
-  }, []);
+  }, [fetchMonthlyPlants]);
+
+  // Load all plants on component mount
+  useEffect(() => {
+    handleShowAll();
+  }, [handleShowAll]);
 
   // filter plant names
   useEffect(() => {
@@ -133,6 +164,7 @@ const GardenPlan = () => {
   // fetch plants data
   const fetchPlants = async () => {
     setLoading(true);
+    setError(null); // 清除之前的错误
     setShowVarieties(false);
     try {
       const url = buildApiUrl();
@@ -140,6 +172,7 @@ const GardenPlan = () => {
       setPlants(response.data);
     } catch (error) {
       console.error("Error fetching plants:", error);
+      setError("Failed to fetch plants. Please try again.");
       setPlants([]);
     } finally {
       setLoading(false);
@@ -149,6 +182,7 @@ const GardenPlan = () => {
   // fetch plant varieties
   const fetchPlantVarieties = async (speciesName) => {
     setLoading(true);
+    setError(null); // 清除之前的错误
     try {
       const url = `https://netzero-vigrow-api.duckdns.org/plant/${speciesName}/varieties`;
       const response = await axios.get(url);
@@ -157,6 +191,7 @@ const GardenPlan = () => {
       setSelectedSpecies(speciesName);
     } catch (error) {
       console.error("Error fetching plant varieties:", error);
+      setError("Failed to fetch plant varieties. Please try again.");
       setPlantVarieties([]);
     } finally {
       setLoading(false);
@@ -246,29 +281,6 @@ const GardenPlan = () => {
     setAppliedMonth("");
   };
 
-  // handle show all click
-  const handleShowAll = async () => {
-    setSelectedCategory("Plants");
-    setSelectedMonth("all months");    
-    setSelectedPlantName("");
-    setShowDropdown(false);
-    setAppliedCategory("Plants");
-    setAppliedMonth("all months");
-    
-    // fetch plants by directly call the API
-    setLoading(true);
-    setShowVarieties(false);
-    try {
-      const response = await axios.get('https://netzero-vigrow-api.duckdns.org/plants');
-      setPlants(response.data);
-    } catch (error) {
-      console.error("Error fetching plants:", error);
-      setPlants([]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
     <div className="gardenplan-page">
       {/* Banner Section - Ribbon-like area */}
@@ -292,7 +304,10 @@ const GardenPlan = () => {
             <h3 className="monthly-tips-title">What To Plant This Month</h3>
             <div className="monthly-tips-plantcards">
             {monthlyPlantsLoading ? (
-                <div className="loading-message">loading recommendations...</div>
+                <div className="loading-container">
+                  <div className="loading-spinner"></div>
+                  <p>Loading recommendations...</p>
+                </div>
               ) : monthlyPlants.length > 0 ? (
                 monthlyPlants.map((plant, index) => (
                   <PlantSpeciesCard key={`plant-${plant.plant_name}-${index}`} plant={plant} />
@@ -468,7 +483,34 @@ const GardenPlan = () => {
             )}
 
             <div className="search-results">
-              {!showVarieties && plants.length > 0 && (
+              {/* 加载状态 */}
+              {loading && (
+                <div className="search-results-loading">
+                  <div className="loading-container">
+                    <div className="loading-spinner"></div>
+                    <p>Loading plants...</p>
+                  </div>
+                </div>
+              )}
+
+              {/* 错误状态 */}
+              {error && !loading && (
+                <div className="search-results-error">
+                  <div className="error-container">
+                    <p>❌ {error}</p>
+                    <button onClick={() => {
+                      if (showVarieties) {
+                        fetchPlantVarieties(selectedSpecies);
+                      } else {
+                        fetchPlants();
+                      }
+                    }}>Retry</button>
+                  </div>
+                </div>
+              )}
+
+              {/* 正常结果显示 */}
+              {!loading && !error && !showVarieties && plants.length > 0 && (
                 <div>
                   <h3 className="varieties-title">{appliedCategory} in {appliedMonth}</h3>
                   <div className="plant-cards-container">
@@ -481,11 +523,18 @@ const GardenPlan = () => {
                 </div>
               )}
 
-              {showVarieties && plantVarieties.length > 0 && (
+              {!loading && !error && showVarieties && plantVarieties.length > 0 && (
                 <div className="plant-cards-container">
                   {plantVarieties.map((plant, index) => (
                     <PlantCard key={`${plant.variety}-${index}`} plant={plant} />
                   ))}
+                </div>
+              )}
+
+              {/* 无结果状态 */}
+              {!loading && !error && plants.length === 0 && plantVarieties.length === 0 && !showVarieties && (
+                <div className="search-results-error">
+                  <p>No plants found. Try adjusting your filters or search terms.</p>
                 </div>
               )}
             </div>

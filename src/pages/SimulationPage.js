@@ -165,10 +165,11 @@ export default function SimulationPage(){
   const [plants, setPlants] = useState([]); // array of { name, ... }
   const [allPlants, setAllPlants] = useState([]); // array of all plants from plant_spacing.json
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState(null); // 改为null以支持更好的错误处理
 
   const handleFilter = useCallback(async () => {
-    setLoading(true); setError('');
+    setLoading(true); 
+    setError(null); // 清除之前的错误
     try {
       const body = {
         season: normalizeSeason(season ?? DEFAULTS.season),
@@ -224,7 +225,7 @@ export default function SimulationPage(){
       plant.plant_name.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setPlants(filteredPlants);
-    setError('');
+    setError(null); // 清除之前的错误
   }, [searchTerm, allPlants, handleFilter]);
 
   // Handle Enter key press in search input
@@ -257,7 +258,7 @@ export default function SimulationPage(){
   // === Recommendations ===
   const [recs, setRecs] = useState([]);           // ['Basil','Carrot','Onion']
   const [recLoading, setRecLoading] = useState(false);
-  const [recError, setRecError] = useState('');
+  const [recError, setRecError] = useState(null); // 改为null以支持更好的错误处理
   const RECOMMEND_API = 'https://netzero-vigrow-api.duckdns.org/iter3/plants/recommend';
   
   // === Insights ===
@@ -425,7 +426,7 @@ export default function SimulationPage(){
   const fetchRecommendations = useCallback(async () => {
     try {
       setRecLoading(true);
-      setRecError('');
+      setRecError(null); // 清除之前的错误
       const body = { plants: getPlantedNames() };
       const res = await fetch(RECOMMEND_API, {
         method: 'POST',
@@ -439,7 +440,7 @@ export default function SimulationPage(){
         : [];
       setRecs(top3);
     } catch (e) {
-      setRecError('Failed to load recommendations');
+      setRecError('Failed to load recommendations. Please try again.');
       setRecs([]);
     } finally {
       setRecLoading(false);
@@ -1095,11 +1096,24 @@ export default function SimulationPage(){
           <div className="plant-display-area">
             <div className="plant-list-header">
               <h3>Available Plants ({plants.length})</h3>
-              {loading && <span className="loading-indicator">Loading...</span>}
             </div>
 
             <div className="simulation-plant-list">
-            {plants.length === 0 && !loading ? (
+            {loading ? (
+              <div className="plant-list-loading">
+                <div className="loading-container">
+                  <div className="loading-spinner"></div>
+                  <p>Loading plants...</p>
+                </div>
+              </div>
+            ) : error ? (
+              <div className="plant-list-error">
+                <div className="error-container">
+                  <p>❌ {error}</p>
+                  <button onClick={handleFilter}>Retry</button>
+                </div>
+              </div>
+            ) : plants.length === 0 ? (
               <div className="no-plants-message">
                 <p>No plants found matching your criteria.</p>
                 <p>Try adjusting your filters or click "Apply filters" to search again.</p>
@@ -1137,9 +1151,19 @@ export default function SimulationPage(){
               </div>
 
               {recLoading ? (
-                <div className="card-empty">Loading…</div>
+                <div className="rec-loading">
+                  <div className="loading-container">
+                    <div className="loading-spinner"></div>
+                    <p>Loading recommendations...</p>
+                  </div>
+                </div>
               ) : recError ? (
-                <div className="card-empty">{recError}</div>
+                <div className="rec-error">
+                  <div className="error-container">
+                    <p>❌ {recError}</p>
+                    <button onClick={fetchRecommendations}>Retry</button>
+                  </div>
+                </div>
               ) : recs.length === 0 ? (
                 <div className="card-empty">No suggestions yet</div>
               ) : (

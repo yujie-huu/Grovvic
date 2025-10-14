@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { MdArrowBack, MdSearch, MdWarning } from 'react-icons/md';
+import { MdArrowBack, MdSearch } from 'react-icons/md';
 import './CompanionPage.css';
 
 const CompanionPage = () => {
@@ -11,7 +11,7 @@ const CompanionPage = () => {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [filteredPlants, setFilteredPlants] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState(null); // null for better error handling
   
   const inputRef = useRef(null);
   const suggestionsRef = useRef(null);
@@ -28,14 +28,18 @@ const CompanionPage = () => {
   useEffect(() => {
     const fetchDefaultCompanions = async () => {
       setLoading(true);
+      setError(null); // clear previous error
       try {
         const response = await fetch(`https://netzero-vigrow-api.duckdns.org/iter2/companion/plant/All`);
         if (response.ok) {
           const data = await response.json();
           setCompanionPlants(data);
+        } else {
+          throw new Error('Failed to fetch default companion plants');
         }
       } catch (err) {
         console.error('Error fetching default companion plants:', err);
+        setError('Failed to load companion plants. Please try again.');
       } finally {
         setLoading(false);
       }
@@ -80,7 +84,7 @@ const CompanionPage = () => {
     }
 
     setLoading(true);
-    setError('');
+    setError(null); // clear previous error
     
     try {
       const response = await fetch(`https://netzero-vigrow-api.duckdns.org/iter2/companion/plant/${selectedPlant}`);
@@ -91,7 +95,7 @@ const CompanionPage = () => {
       setCompanionPlants(data);
       setSearchedPlant(selectedPlant); // Update the searched plant only after successful search
     } catch (err) {
-      setError('Failed to load companion plants');
+      setError('Failed to load companion plants. Please try again.');
       console.error('Error fetching companion plants:', err);
     } finally {
       setLoading(false);
@@ -181,16 +185,44 @@ const CompanionPage = () => {
 
       {/* Error Message */}
       {error && (
-        <div className="error-message">
-          <div style={{ marginRight: '8px'}}><MdWarning/></div>
-          {error}
+        <div className="error-container">
+          <p>❌ {error}</p>
+          <button onClick={() => {
+            if (selectedPlant) {
+              handleSearch();
+            } else {
+              // reload default data
+              const fetchDefaultCompanions = async () => {
+                setLoading(true);
+                setError(null);
+                try {
+                  const response = await fetch(`https://netzero-vigrow-api.duckdns.org/iter2/companion/plant/All`);
+                  if (response.ok) {
+                    const data = await response.json();
+                    setCompanionPlants(data);
+                  } else {
+                    throw new Error('Failed to fetch default companion plants');
+                  }
+                } catch (err) {
+                  console.error('Error fetching default companion plants:', err);
+                  setError('Failed to load companion plants. Please try again.');
+                } finally {
+                  setLoading(false);
+                }
+              };
+              fetchDefaultCompanions();
+            }
+          }}>Retry</button>
         </div>
       )}
 
       {/* Loading State */}
       {loading && (
-        <div className="loading-message">
-          Loading companion plants...
+        <div className="results-loading">
+          <div className="loading-container">
+            <div className="loading-spinner"></div>
+            <p>Loading companion plants...</p>
+          </div>
         </div>
       )}
 
@@ -262,6 +294,13 @@ const CompanionPage = () => {
               </div>
             </div>
           )}
+        </div>
+      )}
+
+      {/* No Results State */}
+      {!loading && !error && companionPlants.length === 0 && (
+        <div className="results-error">
+          <p>No companion plants found. Try selecting a different plant.</p>
         </div>
       )}
     </div>
