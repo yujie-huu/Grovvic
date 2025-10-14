@@ -58,11 +58,14 @@
   border-radius: 10px;
   padding: 10px 14px;
 }
-.search-icon {
-  margin-right: 8px;
-  font-size: 14px;
-  color: #6b7280;
+.biodiversity-search-icon {
+  font-size: x-large;
+  color: black;
+  align-self: center;
+  justify-self: center;
+  margin: 5px 5px 0 10px;
 }
+
 .search-input {
   border: none;
   outline: none;

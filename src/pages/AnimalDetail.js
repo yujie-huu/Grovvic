@@ -1,13 +1,15 @@
 // src/pages/iteration_2/AnimalDetail.js
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { MapContainer, TileLayer, CircleMarker, Tooltip, Polygon, GeoJSON } from "react-leaflet";
 import * as turf from "@turf/turf";
 import "leaflet/dist/leaflet.css";
 import "./AnimalDetail.css";
+import { MdArrowBack } from "react-icons/md";
 
 const AnimalDetail = () => {
   const { name } = useParams();
+  const navigate = useNavigate();
   const [animal, setAnimal] = useState(null);
   const [occurrences, setOccurrences] = useState([]);
   const [polygonBounds, setPolygonBounds] = useState(null);
@@ -200,6 +202,10 @@ const AnimalDetail = () => {
 
   return (
     <div className="animal-detail">
+      <div className="back-button" onClick={() => navigate(-1)}>
+        <MdArrowBack />
+      </div>
+
       <h1 className="animal-vernacular">
         {animal.vernacular_name || animal.animal_taxon_name}
       </h1>

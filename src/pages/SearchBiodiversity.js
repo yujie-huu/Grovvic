@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./SearchBiodiversity.css";
+import { MdSearch } from "react-icons/md";
 
 const SS_Q = "bio.search.q";         // 会话内保存的查询词
 const SS_RESULTS = "bio.search.res"; // 会话内保存的查询结果（字符串化）
@@ -139,7 +140,7 @@ const SearchBiodiversity = ({ onSelect = () => {} }) => {
       <div className="explore-section">
         <div className="explore-search-box">
           <div className="search-input-wrapper">
-            <span className="search-icon">🔍</span>
+            <span className="biodiversity-search-icon"><MdSearch /></span>
             <input
               type="text"
               placeholder="Search"
