@@ -151,10 +151,15 @@ const Weather = () => {
 
   const climateInsightsRain = (
     <>
-      <p className="climate-intro">
-        There’s been a significant decline in autumn rainfall, slight drops in winter and spring,
-        and a small increase in summer rainfall. Fewer very wet years have occurred.
-      </p>
+
+      <div className="climate-intro-card">
+        <h2>Historical Climate Insights</h2>
+        <p>
+          There’s been a significant decline in autumn rainfall, slight drops in winter and spring,
+          and a small increase in summer rainfall. Fewer very wet years have occurred.
+        </p>
+      </div>
+
       <div className="climate-card-grid">
         <div className="climate-card">
           <h3>IRRIGATE MORE DURING AUTUMN</h3>
@@ -507,7 +512,7 @@ const Weather = () => {
             style={{
               position: "relative",
               zIndex: 1,            // 确保图表层级较低
-              marginBottom: "130px", // 与下方卡片留出空间
+              marginBottom: "90px", // 与下方卡片留出空间
             }}
           >
             <Plot
