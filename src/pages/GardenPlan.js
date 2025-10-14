@@ -12,7 +12,7 @@ const GardenPlan = () => {
 
   const [plantVarieties, setPlantVarieties] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null); // 添加错误状态
+  const [error, setError] = useState(null); // add error state
   const [showVarieties, setShowVarieties] = useState(false);
   const [selectedSpecies, setSelectedSpecies] = useState("");
   const [enteredViaCard, setEnteredViaCard] = useState(false);
@@ -164,7 +164,7 @@ const GardenPlan = () => {
   // fetch plants data
   const fetchPlants = async () => {
     setLoading(true);
-    setError(null); // 清除之前的错误
+    setError(null); // clear previous error
     setShowVarieties(false);
     try {
       const url = buildApiUrl();
@@ -182,7 +182,7 @@ const GardenPlan = () => {
   // fetch plant varieties
   const fetchPlantVarieties = async (speciesName) => {
     setLoading(true);
-    setError(null); // 清除之前的错误
+    setError(null); // clear previous error·
     try {
       const url = `https://netzero-vigrow-api.duckdns.org/plant/${speciesName}/varieties`;
       const response = await axios.get(url);
@@ -483,7 +483,7 @@ const GardenPlan = () => {
             )}
 
             <div className="search-results">
-              {/* 加载状态 */}
+              {/* Loading state */}
               {loading && (
                 <div className="search-results-loading">
                   <div className="loading-container">
@@ -493,7 +493,7 @@ const GardenPlan = () => {
                 </div>
               )}
 
-              {/* 错误状态 */}
+              {/* Error state */}
               {error && !loading && (
                 <div className="search-results-error">
                   <div className="error-container">
@@ -509,7 +509,7 @@ const GardenPlan = () => {
                 </div>
               )}
 
-              {/* 正常结果显示 */}
+              {/* Normal results display */}
               {!loading && !error && !showVarieties && plants.length > 0 && (
                 <div>
                   <h3 className="varieties-title">{appliedCategory} in {appliedMonth}</h3>
@@ -531,7 +531,7 @@ const GardenPlan = () => {
                 </div>
               )}
 
-              {/* 无结果状态 */}
+              {/* No results state */}
               {!loading && !error && plants.length === 0 && plantVarieties.length === 0 && !showVarieties && (
                 <div className="search-results-error">
                   <p>No plants found. Try adjusting your filters or search terms.</p>

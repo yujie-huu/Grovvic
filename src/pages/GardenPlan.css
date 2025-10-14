@@ -99,6 +99,16 @@
   padding: 10px 0;
 }
 
+/* Loading state styles for monthly tips area */
+.monthly-tips-plantcards .loading-container {
+  grid-column: 1 / -1; /* Make loading animation span entire grid width */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  width: 100%;
+}
+
 .monthly-tips-description {
   font-size: 1.5rem;
   color: #555;

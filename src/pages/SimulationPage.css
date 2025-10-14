@@ -1567,12 +1567,14 @@
   background-color: #4d7c0f;
 }
 
-/* 为植物列表区域添加加载状态样式 */
+/* Loading state styles for plant list area */
 .plant-list-loading {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 300px;
+  width: 100%;
+  grid-column: 1 / -1; /* Make loading animation span entire grid width */
 }
 
 .plant-list-error {
@@ -1583,14 +1585,18 @@
   text-align: center;
   color: #dc2626;
   font-size: 1.1rem;
+  width: 100%;
+  grid-column: 1 / -1; /* Make error state span entire grid width */
 }
 
-/* 为推荐区域添加加载状态样式 */
+/* Loading state styles for recommendations area */
 .rec-loading {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 150px;
+  width: 100%;
+  flex: 1; /* Take up remaining space */
 }
 
 .rec-error {
@@ -1601,5 +1607,7 @@
   text-align: center;
   color: #dc2626;
   font-size: 0.9rem;
+  width: 100%;
+  flex: 1; /* Take up remaining space */
 }
 
