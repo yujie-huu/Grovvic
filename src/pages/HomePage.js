@@ -97,7 +97,7 @@ const HomePage = () => {
             <span className="nav-text">GUIDE</span>
           </div>
           <div className="nav-item sustainable-nav" onClick={handleSustainClick}>
-            <span className="nav-text">SUSTAINABLE</span>
+            <span className="nav-text">SUSTAINABILITY</span>
           </div>
           <div className="nav-item biodiversity-nav" onClick={handleBioClick}>
             <span className="nav-text">BIODIVERSITY</span>
