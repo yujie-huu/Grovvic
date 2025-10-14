@@ -486,10 +486,10 @@ const Weather = () => {
           className="weekly-image-banner"
           style={{
             backgroundImage: `url(${process.env.PUBLIC_URL}/images/iter2-weather-history.png)`,
-            backgroundSize: "contain",     // 完整展示原图
-            backgroundRepeat: "no-repeat", // 不重复
-            backgroundPosition: "center",  // 居中
-            height: "500px"                // 高度可按需求调整
+            backgroundSize: "contain",     
+            backgroundRepeat: "no-repeat", 
+            backgroundPosition: "center",  
+            height: "500px"                
           }}
         >
           <div className="weekly-image-overlay">

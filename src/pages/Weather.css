@@ -455,7 +455,7 @@
   object-fit: contain; /* 保持比例，不拉伸 */
   display: block;
   border-radius: 10px;
-  margin: 0px auto -50px; /* 居中，顶部留白 */
+  margin: 0px auto 0px; /* 居中，顶部留白 */
 }
 
 
@@ -468,7 +468,7 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   text-align: center;
   margin-bottom: 6rem;
-  margin: 140px auto 2rem auto;  /* 自动居中 */
+  margin:-60px auto 2rem auto;  /* 自动居中 */
   max-width: 980px;
 }
 
