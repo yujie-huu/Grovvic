@@ -1,12 +1,10 @@
 // Weather.jsx
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import './Weather.css'
 import axios from 'axios'
 import { buildWateringTable } from '../utils/watering.js';
 import Plot from "react-plotly.js";
-import tempSpec from "../data/annual_temp_anomaly.json";
-import rainSpec from "../data/annual_rainfall_anomaly.json";
-import futureSpec from "../data/climatology_monthly_interactive.json";
+// 移除同步导入，改为懒加载
 
 const Weather = () => {
   const [current, setCurrent] = useState(null)
@@ -15,6 +13,13 @@ const Weather = () => {
   const [unit, setUnit] = useState('metric')
   const [selectedCity, setSelectedCity] = useState('Melbourne')
   const [climateType, setClimateType] = useState('temperature')
+  
+  // 新增：懒加载状态管理
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+  const [tempSpec, setTempSpec] = useState(null)
+  const [rainSpec, setRainSpec] = useState(null)
+  const [climateDataLoaded, setClimateDataLoaded] = useState(false)
 
   const apiKey = 'cc6ac231ffa5fcb7e2893394cea3d7d4'
   const country = 'AU'
@@ -27,6 +32,9 @@ const Weather = () => {
 
   const fetchWeather = async (cityName, unitType) => {
     try {
+      setLoading(true)
+      setError(null)
+      
       const geoRes = await axios.get('https://api.openweathermap.org/geo/1.0/direct', {
         params: { q: `${cityName},${country}`, limit: 1, appid: apiKey }
       })
@@ -42,13 +50,64 @@ const Weather = () => {
       setDailyForecasts(data.daily.slice(0, 8))
     } catch (err) {
       console.error('One Call API error:', err)
-      alert('❌ Failed to fetch weather data. Please check your API key and subscription.')
+      setError('Failed to fetch weather data. Please try again.')
+    } finally {
+      setLoading(false)
     }
   }
 
+  // 懒加载气候数据
+  const loadClimateData = useCallback(async () => {
+    if (climateDataLoaded) return
+    
+    try {
+      const [tempData, rainData] = await Promise.all([
+        import('../data/annual_temp_anomaly.json'),
+        import('../data/annual_rainfall_anomaly.json')
+      ])
+      
+      setTempSpec(tempData.default)
+      setRainSpec(rainData.default)
+      setClimateDataLoaded(true)
+    } catch (err) {
+      console.error('Failed to load climate data:', err)
+      setError('Failed to load climate data')
+    }
+  }, [climateDataLoaded])
+
   useEffect(() => { fetchWeather(selectedCity, unit) }, [unit, selectedCity])
+  
+  // 当用户切换到气候图表时才加载数据
+  useEffect(() => {
+    if (climateType === 'temperature' || climateType === 'rainfall') {
+      loadClimateData()
+    }
+  }, [climateType, climateDataLoaded])
 
   const toggleUnit = () => setUnit(prev => (prev === 'metric' ? 'imperial' : 'metric'))
+
+  // 改进的加载状态
+  if (loading && !current) {
+    return (
+      <div className="weather-page">
+        <div className="loading-container">
+          <div className="loading-spinner"></div>
+          <p>Loading weather data...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (error && !current) {
+    return (
+      <div className="weather-page">
+        <div className="error-container">
+          <p>❌ {error}</p>
+          <button onClick={() => fetchWeather(selectedCity, unit)}>Retry</button>
+        </div>
+      </div>
+    )
+  }
 
   if (!current) return <p>Loading weather...</p>
 
@@ -107,10 +166,7 @@ const Weather = () => {
   // define "extreme" heuristics
   const hasExtreme = (maxTempC >= 35) || (minTempC <= 1) || (maxWindKmh >= 50) || (maxUvi >= 8) || (maxDailyRain >= 30)
 
-  // 1.3
-  const imageSrc = climateType === 'temperature' 
-    ? '/images/temperature_average.jpg'
-    : '/images/rainfall_average.png';
+  // 移除未使用的变量
 
   const climateInsightsTemp = (
     <>
@@ -209,75 +265,7 @@ const Weather = () => {
   })
 
 
-  const weatherTips = [
-  // 🌡️ Temperature
-  {
-    type: 'temperature',
-    condition: (temp) => temp > 30,
-    tip: "Use shade cloth or move pots out of direct sunlight!"
-  },
-  {
-    type: 'temperature',
-    condition: (temp) => temp >= 10 && temp <= 25,
-    tip: "Now is the perfect time to plant and sow seeds!"
-  },
-  {
-    type: 'temperature',
-    condition: (temp) => temp >= 1 && temp < 10,
-    tip: "Cover seedlings or bring them indoors!"
-  },
-  {
-    type: 'temperature',
-    condition: (temp) => temp < 1,
-    tip: "Cover fragile plants with sheets overnight and bring pots indoors!"
-  },
-  // 🌧️ Rainfall
-  {
-    type: 'rainfall',
-    condition: (rain) => rain < 1,
-    tip: "Make sure you've mulched your garden to keep the soil moist!"
-  },
-  {
-    type: 'rainfall',
-    condition: (rain) => rain > 20,
-    tip: "Harvest ripe produce to avoid damage! Raise pots and stake tall plants if you need to!"
-  },
-  // 🌬️ Wind
-  {
-    type: 'wind',
-    condition: (windKmh) => windKmh > 25,
-    tip: "Shelter fragile pots and secure trellises!"
-  },
-  // 💧 Humidity
-  {
-    type: 'humidity',
-    condition: (humidity) => humidity > 70,
-    tip: "Watch for fungal infection!"
-  },
-  // 🌞 UV Index
-  {
-    type: 'uv',
-    condition: (uvi) => uvi > 8,
-    tip: "Shade seedlings and sensitive plants!"
-  }
-  ]
-
-  const getWeatherTip = (hourData) => {
-    const temp = hourData.temp
-    const rain = hourData.rain?.['1h'] || 0
-    const windKmh = hourData.wind_speed * 3.6
-    const humidity = hourData.humidity
-    const uvi = hourData.uvi
-
-    for (const rule of weatherTips) {
-      if (rule.type === 'temperature' && rule.condition(temp)) return rule.tip
-      if (rule.type === 'rainfall' && rule.condition(rain)) return rule.tip
-      if (rule.type === 'wind' && rule.condition(windKmh)) return rule.tip
-      if (rule.type === 'humidity' && rule.condition(humidity)) return rule.tip
-      if (rule.type === 'uv' && rule.condition(uvi)) return rule.tip
-    }
-    return null
-  }
+  // 移除未使用的函数和变量
 
 
   return (
@@ -389,7 +377,7 @@ const Weather = () => {
         <div
           className="gardening-hero"
           style={{
-            ['--tip-count']: dayTips.length,   // ✅ 把当日 tip 的条数传给 CSS
+            '--tip-count': dayTips.length,   // ✅ 把当日 tip 的条数传给 CSS
             backgroundImage: `url(${process.env.PUBLIC_URL || ''}/images/days.png)`,
             backgroundSize: 'cover',
             backgroundPosition: 'center'
@@ -515,25 +503,31 @@ const Weather = () => {
               marginBottom: "90px", // 与下方卡片留出空间
             }}
           >
-            <Plot
-              data={(climateType === "temperature" ? tempSpec : rainSpec).data}
-              layout={{
-                ...(climateType === "temperature" ? tempSpec : rainSpec).layout,
-                autosize: true,
-                dragmode: false, // 禁止拖拽
-              }}
-              config={{
-                //staticPlot: true,       禁止交互，仅悬停提示
-                displayModeBar: false, // 隐藏右上角工具栏
-                displaylogo: false,
-                responsive: true,
-              }}
-              style={{
-                width: "100%",
-                height: "100%",
-              }}
-              useResizeHandler
-            />
+            {climateDataLoaded && tempSpec && rainSpec ? (
+              <Plot
+                data={(climateType === "temperature" ? tempSpec : rainSpec).data}
+                layout={{
+                  ...(climateType === "temperature" ? tempSpec : rainSpec).layout,
+                  autosize: true,
+                  dragmode: false, // 禁止拖拽
+                }}
+                config={{
+                  //staticPlot: true,       禁止交互，仅悬停提示
+                  displayModeBar: false, // 隐藏右上角工具栏
+                  displaylogo: false,
+                  responsive: true,
+                }}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                }}
+                useResizeHandler
+              />
+            ) : (
+              <div className="chart-loading">
+                <p>Loading climate chart...</p>
+              </div>
+            )}
           </div>
         </div>
 
