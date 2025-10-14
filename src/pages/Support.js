@@ -373,26 +373,30 @@ const Support = () => {
               title: "GARDENS FOR HARVEST",
               desc:
                 "A free program offering home-growing guides, seasonal tips, workshops, and community connections to support sustainable food gardening at home—even in small spaces.",
+              url: "https://www.yarraranges.vic.gov.au/Environment/Sustainable-communities/Gardens-for-Harvest" // 👈 添加链接
             },
             {
               img: "/images/support_local_2.png",
               title: "GARDENS FOR WILD LIFE VICTORIA",
               desc:
                 "A statewide network supporting wildlife-friendly gardens, building skills, partnerships, and community connections through resources and workshops.",
+              url: "https://gardensforwildlifevictoria.com/our-work/" // 👈 添加链接
             },
             {
               img: "/images/support_local_3.png",
               title: "MY SMART GARDEN",
               desc:
                 "A free program run by partner councils across Melbourne, offering education and support for sustainable home gardening.",
+              url: "https://www.mysmartgarden.org.au/about/" // 👈 添加链接
             },
             {
               img: "/images/support_local_4.png",
               title: "VICTORIAN SCHOOLS GARDEN PROGRAM",
               desc:
                 "Supports student learning, health, and wellbeing by encouraging schools to use outdoor spaces and build lifelong connections with nature.",
+              url: "https://www.vsgp.org.au" // 👈 暂时空出
             },
-          ].map(({ img, title, desc }, i) => (
+          ].map(({ img, title, desc, url }, i) => (
             <div className="local-program-card" key={i}>
               <div className="local-program-body">
                 <img src={img} alt={title} />
@@ -400,7 +404,7 @@ const Support = () => {
                 <p>{desc}</p>
               </div>
               <div className="local-program-divider"></div>
-              <a href="#" className="local-program-link">
+              <a href={url} target="_blank" rel="noopener noreferrer" className="local-program-link">
                 LEARN MORE
               </a>
             </div>
@@ -415,22 +419,23 @@ const Support = () => {
         </div>
         <div className="local-communities-track">
           {communityData.map((item, idx) => (
-            <div className="local-program-card community-card" key={idx}>
-              <img src={item.img} alt={item.title} className="community-card-img" />
-              <div className="local-program-body">
-                <h3>{item.title}</h3>
-                <p>{item.desc}</p>
+          <div className="local-program-card community-card" key={idx}> {/* 注意：这里可能需要保留 community-card 类 */}
+            <div className="local-program-body">
+              {/* 👇 新增：图片容器 */}
+              <div className="local-program-image-container">
+                <img src={item.img} alt={item.title} /> {/* 👈 使用 item.img 和 item.title */}
               </div>
-              <div className="local-program-divider"></div>
-              <a
-                href={item.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="local-program-link"
-              >
-                LEARN MORE
-              </a>
+              {/* 👇 新增：文本容器 */}
+              <div className="local-program-text">
+                <h3>{item.title}</h3> {/* 👈 使用 item.title */}
+                <p>{item.desc}</p> {/* 👈 使用 item.desc */}
+              </div>
             </div>
+            <div className="local-program-divider"></div>
+            <a href={item.url} target="_blank" rel="noopener noreferrer" className="local-program-link"> {/* 👈 使用 item.url */}
+              LEARN MORE
+            </a>
+          </div>
           ))}
         </div>
       </section>

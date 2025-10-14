@@ -430,7 +430,7 @@ export default function DiagnosisWizard({
 
       {/* 白色卡片 */}
       <div style={styles.cardContainer}>
-        {/* 👇 新增：左上角 Start over 按钮 */}
+        {/* 左上角 Start over 按钮 */}
         <button
           onClick={() => {
             setStep("category");
@@ -443,11 +443,11 @@ export default function DiagnosisWizard({
             position: 'absolute',
             top: '10px',
             left: '10px',
-            padding: '5px 10px',
-            fontSize: '13px',
+            padding: '4px 10px',
+            fontSize: '12px',
             backgroundColor: '#b5babeff',
             border: '1px solid #ccc',
-            borderRadius: '16px',
+            borderRadius: '36px',
             cursor: 'pointer',
             zIndex: 10,
             color: 'white',
@@ -531,7 +531,7 @@ export default function DiagnosisWizard({
               <div>{parsedCause.cause}</div>
                 {parsedCause.solution && (
                   <div style={{ marginTop: 12 }}>
-                    <div>Suggested solution:{parsedCause.solution}.</div>
+                    <div>Suggested solution: {parsedCause.solution}.</div>
                     <div></div>
                   </div>
                 )}
