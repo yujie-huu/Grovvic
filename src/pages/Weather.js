@@ -270,85 +270,88 @@ const Weather = () => {
 
   return (
     <div className="weather-page">
-      <div className="weather-main-card">
-        <div className="weather-main-top">
-          <div className="location-wrapper">
-            <span className="icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"/>
-              </svg>
-            </span>
-            <select
-              className="location-tag"
-              value={selectedCity}
-              onChange={(e) => setSelectedCity(e.target.value)}
-            >
-              {victoriaCities.map(city => (
-                <option key={city} value={city}>Victoria, {city}</option>
-              ))}
-            </select>
+      <div className="weather-top-wrapper">
+        <div className="weather-main-card">
+          <div className="weather-main-top">
+            <div className="location-wrapper">
+              <span className="icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"/>
+                </svg>
+              </span>
+              <select
+                className="location-tag"
+                value={selectedCity}
+                onChange={(e) => setSelectedCity(e.target.value)}
+              >
+                {victoriaCities.map(city => (
+                  <option key={city} value={city}>Victoria, {city}</option>
+                ))}
+              </select>
+            </div>
+
+            <div className="unit-toggle" onClick={toggleUnit}>{tempUnit} ▾</div>
           </div>
 
-          <div className="unit-toggle" onClick={toggleUnit}>{tempUnit} ▾</div>
-        </div>
+          <div className="weather-main-body">
+            <div className="weather-main-left">
+              <div className="weekday">{weekday}</div>
+              <div className="date">{date}</div>
+            </div>
 
-        <div className="weather-main-body">
-          <div className="weather-main-left">
-            <div className="weekday">{weekday}</div>
-            <div className="date">{date}</div>
-          </div>
+            <div className="weather-main-center">
+              <div className="weather-icon">
+                <img
+                  src={`https://openweathermap.org/img/wn/${current.weather[0].icon}@2x.png`}
+                  alt={current.weather[0].description}
+                />
+              </div>
+            </div>
 
-          <div className="weather-main-center">
-            <div className="weather-icon">
-              <img
-                src={`https://openweathermap.org/img/wn/${current.weather[0].icon}@2x.png`}
-                alt={current.weather[0].description}
-              />
+            <div className="weather-main-right">
+              <div className="temp">{Math.round(current.temp)}{tempUnit}</div>
+              <div className="minmax">/{todayMin}{tempUnit}</div>
+              <div className="desc">{current.weather[0].main}</div>
+              <div className="feels">Feels like {Math.round(current.feels_like)}{tempUnit}</div>
             </div>
           </div>
+        </div>
 
-          <div className="weather-main-right">
-            <div className="temp">{Math.round(current.temp)}{tempUnit}</div>
-            <div className="minmax">/{todayMin}{tempUnit}</div>
-            <div className="desc">{current.weather[0].main}</div>
-            <div className="feels">Feels like {Math.round(current.feels_like)}{tempUnit}</div>
+        <div className="weather-highlights-wrapper">
+          <h3>Today's Highlight</h3>
+          <div className="weather-highlights">
+            <div className="highlight-box">
+              <p>🌬️ Wind</p>
+              <strong>{windSpeed} {speedUnit}</strong>
+              <p className="subtext">{formatSunTime(current.dt)}</p>
+            </div>
+            <div className="highlight-box">
+              <p>💧 Humidity</p>
+              <strong>{current.humidity}%</strong>
+              <p className="subtext">Humidity is good</p>
+            </div>
+            <div className="highlight-box">
+              <p>🌅 Sunrise</p>
+              <strong>{formatSunTime(current.sunrise)}</strong>
+            </div>
+            <div className="highlight-box">
+              <p>🔬 UV Index</p>
+              <strong>{current.uvi}</strong>
+              <p className="subtext">UV risk level</p>
+            </div>
+            <div className="highlight-box">
+              <p>👁️ Visibility</p>
+              <strong>{(current.visibility / 1000).toFixed(1)} km</strong>
+              <p className="subtext">{formatSunTime(current.dt)}</p>
+            </div>
+            <div className="highlight-box">
+              <p>🌇 Sunset</p>
+              <strong>{formatSunTime(current.sunset)}</strong>
+            </div>
           </div>
         </div>
       </div>
-
-      <div className="weather-highlights-wrapper">
-        <h3>Today's Highlight</h3>
-        <div className="weather-highlights">
-          <div className="highlight-box">
-            <p>🌬️ Wind</p>
-            <strong>{windSpeed} {speedUnit}</strong>
-            <p className="subtext">{formatSunTime(current.dt)}</p>
-          </div>
-          <div className="highlight-box">
-            <p>💧 Humidity</p>
-            <strong>{current.humidity}%</strong>
-            <p className="subtext">Humidity is good</p>
-          </div>
-          <div className="highlight-box">
-            <p>🌅 Sunrise</p>
-            <strong>{formatSunTime(current.sunrise)}</strong>
-          </div>
-          <div className="highlight-box">
-            <p>🔬 UV Index</p>
-            <strong>{current.uvi}</strong>
-            <p className="subtext">UV risk level</p>
-          </div>
-          <div className="highlight-box">
-            <p>👁️ Visibility</p>
-            <strong>{(current.visibility / 1000).toFixed(1)} km</strong>
-            <p className="subtext">{formatSunTime(current.dt)}</p>
-          </div>
-          <div className="highlight-box">
-            <p>🌇 Sunset</p>
-            <strong>{formatSunTime(current.sunset)}</strong>
-          </div>
-        </div>
-      </div>
+      
 
 
 
