@@ -14,13 +14,13 @@ const AnimalDetail = () => {
   const [occurrences, setOccurrences] = useState([]);
   const [polygonBounds, setPolygonBounds] = useState(null);
 
-  // Related plants（已做“按 plant_scientific_name 合并”）
+  // Related plants (merged by plant_scientific_name)
   const [relations, setRelations] = useState([]);
 
-  // Victoria 边界（从 public/data/victoria_fixed.geojson 加载）
+  // Victoria boundary (loaded from public/data/victoria_fixed.geojson)
   const [vicBoundary, setVicBoundary] = useState(null);
 
-  // 交互类型映射（关键词 -> 可读句子）
+  // Interaction type mapping (keywords -> readable sentences)
   const INTERACTION_MAP = {
     eatenBy: "It eats this plant.",
     hasParasite: "It is a parasite for this plant.",
@@ -36,18 +36,18 @@ const AnimalDetail = () => {
 
     const cleaned = String(raw)
       .trim()
-      .replace(/\(.*?\)/g, "") // 去掉括号
-      .replace(/[^a-zA-Z]/g, "") // 去掉非字母字符
+      .replace(/\(.*?\)/g, "") // Remove parentheses
+      .replace(/[^a-zA-Z]/g, "") // Remove non-alphabetic characters
       .toLowerCase();
 
-    // 1️⃣ 原始精确匹配
+    // 1️⃣ Exact match
     for (const [key, val] of Object.entries(INTERACTION_MAP)) {
       if (key.toLowerCase() === cleaned) {
         return val;
       }
     }
 
-    // 2️⃣ 模糊匹配（关键词包含）
+    // 2️⃣ Fuzzy match (keyword inclusion)
     const lower = raw.toLowerCase();
     if (lower.includes("visit")) return INTERACTION_MAP.visitedBy;
     if (lower.includes("pollinat")) return INTERACTION_MAP.pollinatedBy;
@@ -57,11 +57,11 @@ const AnimalDetail = () => {
     if (lower.includes("egg")) return INTERACTION_MAP.hasEggsLayedOnBy;
     if (lower.includes("eat")) return INTERACTION_MAP.eatenBy;
 
-    // 3️⃣ 未匹配则原样返回（保持你原逻辑）
+    // 3️⃣ If no match, return as-is (keep original logic)
     return raw.trim();
   };
 
-  // ✅ 将一组交互映射后去重
+  // ✅ Map and deduplicate a group of interactions
   const mapAndDedupeInteractions = (arr = []) => {
     const result = [];
     arr.forEach((item) => {
@@ -73,11 +73,11 @@ const AnimalDetail = () => {
     return result;
   };
 
-  // 获取动物信息 & 分布信息
+  // Get animal info & distribution info
   useEffect(() => {
     if (!name) return;
 
-    // 获取动物详细信息
+    // Get detailed animal information
     const url = `https://netzero-vigrow-api.duckdns.org/iter2/species/animal/${encodeURIComponent(
       name
     )}`;
@@ -86,7 +86,7 @@ const AnimalDetail = () => {
       .then((data) => setAnimal(data))
       .catch((err) => console.error("Error fetching animal detail:", err));
 
-    // 获取分布信息
+    // Get distribution information
     const occUrl = `https://netzero-vigrow-api.duckdns.org/iter2/occurrences/by-animal?animal=${encodeURIComponent(
       name
     )}`;
@@ -96,7 +96,7 @@ const AnimalDetail = () => {
         setOccurrences(data);
 
         if (data.length === 1) {
-          // 1 点：10km 缓冲圆
+          // 1 point: 10km buffer circle
           const point = turf.point([data[0].decimalLongitude, data[0].decimalLatitude]);
           const buffer = turf.buffer(point, 10, { units: "kilometers" });
           if (buffer) {
@@ -104,7 +104,7 @@ const AnimalDetail = () => {
             setPolygonBounds(coords);
           }
         } else if (data.length === 2) {
-          // 2 点：包围盒
+          // 2 points: bounding box
           const line = turf.lineString(data.map((d) => [d.decimalLongitude, d.decimalLatitude]));
           const bboxPoly = turf.bboxPolygon(turf.bbox(line));
           if (bboxPoly) {
@@ -112,7 +112,7 @@ const AnimalDetail = () => {
             setPolygonBounds(coords);
           }
         } else if (data.length > 2) {
-          // ≥3 点：凸包
+          // ≥3 points: convex hull
           const points = turf.featureCollection(
             data.map((d) => turf.point([d.decimalLongitude, d.decimalLatitude]))
           );
@@ -126,7 +126,7 @@ const AnimalDetail = () => {
       .catch((err) => console.error("Error fetching occurrences:", err));
   }, [name]);
 
-  // 获取相关植物（按 plant_scientific_name 合并）
+  // Get related plants (merged by plant_scientific_name)
   useEffect(() => {
     if (!name) return;
 
@@ -145,10 +145,10 @@ const AnimalDetail = () => {
           if (!key) return;
 
           if (!map.has(key)) {
-            // ✅ 把 plant_common_name 一起存进去
+            // ✅ Store plant_common_name together
             map.set(key, {
               plant_scientific_name: key,
-              plant_common_name: (rel.plant_common_name || "").trim(), // <—— 新增
+              plant_common_name: (rel.plant_common_name || "").trim(), // <—— New addition
               vernacular_name: rel.vernacular_name || rel.plant_scientific_name || "",
               plant_image_url: rel.plant_image_url || "",
               interactions: [],
@@ -157,7 +157,7 @@ const AnimalDetail = () => {
 
           const entry = map.get(key);
 
-          // ✅ 保留第一个非空的 common name（如果之前没存到）
+          // ✅ Keep first non-empty common name (if not stored before)
           if (!entry.plant_common_name && rel.plant_common_name) {
             entry.plant_common_name = rel.plant_common_name.trim();
           }
@@ -177,16 +177,16 @@ const AnimalDetail = () => {
         const merged = Array.from(map.values());
         setRelations(merged);
 
-        // 可选：调试看看是否有 common name
+        // Optional: debug to see if there are common names
         // console.log("relations sample:", merged.slice(0, 5));
       })
       .catch((err) => console.error("Error fetching relations:", err));
   }, [name]);
 
 
-  // 从 public 目录加载 Victoria 边界 GeoJSON
+  // Load Victoria boundary GeoJSON from public directory
   useEffect(() => {
-    fetch("/data/victoria_fixed.geojson") // 确保文件位于 public/data/victoria_fixed.geojson
+    fetch("/data/victoria_fixed.geojson") // Ensure file is located at public/data/victoria_fixed.geojson
       .then((res) => res.json())
       .then(setVicBoundary)
       .catch((err) => console.error("Error loading Victoria boundary:", err));
@@ -194,10 +194,10 @@ const AnimalDetail = () => {
 
   if (!animal) return <p>No animals.</p>;
 
-  // 维州固定边界（用于锁死视图）
+  // Victoria fixed boundary (for locking view)
   const VIC_BOUNDS = [
-    [-39.2, 140.8], // 西南角
-    [-33.8, 150.1], // 东北角
+    [-39.2, 140.8], // Southwest corner
+    [-33.8, 150.1], // Northeast corner
   ];
 
   return (

@@ -6,7 +6,7 @@ import DiagnosisWizard from "../components/DiagnosisWizard";
 import diagnosisData from "../data/US5.2_Data_final_nested_fixed.json";
 import 'leaflet/dist/leaflet.css';
 
-// 修复 Leaflet 默认图标问题
+// Fix Leaflet default icon issues
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
@@ -14,7 +14,7 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
 });
 
-// 地图视图更新组件
+// Map view update component
 function MapViewController({ center, zoom }) {
   const map = useMap();
   
@@ -35,27 +35,27 @@ const Support = () => {
   const [openQuestion, setOpenQuestion] = useState({});
   const [communityData, setCommunityData] = useState([]);
 
-  // 搜索输入值（仅在回车时进行搜索）
+  // Search input value (only search on Enter key press)
   const [searchTerm, setSearchTerm] = useState("");
 
-  // 每个问题节点的引用，用于回车搜索后滚动定位
+  // References for each question node, used for scrolling positioning after Enter search
   const questionRefs = useRef({}); // key: `${sIdx}-${qIdx}` -> HTMLElement
-  const pendingScrollKeyRef = useRef(null); // 等待渲染后滚动的目标
+  const pendingScrollKeyRef = useRef(null); // Target waiting to scroll after rendering
 
-  // 社区横滑相关
+  // Community horizontal scroll related
   const [isDragging, setIsDragging] = useState(false);
   const dragState = useRef({ startX: 0, scrollLeft: 0 });
   const trackRef = useRef(null);
 
-  // 地图相关状态
+  // Map related state
   const [gardens, setGardens] = useState([]);
   const [gardenSearchTerm, setGardenSearchTerm] = useState("");
   const [selectedGarden, setSelectedGarden] = useState(null);
-  const [mapCenter, setMapCenter] = useState([-37.8136, 144.9631]); // 维多利亚州中心
+  const [mapCenter, setMapCenter] = useState([-37.8136, 144.9631]); // Victoria state center
   const [mapZoom, setMapZoom] = useState(7);
   const [searchResults, setSearchResults] = useState([]);
-  const [isSearchConfirmed, setIsSearchConfirmed] = useState(false); // 标记是否已确认搜索
-  const [lastConfirmedTerm, setLastConfirmedTerm] = useState(""); // 记录最后一次确认的搜索词
+  const [isSearchConfirmed, setIsSearchConfirmed] = useState(false); // Mark whether search has been confirmed
+  const [lastConfirmedTerm, setLastConfirmedTerm] = useState(""); // Record last confirmed search term
 
   const imageMap = {
     "Hume City Council – Community Gardens": "/images/support_community_1.png",
@@ -65,7 +65,7 @@ const Support = () => {
     "Gardens for Wildlife Victoria": "/images/support_community_5.png",
   };
 
-  // 并行加载并解析 markdown
+  // Load and parse markdown in parallel
   useEffect(() => {
     const parseFAQ = (text) => {
       const lines = text.split("\n");
@@ -112,7 +112,7 @@ const Support = () => {
       .catch((e) => console.error("Load markdown failed:", e));
   }, []);
 
-  // 加载社区花园数据
+  // Load community garden data
   useEffect(() => {
     fetch("https://netzero-vigrow-api.duckdns.org/iter3/community/gardens")
       .then((res) => res.json())
@@ -124,7 +124,7 @@ const Support = () => {
   const toggleQuestion = (sIdx, qIdx) =>
     setOpenQuestion((prev) => ({ ...prev, [sIdx]: prev[sIdx] === qIdx ? null : qIdx }));
 
-  // —— 社区横滑拖拽 —— //
+  // —— Community horizontal scroll drag —— //
   const startDrag = (pageX) => {
     const el = trackRef.current;
     if (!el) return;
@@ -149,7 +149,7 @@ const Support = () => {
   const onTouchStart = (e) => startDrag(e.touches[0].pageX);
   const onTouchMove = (e) => moveDrag(e.touches[0].pageX);
 
-  // —— 社区横滑滚轮 —— //
+  // —— Community horizontal scroll wheel —— //
   useEffect(() => {
     const el = trackRef.current;
     if (!el) return;
@@ -169,7 +169,7 @@ const Support = () => {
     return () => el.removeEventListener("wheel", onWheel);
   }, []);
 
-  // —— 回车搜索：只在按下 Enter 时触发 —— //
+  // —— Enter search: only trigger when Enter is pressed —— //
   const scoreText = (text, terms) => {
     const t = text.toLowerCase();
     let score = 0;
@@ -216,7 +216,7 @@ const Support = () => {
     pendingScrollKeyRef.current = key;
   };
 
-  // 渲染后执行滚动定位
+  // Execute scroll positioning after rendering
   useEffect(() => {
     if (!pendingScrollKeyRef.current) return;
     const key = pendingScrollKeyRef.current;
@@ -227,7 +227,7 @@ const Support = () => {
     }
   }, [openSection, openQuestion]);
 
-  // 地图搜索功能
+  // Map search functionality
   const handleGardenSearch = () => {
     const term = gardenSearchTerm.trim().toLowerCase();
     
@@ -238,18 +238,18 @@ const Support = () => {
       return;
     }
 
-    // 执行搜索并锁定结果
+    // Execute search and lock results
     const matched = gardens.filter((g) => 
       g.name.toLowerCase().includes(term)
     );
 
     setSearchResults(matched);
-    setIsSearchConfirmed(true); // 锁定结果
-    setLastConfirmedTerm(term); // 记录确认的搜索词
+    setIsSearchConfirmed(true); // Lock results
+    setLastConfirmedTerm(term); // Record confirmed search term
   };
 
   useEffect(() => {
-    // 如果已确认搜索，不响应输入变化
+    // If search is confirmed, don't respond to input changes
     if (isSearchConfirmed) return;
 
     const term = gardenSearchTerm.trim().toLowerCase();
@@ -259,7 +259,7 @@ const Support = () => {
       return;
     }
 
-    // 动态过滤结果
+    // Dynamic filtering of results
     const matched = gardens.filter((g) => 
       g.name.toLowerCase().includes(term)
     );
@@ -373,28 +373,28 @@ const Support = () => {
               title: "GARDENS FOR HARVEST",
               desc:
                 "A free program offering home-growing guides, seasonal tips, workshops, and community connections to support sustainable food gardening at home—even in small spaces.",
-              url: "https://www.yarraranges.vic.gov.au/Environment/Sustainable-communities/Gardens-for-Harvest" // 👈 添加链接
+              url: "https://www.yarraranges.vic.gov.au/Environment/Sustainable-communities/Gardens-for-Harvest" // 👈 Add link
             },
             {
               img: "/images/support_local_2.png",
               title: "GARDENS FOR WILD LIFE VICTORIA",
               desc:
                 "A statewide network supporting wildlife-friendly gardens, building skills, partnerships, and community connections through resources and workshops.",
-              url: "https://gardensforwildlifevictoria.com/our-work/" // 👈 添加链接
+              url: "https://gardensforwildlifevictoria.com/our-work/" // 👈 Add link
             },
             {
               img: "/images/support_local_3.png",
               title: "MY SMART GARDEN",
               desc:
                 "A free program run by partner councils across Melbourne, offering education and support for sustainable home gardening.",
-              url: "https://www.mysmartgarden.org.au/about/" // 👈 添加链接
+              url: "https://www.mysmartgarden.org.au/about/" // 👈 Add link
             },
             {
               img: "/images/support_local_4.png",
               title: "VICTORIAN SCHOOLS GARDEN PROGRAM",
               desc:
                 "Supports student learning, health, and wellbeing by encouraging schools to use outdoor spaces and build lifelong connections with nature.",
-              url: "https://www.vsgp.org.au" // 👈 暂时空出
+              url: "https://www.vsgp.org.au" // 👈 Temporarily empty
             },
           ].map(({ img, title, desc, url }, i) => (
             <div className="local-program-card" key={i}>
@@ -419,20 +419,20 @@ const Support = () => {
         </div>
         <div className="local-communities-track">
           {communityData.map((item, idx) => (
-          <div className="local-program-card community-card" key={idx}> {/* 注意：这里可能需要保留 community-card 类 */}
+          <div className="local-program-card community-card" key={idx}> {/* Note: may need to keep community-card class */}
             <div className="local-program-body">
-              {/* 👇 新增：图片容器 */}
+              {/* 👇 New: image container */}
               <div className="local-program-image-container">
-                <img src={item.img} alt={item.title} /> {/* 👈 使用 item.img 和 item.title */}
+                <img src={item.img} alt={item.title} /> {/* 👈 Use item.img and item.title */}
               </div>
-              {/* 👇 新增：文本容器 */}
+              {/* 👇 New: text container */}
               <div className="local-program-text">
-                <h3>{item.title}</h3> {/* 👈 使用 item.title */}
-                <p>{item.desc}</p> {/* 👈 使用 item.desc */}
+                <h3>{item.title}</h3> {/* 👈 Use item.title */}
+                <p>{item.desc}</p> {/* 👈 Use item.desc */}
               </div>
             </div>
             <div className="local-program-divider"></div>
-            <a href={item.url} target="_blank" rel="noopener noreferrer" className="local-program-link"> {/* 👈 使用 item.url */}
+            <a href={item.url} target="_blank" rel="noopener noreferrer" className="local-program-link"> {/* 👈 Use item.url */}
               LEARN MORE
             </a>
           </div>
@@ -440,9 +440,9 @@ const Support = () => {
         </div>
       </section>
 
-      {/* Community Garden Map - 覆盖式布局 */}
+      {/* Community Garden Map - overlay layout */}
       <section className="community-garden-map-section">
-        {/* 背景图片层 */}
+        {/* Background image layer */}
         <div className="map-background-image">
           <img
             src="/images/support_community_map.jpg"
@@ -450,12 +450,12 @@ const Support = () => {
           />
         </div>
 
-        {/* 地图内容层 */}
+        {/* Map content layer */}
         <div className="map-content-wrapper">
           <h2>Join Your Local Garden Community</h2>
           
           <div className="map-container-wrapper">
-            {/* 👇 新增：左侧侧边栏，仅当有搜索结果且未锁定时显示 */}
+            {/* 👇 New: left sidebar, only show when there are search results and not locked */}
             {searchResults.length > 0 && (
               <div className={`sidebar-panel ${isSearchConfirmed ? 'locked' : ''}`}>
                 <div className="sidebar-header">
@@ -480,7 +480,7 @@ const Support = () => {
               </div>
             )}
 
-            {/* 搜索栏 - 覆盖在地图顶部 */}
+            {/* Search bar - overlay on top of map */}
             <div className="garden-search-overlay">
               <div className="garden-search-container">
                 <input
@@ -489,7 +489,7 @@ const Support = () => {
                   value={gardenSearchTerm}
                   onChange={(e) => {
                     setGardenSearchTerm(e.target.value);
-                    // 👇 输入变化时，如果已锁定，解除锁定
+                    // 👇 When input changes, if locked, unlock
                     if (isSearchConfirmed) {
                       setIsSearchConfirmed(false);
                       setLastConfirmedTerm("");
@@ -504,14 +504,14 @@ const Support = () => {
               </div>
             </div>
 
-            {/* 地图容器 */}
+            {/* Map container */}
             <MapContainer
               ref={mapRef}
               center={mapCenter}
               zoom={mapZoom}
               style={{ height: "100%", width: "100%" }}
               scrollWheelZoom={true}
-              zoomControl={false} // 禁用默认缩放控件
+              zoomControl={false} // Disable default zoom controls
   
             >
               <ZoomControl position='topright' />

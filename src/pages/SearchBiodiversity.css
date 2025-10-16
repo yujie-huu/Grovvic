@@ -7,7 +7,7 @@
   text-align: center;
 }
 
-/* Explore more 标题 */
+/* Explore more title */
 .explore-title {
   font-size: 2rem;        
   font-weight: 700;       
@@ -16,7 +16,7 @@
   margin-bottom: 8px;
 }
 
-/* 副标题，强制和标题一致 */
+/* Subtitle, force alignment with title */
 .explore-subtitle {
   text-align: center;     
   color: #f5f5f5 !important;  
@@ -24,7 +24,7 @@
   margin-bottom: 20px;
 }
 
-/* 内部白色卡片容器 */
+/* Inner white card container */
 .explore-section {
   background-color: #fff;
   border-radius: 12px;
@@ -35,7 +35,7 @@
   text-align: left;
 }
 
-/* 搜索框 */
+/* Search box */
 .explore-search-box {
   display: flex;
   align-items: center;
@@ -84,7 +84,7 @@
 }
 .search-btn:hover { background: #222; }
 
-/* ===== 结果区：两列白色卡片 ===== */
+/* Results area: two-column white cards */
 .explore-results {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -92,7 +92,7 @@
   margin-top: 20px;
 }
 
-/* 卡片样式 */
+/* Card styles */
 .explore-card {
   display: flex;
   align-items: center;
@@ -103,7 +103,7 @@
   overflow: hidden;
 }
 
-/* 图片放大到 120×120 */
+/* Image enlarged to 120×120 */
 .explore-card .explore-img {
   width: 120px !important;
   height: 120px !important;
@@ -114,7 +114,7 @@
   display: block;
 }
 
-/* 文字 */
+/* Text */
 .explore-info {
   flex: 1;
   min-width: 0;
@@ -139,19 +139,19 @@
   color: #4a5568;
 }
 
-/* 底部结果数 */
+/* Bottom result count */
 .explore-count {
   margin-top: 14px;
   font-size: 0.9rem;
   color: #4a5568;
 }
 
-/* 让卡片能放右下角按钮 */
+/* Allow cards to have bottom-right corner button */
 .explore-card {
   position: relative;
 }
 
-/* 右下角的小文字按钮 */
+/* Small text button in bottom-right corner */
 .explore-more {
   position: absolute;
   right: 14px;

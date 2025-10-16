@@ -59,6 +59,8 @@ const HomePage = () => {
             <h1 className="hero-title">
               <span className="title-green">GROVVIC</span>
             </h1>
+            {/* highlight the words in the hero description */}
+            {/* Green, Resilient, Organic, Waste-wise for Victoria */}
             <span className="hero-description-highlight">G</span>
             <span className="hero-description">reen, </span>
             <span className="hero-description-highlight">R</span>
@@ -69,21 +71,11 @@ const HomePage = () => {
             <span className="hero-description">aste-wise for </span>
             <span className="hero-description-highlight">Vic</span>
             <span className="hero-description">toria</span>
-            {/* <p className="hero-description">
-              Your guide to climate-smart gardening in Victoria.
-            </p> */}
-            {/* <button className="cta-button" onClick={handleLearnMoreClick}>Learn More</button> */}
             <div className="scroll-down-hint">
               <p className='scroll-down-hint-text'>Scroll down to explore more</p>
               <MdKeyboardArrowDown className='scroll-down-arrow'/>
             </div>
           </div>
-          
-          {/* <div className="hero-visual">
-            <div className="earth-placeholder">
-              <img src="/images/lightingEarth.png" alt="3D Earth Globe" />
-            </div>
-          </div> */}
         </div>
       </section>
 

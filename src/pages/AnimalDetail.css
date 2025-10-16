@@ -236,7 +236,7 @@
   flex: 1;
   width: 100%;
   position: relative;
-  min-height: 0; /* 重要：允许flex子元素缩小 */
+  min-height: 0; /* Important: allows flex children to shrink */
 }
 
 /* Leaflet overrides */
@@ -393,7 +393,7 @@
   }
   
   .animal-map-card {
-    height: 70vh; /* 平板版稍微小一点 */
+    height: 70vh; /* Tablet version slightly smaller */
     max-height: 70vh;
   }
   
@@ -444,7 +444,7 @@
   }
   
   .animal-map-card {
-    height: 60vh; /* 手机版更小 */
+    height: 60vh; /* Mobile version smaller */
     max-height: 60vh;
   }
   
@@ -490,7 +490,7 @@
   }
   
   .animal-map-card {
-    height: 50vh; /* 小屏手机版最小 */
+    height: 50vh; /* Small screen mobile version minimum */
     max-height: 50vh;
   }
   

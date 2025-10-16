@@ -227,8 +227,8 @@
   width: 100%;
   padding-inline: 40px;
 
-  /* ✅ according to the amount of tip
-     公式：base height 180px + each tip 32px，可按需微调 */
+  /* ✅ According to the amount of tips
+     Formula: base height 180px + each tip 32px, adjustable as needed */
   min-height: calc(120px + (var(--tip-count, 0) * 32px));
 
   margin: 0;
@@ -396,27 +396,27 @@
 .weather-weekly-image-banner::after {
   content: "";
   position: absolute;
-  inset: 0;  /* 占满整个容器 */
-  background: rgba(255, 255, 255, 0.2); /* 白色半透明覆盖，提亮效果 */
-  pointer-events: none; /* 不影响点击 */
+  inset: 0;  /* Fill entire container */
+  background: rgba(255, 255, 255, 0.2); /* White semi-transparent overlay for brightness effect */
+  pointer-events: none; /* Don't interfere with clicks */
 }
 
 .weather-weekly-image-overlay {
   position: relative;
   z-index: 1;
   color: #fff;
-  padding: 2.5rem 4rem;                    /* ✅ 适当增加内边距 */
+  padding: 2.5rem 4rem;                    /* ✅ Appropriate padding increase */
 }
 
 .weather-weekly-image-overlay h2 {
-  font-size: 3.4rem;                       /* ✅ 更大主标题 */
+  font-size: 3.4rem;                       /* ✅ Larger main title */
   margin-bottom: 1.2rem;
   font-weight: bold;
   text-shadow: 0 5px 14px rgba(0, 0, 0, 0.6);
 }
 
 .weather-weekly-image-overlay p {
-  font-size: 2rem;                         /* ✅ 更大正文 */
+  font-size: 2rem;                         /* ✅ Larger body text */
   line-height: 2.2;
   text-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
 }
@@ -424,8 +424,8 @@
 .weather-weekly-image-img {
   width: 100%;
   height: 70%;
-  object-fit: cover;       /* 裁剪 */
-  object-position: top;    /* 只对齐上方 */
+  object-fit: cover;       /* Crop */
+  object-position: top;    /* Align to top only */
 }
 
 
@@ -454,33 +454,33 @@
   border: 1px solid #ccc;
 }
 
-/* ✅ 统一气候图大小 */
+/* ✅ Unified climate chart sizing */
 .weather-climate-image {
   width: 100%;
-  height: 500px;   /* 设置固定高度避免覆盖下方内容 */
-  max-height: 500px;   /* 限制高度避免太大 */
-  object-fit: contain; /* 保持比例，不拉伸 */
+  height: 500px;   /* Set fixed height to avoid covering content below */
+  max-height: 500px;   /* Limit height to avoid being too large */
+  object-fit: contain; /* Maintain aspect ratio, no stretching */
   display: block;
   border-radius: 10px;
-  margin: 0px auto 30px auto; /* 居中，底部留白避免重叠 */
+  margin: 0px auto 30px auto; /* Center, bottom margin to avoid overlap */
 }
 
 
 /* --- Historical Climate Insights--- */
-/* 长卡片样式 */
+/* Long card style */
 .weather-climate-intro-card {
   background: #fff;
   border-radius: 12px;
   padding: 2rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   text-align: center;
-  margin: -60px auto 2rem auto;  /* 自动居中 */
+  margin: -60px auto 2rem auto;  /* Auto center */
   /* max-width: 1200px; */
 }
 
 .weather-climate-intro-card h2 {
   font-size: 1.5rem;
-  color: #65a30d;  /* 绿色标题 */
+  color: #65a30d;  /* Green title */
   margin-bottom: 0.75rem;
 }
 
@@ -492,20 +492,20 @@
 }
 
 
-/* 卡片容器 */
+/* Card container */
 .weather-weather-climate-card-grid {
   display: grid;
-  grid-template-columns: repeat(5, 200px); /* 每个卡片宽度 180px */
+  grid-template-columns: repeat(5, 200px); /* Each card width 200px */
   gap: 2rem;
   margin-top: 4rem;
   margin-bottom: 3rem;
-  justify-content: center; /* 整体居中 */
+  justify-content: center; /* Center overall */
   min-height: 250px;
 }
 
 
 
-/* 单个卡片 */
+/* Individual card */
 .weather-climate-card {
   background: #fff;
   border-radius: 12px;
@@ -522,7 +522,7 @@
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
 
-/* 卡片标题 */
+/* Card title */
 .weather-climate-card h3 {
   font-size: 1rem;
   font-weight: bold;
@@ -530,7 +530,7 @@
   margin-bottom: 0.75rem;
 }
 
-/* 卡片正文 */
+/* Card content */
 .weather-climate-card p {
   font-size: 1rem;
   color: #374151;
@@ -556,7 +556,7 @@
 }
 
 .weather-climate-label {
-  width: 200px; /* 固定宽度，确保左边对齐 */
+  width: 200px; /* Fixed width to ensure left alignment */
   font-weight: bold;
   font-size: 1.1rem;
   flex-shrink: 0;
@@ -644,7 +644,7 @@
 
 
 .weather-climate-chart-card {
-  background: rgba(255, 255, 255, 0.9); /* 半透明白色背景，让图更清晰 */
+  background: rgba(255, 255, 255, 0.9); /* Semi-transparent white background for clearer charts */
   padding: 2rem;
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
@@ -675,18 +675,18 @@
 .weather-watering-guide .weather-water-when {
   text-align: center;
   font-size: 1.1rem;
-  color: #f1fdf1;               /* 浅白绿色对比度 */
+  color: #f1fdf1;               /* Light white-green contrast */
   margin-bottom: 20px;
 }
 
-/* === 上下排布容器 === */
+/* === Top-bottom layout container === */
 .weather-watering-content {
   display: flex;
   flex-direction: column;  
   gap: 20px;
 }
 
-/* 表格部分 */
+/* Table section */
 .weather-weather-watering-table-wrap {
   width: 100%;
   overflow-x: auto;
@@ -695,8 +695,8 @@
 .weather-watering-table {
   width: 100%;
   border-collapse: collapse;
-  background: #ffffff;          /* 表格仍然是白色 */
-  border-radius: 0;             /* 直角 */
+  background: #ffffff;          /* Table remains white */
+  border-radius: 0;             /* Right angles */
   overflow: hidden;
 }
 
@@ -721,26 +721,26 @@
   white-space: pre-line;
 }
 
-/* ✅ 统一居中用 span 包裹 */
+/* ✅ Unified centering with span wrapper */
 .weather-water-badge {
-  display: inline-block;      /* 保证在表格里表现稳定 */
-  text-align: center;         /* 水平居中 */
-  vertical-align: middle;     /* 垂直居中 */
-  padding: 4px 8px;           /* 内边距控制大小 */
-  border-radius: 6px;         /* 圆角 */
+  display: inline-block;      /* Ensure stable performance in table */
+  text-align: center;         /* Horizontal center */
+  vertical-align: middle;     /* Vertical center */
+  padding: 4px 8px;           /* Padding controls size */
+  border-radius: 6px;         /* Rounded corners */
   font-weight: 600;
   font-size: 0.95rem;
-  line-height: 1.5;           /* ✅ 行高和文字高度一致 */
-  white-space: nowrap;        /* 避免换行 */
+  line-height: 1.5;           /* ✅ Line height matches text height */
+  white-space: nowrap;        /* Avoid line breaks */
 }
 
-/* 绿色背景 */
+/* Green background */
 .weather-water-green {
   background-color: #d4f5dd;
   color: #006400;
 }
 
-/* 蓝色背景 */
+/* Blue background */
 .weather-water-blue {
   background-color: #e0ebff;
   color: #1a4dab;
@@ -767,7 +767,7 @@
 
 
 
-/* ✅ 响应式：小屏幕下垂直排列 */
+/* ✅ Responsive: vertical layout on small screens */
 @media (max-width: 900px) {
   .weather-watering-content {
     flex-direction: column;
@@ -851,7 +851,7 @@
   margin-bottom: 30px;
 }
 
-/* 背景图片只占70%高度 */
+/* Background image only takes 70% height */
 .weather-climate-future-section::before {
   content: "";
   position: absolute;

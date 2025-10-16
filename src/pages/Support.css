@@ -11,24 +11,24 @@
 *{ box-sizing: border-box; }
 img{ max-width:100%; height:auto; display:block; }
 
-/* 仅在支持 hover 的设备启用悬停样式 */
+/* Only enable hover styles on devices that support it */
 @media (hover: hover){
   .support-link:hover{ background-color:#f9fafb; box-shadow:var(--shadow-sm); }
   .local-program-card a:hover{ text-decoration: underline; }
 }
 
-/* 减少动画用户的平滑滚动降级 */
+/* Smooth scrolling downgrade for users with reduced motion */
 @media (prefers-reduced-motion: reduce){
   .local-communities-track{ scroll-behavior: auto; }
 }
 
-/* ========== 页面框架 ========== */
+/* ========== Page framework ========== */
 .support-page{ font-family: Arial, sans-serif; background: var(--page-bg); color: var(--text-dark); }
 
 /* ========== Hero ========== */
 /* Hero Section */
 .support-hero {
-  height: 500px; /* 调整高度以匹配截图 */
+  height: 500px; /* Adjust height to match screenshot */
   background-size: cover;
   background-position: center;
   display: flex;
@@ -58,47 +58,46 @@ img{ max-width:100%; height:auto; display:block; }
 }
 
 
-/* ========== FAQ 标题与布局 ========== */
-/* FAQ 标题 */
+/* ========== FAQ Title and Layout ========== */
+/* FAQ Title */
 .support-section h2 {
   font-size: clamp(1.8rem, 2.2vw, 2.2rem);
   font-weight: 700;
-  margin-top: 4rem;           /* ✅ 控制 FAQ 与上一部分距离 */
-  margin-bottom: 4rem;        /* ✅ 标题与内容间距 */
+  margin-top: 4rem;           /* ✅ Control the distance between FAQ and previous section */
+  margin-bottom: 4rem;        /* ✅ Title and content spacing */
   color: var(--text-dark);
   position: relative;          
   z-index: 1;
   text-align: center;
 }
 
-/* FAQ 主体布局 */
+/* FAQ Main Layout */
 .support-faq-grid {
   display: grid;
-  grid-template-columns: 520px 540px;  /* ✅ 稍加宽，使左右更平衡 */
+  grid-template-columns: 520px 540px;  /* ✅ Slightly wider, to balance left and right */
   justify-content: center;
   align-items: start;
-  gap: 2.5rem;                         /* ✅ 适中列间距 */
-  margin: -2rem auto 6rem auto;            /* ✅ 居中 + 下方留白 */
+  gap: 2.5rem;
+  margin: -2rem auto 6rem auto;            /* ✅ Center + bottom margin */
   max-width: 1150px;
-  position: relative;                  /* ✅ 仅对该部分上下偏移有效 */
-  top: 20px;                           /* ✅ 整个FAQ整体下移，不影响其他区域 */
+  position: relative;                  /* ✅ Only effective for this part of the offset */
+  top: 20px;                           /* ✅ Entire FAQ moves down, not affecting other areas */
 }
 
-/* FAQ 列表（左侧） */
+/* FAQ List (left) */
 .support-links {
   list-style: none;
   padding: 0;
-  margin: -1rem 0 0 0;                 /* ✅ 微调顶部位置 */
   justify-self: end;
 }
 
-/* 图片卡片（右侧） */
+/* Image Card (right) */
 .faq-right {
   display: flex;
-  justify-content: flex-start;         /* ✅ 向左靠近中线 */
+  justify-content: flex-start;         /* ✅ Move left towards center */
   align-items: flex-start;
   margin-right: 0;
-  margin-top: -2rem;                 /* ✅ 图片略向上，与FAQ内容对齐 */
+  margin-top: -2rem;                 /* ✅ Image slightly upward, align with FAQ content */
 }
 
 .faq-side-image {
@@ -132,7 +131,7 @@ img{ max-width:100%; height:auto; display:block; }
 .question-link{ display:block; width:100%; text-align:left; background:none; border:none; padding:8px 0; font-size:.95rem; color:#374151; cursor:pointer; }
 .question-link:hover{ color: var(--link-blue); }
 
-/* 答案块 */
+/* Answer Block */
 .answer{
   background:#e5e7eb; padding:10px 16px; margin:4px 0 12px 0; border-radius:8px;
   width:100%; max-width: 420px; box-sizing:border-box;
@@ -144,7 +143,7 @@ img{ max-width:100%; height:auto; display:block; }
 .local-programs-section{
   background-color:#14532d; text-align:center;
   padding-top:3rem; padding-bottom:3rem;
-  padding-left: 2rem; padding-right: 2rem; /* ✅ 修正语法 */
+  padding-left: 2rem; padding-right: 2rem; /* ✅ Fix syntax */
   position:relative; height:300px; margin-bottom:10rem;
 }
 
@@ -175,7 +174,7 @@ img{ max-width:100%; height:auto; display:block; }
 }
 .local-program-card p::-webkit-scrollbar{ display:none; }
 
-/* 图片容器：固定高度，居中对齐 */
+/* Image container: fixed height, center alignment */
 .local-program-image-container {
   height: 80px;
   display: flex;
@@ -184,7 +183,7 @@ img{ max-width:100%; height:auto; display:block; }
   margin-bottom: 0.5rem;
 }
 
-/* 文本容器：占据剩余空间，内部从顶部开始排列 */
+/* Text container: take up remaining space, internal arrangement from top */
 .local-program-text {
   display: flex;
   flex-direction: column;
@@ -208,12 +207,12 @@ img{ max-width:100%; height:auto; display:block; }
   margin:3rem 0 1rem; height:auto; overflow:visible; position:relative; z-index:2;
 }
 
-/* 标题 */
+/* Title */
 .local-communities-header h2{
   color:#111; font-size: clamp(1.6rem, 2.4vw, 1.8rem); font-weight:bold; margin:1rem 0 2.5rem 0;
 }
 
-/* 左右淡出遮罩（颜色跟随页面背景） */
+/* Left and right fade mask (color follows page background) */
 .local-communities-section::before,
 .local-communities-section::after{
   content:""; position:absolute; top:0; width:60px; height:100%;
@@ -226,14 +225,14 @@ img{ max-width:100%; height:auto; display:block; }
   right:0; background: linear-gradient(to left, var(--page-bg) 30%, transparent 100%);
 }
 
-/* 滚动轨道 */
+/* Scroll track */
 .local-communities-track{
   display: flex;
-  justify-content: space-evenly; /* 👈 关键：均等间距 */
+  justify-content: space-evenly; /* 👈 Key: even spacing */
   align-items: flex-start;
-  gap: 0; /* 确保间距完全由 space-evenly 控制 */
+  gap: 0; /* Ensure spacing is fully controlled by space-evenly */
   overflow-x: hidden; 
-  padding: 0 20px; /* 可选：添加左右内边距，让整体更居中 */
+  padding: 0 20px; /* Optional: add left and right padding, make the overall more centered */
   width: 100%;
   box-sizing: border-box;
 }
@@ -253,37 +252,37 @@ img{ max-width:100%; height:auto; display:block; }
 .support-community-map {
   padding: 40px 0;
   text-align: center;
-  width: 100%; /* 确保容器自身宽度充足 */
+  width: 100%; /* Ensure container itself has enough width */
   margin-bottom: 100px;
   margin-top: 10px;
 }
 
 .support-community-map img {
-  width: 100%;           /* 强制占满 */
+  width: 100%;           /* Force to fill */
   height: 600px;
-  object-fit: cover;     /* 裁剪并保持比例 */
+  object-fit: cover;     /* Crop and keep ratio */
   object-position: center;
   border-radius: 0;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  display: block;        /* 避免底部留白 */
+  display: block;        /* Avoid bottom white space */
 }
 
 /* Community Garden Map Section */
 .community-garden-map-section {
   position: relative;
   width: 100%;
-  min-height: 300px; /* 减小整体高度 */
+  min-height: 300px; /* Decrease overall height */
   overflow: visible;
-  background: white; /* 确保下半部分是白色背景 */
+  background: white; /* Ensure the bottom part is white background */
 }
 
-/* 背景图片层 */
+/* Background image layer */
 .map-background-image {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 400px; /* 减小背景图高度 */
+  height: 400px; /* Decrease background image height */
   z-index: 1;
   overflow: hidden;
 }
@@ -295,43 +294,43 @@ img{ max-width:100%; height:auto; display:block; }
   object-position: center;
 }
 
-/* 地图内容层 */
+/* Map content layer */
 .map-content-wrapper {
   position: relative;
   z-index: 2;
-  padding: 30px 0px 0px; /* 减小上下padding */
-  max-width: 1100px; /* 稍微减小最大宽度 */
+  padding: 30px 0px 0px;
+  max-width: 1100px;
   margin: 0 auto;
 }
 
 .map-content-wrapper h2 {
   text-align: center;
   margin-top: 30px;
-  margin-bottom: 25px; /* 减小底部间距 */
-  font-size: 30px; /* 稍微减小字体 */
+  margin-bottom: 25px;
+  font-size: 30px;
   color: white;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
   font-weight: 500;
 }
 
-/* 搜索栏覆盖层 - 浮动在地图顶部 */
+/* Search bar overlay - floating on top of the map */
 .garden-search-overlay {
   position: absolute;
-  top: 20px; /* 距离地图容器顶部 20px */
+  top: 20px; /* Distance from the map container top */
   left: 50%;
-  transform: translateX(-50%); /* 水平居中 */
-  z-index: 1000; /* 确保在地图之上 */
+  transform: translateX(-50%); /* Center horizontally */
+  z-index: 1000; /* Ensure it is above the map */
   width: 90%;
   max-width: 500px;
 }
 
-/* 搜索容器 - 半透明效果 */
+/* Search container - semi-transparent effect */
 .garden-search-container {
   display: flex;
   align-items: center;
   gap: 10px;
-  background: rgba(255, 255, 255, 0.85); /* 半透明白色 */
-  backdrop-filter: blur(10px); /* 毛玻璃效果 */
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   padding: 4px 12px;
   border-radius: 0;
@@ -344,7 +343,7 @@ img{ max-width:100%; height:auto; display:block; }
   box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
 }
 
-/* 搜索图标 */
+/* Search icon */
 .garden-search-icon {
   font-size: 18px;
   margin-left: 8px;
@@ -352,7 +351,7 @@ img{ max-width:100%; height:auto; display:block; }
   flex-shrink: 0;
 }
 
-/* 搜索输入框 */
+/* Search input box */
 .garden-search-input {
   flex: 1;
   padding: 10px 12px;
@@ -368,7 +367,7 @@ img{ max-width:100%; height:auto; display:block; }
   color: #999;
 }
 
-/* 搜索按钮 - 图标样式 */
+/* Search button - icon style */
 .garden-search-btn {
   width: 40px;
   height: 40px;
@@ -392,10 +391,10 @@ img{ max-width:100%; height:auto; display:block; }
   box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
 }
 
-/* 地图容器 - 关键：减小高度 */
+/* Map container - key: decrease height */
 .map-container-wrapper {
   width: 100%;
-  height: calc(100vh - 240px); /* 保持你之前修改的高度 */
+  height: calc(100vh - 240px); /* Keep the height you modified before */
   border-radius: 0px;
   overflow: hidden; 
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
@@ -406,42 +405,41 @@ img{ max-width:100%; height:auto; display:block; }
 
 .garden-search-sticky {
   position: sticky;
-  top: 0; /* 固定在顶部 */
-  z-index: 1000; /* 确保在地图和其他元素之上 */
-  padding: 10px; /* 防止紧贴边缘 */
-  background: rgba(255, 255, 255, 0.1); /* 半透明白色背景，可选 */
-  backdrop-filter: blur(5px); /* 毛玻璃效果，可选 */
-  /* 如果你想让背景完全透明，可以移除上面两行 */
+  top: 0; /* Fixed on top */
+  z-index: 1000; /* Ensure it is above the map and other elements */
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(5px);
 }
 
-/* 搜索容器 - 半透明效果 */
+/* Search container - semi-transparent effect */
 .garden-search-container {
   display: flex;
   align-items: center;
   gap: 10px;
-  background: transparent; /* 半透明白色 */
+  background: transparent;
   padding: 1.5px 12px;
   border-radius: 0px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   transition: all 0.3s ease;
   width: 90%;
   max-width: 500px;
-  margin: 0 60px; /* 居中 */
+  margin: 0 60px;
 }
 
-/* Leaflet 地图样式调整 */
+/* Leaflet map style */
 .map-container-wrapper .leaflet-container {
   border-radius: 0px;
   height: 100% !important;
   width: 100% !important;
 }
 
-/* 👇 强制隐藏 Leaflet 默认的左上角缩放控件 👇 */
+/* Force hide Leaflet default zoom control in the top left corner */
 .map-container-wrapper .leaflet-top.leaflet-left > *:first-child {
   display: none !important;
 }
 
-/* 响应式设计 */
+/* Responsive design */
 @media (max-width: 768px) {
   .community-garden-map-section {
     min-height: 600px;
@@ -476,16 +474,16 @@ img{ max-width:100%; height:auto; display:block; }
 
 
 
-/* searchresults 侧边栏 */
+/* searchresults sidebar */
 .sidebar-panel {
   position: absolute;
   top: 0;
   left: 0;
   width: 30%;
   height: 100%;
-  /* 👇 使用和搜索栏相同的背景效果 */
+  /* Use the same background effect as the search bar */
   background: transparent;
-  backdrop-filter: blur(10px); /* 毛玻璃效果 */
+  backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   overflow-y: auto;
   overflow-x: hidden;
@@ -498,69 +496,69 @@ img{ max-width:100%; height:auto; display:block; }
   background: tansparent;
 }
 
-/* 侧边栏头部 */
+/* Sidebar header */
 .sidebar-header {
-  padding: 8px 12px; /* 和 .garden-search-container 的 padding 一致 */
-  margin: -5px; /* 与侧边栏边缘保持一点距离 */
+  padding: 8px 12px;
+  margin: -5px;
 
-  border-radius: 50px; /* 和搜索栏容器一样的圆角 */
-  display: flex; /* 使内容居中 */
+  border-radius: 50px;
+  display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .sidebar-header h3 {
   margin: 0;
-  font-size: 16px; /* 调整字体大小，使其更协调 */
+  font-size: 16px;
   color: #333;
-  font-weight: 500; /* 调整字重 */
+  font-weight: 500;
 }
 
 .sidebar-panel::-webkit-scrollbar {
   width: 4px; 
 }
 
-/* 滚动条滑块 */
+/* Scrollbar thumb */
 .sidebar-panel::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.3); /* 滑块颜色 */
-  border-radius: 3px; /* 滑块圆角 */
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 3px;
 }
 
-/* 侧边栏内容 */
+/* Sidebar content */
 .sidebar-content {
   padding: 10px 0;
   margin-top: 10px;
 }
 
 .sidebar-item {
-  padding: 6px 20px; /* 调整内边距，使其更紧凑 */
+  padding: 6px 20px;
   cursor: pointer;
   transition: background-color 0.2s ease;
-  border-radius: 2px; /* 为每个项目添加圆角 */
-  margin: 0 10px 5px 10px; /* 添加左右外边距和底部外边距 */
+  border-radius: 2px;
+  margin: 0 10px 5px 10px;
 }
 
 .sidebar-item:hover {
   /* background: rgba(240, 240, 240, 0.5); */
-  background: rgba(245, 245, 245, 0.7); /* 悬停时使用稍深一点的半透明色 */
+  background: rgba(245, 245, 245, 0.7);
 }
 
 .sidebar-item h4 {
-  margin: 0 0 3px 0; /* 减小底部外边距 */
-  font-size: 15px; /* 调整字体大小 */
+  margin: 0 0 3px 0;
+  font-size: 15px;
   font-weight: 600;
   color: #333;
 }
 
 .sidebar-item p {
   margin: 0;
-  font-size: 13px; /* 调整字体大小 */
+  font-size: 13px;
   color: #666;
-  line-height: 1.3; /* 调整行高 */
+  line-height: 1.3;
 }
 
 
-/* 响应式设计 */
+/* Responsive design */
 @media (max-width: 768px) {
   .map-background-image {
     height: 250px;
@@ -583,22 +581,22 @@ img{ max-width:100%; height:auto; display:block; }
   }
 }
 
-/* ========== 响应式优化 ========== */
+/* ========== Responsive optimization ========== */
 
-/* ≥1280px：让 FAQ 右图更宽松，三卡区域居中稳定 */
+/* ≥1280px: make the FAQ right image more loose, the three card area is centered and stable */
 @media (min-width: 1280px){
   .support-faq-grid{ grid-template-columns: minmax(0,1fr) 520px; }
   .faq-side-image{ max-width: 560px; }
 }
 
-/* ≤1200px：FAQ 标题与右图边距收紧；Programs区高度略减 */
+/* ≤1200px: FAQ title and right image margin tighten; Programs area height slightly reduced */
 @media (max-width: 1200px){
   .support-section h2{ margin-left: clamp(2rem, 6vw, 6rem); }
   .faq-right{ margin-right: clamp(0rem, 6vw, 8rem); }
   .local-programs-section{ height: 280px; }
 }
 
-/* ≤1024px：FAQ 两列变为 1 列堆叠；图片下置；三卡滚动仍保留 */
+/* ≤1024px: FAQ two columns become one column stacked; picture down; three card scrolling still preserved */
 @media (max-width: 1024px){
   .support-faq-grid{ grid-template-columns: 1fr; }
   .faq-right{ order: 2; margin: 1rem auto 0; }
@@ -608,7 +606,7 @@ img{ max-width:100%; height:auto; display:block; }
   .local-programs-section{ height:auto; padding-bottom: 4rem; }
 }
 
-/* ≤768px：整体左右留白缩小，三卡区域根据屏幕宽度自适应，仍然可横滑 */
+/* ≤768px: overall left and right margin shrink, three card area adapt to screen width, still can slide horizontally */
 @media (max-width: 768px){
   .support-section h2{ margin-left: 1.25rem; margin-top: 4rem; }
   .support-links{ margin: 1rem 1.25rem 0 1.25rem; }
@@ -620,7 +618,7 @@ img{ max-width:100%; height:auto; display:block; }
   .local-communities-section::after{ width: 36px; }
 }
 
-/* ≤600px：按钮与卡片进一步收紧；标题缩小；Programs区卡片高度降低 */
+/* ≤600px: button and card further tighten; title shrink; Programs area card height reduced */
 @media (max-width: 600px){
   .support-link{ width: 100%; }
   .answer{ max-width: 100%; }
@@ -629,7 +627,7 @@ img{ max-width:100%; height:auto; display:block; }
   .local-communities-track{ gap: .75rem; }
 }
 
-/* ≤480px：单手操作友好；遮罩变窄；三卡容器铺满屏宽 */
+/* ≤480px: single-hand operation friendly; mask narrow; three card container fills the screen width */
 @media (max-width: 480px){
   .support-hero{ padding-left: 1rem; }
   .support-hero h1{ font-size: clamp(1.6rem, 6vw, 2rem); }

@@ -4,7 +4,7 @@ import './Weather.css'
 import axios from 'axios'
 import { buildWateringTable } from '../utils/watering.js';
 import Plot from "react-plotly.js";
-// 移除同步导入，改为懒加载
+// Remove synchronous imports, use lazy loading instead
 
 const Weather = () => {
   const [current, setCurrent] = useState(null)
@@ -14,7 +14,7 @@ const Weather = () => {
   const [selectedCity, setSelectedCity] = useState('Melbourne')
   const [climateType, setClimateType] = useState('temperature')
   
-  // 新增：懒加载状态管理
+  // New: Lazy loading state management
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [tempSpec, setTempSpec] = useState(null)
@@ -56,7 +56,7 @@ const Weather = () => {
     }
   }
 
-  // 懒加载气候数据
+  // Lazy load climate data
   const loadClimateData = useCallback(async () => {
     if (climateDataLoaded) return
     
@@ -77,7 +77,7 @@ const Weather = () => {
 
   useEffect(() => { fetchWeather(selectedCity, unit) }, [unit, selectedCity])
   
-  // 当用户切换到气候图表时才加载数据
+  // Load data only when user switches to climate charts
   useEffect(() => {
     if (climateType === 'temperature' || climateType === 'rainfall') {
       loadClimateData()
@@ -86,7 +86,7 @@ const Weather = () => {
 
   const toggleUnit = () => setUnit(prev => (prev === 'metric' ? 'imperial' : 'metric'))
 
-  // 改进的加载状态
+  // Improved loading state
   if (loading && !current) {
     return (
       <div className="weather-page">
@@ -141,7 +141,7 @@ const Weather = () => {
   const dayHumidity= todayDaily?.humidity ?? current?.humidity ?? 0
   const dayUvi     = todayDaily?.uvi ?? current?.uvi ?? 0
 
-  // ✅ Daily Gardening Tips 只保留天气类（不再拼接 watering 文案）
+  // ✅ Daily Gardening Tips - only weather-related (no longer concatenating watering text)
   const dayTips = []
   if (dayTempC > 30) dayTips.push("It's a hot day. Use shade cloth or move pots out of direct sunlight!")
   else if (dayTempC >= 1 && dayTempC <= 10) dayTips.push("It's a cold day. Cover seedlings or bring them indoors!")
@@ -166,7 +166,7 @@ const Weather = () => {
   // define "extreme" heuristics
   const hasExtreme = (maxTempC >= 35) || (minTempC <= 1) || (maxWindKmh >= 50) || (maxUvi >= 8) || (maxDailyRain >= 30)
 
-  // 移除未使用的变量
+  // Remove unused variables
 
   const climateInsightsTemp = (
     <>
@@ -265,7 +265,7 @@ const Weather = () => {
   })
 
 
-  // 移除未使用的函数和变量
+  // Remove unused functions and variables
 
 
   return (
@@ -376,7 +376,7 @@ const Weather = () => {
         <div
           className="weather-gardening-hero"
           style={{
-            '--tip-count': dayTips.length,   // ✅ 把当日 tip 的条数传给 CSS
+            '--tip-count': dayTips.length,   // ✅ Pass the number of daily tips to CSS
             backgroundImage: `url(${process.env.PUBLIC_URL || ''}/images/days.png)`,
             backgroundSize: 'cover',
             backgroundPosition: 'center'

@@ -3,8 +3,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import "./SearchBiodiversity.css";
 import { MdSearch } from "react-icons/md";
 
-const SS_Q = "bio.search.q";         // 会话内保存的查询词
-const SS_RESULTS = "bio.search.res"; // 会话内保存的查询结果（字符串化）
+const SS_Q = "bio.search.q";         // Query term saved in session
+const SS_RESULTS = "bio.search.res"; // Query results saved in session (stringified)
 
 const SearchBiodiversity = ({ onSelect = () => {} }) => {
   const navigate = useNavigate();
@@ -65,7 +65,7 @@ const SearchBiodiversity = ({ onSelect = () => {} }) => {
     if (e.key === "Enter") handleSearch();
   };
 
-  // 仅在浏览器刷新时清空
+  // Only clear on browser refresh
   useEffect(() => {
     const navEntry = window.performance?.getEntriesByType?.("navigation")?.[0];
     const isReload = navEntry?.type === "reload" || window.performance?.navigation?.type === 1;
@@ -79,22 +79,22 @@ const SearchBiodiversity = ({ onSelect = () => {} }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // 状态恢复逻辑（初始化和URL变化时）
+  // State restoration logic (on initialization and URL changes)
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const qFromURL = params.get("q") || "";
     const qFromSS = sessionStorage.getItem(SS_Q) || "";
     const resFromSSStr = sessionStorage.getItem(SS_RESULTS);
 
-    // 优先使用 sessionStorage，其次使用 URL 参数
+    // Prioritize sessionStorage, then use URL parameters
     const effectiveQ = qFromSS || qFromURL;
 
-    // 如果是初始挂载或从详情页返回，强制恢复状态
+    // If initial mount or returning from detail page, force state restoration
     if (effectiveQ) {
-      // 同步查询框
+      // Sync query box
       setQuery(effectiveQ);
       
-      // 恢复结果
+      // Restore results
       if (resFromSSStr) {
         try {
           const cached = JSON.parse(resFromSSStr);
@@ -110,7 +110,7 @@ const SearchBiodiversity = ({ onSelect = () => {} }) => {
         fetchAndFilter(effectiveQ);
       }
 
-      // 确保 URL 和 sessionStorage 同步
+      // Ensure URL and sessionStorage are synchronized
       if (!qFromURL && qFromSS) {
         setURLQuery(qFromSS, true);
       }
@@ -118,7 +118,7 @@ const SearchBiodiversity = ({ onSelect = () => {} }) => {
         sessionStorage.setItem(SS_Q, qFromURL);
       }
     } else {
-      // 没有任何查询时，清空状态
+      // When no query exists, clear state
       setQuery("");
       setResults([]);
     }
@@ -188,7 +188,7 @@ const SearchBiodiversity = ({ onSelect = () => {} }) => {
                     onClick={(e) => {
                       e.stopPropagation();
                       const currentQ = query.trim();
-                      // 在跳转前确保 sessionStorage 保存了当前状态
+                      // Ensure sessionStorage saves current state before navigation
                       if (currentQ) {
                         sessionStorage.setItem(SS_Q, currentQ);
                         sessionStorage.setItem(SS_RESULTS, JSON.stringify(results));
