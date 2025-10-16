@@ -1,0 +1,354 @@
+plant,neighbour,good_or_bad,why
+All,Basil,good,Repels flies and mosquitoes
+All,Catnip,good,"Repels fleas, ants, and rodents"
+All,Chamomile,good,"Repels flies and mosquitoes, improves growth"
+All,Fennel,good,"Repels flies, fleas, and ants"
+All,Marigold,good,Repels pests
+All,Calendula,good,Traps slugs and snails
+Asparagus,Basil,good,Enhances flavour
+Asparagus,Chive,good,"Repels pests, enhances flavour"
+Asparagus,Comfrey,good,"Draws up nutrients, provides mulch"
+Asparagus,Lovage,good,"Repels insects, improves growth"
+Asparagus,Parsley,good,Attracts predatory insects
+Asparagus,Tomato,good,Repels asparagus bettles
+Asparagus,Garlic,bad,Inhibits growth
+Asparagus,Bulb Onion,bad,Inhibits growth
+Lemon Balm,Tomato,good,"Attracts pollinators, enhances flavour, improves growth"
+Bean,Broccoli,good,"Eats nitrogen, breaks wind"
+Bean,Brussels Sprouts,good,"Eats nitrogen, breaks wind"
+Bean,Cabbage,good,"Eats nitrogen, breaks wind"
+Bean,Cauliflower,good,"Eats nitrogen, breaks wind"
+Bean,Carrot,good,Breaks up soil
+Bean,Corn,good,"Natural trellis, eats nitrogen"
+Bean,Lettuce,good,Retains soil moisture
+Bean,Lovage,good,"Repels pests, improves growth"
+Bean,Parsley,good,Attracts predatory insects
+Bean,Chive,bad,Inhibits growth
+Bean,Garlic,bad,Inhibits growth
+Bean,Gladiolus Corms,bad,Inhibits growth
+Bean,Bulb Onion,bad,Inhibits growth
+Bean,Sunflower,bad,Inhibits growth
+Beetroot,Broccoli,good,Eats nitrogen
+Beetroot,Brussels Sprouts,good,Eats nitrogen
+Beetroot,Cabbage,good,Eats nitrogen
+Beetroot,Cauliflower,good,Eats nitrogen
+Beetroot,Kohlrabi,good,Eats nitrogen
+Beetroot,Lettuce,good,Suppresses weeds
+Beetroot,Lovage,good,Attracts pollinators
+Beetroot,Bulb Onion,good,Repels pests
+Beetroot,Pea,good,Improves growth
+Beetroot,Potato,good,No competition
+Beetroot,Spinach,good,No competition
+Beetroot,SIlverbeet,good,No competition
+Beetroot,Tomato,bad,"Strong competition, attracts pests"
+Broccoli,Bean,good,Fixes nitrogen
+Broccoli,Beetroot,good,"No competition, breaks up soil"
+Broccoli,Carrot,good,"No competition, breaks up soil"
+Broccoli,Chamomile,good,"Attracts good insects, enhances flavour"
+Broccoli,Coriander,good,"Attracts good insects, improves growth, enhances flavour"
+Broccoli,Cucumber,good,No competition
+Broccoli,Dill,good,"Attracts good insects, improves growth, enhances flavour"
+Broccoli,Lettuce,good,No competition
+Broccoli,Lovage,good,"Improves growth, enhances flavour"
+Broccoli,Mint,good,Repels pests
+Broccoli,Nasturtium,good,Repels pests
+Broccoli,Pea,good,Fixes nitrogen
+Broccoli,Potato,good,Repels pests
+Broccoli,Rosemary,good,Repels pests
+Broccoli,Sage,good,Repels pests
+Broccoli,Thyme,good,Repels pests
+Broccoli,Zinnia,good,"Attracts pollinators and predatory insects, repels pests"
+Broccoli,Cress,good,"Attracts pollinators and predatory insects, repels pests"
+Broccoli,Garlic,bad,Inhibits growth
+Broccoli,Strawberry,bad,"Strong competition, spreads fungal diseases"
+Cabbage,Bean,good,Fixes nitrogen
+Cabbage,Beetroot,good,"No competition, breaks up soil"
+Cabbage,Carrot,good,"No competition, breaks up soil"
+Cabbage,Chamomile,good,"Attracts good insects, enhances flavour"
+Cabbage,Coriander,good,"Attracts good insects, improves growth, enhances flavour"
+Cabbage,Cucumber,good,No competition
+Cabbage,Dill,good,"Attracts good insects, improves growth, enhances flavour"
+Cabbage,Lettuce,good,No competition
+Cabbage,Lovage,good,"Improves growth, enhances flavour"
+Cabbage,Mint,good,Repels pests
+Cabbage,Nasturtium,good,Repels pests
+Cabbage,Pea,good,Fixes nitrogen
+Cabbage,Potato,good,Repels pests
+Cabbage,Rosemary,good,Repels pests
+Cabbage,Sage,good,Repels pests
+Cabbage,Thyme,good,Repels pests
+Cabbage,Zinnia,good,"Attracts pollinators and predatory insects, repels pests"
+Cabbage,Cress,good,"Attracts pollinators and predatory insects, repels pests"
+Cabbage,Garlic,bad,Inhibits growth
+Cabbage,Strawberry,bad,"Strong competition, spreads fungal diseases"
+Cauliflower,Bean,good,Fixes nitrogen
+Cauliflower,Beetroot,good,"No competition, breaks up soil"
+Cauliflower,Carrot,good,"No competition, breaks up soil"
+Cauliflower,Chamomile,good,"Attracts good insects, enhances flavour"
+Cauliflower,Coriander,good,"Attracts good insects, improves growth, enhances flavour"
+Cauliflower,Cucumber,good,No competition
+Cauliflower,Dill,good,"Attracts good insects, improves growth, enhances flavour"
+Cauliflower,Lettuce,good,No competition
+Cauliflower,Lovage,good,"Improves growth, enhances flavour"
+Cauliflower,Mint,good,Repels pests
+Cauliflower,Nasturtium,good,Repels pests
+Cauliflower,Pea,good,Fixes nitrogen
+Cauliflower,Potato,good,Repels pests
+Cauliflower,Rosemary,good,Repels pests
+Cauliflower,Sage,good,Repels pests
+Cauliflower,Thyme,good,Repels pests
+Cauliflower,Zinnia,good,"Attracts pollinators and predatory insects, repels pests"
+Cauliflower,Cress,good,"Attracts pollinators and predatory insects, repels pests"
+Cauliflower,Garlic,bad,Inhibits growth
+Cauliflower,Strawberry,bad,"Strong competition, spreads fungal diseases"
+Capsicum,Carrot,good,"No competition, breaks up soil"
+Capsicum,Bulb Onion,good,Repels pests
+Capsicum,Tomato,good,Similar conditions
+Chilli,Carrot,good,"No competition, breaks up soil"
+Chilli,Bulb Onion,good,Repels pests
+Chilli,Tomato,good,Similar conditions
+Carrot,Bean,good,Fixes nitrogen
+Carrot,Chive,good,Repels pests
+Carrot,Corriander,good,Attracts predatory insects
+Carrot,Cucumber,good,No competition
+Carrot,Leek,good,"Enhances flavour, attracts good insects"
+Carrot,Lettuce,good,No competition
+Carrot,Lovage,good,"Enhances flavour, attracts good insects"
+Carrot,Bulb Onion,good,Repels pests
+Carrot,Pea,good,Fixes nitrogen
+Carrot,Radish,good,Traps pests
+Carrot,Rosemary,good,Repels pests
+Carrot,Sage,good,Repels pests
+Carrot,Dill,bad,"Attracts pests, inhibits growth"
+Carrot,Celery,bad,"Strong competition, attracts pests, inhibits growth"
+Celery,Cabbage,good,Fixes nitrogen
+Celery,Chive,good,Repels pests
+Celery,Dill,good,"Attracts pollinators and predatory insects, repels pests"
+Celery,Bean,good,Fixes nitrogen
+Celery,Leek,good,Repels pests
+Celery,Lovage,good,"Attracts pollinators and predatory insects, repels pests"
+Celery,Bulb Onion,good,Repels pests
+Celery,Pea,good,Fixes nitrogen
+Celery,Sage,good,"Attracts pollinators and predatory insects, repels pests"
+Celery,Spinach,good,No competition
+Celery,Carrot,bad,"Strong competition, attracts pests"
+Celery,Parsnip,bad,"Strong competition, attracts pests"
+Celery,Potato,bad,"Strong competition, inhibits growth"
+Chamomile,Cabbage,good,Attracts predatory insects
+Chamomile,Bulb Onion,good,"Improves growth, enhances flavour, attracts predatory insects"
+Chive,Cucumber,good,"Repels pests, attracts pollinators"
+Chive,Lettuce,good,"Repels pests, no competition"
+Chive,Pea,good,Repels pests
+Chive,Bean,bad,Inhibits growth
+Corn,Bean,good,Fixes nitrogen
+Corn,Geranium,good,Repels pests
+Corn,Potato,good,Breaks up soil
+Corn,Sunflower,good,Attracts predatory insects
+Cucumber,Basil,good,Attracts pollinators
+Cucumber,Bean,good,"Fixes nitrogen, repels pests"
+Cucumber,Pea,good,"Fixes nitrogen, improves growth"
+Cucumber,Borage,good,"Attracts pollinators, repels pests"
+Cucumber,Broccoli,good,"Retains soil moisture, no competition"
+Cucumber,Brussels Sprouts,good,"Retains soil moisture, no competition"
+Cucumber,Cabbage,good,"Retains soil moisture, no competition"
+Cucumber,Cauliflower,good,"Retains soil moisture, no competition"
+Cucumber,Kohlrabi,good,"Retains soil moisture, no competition"
+Cucumber,Carrot,good,Breaks up soil
+Cucumber,Parsnip,good,Breaks up soil
+Cucumber,Corn,good,"Provides shade, breaks wind"
+Cucumber,Dill,good,"Attracts good insects, repels pests"
+Cucumber,Lovage,good,"Attracts good insects, repels pests"
+Cucumber,Lettuce,good,No competition
+Cucumber,Radish,good,No competition
+Cucumber,Nasturtium,good,"Traps pests, repels pests"
+Cucumber,Sunflower,good,"Provides shade, provides support"
+Cucumber,Potato,bad,"Strong competition, spreads disease"
+Cucumber,Sage,bad,"Inhibits growth, repels pollinators"
+Dill,Broccoli,good,"Attracts predatory insects, repels pests, improves growth"
+Dill,Cabbage,good,"Attracts predatory insects, repels pests, improves growth"
+Dill,Cauliflower,good,"Attracts predatory insects, repels pests, improves growth"
+Eggplant,Bean,good,Fixes nitrogen
+Eggplant,Spinach,good,"No competition, provides mulch"
+Kohlrabi,Beetroot,good,"No competition, breaks up soil"
+Kohlrabi,Bulb Onion,good,Repels pests
+Kohlrabi,Bean,bad,"Inhibits growth, incompatible conditions"
+Kohlrabi,Tomato,bad,"Strong competition, inhibits growth"
+Leek,Carrot,good,Repels pests
+Leek,Celery,good,"No competition, repels pests"
+Leek,Lovage,good,"Attracts good insects, no competition"
+Leek,Bulb Onion,good,"Repels pests, similar conditions"
+Leek,Parsnip,good,"Attracts predatory insects, no competition"
+Leek,Parsley,bad,"Strong competition, inhibits growth"
+Lettuce,Bean,good,"Fixes nitrogen, no competition"
+Lettuce,Beetroot,good,"No competition, provides shade"
+Lettuce,Cabbage,good,No competition
+Lettuce,Carrot,good,"No competition, breaks up soil"
+Lettuce,Chervil,good,"Enhances flavour, repels pests, provides shade"
+Lettuce,Coreopsis,good,"Attracts good insects, provides cover, repels pests"
+Lettuce,Cucumber,good,Provides shade
+Lettuce,Lovage,good,No compeittion
+Lettuce,Marigold,good,Attracts predatory insects
+Lettuce,Bulb Onion,good,"Repels pests, no competition"
+Lettuce,Parsnip,good,"Breaks down soil, no competition"
+Lettuce,Pea,good,"Fixes nitrogen, provides shade"
+Lettuce,Radish,good,Breaks down soil
+Lettuce,Zinnia,good,"Attracts pollinators and predatory insects, repels pests"
+Lettuce,Parsley,bad,"Inhibits growth, attracts pests"
+Nasturtium,Zucchini,good,No competition
+Bulb Onion,Beetroot,good,No competition
+Bulb Onion,Broccoli,good,No competition
+Bulb Onion,Cabbage,good,No competition
+Bulb Onion,Carrot,good,Breaks up soil
+Bulb Onion,Chamomile,good,"Attracts good insects, enhances flavour"
+Bulb Onion,Leek,good,"Repels pests, no competition"
+Bulb Onion,Lettuce,good,No competition
+Bulb Onion,Lovage,good,Attracts good insects
+Bulb Onion,Parsley,good,No competition
+Bulb Onion,Parsnip,good,No competition
+Bulb Onion,SIlverbeet,good,No competition
+Bulb Onion,Tomato,good,No competition
+Bulb Onion,Gladiolus Corms,bad,Strong competition
+Parsley,Asparagus,good,No competition
+Parsley,Tomato,good,Provides shade
+Pea,Bean,good,Similar conditions
+Pea,Beetroot,good,No competition
+Pea,Brussels Sprouts,good,"Eats nitrogen, no competition"
+Pea,Cabbage,good,"Eats nitrogen, retains soil moisture"
+Pea,Carrot,good,"Eats nitrogen, no competition"
+Pea,Cauliflower,good,"Eats nitrogen, no competition"
+Pea,Celery,good,"Eats nitrogen, no competition"
+Pea,Cucumber,good,"Eats nitrogen, no competition"
+Pea,Lettuce,good,"Eats nitrogen, no competition"
+Pea,Lovage,good,"Eats nitrogen, attracts pollinators"
+Pea,Parsnip,good,No competition
+Pea,Potato,good,"Eats nitrogen, no competition"
+Pea,Radish,good,"Eats nitsogen, no competition"
+Pea,Sage,good,"Repels pests, no competition"
+Pea,Pumpkin & Winter Squash,good,"Eats nitrogen, no competition"
+Pea,Summer Squash,good,"Eats nitrogen, no competition"
+Pea,Chive,bad,Inhibits growth
+Pea,Garlic,bad,Inhibits growth
+Pea,Bulb Onion,bad,Inhibits growth
+Pea,Shallots,bad,Inhibits growth
+Potato,Bean,good,"Fixes nitrogen, no competition"
+Potato,Broccoli,good,No competition
+Potato,Brussels Sprouts,good,No competition
+Potato,Cabbage,good,No competition
+Potato,Cauliflower,good,No competition
+Potato,Corn,good,"No competition, repels pests, n ocompetition"
+Potato,Eggplant,good,Similar conditions
+Potato,Horseradish Roots,good,"Repels pests, increases disease resistance, no competition"
+Potato,Lovage,good,"Repels pests, attracts predatory insects"
+Potato,Marigold,good,No competition
+Potato,Nasturtium,good,"Traps pests, retains soil moisture"
+Potato,Parsnip,good,No competition
+Potato,Pea,good,"Fixes nitrogen, no competition"
+Potato,Alyssum,good,"Attracts good insects, suppresses weeds, provides mulch"
+Potato,Watermelon,good,"Retains soil moisture, suppresses weeds, attracts pollinators"
+Potato,Celery,bad,"Strong competition, attracts pests"
+Potato,Cucumber,bad,"Strong competition, spreads disease"
+Potato,Pumpkin & Winter Squash,bad,"Strong competition, spreads fungal disease"
+Potato,Rosemary,bad,Contradicting needs
+Potato,Summer Squash,bad,"Strong competition, spreads fungal disease"
+Potato,Sunflower,bad,Inhibits growth
+Potato,Tomato,bad,Spreads disease
+Pumpkin & Winter Squash,Bean,good,Fixes nitrogen
+Pumpkin & Winter Squash,Borage,good,"Attracts predatory insects, attracts pollinators"
+Pumpkin & Winter Squash,Cabbage,good,No competition
+Pumpkin & Winter Squash,Nasturtium,good,Repels pests
+Pumpkin & Winter Squash,Eggplant,good,No competition
+Pumpkin & Winter Squash,Pea,good,"Fixes nitrogen, no competition"
+Pumpkin & Winter Squash,Radish,good,Repels pests
+Pumpkin & Winter Squash,Potato,bad,"Strong competition, spreads fungal disease"
+Radish,Bean,good,No competition
+Radish,Carrot,good,No competition
+Radish,Chervil,good,"Enhances flavour, repels pests, no competition"
+Radish,Cucumber,good,No competition
+Radish,Lettuce,good,No competition
+Radish,Lovage,good,"No competition, repels pests"
+Radish,Nasturtium,good,Repels pests
+Radish,Parsnip,good,No competition
+Radish,Pea,good,No competition
+Radish,Spinach,good,No competition
+Radish,Collards,good,No competition
+Radish,Hyssop,bad,Inhibits growth
+Raspberry,Blackberry,bad,"Spreads disease, attracts pests, strong competition"
+Raspberry,Potato,bad,Spreads fungal disease
+Raspberry,Tomato,bad,"Strong competition, spreads fungal disease"
+Rosemary,Bean,good,No competition
+Rosemary,Sage,good,"Repels pests, similar conditions"
+Sage,Broccoli,good,No competition
+Sage,Carrot,good,No competition
+Sage,Rosemary,good,Repels pests
+Silverbeet,Beetroot,good,Similar conditions
+Silverbeet,Lavender,good,"Repels pests, attracts good insects, no competition"
+Silverbeet,Lovage,good,"Attracts good insects, no competition"
+Silverbeet,Bulb Onion,good,"Repels pests, no competition"
+Silverbeet,Basil,bad,Contradicting needs
+Spinach,Bean,good,"Provides shade, fixes nitrogen"
+Spinach,Pea,good,"Provides shade, fixes nitrogen"
+Spinach,Celery,good,No competition
+Spinach,Eggplant,good,No competition
+Spinach,Radish,good,"Repels pests, no competition"
+Spinach,Coreopsis,good,Attacts good insects
+Summer Squash,Borage,good,"Attracts pollinators, repels pests"
+Summer Squash,Lovage,good,"Attracts good insects, repels pests"
+Summer Squash,Nasturtium,good,"Repels pests, attracts pollinators"
+Summer Squash,Pea,good,"Fixes nitrogen, no competition"
+Summer Squash,Sunflower,good,"Attracts pollinators, retains soil moisture"
+Summer Squash,Potato,bad,"Strong competition, spreads fungal disease"
+Strawberry,Bean,good,"Fixes nitrogen, no competition"
+Strawberry,Borage,good,"Enhances flavour, repels pests"
+Strawberry,Chive,good,"Repels pests, enhances flavour"
+Strawberry,Leek,good,Repels pests
+Strawberry,Lettuce,good,No competition
+Strawberry,Marigold,good,Attracts pollinators
+Strawberry,Bulb Onion,good,"Repels pests, improves growth, enhances flavour"
+Strawberry,Pyrethrum,good,"Repels pests, attracts pollinators"
+Strawberry,Sage,good,"Repels pests, no competition"
+Strawberry,Spinach,good,"No competition, provides mulch"
+Strawberry,Broccoli,bad,"Strong competition, spreads fungal disease"
+Strawberry,Cabbage,bad,Strong competition
+Strawberry,Cauliflower,bad,"Strong competition, spreads fungal disease, attracts pests"
+Strawberry,Brussels Sprouts,bad,"Strong competition, spreads disease, attracts pests"
+Strawberry,Garlic,bad,Inhibits growth
+Sunflower,Pumpkin & Winter Squash,good,"Retains soil moisture, attracts pollinators"
+Sunflower,Summer Squash,good,"Retains soil moisture, attracts good insects"
+Sunflower,Potato,bad,Strong competition
+Tomato,Asparagus,good,Repels pests
+Tomato,Basil,good,"Enhances flavour, improves growth, attracts pollinators"
+Tomato,Celery,good,Repels pests
+Tomato,Borage,good,"Attracts pollinators, repels pests, breaks up soil"
+Tomato,Broccoli,good,No competition
+Tomato,Brussels Sprouts,good,No competition
+Tomato,Cabbage,good,No competition
+Tomato,Carrot,good,Breaks up soil
+Tomato,Cauliflower,good,No competition
+Tomato,Chive,good,"Repels pests, no competition"
+Tomato,Dill,good,"Repels pests, attracts good insects"
+Tomato,Gooseberry,good,No competition
+Tomato,Hyssop,good,"Repels pests, attracts good insects"
+Tomato,Lovage,good,"Attracts good insects, repels pests, enhances flavour"
+Tomato,Marigold,good,Attracts pollinators
+Tomato,Mint,good,"Repels pests, improves growth, enhances flavour"
+Tomato,Nasturtium,good,"Traps pests, retains soil moisture"
+Tomato,Bulb Onion,good,Repels pests
+Tomato,Parsley,good,Attracts predatory insects
+Tomato,Parsnip,good,Attracts predatory insects
+Tomato,Turnip,good,"Breaks up soil, no competition"
+Tomato,Beetroot,bad,Strong competition
+Tomato,Fennel,bad,"Inhibits growth, attracts pests"
+Tomato,Kohlrabi,bad,"Strong competition, inhibits growth"
+Tomato,Potato,bad,"Spreads disease, attracts pests"
+Tomato,Rosemary,bad,Inhibits growth
+Turnip,Cucumber,good,No competition
+Turnip,Lettuce,good,No competition
+Turnip,Nasturtium,good,"Repels pests, suppresses weeds"
+Turnip,Pea,good,"Fixes nitrogen, no competition"
+Turnip,Tomato,good,"No competition, repels pests"
+Watermelon,Potato,good,No competition
+Zucchini,Lovage,good,"Attracts good insects, repels pests"
+Zucchini,Nasturtium,good,"Repels pests, attracts pollinators"
+Zucchini,Oregano,good,Repels pests
+Zucchini,Radish,good,Repels pests
+Zucchini,Zinnia,good,"Attracts predatory insects, attracts pollinators"
