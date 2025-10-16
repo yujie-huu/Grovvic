@@ -695,6 +695,7 @@
   display: grid; place-items: center;
   z-index: 1000;
 }
+
 .setup-modal{
   position: relative;
   width: min(720px, 92vw);
@@ -712,8 +713,10 @@
 .setup-close:hover{ background:#dfe9df; }
 
 .setup-title{
-  text-align: center; margin: 6px 0 12px 0;
+  text-align: center; 
+  margin: 0 0 12px 0;
   font-size: clamp(22px, 4vw, 34px); font-weight: 800;
+  height: auto;
 }
 .setup-title span{ font-weight: 700; color:#111; margin-right:.4rem; }
 .setup-title strong{ background:#4f7f4e; color:#fff; padding: 4px 8px; border-radius:6px; }
@@ -1609,5 +1612,161 @@
   font-size: 0.9rem;
   width: 100%;
   flex: 1; /* Take up remaining space */
+}
+
+/* Help Button */
+.help-button {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #4a8a00;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+  font-weight: bold;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.help-button:hover {
+  background: #3d7200;
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+.help-button span {
+  line-height: 1;
+}
+
+/* ===== driver.js beautification ===== */
+
+/* Increase tour layer level to ensure Next button is clickable */
+.driver-overlay { 
+  z-index: 100000 !important; 
+}
+.driver-popover { 
+  z-index: 100001 !important; 
+}
+
+/* Your setup modal overlay should be lower */
+.setup-modal-overlay {
+  z-index: 90000;              /* less than driver's 100000 */
+}
+
+/* Highlighted target: outline and glow effects */
+.driver-highlighted-element {
+  outline: 3px solid #7EC97E !important;
+  box-shadow: 0 0 0 6px rgba(126, 201, 126, .28) !important;
+  border-radius: 12px !important;
+}
+
+/* Popover (dialog bubble) */
+.grov-tour.driver-popover {
+  z-index: 100001 !important;
+  background: #fffefb;
+  color: #223;
+  border-radius: 14px;
+  border: 1px solid rgba(0,0,0,.06);
+  box-shadow: 0 12px 36px rgba(0,0,0,.22);
+  padding: 14px 16px;
+  max-width: 360px;
+  pointer-events: auto !important; /* ensure interactivity */
+  opacity: 1 !important; /* ensure opacity */
+}
+
+/* Close button */
+.grov-tour .driver-popover-close-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: #666;
+  cursor: pointer;
+  padding: 4px;
+  line-height: 1;
+  z-index: 100002 !important;
+  pointer-events: auto !important;
+}
+.grov-tour .driver-popover-close-btn:hover {
+  color: #333;
+  background: rgba(0,0,0,0.05);
+  border-radius: 4px;
+}
+
+/* Title and content */
+.grov-tour .driver-popover-title {
+  font-weight: 800;
+  font-size: 16px;
+  margin-bottom: 8px;
+  padding-right: 30px; /* make space for close button */
+}
+.grov-tour .driver-popover-description {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #334;
+}
+
+/* Arrow color and position (make bubble look "floating above") */
+.grov-tour .driver-popover-arrow {
+  border-top-color: #fffefb !important; /* default arrow color when pointing up */
+  filter: drop-shadow(0 -2px 3px rgba(0,0,0,.06));
+}
+
+/* Bottom button area */
+.grov-tour .driver-popover-footer {
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+}
+.grov-tour .driver-popover-footer button {
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-weight: 600;
+  border: 1px solid #e6e6e6;
+  background: #f7f7f7;
+  color: #223;
+  cursor: pointer;
+  text-shadow: none !important;                        /* remove text shadow */
+  box-shadow: none !important;                          /* remove button shadow */
+  transform: none !important;                           /* remove transform effect */
+  pointer-events: auto !important;                     /* ensure button is clickable */
+}
+
+/* Hide arrows in buttons */
+.grov-tour .driver-popover-footer button::before,
+.grov-tour .driver-popover-footer button::after {
+  display: none !important;
+}
+.grov-tour .driver-popover-footer button:hover {
+  background: #eef3ea;
+  border-color: #d8e9d3;
+  text-shadow: none !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+.grov-tour .driver-popover-footer .driver-popover-next-btn,
+.grov-tour .driver-popover-footer .driver-popover-done-btn {
+  background: #0f4229;
+  color: #fff;
+  border-color: #0f4229;
+  text-shadow: none !important;
+  box-shadow: none !important;
+}
+.grov-tour .driver-popover-footer .driver-popover-next-btn:hover,
+.grov-tour .driver-popover-footer .driver-popover-done-btn:hover {
+  background: #0a2f1c;
+  text-shadow: none !important;
+  box-shadow: none !important;
+  transform: none !important;
 }
 

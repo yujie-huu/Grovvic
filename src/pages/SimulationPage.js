@@ -2,8 +2,133 @@ import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react'
 import './SimulationPage.css';
 import { MdSearch, MdDelete, MdDeleteForever, MdWarning, MdInfo, MdCheckCircle, MdCancel, MdSettings, MdUndo, MdRedo, MdClear, MdImage } from 'react-icons/md';
 import plantSpacingData from '../data/plant_spacing.json';
+import { driver } from 'driver.js';
+import 'driver.js/dist/driver.css';
+
 
 const API_URL = 'https://netzero-vigrow-api.duckdns.org/iter3/plants/filter';
+
+// ======== Guided Tour (driver.js) ========
+const TOUR_KEY = 'netzero_sim_tour_done_v1';
+
+// Fallback: ensure elements exist before adding steps to avoid errors
+const exist = (sel) => !!document.querySelector(sel);
+
+const buildTourSteps = (setShowSetup, setShowFilters) => {
+  const steps = [
+    // 1) Setup Modal (auto-open)
+    {
+      element: '.setup-modal',
+      disableActiveInteraction: false, // ensure setup modal can interact
+      popover: {
+        title: 'Set up your garden',
+        description: 'Welcome to your garden! Before planting, set your bed size, season, and sunlight exposure here.',
+        side: 'center',
+        align: 'center'
+      },
+      onHighlightStarted: () => {
+        setShowSetup(true);
+      },
+      onDeselected: () => {
+        setShowSetup(false);
+      }
+    },
+    // 2) Filter & Search
+    {
+      element: '.plant-filter-search-bar',
+      popover: {
+        title: 'Filter & Search',
+        description: 'Click the "Filter" button to open filter options, or use the search box to find plants by name.',
+        side: 'bottom',
+        align: 'start'
+      },
+      onHighlightStarted: () => {
+        // Don't auto-open filters, let user manually operate
+        // setShowFilters(true);
+      },
+      onDeselected: () => {
+        // Don't auto-close filters, maintain user's choice
+        // setShowFilters(false);
+      }
+    },
+    // 3) Plant list (draggable source)
+    {
+      element: '.plant-display-area, .plant-list',
+      popover: {
+        title: 'Drag a plant to the garden',
+        description: 'Drag a plant into your garden! Each plant needs different space — green glow means enough room, red glow means not enough.',
+        side: 'top',
+        align: 'center'
+      }
+    },
+    // 4) Garden + Trash
+    {
+      element: '.simulation-garden-scroll',
+      popover: {
+        title: 'Move & Remove',
+        description: 'You can move plants to another empty spot or drag them to the trash can to remove them.',
+        side: 'top',
+        align: 'center'
+      },
+      onHighlightStarted: () => {
+        document.querySelector('.simulation-garden-scroll')
+          ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    },
+    {
+      element: '.trash-card',
+      popover: {
+        title: 'Trash can',
+        description: 'Drag here to delete a plant. The bin lights up when it\'s ready to remove.',
+        side: 'top',
+        align: 'center'
+      },
+      onHighlightStarted: () => {
+        document.querySelector('.trash-card')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    },
+    // 5) Recommendations
+    {
+      element: '.rec-card',
+      popover: {
+        title: 'Recommendations',
+        description: 'Get smart suggestions based on what you\'ve planted. Try dragging a recommended plant into your garden!',
+        side: 'top',
+        align: 'center'
+      }
+    },
+    // 6) Insights
+    {
+      element: '.insight-panel, .insights-card, .insights-container',
+      popover: {
+        title: 'Insights',
+        description: 'Check your garden\'s biodiversity and companionship insights here. Click on each category to learn more.',
+        side: 'top',
+        align: 'center'
+      }
+    },
+    // 7) Tools
+    {
+      element: '.tools-card--actions',
+      popover: {
+        title: 'Tools',
+        description: 'Manage your garden with these tools: Undo/Redo actions, Clear the garden, Download layout into image, and Edit setup anytime.',
+        side: 'top',
+        align: 'center'
+      }
+    }
+  ];
+
+  // Only keep steps that actually exist on the page
+  return steps.filter(s => {
+    // Setup modal step is always included, even if element doesn't exist (because we will auto-open it)
+    if (s.element === '.setup-modal') {
+      return true;
+    }
+    // Complex element may contain commas: any one exists is sufficient
+    return s.element.split(',').some((sub) => exist(sub.trim()));
+  });
+};
 
 
 // Map UI values -> API values
@@ -120,8 +245,8 @@ export default function SimulationPage(){
   const [setupStep, setSetupStep] = useState(1);
 
   const DEFAULTS = useMemo(() => ({
-    bedWidth: 60,
-    bedLength: 60,
+    bedWidth: 100,
+    bedLength: 100,
     season: 'All season',
     sunshine: 'All',
   }), []);
@@ -154,6 +279,63 @@ export default function SimulationPage(){
   // Main page button: open the setup modal
   const openSetup = () => setShowSetup(true);
 
+  // ======== Guided Tour Functions ========
+  const tourRef = useRef(null);
+
+  const startTour = (auto = false) => {
+    const steps = buildTourSteps(setShowSetup, setShowFilters);
+    if (!steps.length) return;
+
+    //  open setup modal for first step
+    setShowSetup(true);
+
+    // Wait for DOM to stabilize before starting
+    setTimeout(() => {
+      const tour = driver({
+        steps: steps,
+        animate: true,
+        allowKeyboardControl: true,
+        allowClose: true, // allow closing tour
+        disableActiveInteraction: false, // ensure highlighted elements can interact
+        popoverClass: 'grov-tour',
+        nextBtnText: 'Next',
+        prevBtnText: 'Previous',
+        doneBtnText: 'Start gardening'
+      });
+
+      tourRef.current = tour;
+      
+      // Monitor tour end - by detecting removal of driver overlay
+      const checkTourEnd = () => {
+        const overlay = document.querySelector('.driver-overlay');
+        if (!overlay) {
+          // Tour ended, cleanup state
+          if (auto) localStorage.setItem(TOUR_KEY, '1');
+          setShowSetup(false);
+          setShowFilters(false);
+        } else {
+          // Tour still in progress, continue checking
+          setTimeout(checkTourEnd, 100);
+        }
+      };
+      
+      // Start tour
+      tour.drive();
+      
+      // Start checking tour status
+      setTimeout(checkTourEnd, 200);
+    }, 150);
+  };
+
+  // Auto-start on first visit
+  useEffect(() => {
+    if (!localStorage.getItem(TOUR_KEY)) {
+      // Wait for UI rendering to stabilize
+      const t = setTimeout(() => startTour(true), 600);
+      return () => clearTimeout(t);
+    }
+  }, []);
+
 
   // ---------- Left panel: filters & plant inventory ----------
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -165,11 +347,11 @@ export default function SimulationPage(){
   const [plants, setPlants] = useState([]); // array of { name, ... }
   const [allPlants, setAllPlants] = useState([]); // array of all plants from plant_spacing.json
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null); // 改为null以支持更好的错误处理
+  const [error, setError] = useState(null); // changed to null for better error handling
 
   const handleFilter = useCallback(async () => {
     setLoading(true); 
-    setError(null); // 清除之前的错误
+    setError(null); // clear previous errors
     try {
       const body = {
         season: normalizeSeason(season ?? DEFAULTS.season),
@@ -225,7 +407,7 @@ export default function SimulationPage(){
       plant.plant_name.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setPlants(filteredPlants);
-    setError(null); // 清除之前的错误
+    setError(null); // clear previous errors
   }, [searchTerm, allPlants, handleFilter]);
 
   // Handle Enter key press in search input
@@ -258,7 +440,7 @@ export default function SimulationPage(){
   // === Recommendations ===
   const [recs, setRecs] = useState([]);           // ['Basil','Carrot','Onion']
   const [recLoading, setRecLoading] = useState(false);
-  const [recError, setRecError] = useState(null); // 改为null以支持更好的错误处理
+  const [recError, setRecError] = useState(null); // changed to null for better error handling
   const RECOMMEND_API = 'https://netzero-vigrow-api.duckdns.org/iter3/plants/recommend';
   
   // === Insights ===
@@ -426,7 +608,7 @@ export default function SimulationPage(){
   const fetchRecommendations = useCallback(async () => {
     try {
       setRecLoading(true);
-      setRecError(null); // 清除之前的错误
+      setRecError(null); // clear previous errors
       const body = { plants: getPlantedNames() };
       const res = await fetch(RECOMMEND_API, {
         method: 'POST',
@@ -949,6 +1131,10 @@ export default function SimulationPage(){
   
   return (
     <div className="simulation-page">
+      {/* Help Button */}
+      <button className="help-button" onClick={() => startTour(false)} title="Start Tour">
+        <span>?</span>
+      </button>
       <section className="simulation-panel-section">
         <div className="simulation-plant-inventory">
           <div className="plant-filter-search-bar">
@@ -1440,7 +1626,7 @@ export default function SimulationPage(){
                     <input
                       type="range"
                       min="60" max="160" step="20"
-                      value={bedWidth ?? 60}
+                      value={bedWidth ?? 100}
                       onChange={(e) => setBedWidth(parseInt(e.target.value, 10))}
                     />
                   </div>
@@ -1450,12 +1636,12 @@ export default function SimulationPage(){
                     <input
                       type="range"
                       min="60" max="360" step="20"
-                      value={bedLength ?? 60}
+                      value={bedLength ?? 100}
                       onChange={(e) => setBedLength(parseInt(e.target.value, 10))}
                     />
                   </div>
                   
-                  <div className="size-value">{cm(bedWidth ?? 60)} × {cm(bedLength ?? 60)}</div>
+                  <div className="size-value">{cm(bedWidth ?? 100)} × {cm(bedLength ?? 100)}</div>
                 </div>
               </div>
             )}
