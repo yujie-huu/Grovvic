@@ -201,154 +201,186 @@ const AnimalDetail = () => {
   ];
 
   return (
-    <div className="animal-detail">
-      <div className="back-button" onClick={() => navigate(-1)}>
-        <MdArrowBack />
-      </div>
-
-      <h1 className="animal-vernacular">
-        {animal.vernacular_name || animal.animal_taxon_name}
-      </h1>
-      <p className="animal-scientific">
-        <i>{animal.animal_taxon_name}</i> ({animal.family})
-      </p>
-
-      {/* 图片 + 描述 */}
-      <div className="animal-detail-content">
-        <div className="animal-detail-left">
-          <img
-            src={animal.image_url}
-            alt={animal.animal_taxon_name}
-            className="animal-detail-img"
-          />
-        </div>
-        <div className="animal-detail-right">
-          <h3 className="animal-desc-title">DESCRIPTION</h3>
-          <p className="animal-desc-text">{animal.summary}</p>
-        </div>
-      </div>
-
-      {/* 两个地图并排显示 */}
-      <div className="animal-maps-container">
-        {/* 覆盖范围凸包/缓冲/包围盒 */}
-        {polygonBounds && (
-          <div className="animal-map">
-            <h3 className="compiled-map-title">Compiled Distribution Map</h3>
-
-            {/* 🔒 固定不可缩放/不可拖拽，只显示维州区域 */}
-            <MapContainer
-              bounds={VIC_BOUNDS}
-              maxBounds={VIC_BOUNDS}
-              maxBoundsViscosity={1.0}
-              style={{ height: "300px", width: "100%" }}
-              zoomControl={false}
-              scrollWheelZoom={false}
-              doubleClickZoom={false}
-              touchZoom={false}
-              boxZoom={false}
-              keyboard={false}
-              dragging={false}
-            >
-              {/* 背景瓦片层 */}
-              <TileLayer url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png" />
-
-              {/* 显示 Victoria 边界（蓝色轮廓） */}
-              {vicBoundary && (
-                <GeoJSON
-                  data={vicBoundary}
-                  style={{ color: "blue", weight: 2, fillOpacity: 0.1 }}
-                />
-              )}
-
-              {/* 物种分布区域（红色 polygon） */}
-              <Polygon
-                positions={polygonBounds}
-                pathOptions={{ color: "red", fillColor: "red", fillOpacity: 0.5 }}
-              />
-            </MapContainer>
+    <div className="animal-detail-page">
+      {/* Header Section */}
+      <header className="animal-header">
+        <button className="back-button" onClick={() => navigate(-1)}>
+          <MdArrowBack />
+        </button>
+        
+        <div className="animal-title-section">
+          <h1 className="animal-vernacular-name">
+            {animal.vernacular_name || animal.animal_taxon_name}
+          </h1>
+          <div className="animal-scientific-info">
+            <span className="scientific-name">
+              <i>{animal.animal_taxon_name}</i>
+            </span>
+            <span className="family-name">{animal.family}</span>
           </div>
-        )}
+        </div>
+      </header>
 
-        {/* 点分布地图（保持可交互） */}
-        <div className="animal-map">
-          <h3 className="occurrence-map-title">Occurrence Records Map</h3>
-          <MapContainer center={[-25, 133]} zoom={3} style={{ height: "300px", width: "100%" }}>
-            <TileLayer
-              url="https://cartodb-basemaps-a.global.ssl.fastly.net/light_all/{z}/{x}/{y}{r}.png"
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> contributors &copy; <a href="https://carto.com/">CARTO</a>'
+      {/* Main Content */}
+      <main className="animal-main-content">
+        {/* Hero Section with Image and Description */}
+        <section className="animal-hero-section">
+          <div className="animal-image-container">
+            <img
+              src={animal.image_url}
+              alt={animal.animal_taxon_name}
+              className="animal-hero-image"
             />
-            {occurrences.map((item, idx) => (
-              <CircleMarker
-                key={idx}
-                center={[item.decimalLatitude, item.decimalLongitude]}
-                radius={5}
-                color="blue"
-                fillOpacity={0.7}
-              >
-                <Tooltip>{item.eventDate}</Tooltip>
-              </CircleMarker>
-            ))}
-          </MapContainer>
-        </div>
-      </div>
-
-      {/* Related Plants：同一植物一张卡；名称优先 vernacular_name；交互映射 */}
-      {Array.isArray(relations) && relations.length > 0 && (
-        <section className="related-plants-section">
-          <div className="related-plants-hero">
-            <h2 className="related-plants-title">Related Plants</h2>
           </div>
-
-          <div className="related-plants-grid">
-            {relations.map((rel, idx) => {
-              // ✅ 优先显示 plant_common_name，没有则显示 plant_scientific_name
-              const displayName =
-                (rel.plant_common_name && rel.plant_common_name.trim()) ||
-                (rel.plant_scientific_name && rel.plant_scientific_name.trim()) ||
-                "No Name";
-
-              return (
-                <article className="related-plant-card" key={idx}>
-                  {/* ✅ 名称（优先 plant_common_name） */}
-                  <h3
-                    className={`related-plant-name ${
-                      displayName.length > 24 ? "long-text" : ""
-                    }`}
-                  >
-                    {displayName}
-                  </h3>
-
-                  {/* ✅ 图片 */}
-                  {rel.plant_image_url ? (
-                    <img
-                      src={rel.plant_image_url}
-                      alt={displayName}
-                      className="related-plant-img"
-                    />
-                  ) : (
-                    <div className="related-plant-noimg">No Data</div>
-                  )}
-
-                  {/* ✅ interactions：映射格式化输出 */}
-                  <div className="related-plant-relation-list">
-                    {rel.interactions && rel.interactions.length > 0 ? (
-                      mapAndDedupeInteractions(rel.interactions).map((t, i) => (
-                        <p className="related-plant-relation" key={i}>
-                          {t}
-                        </p>
-                      ))
-                    ) : (
-                      <p className="related-plant-relation">No Relation Data</p>
-                    )}
-                  </div>
-
-                </article>
-              );
-            })}
+          
+          <div className="animal-description-container">
+            <h2 className="animal-description-title">About This Species</h2>
+            <div className="animal-description-content">
+              <p>{animal.summary}</p>
+            </div>
           </div>
         </section>
-      )}
 
+        {/* Distribution Maps Section */}
+        <section className="animal-distribution-section">
+          <h2 className="animal-section-title">Distribution & Occurrence</h2>
+          
+          <div className="animal-maps-grid">
+            {/* Compiled Distribution Map */}
+            {polygonBounds && (
+              <div className="animal-map-card">
+                <div className="animal-map-header">
+                  <h3 className="animal-map-title">Distribution Range</h3>
+                  <p className="animal-map-subtitle">Compiled distribution area</p>
+                </div>
+                
+                <div className="animal-map-container">
+                  <MapContainer
+                    bounds={VIC_BOUNDS}
+                    maxBounds={VIC_BOUNDS}
+                    maxBoundsViscosity={1.0}
+                    style={{ height: "100%", width: "100%" }}
+                    zoomControl={false}
+                    scrollWheelZoom={false}
+                    doubleClickZoom={false}
+                    touchZoom={false}
+                    boxZoom={false}
+                    keyboard={false}
+                    dragging={false}
+                  >
+                    <TileLayer url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png" />
+                    
+                    {vicBoundary && (
+                      <GeoJSON
+                        data={vicBoundary}
+                        style={{ color: "#3b82f6", weight: 2, fillOpacity: 0.1 }}
+                      />
+                    )}
+                    
+                    <Polygon
+                      positions={polygonBounds}
+                      pathOptions={{ color: "#ef4444", fillColor: "#ef4444", fillOpacity: 0.6 }}
+                    />
+                  </MapContainer>
+                </div>
+              </div>
+            )}
+
+            {/* Occurrence Records Map */}
+            <div className="animal-map-card">
+              <div className="animal-map-header">
+                <h3 className="animal-map-title">Occurrence Records</h3>
+                <p className="animal-map-subtitle">Individual sighting locations</p>
+              </div>
+              
+              <div className="animal-map-container">
+                <MapContainer 
+                  center={[-25, 133]} 
+                  zoom={3} 
+                  style={{ height: "100%", width: "100%" }}
+                >
+                  <TileLayer
+                    url="https://cartodb-basemaps-a.global.ssl.fastly.net/light_all/{z}/{x}/{y}{r}.png"
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> contributors &copy; <a href="https://carto.com/">CARTO</a>'
+                  />
+                  {occurrences.map((item, idx) => (
+                    <CircleMarker
+                      key={idx}
+                      center={[item.decimalLatitude, item.decimalLongitude]}
+                      radius={6}
+                      color="#3b82f6"
+                      fillColor="#3b82f6"
+                      fillOpacity={0.8}
+                      weight={2}
+                    >
+                      <Tooltip>
+                        <div className="animal-tooltip-content">
+                          <strong>Date:</strong> {item.eventDate}
+                        </div>
+                      </Tooltip>
+                    </CircleMarker>
+                  ))}
+                </MapContainer>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Related Plants Section */}
+        {Array.isArray(relations) && relations.length > 0 && (
+          <section className="animal-related-plants-section">
+            <div className="animal-section-header">
+              <h2 className="animal-section-title">Related Plants</h2>
+              <p className="animal-section-subtitle">Plants that interact with this species</p>
+            </div>
+            
+            <div className="animal-plants-grid">
+              {relations.map((rel, idx) => {
+                const displayName =
+                  (rel.plant_common_name && rel.plant_common_name.trim()) ||
+                  (rel.plant_scientific_name && rel.plant_scientific_name.trim()) ||
+                  "Unknown Plant";
+
+                return (
+                  <article className="animal-plant-card" key={idx}>
+                    <div className="animal-animal-plant-image-container">
+                      {rel.plant_image_url ? (
+                        <img
+                          src={rel.plant_image_url}
+                          alt={displayName}
+                          className="animal-plant-image"
+                        />
+                      ) : (
+                        <div className="animal-animal-plant-image-placeholder">
+                          <span>No Image</span>
+                        </div>
+                      )}
+                    </div>
+                    
+                    <div className="animal-plant-info">
+                      <h3 className="animal-plant-name">{displayName}</h3>
+                      
+                      <div className="animal-interactions-container">
+                        {rel.interactions && rel.interactions.length > 0 ? (
+                          <ul className="animal-interactions-list">
+                            {mapAndDedupeInteractions(rel.interactions).map((interaction, i) => (
+                              <li className="animal-interaction-item" key={i}>
+                                {interaction}
+                              </li>
+                            ))}
+                          </ul>
+                        ) : (
+                          <p className="animal-no-interactions">No interaction data available</p>
+                        )}
+                      </div>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          </section>
+        )}
+      </main>
     </div>
   );
 };
