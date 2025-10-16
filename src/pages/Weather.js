@@ -82,7 +82,7 @@ const Weather = () => {
     if (climateType === 'temperature' || climateType === 'rainfall') {
       loadClimateData()
     }
-  }, [climateType, climateDataLoaded])
+  }, [climateType, climateDataLoaded, loadClimateData])
 
   const toggleUnit = () => setUnit(prev => (prev === 'metric' ? 'imperial' : 'metric'))
 
@@ -90,8 +90,8 @@ const Weather = () => {
   if (loading && !current) {
     return (
       <div className="weather-page">
-        <div className="loading-container">
-          <div className="loading-spinner"></div>
+        <div className="weather-loading-container">
+          <div className="weather-loading-spinner"></div>
           <p>Loading weather data...</p>
         </div>
       </div>
@@ -101,7 +101,7 @@ const Weather = () => {
   if (error && !current) {
     return (
       <div className="weather-page">
-        <div className="error-container">
+        <div className="weather-error-container">
           <p>❌ {error}</p>
           <button onClick={() => fetchWeather(selectedCity, unit)}>Retry</button>
         </div>
@@ -171,7 +171,7 @@ const Weather = () => {
   const climateInsightsTemp = (
     <>
       {/* 单独的长卡片 */}
-      <div className="climate-intro-card">
+      <div className="weather-climate-intro-card">
         <h2>Historical Climate Insights</h2>
         <p>
           Average temperatures in Victoria have risen by ~0.8°C since the 1950s,
@@ -179,24 +179,24 @@ const Weather = () => {
         </p>
       </div>
 
-      <div className="climate-card-grid">
-        <div className="climate-card">
+      <div className="weather-weather-climate-card-grid">
+        <div className="weather-climate-card">
           <h3>PLANT HEAT-TOLERANT CROPS</h3>
           <p>Choose summer-resilient vegetables like tomatoes, chillies, eggplants.</p>
         </div>
-        <div className="climate-card">
+        <div className="weather-climate-card">
           <h3>AVOID COOL-SEASON CROPS</h3>
           <p>Skip lettuce or coriander during hot periods (they may bolt early or wilt).</p>
         </div>
-        <div className="climate-card">
+        <div className="weather-climate-card">
           <h3>ADJUST PLANTING SCHEDULES</h3>
           <p>Use longer warm seasons by planting earlier in spring or extending into autumn.</p>
         </div>
-        <div className="climate-card">
+        <div className="weather-climate-card">
           <h3>PROTECT PLANTS FROM HEAT WAVES</h3>
           <p>Use shade cloths, mulch, or plant covers to reduce heat stress.</p>
         </div>
-        <div className="climate-card">
+        <div className="weather-climate-card">
           <h3>WATER TIMING</h3>
           <p>Water early morning or late evening to minimize evaporation.</p>
         </div>
@@ -208,7 +208,7 @@ const Weather = () => {
   const climateInsightsRain = (
     <>
 
-      <div className="climate-intro-card">
+      <div className="weather-climate-intro-card">
         <h2>Historical Climate Insights</h2>
         <p>
           There’s been a significant decline in autumn rainfall, slight drops in winter and spring,
@@ -216,24 +216,24 @@ const Weather = () => {
         </p>
       </div>
 
-      <div className="climate-card-grid">
-        <div className="climate-card">
+      <div className="weather-weather-climate-card-grid">
+        <div className="weather-climate-card">
           <h3>IRRIGATE MORE DURING AUTUMN</h3>
           <p>Compensate for reduced natural soil moisture during fall planting periods.</p>
         </div>
-        <div className="climate-card">
+        <div className="weather-climate-card">
           <h3>USE WATER-SAVING TECHNIQUES</h3>
           <p>Install drip irrigation or deep watering systems to minimize water waste.</p>
         </div>
-        <div className="climate-card">
+        <div className="weather-climate-card">
           <h3>COLLECT AND REUSE RAINWATER</h3>
           <p>Install rain barrels to capture water during wetter months for dry season use.</p>
         </div>
-        <div className="climate-card">
+        <div className="weather-climate-card">
           <h3>IMPROVE SOIL MOISTURE RETENTION</h3>
           <p>Add compost or organic matter to enhance water-holding capacity.</p>
         </div>
-        <div className="climate-card">
+        <div className="weather-climate-card">
           <h3>GROW DROUGHT-TOLERANT PLANTS</h3>
           <p>Select native or low-water species (e.g., succulents, lavender, kangaroo paw).</p>
         </div>
@@ -270,96 +270,93 @@ const Weather = () => {
 
   return (
     <div className="weather-page">
-      <div className="weather-top-wrapper">
-        <div className="weather-main-card">
-          <div className="weather-main-top">
-            <div className="location-wrapper">
-              <span className="icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"/>
-                </svg>
-              </span>
-              <select
-                className="location-tag"
-                value={selectedCity}
-                onChange={(e) => setSelectedCity(e.target.value)}
-              >
-                {victoriaCities.map(city => (
-                  <option key={city} value={city}>Victoria, {city}</option>
-                ))}
-              </select>
+      <div className="weather-main-container">
+        <div className="weather-top-wrapper">
+          <div className="weather-main-card">
+            <div className="weather-main-top">
+              <div className="weather-location-wrapper">
+                <span className="icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"/>
+                  </svg>
+                </span>
+                <select
+                  className="weather-location-select"
+                  value={selectedCity}
+                  onChange={(e) => setSelectedCity(e.target.value)}
+                >
+                  {victoriaCities.map(city => (
+                    <option key={city} value={city}>Victoria, {city}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="weather-unit-toggle" onClick={toggleUnit}>{tempUnit} ▾</div>
             </div>
 
-            <div className="unit-toggle" onClick={toggleUnit}>{tempUnit} ▾</div>
-          </div>
+            <div className="weather-main-body">
+              <div className="weather-main-left">
+                <div className="weather-weekday">{weekday}</div>
+                <div className="weather-date">{date}</div>
+              </div>
 
-          <div className="weather-main-body">
-            <div className="weather-main-left">
-              <div className="weekday">{weekday}</div>
-              <div className="date">{date}</div>
-            </div>
+              <div className="weather-main-center">
+                <div className="weather-icon">
+                  <img
+                    src={`https://openweathermap.org/img/wn/${current.weather[0].icon}@2x.png`}
+                    alt={current.weather[0].description}
+                  />
+                </div>
+              </div>
 
-            <div className="weather-main-center">
-              <div className="weather-icon">
-                <img
-                  src={`https://openweathermap.org/img/wn/${current.weather[0].icon}@2x.png`}
-                  alt={current.weather[0].description}
-                />
+              <div className="weather-main-right">
+                <div className="temp">{Math.round(current.temp)}{tempUnit}</div>
+                <div className="weather-minmax">/{todayMin}{tempUnit}</div>
+                <div className="weather-desc">{current.weather[0].main}</div>
+                <div className="weather-feels">Feels like {Math.round(current.feels_like)}{tempUnit}</div>
               </div>
             </div>
+          </div>
 
-            <div className="weather-main-right">
-              <div className="temp">{Math.round(current.temp)}{tempUnit}</div>
-              <div className="minmax">/{todayMin}{tempUnit}</div>
-              <div className="desc">{current.weather[0].main}</div>
-              <div className="feels">Feels like {Math.round(current.feels_like)}{tempUnit}</div>
+          <div className="weather-highlights-grid-wrapper">
+            <h3>Today's Highlight</h3>
+            <div className="weather-highlights-grid">
+              <div className="weather-highlight-box">
+                <p>Wind</p>
+                <strong>{windSpeed} {speedUnit}</strong>
+                <p className="weather-highlight-label">{formatSunTime(current.dt)}</p>
+              </div>
+              <div className="weather-highlight-box">
+                <p>Humidity</p>
+                <strong>{current.humidity}%</strong>
+                <p className="weather-highlight-label">Humidity is good</p>
+              </div>
+              <div className="weather-highlight-box">
+                <p>Sunrise</p>
+                <strong>{formatSunTime(current.sunrise)}</strong>
+              </div>
+              <div className="weather-highlight-box">
+                <p>UV Index</p>
+                <strong>{current.uvi}</strong>
+                <p className="weather-highlight-label">UV risk level</p>
+              </div>
+              <div className="weather-highlight-box">
+                <p>Visibility</p>
+                <strong>{(current.visibility / 1000).toFixed(1)} km</strong>
+                <p className="weather-highlight-label">{formatSunTime(current.dt)}</p>
+              </div>
+              <div className="weather-highlight-box">
+                <p>Sunset</p>
+                <strong>{formatSunTime(current.sunset)}</strong>
+              </div>
             </div>
           </div>
         </div>
 
-        <div className="weather-highlights-wrapper">
-          <h3>Today's Highlight</h3>
-          <div className="weather-highlights">
-            <div className="highlight-box">
-              <p>🌬️ Wind</p>
-              <strong>{windSpeed} {speedUnit}</strong>
-              <p className="subtext">{formatSunTime(current.dt)}</p>
-            </div>
-            <div className="highlight-box">
-              <p>💧 Humidity</p>
-              <strong>{current.humidity}%</strong>
-              <p className="subtext">Humidity is good</p>
-            </div>
-            <div className="highlight-box">
-              <p>🌅 Sunrise</p>
-              <strong>{formatSunTime(current.sunrise)}</strong>
-            </div>
-            <div className="highlight-box">
-              <p>🔬 UV Index</p>
-              <strong>{current.uvi}</strong>
-              <p className="subtext">UV risk level</p>
-            </div>
-            <div className="highlight-box">
-              <p>👁️ Visibility</p>
-              <strong>{(current.visibility / 1000).toFixed(1)} km</strong>
-              <p className="subtext">{formatSunTime(current.dt)}</p>
-            </div>
-            <div className="highlight-box">
-              <p>🌇 Sunset</p>
-              <strong>{formatSunTime(current.sunset)}</strong>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-
-
-
-      <div class="weather-sections">
-        <div className="hourly-forecast">
+        <div className="weather-hourly-forecast">
           {forecastList.slice(0, 12).map((item, index) => (
-            <div className="hour-card" key={index}>
-              <p className="hour-time">
+            <div className="weather-hour-card" key={index}>
+              <p className="weather-hour-time">
                 {new Date(item.dt * 1000).toLocaleTimeString('en-US', {
                   hour: 'numeric',
                   minute: '2-digit',
@@ -369,16 +366,15 @@ const Weather = () => {
               <img
                 src={`https://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`}
                 alt={item.weather[0].description}
-                className="hour-icon"
+                className="weather-hour-icon"
               />
-              <p className="hour-temp">{Math.round(item.temp)}{tempUnit}</p>
+              <p className="weather-hour-temp">{Math.round(item.temp)}{tempUnit}</p>
             </div>
           ))}
         </div>
 
-
         <div
-          className="gardening-hero"
+          className="weather-gardening-hero"
           style={{
             '--tip-count': dayTips.length,   // ✅ 把当日 tip 的条数传给 CSS
             backgroundImage: `url(${process.env.PUBLIC_URL || ''}/images/days.png)`,
@@ -386,8 +382,8 @@ const Weather = () => {
             backgroundPosition: 'center'
           }}
         >
-          <div className="gardening-hero__content">
-            <div className="gardening-hero__left">
+          <div className="weather-weather-gardening-hero-content">
+            <div className="weather-weather-gardening-hero-left">
               <h2>Daily Gardening Tips</h2>
               <ul>
                 {dayTips.map((txt, i) => (
@@ -398,17 +394,18 @@ const Weather = () => {
           </div>
         </div>
 
+      </div>
 
-        <div className="watering-guide">
+      <div className="weather-watering-guide">
           <h2>💧 Watering Guide</h2>
-          <div className="water-when">
+          <div className="weather-water-when">
             When to water today: <strong>{wateringTable.whenToWaterToday}</strong>
           </div>
 
-          <div className="watering-content">
+          <div className="weather-watering-content">
             {/* 表格部分 */}
-            <div className="watering-table-wrap">
-              <table className="watering-table">
+            <div className="weather-weather-watering-table-wrap">
+              <table className="weather-watering-table">
                 <thead>
                   <tr>
                     <th>Plant</th>
@@ -425,8 +422,8 @@ const Weather = () => {
                       <td>{r.howOften}</td>
                       <td>
                         <span
-                          className={`water-badge ${
-                            parseFloat(r.hose) < 60 ? "water-green" : "water-blue"
+                          className={`weather-water-badge ${
+                            parseFloat(r.hose) < 60 ? "weather-water-green" : "weather-water-blue"
                           }`}
                         >
                           {r.hose}
@@ -442,7 +439,7 @@ const Weather = () => {
 
             {/* notes part */}
             {wateringTable.notes?.length > 0 && (
-              <ul className="watering-notes">
+              <ul className="weather-watering-notes">
                 {wateringTable.notes.map((t, i) => <li key={i}>{t}</li>)}
               </ul>
             )}
@@ -450,62 +447,46 @@ const Weather = () => {
         </div>
 
 
-        <div className="seven-day-forecast">
+        <div className="weather-seven-day-forecast">
           <h3>7 Day Forecast</h3>
-          <div className="day-cards">
+          <div className="weather-day-cards">
             {dailyForecasts.map((item, index) => (
-              <div className="day-card" key={index}>
-                <p className="day-name">{index === 0 ? 'Today' : formatDay(item.dt)}</p>
+              <div className="weather-day-card" key={index}>
+                <p className="weather-day-name">{index === 0 ? 'Today' : formatDay(item.dt)}</p>
                 <img
                   src={`https://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`}
                   alt={item.weather[0].description}
-                  className="day-icon"
+                  className="weather-day-icon"
                 />
-                <p className="day-temp">{Math.round(item.temp.day)}{tempUnit}</p>
+                <p className="weather-day-temp">{Math.round(item.temp.day)}{tempUnit}</p>
               </div>
             ))}
           </div>
         </div>
 
-        <div className="gardening-tips-banner">
+        <div className="weather-gardening-tips-banner">
           <h2>Gardening Tips for the Week</h2>
-          <p className="tip-text">{weeklyTips[0]}</p>
+          <p className="weather-tip-text">{weeklyTips[0]}</p>
         </div>
 
  
-        <div
-          className="weekly-image-banner"
-          style={{
-            backgroundImage: `url(${process.env.PUBLIC_URL}/images/iter2-weather-history.png)`,
-            backgroundSize: "contain",     
-            backgroundRepeat: "no-repeat", 
-            backgroundPosition: "center",  
-            height: "500px"                
-          }}
-        >
-          <div className="weekly-image-overlay">
+        <div className="weather-weekly-image-banner">
+          <div className="weather-weekly-image-overlay">
             <h2>Beyond Weather: From History To Future Resilient</h2>
           </div>
         </div>
 
 
-        <div className="climate-section">
-          <div className="climate-dropdown">
+        <div className="weather-climate-section">
+          <div className="weather-climate-dropdown">
             <select onChange={(e) => setClimateType(e.target.value)} value={climateType}>
               <option value="temperature">Temperature</option>
               <option value="rainfall">Rainfall</option>
             </select>
           </div>
 
-          {/* 图表容器：添加 margin-bottom 保证不遮盖卡片 */}
-          <div
-            className="climate-image"
-            style={{
-              position: "relative",
-              zIndex: 1,            // 确保图表层级较低
-              marginBottom: "90px", // 与下方卡片留出空间
-            }}
-          >
+          {/* 图表容器 */}
+          <div className="weather-climate-image">
             {climateDataLoaded && tempSpec && rainSpec ? (
               <Plot
                 data={(climateType === "temperature" ? tempSpec : rainSpec).data}
@@ -527,7 +508,7 @@ const Weather = () => {
                 useResizeHandler
               />
             ) : (
-              <div className="chart-loading">
+              <div className="weather-weather-chart-loading">
                 <p>Loading climate chart...</p>
               </div>
             )}
@@ -539,86 +520,43 @@ const Weather = () => {
           {climateType === 'temperature' ? climateInsightsTemp : climateInsightsRain}
         </div>
 
-        <div
-          className="climate-future-section"
-          style={{
-            backgroundImage: `url(${process.env.PUBLIC_URL}/images/future-insights.jpg)`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            padding: "60px 20px",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            position: "relative", 
-            minHeight: "520px",  
-            marginBottom: "130px",
-            
-          }}
-        >
+        <div className="weather-climate-future-section">
+          <h2 className="weather-climate-future-title">
+            Adapting to Future Climate
+          </h2>
 
-        {/* ✅ 白色标题：位于上部中央 */}
-        <h2
-          style={{
-            position: "absolute",
-            top: "80px",               // 距离顶部 40px（可根据需要调整）
-            left: "50%",
-            transform: "translateX(-50%)", // 水平居中
-            color: "#ffffff",          // 白色文字
-            fontSize: "2.2rem",        // 可按需调整大小
-            fontWeight: "bold",
-            margin: 0,
-            textShadow: "0 2px 6px rgba(0, 0, 0, 0.6)", // 增强可读性（深色描边效果）
-            zIndex: 3,                 // 确保在图片之上
-            textAlign: "center",
-          }}
-        >
-          Adapting to Future Climate
-        </h2>
-
-
-          {/* ✅ 叠加的 future.png 图片 */}
           <img
             src="/images/future.png"
             alt="Future Climate Projection"
-            className="climate-image"
-            style={{
-              position: "absolute",
-              top: "80%",               // 距离顶部 50%
-              transform: "translateY(-50%)", // 向上偏移自身高度的一半，实现垂直居中
-              zIndex: 2,                // 确保在背景图之上
-              // 注意：className="climate-image" 已包含 width/max-width 等样式
-            }}
+            className="weather-climate-future-image"
           />
-
         </div>
 
         <div className="green-box climate-box">
-          <div className="climate-card-grid">
-            <div className="climate-card">
+          <div className="weather-weather-climate-card-grid">
+            <div className="weather-climate-card">
               <h3>HOTTER SUMMERS</h3>
               <p>Grow heat-tolerant veggies (tomatoes, chillies, okra, sweet potatoes). Mulch to keep soil moist, water early/late, and use shade cloth for tender crops.</p>
             </div>
-            <div className="climate-card">
+            <div className="weather-climate-card">
               <h3>LONGER AUTUMNS</h3>
               <p>Plant cool-season crops earlier and enjoy extended yields of summer crops. Stagger planting to handle unexpected heat/dry spells.</p>
             </div>
-            <div className="climate-card">
+            <div className="weather-climate-card">
               <h3>MILDER WINTERS</h3>
               <p>Try borderline crops (ginger, broccoli, tropical herbs). Less frost risk helps citrus and avocado thrive, but watch for cold snaps.</p>
             </div>
-            <div className="climate-card">
+            <div className="weather-climate-card">
               <h3>EARLIER SPRINGS</h3>
               <p>Start warm-season crops sooner. Watch for early pests and strengthen soil with compost, organics, and rotation.</p>
             </div>
-            <div className="climate-card">
+            <div className="weather-climate-card">
               <h3>YEAR-ROUND</h3>
               <p>Choose native/drought-resilient plants, install smart irrigation, collect rainwater, and diversify plantings for resilience.</p>
             </div>
           </div>
         </div>
-
       </div>
-    </div>
   )
 }
 
