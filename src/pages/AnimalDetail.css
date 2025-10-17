@@ -34,7 +34,6 @@
 .animal-detail-page {
   min-height: 100vh;
   background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-  padding: 0;
   margin: 0;
 }
 
@@ -103,6 +102,7 @@
   gap: 3rem;
   margin-bottom: 4rem;
   align-items: stretch;
+  max-height: 70vh;
 }
 
 .animal-image-container {
@@ -114,13 +114,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 100%;
+  width: 100%;
+  max-height: 70vh;
 }
 
 .animal-hero-image {
   width: 100%;
   height: 100%;
+  max-height: 70vh;
   object-fit: cover;
+  object-position: center;
   transition: transform 0.3s ease;
+  overflow: hidden;
 }
 
 .animal-image-container:hover .animal-hero-image {
@@ -128,10 +134,10 @@
 }
 
 .animal-description-container {
-  padding: 2rem;
-  background: var(--background-primary);
+  padding: 1rem 3rem 0 0;
+  /* background: var(--background-primary);
   border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-lg); */
   border: 1px solid var(--border-light);
   display: flex;
   flex-direction: column;
@@ -139,11 +145,11 @@
 }
 
 .animal-description-title {
-  font-size: 28px;
+  font-size: 35px;
   font-weight: 700;
   color: var(--text-primary);
-  margin: 0 0 1rem 0;
-  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.7rem;
   border-bottom: 2px solid var(--primary-color);
 }
 
