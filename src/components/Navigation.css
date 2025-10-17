@@ -191,3 +191,21 @@
     align-items: center;
   }
 } 
+
+@media (min-width: 1440px) {
+  .nav-brand-name {
+    font-size: 1.8rem;
+  }
+  .nav-link {
+    font-size: 1.3rem;
+  }
+}
+
+@media (min-width: 1920px) {
+  .nav-brand-name {
+    font-size: 2.2rem;
+  }
+  .nav-link {
+    font-size: 1.5rem;
+  }
+}

@@ -31,7 +31,7 @@
   text-align: center;
   justify-content: center;
   width: 100%;
-  padding: 7rem 3rem 4.5rem;
+  padding: 7rem 3rem 3rem;
   height: 100%;
   position: relative;
   z-index: 2;
@@ -65,7 +65,7 @@
   font-size: 1.6rem;
   font-weight: 400;
   color: #fff;
-  margin-bottom: 30px;
+  margin-bottom: 25px;
   width: 100%;
   margin-left: auto;
   margin-right: auto;
@@ -77,7 +77,7 @@
   font-size: 1.6rem;
   font-weight: 500;
   color: #00d600;
-  margin-bottom: 30px;
+  margin-bottom: 25px;
   width: 100%;
   margin-left: auto;
   margin-right: auto;
@@ -85,26 +85,9 @@
   text-shadow: 1px 1px 3px #01010197;
 }
 
-.cta-button {
-  background: #333;
-  color: white;
-  border: none;
-  padding: 15px 30px;
-  border-radius: 25px;
-  font-size: 1.5rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.cta-button:hover {
-  background: #555;
-  transform: translateY(-2px);
-}
-
 .scroll-down-hint {
   justify-content: center;
-  margin-top: 8rem;
+  margin-top: 7rem;
   align-items: center;
   background: transparent;
   display: flex;
@@ -200,9 +183,8 @@
   border-radius: 15px;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
   padding: 30px;
-  flex: 1;
   min-width: 280px;
-  max-width: calc(33.333% - 20px);
+  width: calc(33.333% - 20px);
   cursor: pointer;
   transition: all 0.3s ease;
   text-align: left;
@@ -291,9 +273,8 @@
   }
   
   .home-content-card {
-    flex: 1;
     min-width: 280px;
-    max-width: calc(50% - 15px);
+    width: calc(50% - 15px);
   }
 }
 
@@ -304,9 +285,8 @@
   }
   
   .home-content-card {
-    flex: 1;
     min-width: 280px;
-    max-width: calc(33.333% - 20px);
+    width: calc(33.333% - 20px);
   }
 }
 
@@ -416,6 +396,163 @@
 }
 
 /* Responsive adjustments */
+
+/* ========== Wide Screens (1440px–1919px) ========== */
+@media (min-width: 1440px) {
+  .hero-title {
+    font-size: 5.5rem;
+  }
+
+  .hero-description {
+    font-size: 1.8rem;
+  }
+
+  .hero-description-highlight {
+    font-size: 1.8rem;
+  }
+
+  .cta-button {
+    font-size: 1.6rem;
+    padding: 18px 35px;
+  }
+
+  .scroll-down-hint-text {
+    font-size: 1.1rem;
+  }
+
+  .scroll-down-arrow {
+    font-size: 2.2rem;
+  }
+
+  .home-cards-section {
+    padding: 30px 100px;
+  }
+
+  .home-cards-main-title {
+    font-size: 3.2rem;
+    margin-bottom: 20px;
+  }
+
+  .home-cards-subtitle {
+    font-size: 2.2rem;
+  }
+
+  .home-content-card {
+    padding: 35px;
+    min-width: 300px;
+    width: calc(33.333% - 25px);
+  }
+
+  .home-card-title {
+    font-size: 1.3rem;
+    margin-bottom: 18px;
+  }
+
+  .home-card-description {
+    font-size: 1.1rem;
+  }
+
+  .nav-text {
+    font-size: 1.2rem;
+  }
+
+  .home-decorative-plants {
+    margin-top: 50px;
+  }
+
+  .home-plant-decoration {
+    width: 140px;
+  }
+
+  .home-plant-decoration.left {
+    margin-left: 60px;
+  }
+
+  .home-plant-decoration.right {
+    margin-right: 60px;
+  }
+}
+
+/* ========== Ultra-Wide Screens (≥1920px) ========== */
+@media (min-width: 1920px) {
+  .hero-title {
+    font-size: 6.5rem;
+  }
+
+  .hero-description {
+    font-size: 2rem;
+  }
+
+  .hero-description-highlight {
+    font-size: 2rem;
+  }
+
+  .cta-button {
+    font-size: 1.8rem;
+    padding: 20px 40px;
+  }
+
+  .scroll-down-hint-text {
+    font-size: 1.2rem;
+  }
+
+  .scroll-down-arrow {
+    font-size: 2.5rem;
+  }
+
+  .home-cards-section {
+    padding: 40px 120px;
+  }
+
+  .home-cards-main-title {
+    font-size: 3.8rem;
+    margin-bottom: 25px;
+  }
+
+  .home-cards-subtitle {
+    font-size: 2.5rem;
+  }
+
+  .home-cards-container {
+    gap: 40px;
+  }
+
+  .home-content-card {
+    padding: 40px;
+    min-width: 320px;
+    width: calc(33.333% - 27px);
+  }
+
+  .home-card-title {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+  }
+
+  .home-card-description {
+    font-size: 1.4rem;
+  }
+
+  .nav-text {
+    font-size: 1.3rem;
+  }
+
+  .home-decorative-plants {
+    margin-top: 60px;
+  }
+
+  .home-plant-decoration {
+    width: 160px;
+  }
+
+  .home-plant-decoration.left {
+    margin-left: 80px;
+  }
+
+  .home-plant-decoration.right {
+    margin-right: 80px;
+  }
+}
+
 @media (max-width: 768px) {
   .nav-directory-container {
     height: 60px;

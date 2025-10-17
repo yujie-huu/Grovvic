@@ -8,8 +8,21 @@
 /* ===== ABOUT BANNER STYLES ===== */
 .about-banner {
   background: linear-gradient(rgba(15, 66, 41, 0.7), rgba(15, 66, 41, 0.7)), url('../../public/images/about_banner.jpg') center / cover no-repeat;
+  background-size: cover;
+  background-position: center;
   height: 70vh;
   position: relative;
+}
+
+.about-banner::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 10%;
+  background: white;
+  z-index: 1;
 }
 
 .about-header {
@@ -59,6 +72,8 @@
   margin-inline: 10vw;
   padding: 1rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  position: relative;
+  z-index: 2;
 }
 
 .about-header-notes-title {
@@ -80,7 +95,7 @@
 
 /* ===== ABOUT US SECTION ===== */
 .about-us-section {
-  min-height: 80vh;
+  height: auto;
 }
 
 .about-us-content {
@@ -166,9 +181,10 @@
 }
 
 .what-we-offer-content {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
-  gap: 1.6rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.8rem;
   width: 100%;
   padding-inline: 4.5rem;
   padding-bottom: 2rem;
@@ -180,8 +196,10 @@
   background: white;
   border-radius: 8px;
   gap: 0.3rem;
-  padding: 1.2rem 1.2rem;
+  padding: 1.2rem;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+  width: calc(25% - 1.35rem);
+  min-width: 12rem;
 }
 
 .what-we-offer-card-title {
@@ -366,8 +384,265 @@
 }
 
 
+/* ========== Wide Screens (1440px–1919px) ========== */
+@media (min-width: 1440px) {
+  .about-header-title {
+    font-size: 2rem;
+    margin-bottom: 1.8rem;
+  }
+
+  .about-header-description {
+    font-size: 3.8rem;
+  }
+
+  .about-header-notes-title {
+    font-size: 1.7rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .about-header-notes-text {
+    font-size: 1.5rem;
+  }
+
+  .about-us-content {
+    padding: 3.5rem 4.5rem;
+    gap: 3rem;
+  }
+
+  .about-us-title {
+    font-size: 2.5rem;
+    margin-bottom: 1.6rem;
+  }
+
+  .about-us-description {
+    font-size: 1.4rem;
+    margin-bottom: 1.6rem;
+  }
+
+  .what-we-offer-title {
+    font-size: 1.5rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .what-we-offer-subtitle {
+    font-size: 3.2rem;
+  }
+
+  .what-we-offer-content {
+    gap: 2.8rem;
+  }
+
+  .what-we-offer-card {
+    width: calc(25% - 2.1rem);
+    padding: 1.6rem;
+    gap: 0.4rem;
+  }
+
+  .what-we-offer-card-title {
+    font-size: 1.35rem;
+  }
+
+  .what-we-offer-card-description {
+    font-size: 1.25rem;
+    line-height: 1.6;
+  }
+
+  .what-we-offer-card-image img {
+    width: 4.2rem;
+  }
+
+  .our-mission-section {
+    padding: 4rem 8rem;
+  }
+
+  .our-mission-container {
+    gap: 3rem;
+  }
+
+  .mission-card {
+    padding: 25px 30px;
+  }
+
+  .mission-card-title {
+    font-size: 1.8rem;
+    margin: 10px 0 18px;
+  }
+
+  .mission-description {
+    font-size: 1.3rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .mission-side {
+    gap: 22px;
+  }
+
+  .mission-side-card {
+    padding: 26px 28px;
+  }
+
+  .mission-side-card-icon img {
+    height: 55px;
+  }
+
+  .mission-side-card-text {
+    font: 500 1.3rem/1.3 "Rubik", sans-serif;
+  }
+
+  .about-reference {
+    padding: 4rem 8rem;
+  }
+
+  .about-reference-title {
+    font-size: 3rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .about-reference-list {
+    font-size: 1.2rem;
+    margin-left: 1.3rem;
+  }
+
+  .about-reference-list li {
+    margin-bottom: 0.7rem;
+  }
+}
+
+/* ========== Ultra-Wide Screens (≥1920px) ========== */
+@media (min-width: 1920px) {
+  .about-header-title {
+    font-size: 2.3rem;
+    margin-bottom: 2rem;
+  }
+
+  .about-header-description {
+    font-size: 4.5rem;
+  }
+
+  .about-header-notes-title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .about-header-notes-text {
+    font-size: 1.8rem;
+  }
+
+  .about-us-content {
+    padding: 5rem 6rem;
+    gap: 4rem;
+  }
+
+  .about-us-title {
+    font-size: 3rem;
+    margin-bottom: 2rem;
+  }
+
+  .about-us-description {
+    font-size: 1.7rem;
+    margin-bottom: 2rem;
+  }
+
+  .what-we-offer-title {
+    font-size: 1.6rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .what-we-offer-subtitle {
+    font-size: 3.5rem;
+  }
+
+  .what-we-offer-content {
+    gap: 3.5rem;
+  }
+
+  .what-we-offer-card {
+    width: calc(25% - 2.7rem);
+    padding: 2rem;
+    gap: 0.5rem;
+  }
+
+  .what-we-offer-card-title {
+    font-size: 1.8rem;
+  }
+
+  .what-we-offer-card-description {
+    font-size: 1.6rem;
+  }
+
+  .what-we-offer-card-image img {
+    width: 4.8rem;
+  }
+
+  .our-mission-section {
+    padding: 5rem 12rem;
+  }
+
+  .our-mission-container {
+    gap: 4rem;
+  }
+
+  .mission-card {
+    padding: 30px 35px;
+  }
+
+  .mission-card-title {
+    font-size: 2.2rem;
+    margin: 20px 0 22px;
+  }
+
+  .mission-description {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .mission-side {
+    gap: 25px;
+  }
+
+  .mission-side-card {
+    padding: 30px 32px;
+  }
+
+  .mission-side-card-icon img {
+    height: 60px;
+  }
+
+  .mission-side-card-text {
+    font: 500 1.7rem/1.3 "Rubik", sans-serif;
+  }
+
+  .about-reference {
+    padding: 5rem 10rem;
+  }
+
+  .about-reference-title {
+    font-size: 4rem;
+    margin-bottom: 3rem;
+  }
+
+  .about-reference-list {
+    font-size: 1.5rem;
+    margin-left: 1.5rem;
+  }
+
+  .about-reference-list li {
+    margin-bottom: 0.8rem;
+  }
+}
+
 /* Responsive Media */
-@media (max-width: 900px){
+@media (max-width: 1200px) {
+  .what-we-offer-card {
+    width: calc(33.333% - 1.1rem);
+  }
+}
+
+@media (max-width: 900px) {
+  .what-we-offer-card {
+    width: calc(50% - 0.8rem);
+  }
+  
   .our-mission-container{
     grid-template-columns: 1fr;    /* Up Down Layout */
   }
@@ -382,5 +657,11 @@
   }
   .mission-side{
     height: auto;
+  }
+}
+
+@media (max-width: 600px) {
+  .what-we-offer-card {
+    width: 100%;
   }
 }
