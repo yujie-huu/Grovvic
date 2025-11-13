@@ -7,6 +7,7 @@ Grovvic is a climate-smart gardening platform aligned with the UN SDGs. It helps
 - Weather forcast, trends, and relevant gardening tips
 - Sustainability education content with quizzes
 - Garden planting simulation (interactive and informative)
+- Interactive biodiversity (animals, pollinators and pests) map
 - Clear navigation and responsive UI
 
 ## Tech Stack
